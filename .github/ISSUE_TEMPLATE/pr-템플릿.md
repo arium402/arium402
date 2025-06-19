@@ -1,7 +1,7 @@
 ---
 name: PR 템플릿
 about: PR 생성 시 이 템플릿을 사용해 주세요.
-title: ''
+title: "[PR] "
 labels: ''
 assignees: sunkyung-hub
 
