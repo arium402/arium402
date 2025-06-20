@@ -1,0 +1,446 @@
+@charset "UTF-8";
+
+/* 메인 컨텐츠 스타일 */
+/* 섹션 제목 스타일 */
+.section-title {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-left: 4px solid #3498db;
+    padding-left: 15px;
+}
+
+/* 상담자 정보 카드 */
+.counselor-info {
+    background: white;
+    padding: 25px 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border-left: 4px solid #3498db;
+    transition: all 0.3s ease;
+}
+
+.counselor-info:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 25px;
+    align-items: center;
+}
+
+.info-item {
+    text-align: center;
+    padding: 15px;
+    background: #f8f9fa;
+    border-left: 3px solid #3498db;
+    transition: all 0.3s ease;
+}
+
+.info-item:hover {
+    background: #e9ecef;
+    transform: translateY(-2px);
+}
+
+.info-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #7f8c8d;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.info-value {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+/* 근무 일정 섹션 */
+.schedule-section {
+    background: white;
+    padding: 25px 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border-left: 4px solid #3498db;
+    transition: all 0.3s ease;
+}
+
+.schedule-section:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+}
+
+.month-selector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.month-nav-btn {
+    background: #2c3e50;
+    color: white;
+    border: 2px solid #2c3e50;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.month-nav-btn:hover {
+    background: #34495e;
+    border-color: #34495e;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(44, 62, 80, 0.3);
+}
+
+.month-display {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #2c3e50;
+    min-width: 150px;
+    text-align: center;
+    cursor: pointer;
+    padding: 8px 15px;
+    border: 2px solid #e9ecef;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.month-display:hover {
+    border-color: #3498db;
+    background: #f8f9fa;
+    transform: translateY(-1px);
+}
+
+.schedule-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 25px;
+    margin-bottom: 20px;
+}
+
+.schedule-item {
+    text-align: center;
+    padding: 15px;
+    background: #f8f9fa;
+    border-left: 3px solid #3498db;
+    transition: all 0.3s ease;
+}
+
+.schedule-item:hover {
+    background: #e9ecef;
+    transform: translateY(-2px);
+}
+
+.schedule-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #7f8c8d;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.schedule-value {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+/* 상담 내역 섹션 */
+.consultation-section {
+    background: white;
+    padding: 25px 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border-left: 4px solid #3498db;
+    transition: all 0.3s ease;
+}
+
+.consultation-section:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+}
+
+.consultation-table-container {
+    max-height: 400px;
+    overflow-y: auto;
+    border: 1px solid #e9ecef;
+}
+
+.consultation-table {
+    width: 100%;
+    margin: 0;
+    background: white;
+    font-size: 0.95rem;
+}
+
+.consultation-table thead {
+    background: #f8f9fa;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.consultation-table th {
+    padding: 18px 15px;
+    font-weight: 600;
+    text-align: center;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #e9ecef;
+    color: #2c3e50;
+    position: relative;
+}
+
+.consultation-table th:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 25%;
+    height: 50%;
+    width: 1px;
+    background: rgba(44, 62, 80, 0.2);
+}
+
+.consultation-table tbody tr {
+    transition: all 0.3s ease;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.consultation-table tbody tr:hover {
+    background: linear-gradient(90deg, #f8f9fa, #e3f2fd);
+    transform: translateX(8px);
+    box-shadow: 0 3px 15px rgba(52, 152, 219, 0.15);
+}
+
+.consultation-table td {
+    padding: 15px;
+    text-align: center;
+    border: none;
+    vertical-align: middle;
+    font-size: 0.9rem;
+    color: #495057;
+}
+
+.consultation-table .col-no {
+    width: 8%;
+    font-weight: 600;
+    color: #7f8c8d;
+}
+
+.consultation-table .col-date {
+    width: 15%;
+    color: #495057;
+}
+
+.consultation-table .col-time {
+    width: 15%;
+    color: #495057;
+    font-family: 'Courier New', monospace;
+}
+
+.consultation-table .col-student-id {
+    width: 20%;
+    color: #495057;
+    font-family: 'Courier New', monospace;
+}
+
+.consultation-table .col-student-name {
+    width: 42%;
+    color: #2c3e50;
+    font-weight: 500;
+}
+
+/* 날짜/월 선택 모달 */
+.date-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.date-modal-content {
+    background-color: white;
+    margin: 15% auto;
+    padding: 0;
+    border: none;
+    width: 350px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.date-modal-header {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    color: white;
+    padding: 20px 25px;
+    border-bottom: 3px solid #3498db;
+}
+
+.date-modal-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.date-modal-close {
+    color: white;
+    float: right;
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 1;
+    cursor: pointer;
+    margin-top: -3px;
+    transition: all 0.3s ease;
+}
+
+.date-modal-close:hover {
+    opacity: 0.7;
+    transform: scale(1.1);
+}
+
+.date-modal-body {
+    padding: 25px;
+}
+
+.date-selector {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    justify-content: center;
+}
+
+.date-select {
+    padding: 10px 15px;
+    border: 2px solid #e9ecef;
+    background: white;
+    color: #495057;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.date-select:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    transform: translateY(-1px);
+}
+
+.date-select:hover {
+    border-color: #bdc3c7;
+}
+
+.date-modal-footer {
+    padding: 15px 25px;
+    background: #f8f9fa;
+    text-align: right;
+    border-top: 1px solid #e9ecef;
+}
+
+.date-btn {
+    padding: 10px 20px;
+    margin-left: 10px;
+    border: 2px solid transparent;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.date-confirm-btn {
+    background: #2c3e50;
+    color: white;
+    border-color: #2c3e50;
+}
+
+.date-confirm-btn:hover {
+    background: #34495e;
+    border-color: #34495e;
+    transform: translateY(-1px);
+}
+
+.date-cancel-btn {
+    background: #7f8c8d;
+    color: white;
+    border-color: #7f8c8d;
+}
+
+.date-cancel-btn:hover {
+    background: #95a5a6;
+    border-color: #95a5a6;
+    transform: translateY(-1px);
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+    #layoutSidenav_nav {
+        width: 100%;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+    }
+    
+    #layoutSidenav_nav.show {
+        transform: translateX(0);
+    }
+    
+    #layoutSidenav_content {
+        margin-left: 0;
+        width: 100%;
+    }
+    
+    .main-content {
+        padding: 15px;
+    }
+    
+    .info-grid,
+    .schedule-info {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .month-selector {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .consultation-table {
+        font-size: 0.8rem;
+    }
+    
+    .consultation-table th,
+    .consultation-table td {
+        padding: 8px 6px;
+    }
+}

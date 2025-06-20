@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="https://www.thymeleaf.org/">
+    <head th:replace="~{/admin_config.html :: admin_config}"></head>
+     <title>마일리지 전환 - 관리자 페이지</title>
+     <link rel="stylesheet" th:href="@{/css/admin/admin_mileage_to_money.css?v=1}">
+     
+    <body class="sb-nav-fixed">
+         <!-- 상단 네비게이션 바 -->
+        <nav th:replace="~{/admin_top.html :: admin_top}"></nav>
+     
+     
+        <div id="layoutSidenav">
+            <!-- 사이드바 -->
+            <div th:replace="~{/admin_sidebar.html :: admin_sidebar}"> </div>
+            
+            <!-- 메인 컨텐츠 -->
+            <div id="layoutSidenav_content">
+                <div class="main-content">
+                    <!-- 페이지 제목 -->
+                    <h1 class="page-title">마일리지 전환</h1>
+                    <div class="title-divider"></div>
+                    
+                    <!-- 전환 신청 목록 섹션 -->
+                    <div class="program-section">
+                        <div class="program-header">
+                            전환 신청 목록
+                        </div>
+                        
+                        <!-- 탭 메뉴 -->
+                        <div class="program-tabs">
+                            <div class="tab-container">
+                                <button class="tab-btn active" data-tab="all">전체</button>
+                                <button class="tab-btn" data-tab="waiting">대기</button>
+                                <button class="tab-btn" data-tab="completed">완료</button>
+                            </div>
+                        </div>
+
+                        <!-- 전환 신청 테이블 -->
+                        <table class="program-table" id="conversionTable">
+                            <thead>
+                                <tr>
+                                    <th style="width: 8%;">NO</th>
+                                    <th style="width: 15%;">학번</th>
+                                    <th style="width: 15%;">이름</th>
+                                    <th style="width: 20%;">신청 마일리지</th>
+                                    <th style="width: 20%;">신청일자</th>
+                                    <th style="width: 15%;">상태</th>
+                                </tr>
+                            </thead>
+                            <tbody id="conversionTableBody">
+                                <!-- 데이터는 JavaScript로 동적 생성 -->
+                            </tbody>
+                        </table>
+
+                        <!-- 페이지네이션 -->
+                        <div class="pagination-container">
+                            <div class="pagination" id="pagination">
+                                <!-- 페이지네이션 버튼이 여기에 동적으로 추가됩니다 -->
+                            </div>
+                            <div class="pagination-info" id="paginationInfo">
+                                <!-- 페이지 정보가 여기에 표시됩니다 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 마일리지 전환 모달 -->
+        <div class="modal-overlay" id="conversionModal">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <h2 class="modal-title">마일리지 전환</h2>
+                    <button class="modal-close" onclick="closeModal()">×</button>
+                </div>
+                <div class="modal-body">
+                    <!-- 학생 정보 -->
+                    <div class="info-section">
+                        <h3 class="section-title">학생 정보</h3>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span class="info-label">학번</span>
+                                <span class="info-value" id="modalStudentId">20240001</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">학과</span>
+                                <span class="info-value" id="modalDepartment">컴퓨터과학과</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">이름</span>
+                                <span class="info-value" id="modalStudentName">김학생</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 신청 정보 -->
+                    <div class="info-section">
+                        <h3 class="section-title">신청 정보</h3>
+                        <div class="info-item">
+                            <span class="info-label">신청 마일리지</span>
+                            <span class="info-value" id="modalMileage">1500점</span>
+                        </div>
+                    </div>
+
+                    <!-- 계좌 정보 -->
+                    <div class="info-section">
+                        <h3 class="section-title">계좌 정보</h3>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span class="info-label">은행</span>
+                                <span class="info-value" id="modalBank">국민은행</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">계좌번호</span>
+                                <span class="info-value" id="modalAccount">123-456-789012</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">예금주명</span>
+                                <span class="info-value" id="modalAccountHolder">김학생</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 전환 내역 -->
+                    <div class="info-section">
+                        <h3 class="section-title">전환 내역</h3>
+                        <div class="conversion-section">
+                            <div class="conversion-display" onclick="toggleConversion()">
+                                <span id="conversionText">마일리지 1500점 <span class="conversion-arrow">→</span> 장학금 150,000원</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" onclick="processConversion()">전환</button>
+                    <button class="btn btn-secondary" onclick="closeModal()">취소</button>
+                </div>
+            </div>
+        </div>
+          <script th:src="@{/js/admin/admin_mileage_to_money.js}"></script>
+        
+       
+    </body>
+</html>

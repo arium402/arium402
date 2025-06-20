@@ -1,0 +1,69 @@
+    body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+
+        .logo img {
+            max-width: 150px;
+        }
+
+        /* 히어로 배너 스타일 */
+        .hero-banner {
+            background: url('https://example.com/hero-image.jpg') no-repeat center center/cover;
+            color: #dfe6e9; /* 연한 회색 텍스트 */
+            padding: 60px 0px;
+            text-align: center;
+        }
+
+        .hero-content h1 {
+            font-size: 2.5rem;
+            margin: 0 0 10px;
+            color: black; /* 흰색 텍스트 */
+        }
+
+        .hero-content p {
+            font-size: 1.25rem;
+            margin: 0 0 20px;
+            color: black; /* 연한 회색 텍스트 */
+        }
+
+        .cta-button {
+            background-color: var(--main-color);
+            color: #ffffff; /* 흰색 텍스트 */
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .cta-button:hover {color : #fff; text-decoration: none;}
+        
+        .news-item {margin : 30px 0 30px 0; padding: 3%;}
+        .news-item section table + div {text-align : center; margin-top : 40px;}
+        .news-item .table {border-bottom : 1px solid var(--gray-color)}
+        .news-item .table thead th{ border-bottom : 0;}
+        .news-item .table thead tr {background-color : var(--gray-color); color : #fff;}
+        .news-item tr {cursor : pointer; border : 0;}
+        
+        .idx-cardarea {display : flex; justify-content:space-between; margin : 30px 0 30px 0; padding: 3%;}
+        .idx-cardarea > div {width : 25%; background-color : #ddd;  margin : 0 5px; border-radius : 15px; transition : 0.2s;}
+        .idx-cardarea > div:hover {transform : translateY(-20px)}
+        .idx-cardarea > div > a {color : #000; display : block; height : 100%; padding : 40px 20px 80px 20px; position : relative;}
+        .idx-cardarea > div > a:hover {text-decoration : none;}
+        .idx-cardarea > div > a h2 {margin-bottom : 15px;}
+        .idx-cardarea > div > a img {width : 26%; position : absolute; right : 20px; bottom : 25px;}
+        
+        @media (max-width: 768px) {
+        .hero-banner {padding : 0 12px;}
+        .idx-cardarea {flex-direction : column; padding : 0 12px;}
+        .idx-cardarea > div {width : 100%; margin : 20px 0px;}
+        .idx-cardarea > div:hover {transform : translateY(0px)}
+        .idx-cardarea > div > a img {max-width : 40px;}
+        }
+        
+        .container {
+        	justify-content: center;
+    		display: flex; /* Flexbox 사용 */
+    		flex-direction : column;
+    		align-items: center; /* 수직 정렬 */
+    		padding : 20px 0;
+		}

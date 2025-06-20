@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="https://www.thymeleaf.org/">
+    <head th:replace="~{/admin_config.html :: admin_config}"></head>
+    <title>페이지 수정 - 관리자 페이지</title>
+    <link rel="stylesheet" th:href="@{/css/admin/admin_F&Q_list_detail_modify.css?v=1}">
+    
+    <body class="sb-nav-fixed">
+        <!-- 상단 네비게이션 바 -->
+        <nav th:replace="~{/admin_top.html :: admin_top}"></nav>
+            
+     
+        <div id="layoutSidenav">
+            <!-- 사이드바 -->
+            <div th:replace="~{/admin_sidebar.html :: admin_sidebar}"> </div>
+            
+            <!-- 메인 컨텐츠 -->
+            <div id="layoutSidenav_content">
+                <div class="main-content">
+                    <!-- 페이지 제목 -->
+                    <h1 class="page-title">페이지 수정</h1>
+                    <div class="title-divider"></div>
+                    
+                    <!-- 등록 폼 -->
+                    <div class="register-container">
+                        <!-- 대분류 선택 -->
+                        <div class="form-group">
+                            <label class="form-label">대분류</label>
+                            <select class="form-select" id="mainCategory">
+                                <option value="">선택하세요</option>
+                                <option value="extracurricular">비교과</option>
+                                <option value="counseling">상담</option>
+                                <option value="etc">기타</option>
+                            </select>
+                        </div>
+
+                        <!-- 소분류 선택 -->
+                        <div class="form-group">
+                            <label class="form-label">소분류</label>
+                            <select class="form-select" id="subCategory">
+                                <option value="">먼저 대분류를 선택하세요</option>
+                            </select>
+                        </div>
+
+                        <!-- F&Q 검색 섹션 -->
+                        <div class="faq-search-section">
+                            <div class="section-title">
+                                <span>F&Q 검색</span>
+                                <button class="btn-add" onclick="addQAItem()">
+                                    <i class="fas fa-plus"></i>
+                                    추가
+                                </button>
+                            </div>
+                            <div class="section-divider"></div>
+
+                            <!-- Q&A 리스트 컨테이너 -->
+                            <div class="qa-list-container" id="qaListContainer">
+                                <!-- 기존 데이터가 로드되어 표시됩니다 -->
+                            </div>
+                        </div>
+
+                        <!-- 버튼 그룹 -->
+                        <div class="button-group">
+                            <button class="btn-preview" onclick="openPreviewModal()">
+                                <i class="fas fa-eye"></i>
+                                미리보기
+                            </button>
+                            <div class="action-buttons">
+                                <button class="btn-update" onclick="updatePage()">
+                                    <i class="fas fa-save"></i>
+                                    수정
+                                </button>
+                                <button class="btn-cancel" onclick="cancelEdit()">
+                                    <i class="fas fa-times"></i>
+                                    취소
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- F&Q 검색 모달 -->
+        <div id="faqSearchModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">F&Q 검색</h3>
+                    <span class="close" onclick="closeFAQSearchModal()">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-search-container">
+                        <input type="text" class="modal-search-input" id="faqSearchInput" placeholder="검색어를 입력하세요">
+                        <button class="btn-search" onclick="searchFAQData()">
+                            <i class="fas fa-search"></i>
+                            검색
+                        </button>
+                    </div>
+                    <div class="faq-list" id="faqSearchResults">
+                        <!-- 검색 결과가 여기에 동적으로 추가됩니다 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 미리보기 모달 -->
+        <div id="previewModal" class="modal preview-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">F&Q 페이지 미리보기</h3>
+                    <span class="close" onclick="closePreviewModal()">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="preview-content" id="previewContent">
+                        <!-- 미리보기 내용이 여기에 동적으로 생성됩니다 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+  <script th:src="@{/js/admin/admin_F&Q_list_detail_modify.js}"></script>
+    </body>
+</html>

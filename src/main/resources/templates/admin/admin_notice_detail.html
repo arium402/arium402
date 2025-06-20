@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="https://www.thymeleaf.org/">
+    <head th:replace="~{/admin_config.html :: admin_config}"></head>
+    <title>공지사항 상세보기 - 관리자 페이지</title>
+    <link rel="stylesheet" th:href="@{/css/admin/admin_notice_detail.css?v=1}">
+    
+    <body class="sb-nav-fixed">
+        <!-- 상단 네비게이션 바 -->
+        <nav th:replace="~{/admin_top.html :: admin_top}"></nav>
+     
+        <div id="layoutSidenav">
+            <!-- 사이드바 -->
+            <div th:replace="~{/admin_sidebar.html :: admin_sidebar}"> </div>
+            <!-- 메인 컨텐츠 -->
+            <div id="layoutSidenav_content">
+            
+                <div class="main-content">
+                    <!-- 페이지 제목 -->
+                    <h1 class="page-title">상세 페이지</h1>
+                    <div class="title-divider"></div>
+                    
+                    <!-- 공지사항 상세 -->
+                    <div class="notice-detail">
+                        <div class="notice-header">
+                            <div class="notice-title">
+                                <span class="notice-badge">공지</span>
+                                2025년 상담 프로그램 운영 안내
+                            </div>
+                            <div class="notice-meta">
+                                <div class="meta-item">
+                                    <span class="meta-label">작성자:</span>
+                                    <span>관리자</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="meta-label">등록일:</span>
+                                    <span>2025-06-15</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="meta-label">조회수:</span>
+                                    <span>156</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="notice-content">
+                            <!-- 제목 -->
+                            <div class="field-group">
+                                <div class="field-label">제목</div>
+                                <div class="field-value">2025년 상담 프로그램 운영 안내</div>
+                            </div>
+                            
+                            <!-- 분류 -->
+                            <div class="field-group">
+                                <div class="field-label">분류</div>
+                                <div class="field-value">상담</div>
+                            </div>
+                            
+                            <!-- 공개여부 & 고정여부 -->
+                            <div class="field-group">
+                                <div class="field-row">
+                                    <div>
+                                        <div class="field-label">공개여부</div>
+                                        <div class="field-value">공개</div>
+                                    </div>
+                                    <div>
+                                        <div class="field-label">고정여부</div>
+                                        <div class="field-value">고정</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 내용 -->
+                            <div class="field-group">
+                                <div class="field-label">내용</div>
+                                <div class="content-area">
+                                    <div class="content-text">
+                                        안녕하세요. 2025년 상담 프로그램 운영에 대해 안내드립니다.
+                                    </div>
+
+                                    <div class="content-section">
+                                        <div class="section-title">1. 상담 프로그램 개편 사항</div>
+                                        <div class="content-text">
+                                            2025년부터 학습자들의 다양한 요구에 부응하기 위해 상담 프로그램을 다음과 같이 개편하여 운영합니다.
+                                        </div>
+                                        
+                                        <div class="highlight-box">
+                                            <div class="highlight-title">주요 변경사항</div>
+                                            <ul class="info-list">
+                                                <li>개별 상담 시간 기존 30분에서 45분으로 연장</li>
+                                                <li>집단 상담 프로그램 신설 (주제별 그룹 상담)</li>
+                                                <li>온라인 화상 상담 시스템 도입</li>
+                                                <li>24시간 익명 상담 게시판 운영</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div class="content-section">
+                                        <div class="section-title">2. 상담 신청 방법</div>
+                                        <div class="content-text">
+                                            상담 신청은 다음과 같은 방법으로 가능합니다:
+                                        </div>
+                                        <ul class="info-list">
+                                            <li>온라인 학습관리시스템(LMS) 내 상담 신청 메뉴</li>
+                                            <li>전화 상담 신청: 1588-1234 (평일 09:00~18:00)</li>
+                                            <li>이메일 상담 신청: counseling@knou.ac.kr</li>
+                                            <li>방문 상담: 사전 예약 필수</li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="content-section">
+                                        <div class="section-title">3. 운영 시간</div>
+                                        <div class="content-text">
+                                            <strong>평일:</strong> 09:00 ~ 18:00<br>
+                                            <strong>토요일:</strong> 09:00 ~ 15:00<br>
+                                            <strong>일요일 및 공휴일:</strong> 휴무 (긴급상담만 가능)
+                                        </div>
+                                    </div>
+
+                                    <div class="highlight-box">
+                                        <div class="highlight-title">문의사항</div>
+                                        <div class="content-text">
+                                            기타 문의사항은 학습자지원센터(1588-1234)로 연락주시기 바랍니다.<br>
+                                            여러분의 성공적인 학습을 위해 최선을 다하겠습니다.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 첨부파일 -->
+                            <div class="field-group">
+                                <div class="field-label">첨부파일</div>
+                                <div class="attachment-area">
+                                    첨부된 파일이 없습니다.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button class="btn btn-edit" onclick="editNotice()">
+                                <i class="fas fa-edit icon"></i>
+                                수정
+                            </button>
+                            <a href="#" class="btn btn-list" onclick="goToNoticeList()">
+                                <i class="fas fa-list icon"></i>
+                                목록
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <script th:src="@{/js/admin/admin_notice_detail.js}"></script>
+    </body>
+</html>

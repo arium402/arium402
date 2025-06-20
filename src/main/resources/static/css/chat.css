@@ -1,0 +1,55 @@
+@charset "UTF-8";
+
+.modal.chat {    background: rgba(0, 0, 0, 0.4);}
+.modal.chat .modal-body { height: calc(100vh - 120px); position : relative; padding-bottom : 60px;} /*250*/
+
+.modal.chat .modal-body .chat-content >span.notice {padding : 3px 0; font-weight : 600;}
+.modal.chat .modal-body .chat-content > div {padding : 5px; }
+.modal.chat .modal-body .chat-content > div > span {background-color : #aaa; color : #fff; padding : 5px 12px;}
+/* .modal.chat .modal-body .chat-content > div.admin {text-align : right;} */
+.modal.chat .modal-body .chat-content > div.admin > span {background-color : #6a7599;}
+
+.modal.chat .modal-body .chat-content{
+	overflow-y: auto;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;}
+
+.modal.chat .modal-body .chat-text {position : absolute; left : 0; bottom : 0; width : 100%; padding : 10px 1rem; align-items:center; justify-content:space-between;
+border-top : var(--bs-modal-footer-border-width) solid var(--bs-modal-footer-border-color); display : none;
+}
+.modal.chat .modal-body .chat-text.show {display : flex;}
+.modal.chat .modal-body .chat-text input[type='text'] {
+	height: 38px;
+    line-height: 38px;
+    width: calc(100% - 68px);
+    border-radius: 10px;
+    border: 1px solid #999;
+    padding: 0 10px;
+    box-sizing: border-box;
+}
+
+.modal.chat .modal-body .chat-text #sendBtn {display : none}
+
+.modal.chat .modal-header {background-color : #004080; color : #fff;}
+.modal.chat .modal-header button {filter: invert(1) brightness(1);}
+
+.modal.chat #startBtn {width : 100%;}
+.modal.chat:not(.chatroom) .modal-footer input[type="button"] {width : 100%;}
+.modal.chat:not(.chatroom) .modal-footer input[type="button"].btn-success {display : none;}
+.modal.chat:not(.chatroom) .modal-footer input[type="button"].btn-success.show {display : block;}
+.modal.chat:not(.chatroom) .modal-footer input[type="button"].show + input[type="button"] {display : none;}
+.modal.chat:not(.chatroom) .modal-footer input[type="button"] + input[type="button"] {display : block;}
+
+.modal.chatroom {display : block; overflow : hidden;}
+/* .modal.chatroom .modal-body {padding-bottom : 10px;} */
+.modal.chatroom .modal-body:has(.chat-text.show) {padding-bottom : 60px;}
+.modal.chatroom .modal-body .chat-text {margin : 0;}
+.modal.chatroom .modal-body .chat-text #sendBtn {display : block}
+.modal.chatroom .modal-footer {flex-wrap : nowrap;}
+.modal.chatroom .modal-footer input[type="button"]:not(.close) {width : 50%;}
+.modal.chatroom #endContainer {display : none;} 
+.modal.chatroom #endContainer.show {display : block;}
+.modal.chatroom #endContainer input[type="button"].close {width :100%; display :none;}
+.modal.chatroom #endContainer.show input[type="button"].close {display :block;}
