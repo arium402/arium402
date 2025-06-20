@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="https://www.thymeleaf.org/">
+     <head th:replace="~{/admin_config.html :: admin_config}"></head>
+    <title>상담사 목록 - 관리자 페이지</title>
+    <link rel="stylesheet" th:href="@{/css/admin/admin_counselorList.css?v=1}">
+    
+    
+    <body class="sb-nav-fixed">
+        <!-- 상단 네비게이션 바 -->
+        <nav  th:replace="~{/admin_top.html :: admin_top}"> </nav>
+     
+        <div id="layoutSidenav">
+            <!-- 사이드바 -->
+            <div th:replace="~{/admin_sidebar.html :: admin_sidebar}">  </div>
+            
+            <!-- 메인 컨텐츠 -->
+            <div id="layoutSidenav_content">
+                <div class="main-content">
+                    <!-- 페이지 제목 -->
+                    <h1 class="page-title">상담사 목록</h1>
+                    <div class="title-divider"></div>
+                    
+                    <!-- 통합 컨트롤 영역 -->
+                    <div class="unified-controls">
+                        <!-- 상태 탭 -->
+                        <div class="status-tabs">
+                            <a href="#" class="tab-item active" data-status="all">전체</a>
+                            <a href="#" class="tab-item" data-status="active">재직</a>
+                            <a href="#" class="tab-item" data-status="inactive">퇴사</a>
+                        </div>
+                        
+                        <!-- 상담분류 필터 -->
+                        <div class="filter-controls">
+                            <select id="categoryFilter" class="category-filter">
+                                <option value="all">전체</option>
+                                <option value="심리상담">심리</option>
+                                <option value="위기상담">위기</option>
+                                <option value="익명상담">익명</option>
+                                <option value="진로상담">진로/취업</option>
+                                <option value="학습컨설팅">학업컨설팅</option>
+                            </select>
+                        </div>
+                        
+                        <!-- 검색 영역 -->
+                        <div class="search-controls">
+                            <select class="search-select">
+                                <option value="name">이름</option>
+                                <option value="empno">사번</option>
+                                <option value="field">분야</option>
+                                <option value="phone">전화번호</option>
+                            </select>
+                            <input type="text" class="search-input" placeholder="검색어를 입력하세요">
+                            <button class="search-btn">
+                                <i class="fas fa-search"></i> 검색
+                            </button>
+                        </div>
+                        
+                        <!-- 등록 버튼 -->
+                        <button class="register-btn">
+                            <i class="fas fa-plus"></i> 등록
+                        </button>
+                    </div>
+                    
+                    <!-- 상담사 목록 테이블 -->
+                    <div class="counselor-table-container">
+                        <table class="counselor-table">
+                            <thead>
+                                <tr>
+                                    <th>NO</th>
+                                    <th>이름</th>
+                                    <th>사번</th>
+                                    <th>분야</th>
+                                    <th>전화번호</th>
+                                    <th>이메일</th>
+                                    <th>재직현황</th>
+                                    <th>등록일</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr onclick="goToDetail(1)">
+                                    <td>1</td>
+                                    <td>김상담</td>
+                                    <td>EMP001</td>
+                                    <td>심리상담</td>
+                                    <td>010-1234-5678</td>
+                                    <td>kim@example.com</td>
+                                    <td><span class="status active">재직</span></td>
+                                    <td>2024-01-15</td>
+                                </tr>
+                                <tr onclick="goToDetail(2)">
+                                    <td>2</td>
+                                    <td>이상담</td>
+                                    <td>EMP002</td>
+                                    <td>진로상담</td>
+                                    <td>010-2345-6789</td>
+                                    <td>lee@example.com</td>
+                                    <td><span class="status active">재직</span></td>
+                                    <td>2024-02-20</td>
+                                </tr>
+                                <tr onclick="goToDetail(3)">
+                                    <td>3</td>
+                                    <td>박상담</td>
+                                    <td>EMP003</td>
+                                    <td>학습컨설팅</td>
+                                    <td>010-3456-7890</td>
+                                    <td>park@example.com</td>
+                                    <td><span class="status inactive">퇴사</span></td>
+                                    <td>2023-12-10</td>
+                                </tr>
+                                <tr onclick="goToDetail(4)">
+                                    <td>4</td>
+                                    <td>최상담</td>
+                                    <td>EMP004</td>
+                                    <td>위기상담</td>
+                                    <td>010-4567-8901</td>
+                                    <td>choi@example.com</td>
+                                    <td><span class="status active">재직</span></td>
+                                    <td>2024-03-05</td>
+                                </tr>
+                                <tr onclick="goToDetail(5)">
+                                    <td>5</td>
+                                    <td>정상담</td>
+                                    <td>EMP005</td>
+                                    <td>익명상담</td>
+                                    <td>010-5678-9012</td>
+                                    <td>jung@example.com</td>
+                                    <td><span class="status active">재직</span></td>
+                                    <td>2024-04-12</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- 페이지네이션 -->
+                    <div class="pagination-container">
+                        <div class="pagination">
+                            <button class="pagination-btn prev" disabled>
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button class="pagination-btn page-number active">1</button>
+                            <button class="pagination-btn page-number">2</button>
+                            <button class="pagination-btn page-number">3</button>
+                            <button class="pagination-btn page-number">4</button>
+                            <button class="pagination-btn page-number">5</button>
+                            <button class="pagination-btn next">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                        <div class="pagination-info">
+                            <span>총 <strong>25</strong>건 중 <strong>1-5</strong>건 표시</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+     <script th:src="@{/js/admin/admin_counselorList.js}"></script>    
+    </body>
+</html>

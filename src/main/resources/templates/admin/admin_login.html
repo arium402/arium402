@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="https://www.thymeleaf.org/">
+<head th:replace="~{/admin_config.html :: admin_config}"></head>
+<title>관리자 로그인 - CMS</title>
+<link rel="stylesheet" th:href="@{/css/admin/admin_login.css?v=1}">
+
+<body>
+    <div class="admin-login-container">
+        <div class="admin-header">
+            <div class="cms-logo">CMS</div>
+            <h1 class="admin-title">관리자 로그인</h1>
+            <p class="admin-subtitle">Content Management System</p>
+        </div>
+
+        <div class="admin-form">
+            <form id="adminLoginForm">
+                <div class="form-group">
+                    <label for="adminId" class="form-label">관리자 아이디</label>
+                    <input type="text" class="form-control" id="adminId" placeholder="아이디를 입력하세요" required autocomplete="username">
+                </div>
+                
+                <div class="form-group">
+                    <label for="adminPassword" class="form-label">관리자 패스워드</label>
+                    <input type="password" class="form-control" id="adminPassword" placeholder="패스워드를 입력하세요" required autocomplete="current-password">
+                </div>
+                
+                <button type="submit" class="login-btn" id="loginButton">
+                    로그인
+                </button>
+            </form>
+        </div>
+
+        <div class="security-notice">
+            <i>※</i>
+            공공장소에서의 로그인 시 정보 유출에 주의하시기 바랍니다.
+        </div>
+    </div>
+
+
+
+
+    <div th:replace="~{/admin_login_footer.html :: admin_login_footer}"> </div>
+
+    <script th:src="@{/js/admin/admin_login.js}"></script>
+</body>
+</html>

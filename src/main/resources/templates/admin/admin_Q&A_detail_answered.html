@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="https://www.thymeleaf.org/">
+    <head th:replace="~{/admin_config.html :: admin_config}"></head>
+    <title>게시판 상세 - 관리자 페이지</title>
+    <link rel="stylesheet" th:href="@{/css/admin/admin_Q&A_detail_answered.css?v=1}">
+    
+    <body class="sb-nav-fixed">
+        <!-- 상단 네비게이션 바 -->
+        <nav th:replace="~{/admin_top.html :: admin_top}"></nav>
+     
+        <div id="layoutSidenav">
+           <!-- 사이드바 -->
+            <div th:replace="~{/admin_sidebar.html :: admin_sidebar}"> </div>
+            
+            <!-- 메인 컨텐츠 -->
+            <div id="layoutSidenav_content">
+                <div class="main-content">
+                    <!-- 페이지 헤더 -->
+                    <div class="page-header">
+                        <h1 class="page-title">게시판 상세</h1>
+                    </div>
+                    <div class="title-divider"></div>
+                    
+                    <!-- 게시글 상세 섹션 -->
+                    <div class="detail-section">
+                        <div class="detail-header">
+                            <div class="post-header-top">
+                                <h2 class="post-title">토익 특강 신청 관련 문의</h2>
+                                <span class="status-badge status-public">공개</span>
+                            </div>
+                            <div class="post-meta">
+                                <div class="post-meta-item">
+                                    <span class="label">작성자</span>
+                                    <span>202*****</span>
+                                </div>
+                                <div class="post-meta-item">
+                                    <span class="label">분류</span>
+                                    <span class="category-badge category-extracurricular">비교과</span>
+                                </div>
+                                <div class="post-meta-item">
+                                    <span class="label">등록일</span>
+                                    <span>2025.06.14</span>
+                                </div>
+                                <div class="post-meta-item">
+                                    <span class="label">조회수</span>
+                                    <span>23</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="post-content-wrapper">
+                            <div class="post-content">
+                                안녕하세요. 토익 특강 신청과 관련하여 문의드립니다.<br><br>
+                                
+                                1. 토익 특강 신청 기간이 언제까지인지 궁금합니다.<br>
+                                2. 수강료는 얼마인지 알고 싶습니다.<br>
+                                3. 온라인으로도 수강이 가능한지 문의드립니다.<br><br>
+                                
+                                빠른 답변 부탁드립니다. 감사합니다.
+                            </div>
+                            
+                            <div class="attachment-section">
+                                <div class="attachment-label">첨부파일</div>
+                                <a href="#" class="attachment-item">
+                                    <i class="fas fa-file-pdf"></i>
+                                    토익특강_신청서.pdf
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 답변 섹션 -->
+                    <div class="answer-section">
+                        <div class="answer-header">
+                            <h3 class="answer-title">답변</h3>
+                        </div>
+                        
+                        <div class="answer-content-wrapper">
+                            <div class="answer-meta">
+                                <div class="answer-meta-item">
+                                    <span class="label">작성자</span>
+                                    <span>관리자</span>
+                                </div>
+                                <div class="answer-meta-item">
+                                    <span class="label">날짜</span>
+                                    <span>2025.06.14</span>
+                                </div>
+                            </div>
+                            
+                            <div class="answer-content">
+                                안녕하세요. 토익 특강 관련 문의에 대해 답변드립니다.<br><br>
+                                
+                                1. 토익 특강 신청 기간: 2025년 6월 20일까지입니다.<br>
+                                2. 수강료: 무료로 진행됩니다.<br>
+                                3. 온라인 수강: 가능합니다. 줌(Zoom)을 통해 진행됩니다.<br><br>
+                                
+                                자세한 내용은 첨부해주신 신청서를 확인하여 개별 안내드리겠습니다.<br>
+                                추가 문의사항이 있으시면 언제든 연락주세요.<br><br>
+                                
+                                감사합니다.
+                            </div>
+                            
+                            <div class="answer-actions">
+                                <button class="btn-edit-answer" onclick="editAnswer()">
+                                    <i class="fas fa-edit"></i>
+                                    수정
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 하단 버튼 영역 -->
+                    <div class="bottom-actions">
+                        <button class="btn-status-toggle" onclick="togglePostStatus()">
+                            <i class="fas fa-eye-slash"></i>
+                            비공개 전환
+                        </button>
+                        <a href="#" class="btn-list" onclick="goBack()">
+                            <i class="fas fa-list"></i>
+                            목록
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 답변 수정 모달 -->
+        <div class="modal-overlay" id="editModal">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <h3 class="modal-title">답변 수정</h3>
+                    <button class="modal-close" onclick="closeEditModal()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="modal-body">
+                    <form id="editAnswerForm">
+                        <div class="edit-form-group">
+                            <label class="edit-form-label">답변자</label>
+                            <input type="text" class="edit-form-input" value="관리자" readonly>
+                        </div>
+                        
+                        <div class="edit-form-group">
+                            <label class="edit-form-label">답변내용</label>
+                            <textarea class="edit-form-textarea" id="editAnswerContent">안녕하세요. 토익 특강 관련 문의에 대해 답변드립니다.
+
+1. 토익 특강 신청 기간: 2025년 6월 20일까지입니다.
+2. 수강료: 무료로 진행됩니다.
+3. 온라인 수강: 가능합니다. 줌(Zoom)을 통해 진행됩니다.
+
+자세한 내용은 첨부해주신 신청서를 확인하여 개별 안내드리겠습니다.
+추가 문의사항이 있으시면 언제든 연락주세요.
+
+감사합니다.</textarea>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="modal-footer">
+                    <button class="btn-modal-save" onclick="saveEditAnswer()">
+                        <i class="fas fa-save"></i>
+                        수정 완료
+                    </button>
+                    <button class="btn-modal-close" onclick="closeEditModal()">
+                        <i class="fas fa-times"></i>
+                        닫기
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script>
+            // 사이드바 토글 기능
+            document.getElementById('sidebarToggle').addEventListener('click', function() {
+                const sidebar = document.getElementById('layoutSidenav_nav');
+                const content = document.getElementById('layoutSidenav_content');
+                
+                if (window.innerWidth <= 768) {
+                    sidebar.classList.toggle('show');
+                } else {
+                    sidebar.classList.toggle('collapsed');
+                    content.classList.toggle('expanded');
+                }
+            });
+
+            // 윈도우 리사이즈 시 클래스 정리
+            window.addEventListener('resize', function() {
+                const sidebar = document.getElementById('layoutSidenav_nav');
+                const content = document.getElementById('layoutSidenav_content');
+                
+                if (window.innerWidth > 768) {
+                    sidebar.classList.remove('show');
+                } else {
+                    sidebar.classList.remove('collapsed');
+                    content.classList.remove('expanded');
+                }
+            });
+
+            // 목록으로 돌아가기
+            function goBack() {
+                alert('문의게시판 목록으로 돌아갑니다.');
+                // window.history.back(); 또는 특정 URL로 이동
+                // window.location.href = 'inquiry-management.html';
+            }
+
+            // 답변 수정
+            function editAnswer() {
+                document.getElementById('editModal').classList.add('show');
+                document.body.style.overflow = 'hidden'; // 배경 스크롤 방지
+            }
+
+            // 모달 닫기
+            function closeEditModal() {
+                document.getElementById('editModal').classList.remove('show');
+                document.body.style.overflow = ''; // 스크롤 복원
+            }
+
+            // 답변 수정 저장
+            function saveEditAnswer() {
+                const editContent = document.getElementById('editAnswerContent').value.trim();
+                
+                if (!editContent) {
+                    alert('답변 내용을 입력해주세요.');
+                    return;
+                }
+                
+                if (confirm('답변을 수정하시겠습니까?')) {
+                    // 기존 답변 내용 업데이트
+                    const answerContentDiv = document.querySelector('.answer-content');
+                    answerContentDiv.innerHTML = editContent.replace(/\n/g, '<br>');
+                    
+                    // 모달 닫기
+                    closeEditModal();
+                    alert('답변이 수정되었습니다.');
+                    
+                    // 실제로는 서버로 데이터 전송
+                    // API 호출 등의 로직 추가
+                }
+            }
+
+            // 모달 외부 클릭 시 닫기
+            document.getElementById('editModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeEditModal();
+                }
+            });
+
+            // ESC 키로 모달 닫기
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    const modal = document.getElementById('editModal');
+                    if (modal.classList.contains('show')) {
+                        closeEditModal();
+                    }
+                }
+            });
+
+            // 게시물 상태 전환
+            function togglePostStatus() {
+                const statusBadge = document.querySelector('.status-badge');
+                const toggleBtn = document.querySelector('.btn-status-toggle');
+                const isCurrentlyPublic = statusBadge.classList.contains('status-public');
+                
+                if (isCurrentlyPublic) {
+                    if (confirm('이 게시물을 비공개로 전환하시겠습니까?\n비공개 전환 시 학생에게 보이지 않습니다.')) {
+                        // 비공개로 전환
+                        statusBadge.textContent = '비공개';
+                        statusBadge.className = 'status-badge status-private';
+                        toggleBtn.innerHTML = '<i class="fas fa-eye"></i> 공개 전환';
+                        toggleBtn.className = 'btn-status-toggle public';
+                        alert('게시물이 비공개로 전환되었습니다.');
+                    }
+                } else {
+                    if (confirm('이 게시물을 공개로 전환하시겠습니까?')) {
+                        // 공개로 전환
+                        statusBadge.textContent = '공개';
+                        statusBadge.className = 'status-badge status-public';
+                        toggleBtn.innerHTML = '<i class="fas fa-eye-slash"></i> 비공개 전환';
+                        toggleBtn.className = 'btn-status-toggle';
+                        alert('게시물이 공개로 전환되었습니다.');
+                    }
+                }
+            }
+        </script>
+    </body>
+</html>

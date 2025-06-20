@@ -1,0 +1,81 @@
+@charset "UTF-8";
+
+/* 기본 페이지 스타일 */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* 결과 카드 스타일 */
+.diagnosis-result-container {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    text-align: center;
+}
+
+/* 아이콘 스타일 */
+.result-icon {
+    font-size: 50px;
+    margin-bottom: 15px;
+}
+
+h1 {
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+p {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+/* 점수에 따라 배경색 변경 */
+.normal {
+    background-color: #e0f7fa;
+    border-left: 6px solid #26c6da;
+}
+
+.caution {
+    background-color: #fff3e0;
+    border-left: 6px solid #ffa726;
+}
+
+.moderate {
+    background-color: #fffde7;
+    border-left: 6px solid #ffeb3b;
+}
+
+.severe {
+    background-color: #ffebee;
+    border-left: 6px solid #e57373;
+}
+
+/* 버튼 스타일 */
+.button-container {
+    margin-top: 20px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 5px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}

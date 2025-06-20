@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="https://www.thymeleaf.org/">
+     <head th:replace="~{/admin_config.html :: admin_config}"></head>
+     <title>상담사 등록 - 관리자 페이지</title>
+     <link rel="stylesheet" th:href="@{/css/admin/admin_counselorList_add.css?v=1}">
+     
+    <body class="sb-nav-fixed">
+        <!-- 상단 네비게이션 바 -->
+        <nav  th:replace="~{/admin_top.html :: admin_top}"> </nav>
+     
+        <div id="layoutSidenav">
+            <!-- 사이드바 -->
+            <div th:replace="~{/admin_sidebar.html :: admin_sidebar}"> </div>
+            
+            <!-- 메인 컨텐츠 -->
+            <div id="layoutSidenav_content">
+                <div class="main-content">
+                    <!-- 페이지 제목 -->
+                    <h1 class="page-title">상담사 등록</h1>
+                    <div class="title-divider"></div>
+                    
+                    <!-- 메시지 영역 -->
+                    <div id="successMessage" class="success-message">
+                        <i class="fas fa-check-circle"></i> 상담사가 성공적으로 등록되었습니다!
+                    </div>
+                    
+                    <div id="errorMessage" class="error-message">
+                        <i class="fas fa-exclamation-triangle"></i> 입력 정보를 다시 확인해주세요.
+                    </div>
+                    
+                    <!-- 등록 폼 -->
+                    <div class="register-form-container">
+                        <div class="required-info">
+                            <i class="fas fa-info-circle"></i> <strong>*</strong> 표시된 항목은 필수 입력 사항입니다.
+                        </div>
+                        
+                        <form id="counselorForm">
+                            <div class="form-grid">
+                                <!-- 이름 -->
+                                <div class="form-group">
+                                    <label class="form-label required">이름</label>
+                                    <input type="text" class="form-input" id="counselorName" name="name" placeholder="이름을 입력하세요" required>
+                                </div>
+                                
+                                <!-- 사번 -->
+                                <div class="form-group">
+                                    <label class="form-label required">사번</label>
+                                    <input type="text" class="form-input" id="counselorEmpNo" name="empNo" placeholder="사번을 입력하세요" required>
+                                </div>
+                                
+                                <!-- 분야 -->
+                                <div class="form-group">
+                                    <label class="form-label required">분야</label>
+                                    <select class="form-select" id="counselorField" name="field" required>
+                                        <option value="">분야를 선택하세요</option>
+                                        <option value="심리상담">심리상담</option>
+                                        <option value="익명상담">익명상담</option>
+                                        <option value="위기상담">위기상담</option>
+                                        <option value="진로/취업상담">진로/취업상담</option>
+                                        <option value="학습컨설팅">학습컨설팅</option>
+                                    </select>
+                                </div>
+                                
+                                <!-- 전화번호 -->
+                                <div class="form-group">
+                                    <label class="form-label required">전화번호</label>
+                                    <input type="tel" class="form-input" id="counselorPhone" name="phone" placeholder="010-0000-0000" required>
+                                </div>
+                                
+                                <!-- 이메일 -->
+                                <div class="form-group full-width">
+                                    <label class="form-label required">이메일</label>
+                                    <input type="email" class="form-input" id="counselorEmail" name="email" placeholder="example@email.com" required>
+                                </div>
+                                
+                                <!-- 재직현황 -->
+                                <div class="form-group">
+                                    <label class="form-label">재직현황</label>
+                                    <div class="status-display">재직</div>
+                                </div>
+                            </div>
+                            
+                            <!-- 버튼 영역 -->
+                            <div class="button-area">
+                                <button type="button" class="form-btn cancel-btn" onclick="cancelRegister()">
+                                    <i class="fas fa-times"></i> 취소
+                                </button>
+                                <button type="submit" class="form-btn register-btn">
+                                    <i class="fas fa-plus"></i> 등록
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+            <script th:src="@{/js/admin/admin_counselorList_add.js}"></script>
+    </body>
+</html>
