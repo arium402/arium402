@@ -1,0 +1,96 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.5.2'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.team.arium'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-web-services'
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	implementation 'org.springframework.session:spring-session-core'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'io.projectreactor:reactor-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	
+	
+    //Spring Security
+	//implementation 'org.springframework.boot:spring-boot-starter-security'
+	//testImplementation 'org.springframework.security:spring-security-test'
+		
+	//Database	
+    //JDBC
+   
+	//implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+	//implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+
+	//Mysql
+	
+	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.4'
+	runtimeOnly 'com.mysql:mysql-connector-j'
+	testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.4'
+
+	
+	//Mybatis
+	 implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.4'
+	//test : debug로 임시 데이터 베이스를 연결
+	testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.4'
+	
+	
+	//Sping framework
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	
+    
+    //Thymeleaf
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	
+	 //JSP,JSTL
+    implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api' //JSTL API는
+    implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl:3.0.1' // — **JSTL 구현체만** 버전을 꼭 붙이기 
+    
+    //Httpservlet request, respons
+	compileOnly 'javax.servlet:javax.servlet-api:4.0.1'
+           
+    //JSP
+	//providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+	
+    //JPA
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	
+	
+	//lombok   
+	compileOnly 'org.projectlombok:lombok' //코드 작성을 줄여 주는 Lombok 애너테이션(@Getter, @Setter 등)
+	//컴파일러가 Lombok 애너테이션을 처리하도록 해 주는 설정으로, compileOnly와 함께 사용해야 애너테이션 생성자가 동작
+	annotationProcessor 'org.projectlombok:lombok'
+	
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	
+	//fileupload
+	implementation 'commons-fileupload:commons-fileupload:1.5'
+	implementation 'commons-net:commons-net:3.11.1'
+	implementation 'com.squareup.okhttp3:okhttp:4.12.0'
+	implementation 'xalan:serializer:2.7.3'
+	
+	
+		
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
