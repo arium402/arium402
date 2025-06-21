@@ -1,0 +1,195 @@
+/* 진단 페이지 스타일 */
+.diagnosis-content {
+	padding: 30px 35px;
+	background: white;
+	width: 100%;
+	max-width: none;
+	margin: 0;
+}
+
+.page-title {
+	font-size: 1.8rem;
+	font-weight: 700;
+	color: #333;
+	margin-bottom: 8px;
+}
+
+.page-title-divider {
+	width: 100%;
+	height: 3px;
+	background: var(--main-color);
+	margin-bottom: 30px;
+}
+
+/* 진단 섹션 스타일 */
+.diagnosis-section {
+	margin-bottom: 40px;
+}
+
+.section-title {
+	font-size: 1.3rem;
+	font-weight: 700;
+	color: var(--main-color);
+	margin-bottom: 18px;
+	padding-bottom: 8px;
+	border-bottom: 2px solid var(--main-color);
+}
+
+/* 문항 스타일 */
+.question-item {
+	margin-bottom: 20px;
+	padding: 16px;
+	border: 1px solid #e0e0e0;
+	border-radius: 8px;
+	background: #fafafa;
+	transition: all 0.3s ease;
+}
+
+.question-text {
+	font-size: 0.95rem;
+	font-weight: 500;
+	color: #333;
+	margin-bottom: 12px;
+	line-height: 1.5;
+}
+
+.question-number {
+	color: var(--main-color);
+	font-weight: 600;
+	margin-right: 6px;
+}
+
+/* 선택지 스타일 */
+.answer-options {
+	display: flex;
+	gap: 8px;
+	flex-wrap: wrap;
+}
+
+.answer-option {
+	flex: 1;
+	min-width: 140px;
+}
+
+.answer-option input[type="radio"] {
+	display: none;
+}
+
+.answer-option label {
+	display: block;
+	padding: 8px 12px;
+	border: 2px solid #e0e0e0;
+	border-radius: 5px;
+	text-align: center;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	background: white;
+	color: #666;
+	font-size: 0.85rem;
+	font-weight: 500;
+}
+
+.answer-option label:hover {
+	border-color: var(--main-color);
+	background: var(--light-bg);
+}
+
+.answer-option input[type="radio"]:checked + label {
+	background: var(--main-color);
+	color: white;
+	border-color: var(--main-color);
+}
+
+/* 진행률 표시 */
+.progress-container {
+	margin-bottom: 25px;
+	padding: 16px;
+	background: var(--light-bg);
+	border-radius: 8px;
+	border: 1px solid var(--border-color);
+	position: sticky;
+	top: 70px;
+	z-index: 998;
+	box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.progress-text {
+	font-size: 0.9rem;
+	font-weight: 600;
+	color: var(--main-color);
+	margin-bottom: 8px;
+	text-align: center;
+}
+
+.progress-bar-container {
+	background: #e0e0e0;
+	border-radius: 10px;
+	height: 18px;
+	overflow: hidden;
+}
+
+.progress-bar-fill {
+	background: linear-gradient(90deg, var(--main-color), var(--secondary-color));
+	height: 100%;
+	width: 0%;
+	transition: width 0.3s ease;
+}
+
+/* 결과 버튼 스타일 */
+.result-button-container {
+	text-align: right;
+	padding: 18px 0;
+	border-top: 2px solid #e0e0e0;
+}
+
+.result-button {
+	display: inline-block;
+	background: var(--main-color);
+	color: white;
+	font-size: 1rem;
+	font-weight: 600;
+	margin-right: 25px;
+	padding: 12px 25px;
+	text-decoration: none;
+	border: none;
+	border-radius: 0;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+}
+
+.result-button:hover {
+	background: #3d5a8a;
+	color: white;
+	transform: translateY(-2px);
+	box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+	.diagnosis-content {
+		padding: 18px;
+	}
+	
+	.page-title {
+		font-size: 1.5rem;
+	}
+	
+	.answer-options {
+		flex-direction: column;
+	}
+	
+	.answer-option {
+	min-width: auto;
+	}
+	
+	.progress-container {
+		position: static;
+		margin-bottom: 18px;
+		padding: 12px;
+	}
+	
+	.progress-text {
+		font-size: 0.8rem;
+	}
+}

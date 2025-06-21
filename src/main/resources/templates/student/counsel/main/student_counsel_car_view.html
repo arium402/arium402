@@ -1,0 +1,66 @@
+<div th:fragment="view">
+
+<main class="col-md-9 col-lg-10 p-0" style="margin-left: 16.66667%; min-height: calc(100vh - 60px); width: 83.33333%;">
+	<div class="main-content">
+		<!-- 진로/취업 상담 페이지 -->
+		<div class="counseling-content">
+			<!-- 페이지 제목 -->
+			<h1 class="page-title">진로 / 취업 상담</h1>
+			<div class="page-title-divider"></div>
+
+			<!-- 상담 프로세스 -->
+			<div class="process-section">
+				<h2 class="process-title">상담 프로세스</h2>
+				<div class="process-flow">
+					<div class="process-step">사전 검사</div>
+					<div class="process-arrow">→</div>
+					<div class="process-step">상담 신청</div>
+					<div class="process-arrow">→</div>
+					<div class="process-step">상담 진행</div>
+				</div>
+			</div>
+
+			<!-- 상담 설명 소개 -->
+			<div class="intro-section">
+				<h2 class="intro-title">진로 / 취업 상담</h2>
+				<p class="intro-description">
+					진로상담은 개인이 자신의 직업적 목표를 설정하고, 직업 선택 및 경로를 탐색하는 데 도움을 주는 상담 서비스입니다.<br>
+					이 과정에서는 개인의 흥미, 적성, 가치관, 기술 등을 고려하여 적합한 진로 방향을 찾아주는 것을 목표로 합니다.<br>
+					진로상담은 주로 직업 선택, 경력 개발, 직업 적합성 평가 등과 관련된 다양한 측면을 다룹니다.<br><br>
+
+					취업상담은 개인이 취업 시장에 성공적으로 진입하고, 직업을 찾으며, 직무 적합성을 높이기 위해 전문적인 조언과 지원을 받는 과정입니다.<br>
+					취업상담은 구직자에게 취업 준비, 직무 탐색, 경력 개발 등 다양한 측면에서 도움을 제공합니다.
+				</p>
+
+				<div class="when-to-apply">
+					<h3 class="when-title">이럴 때 신청하세요</h3>
+					<div class="apply-grid">
+						<div class="apply-item">
+							<h4>진로 탐색</h4>
+							<p>✔️ 내가 어떤 분야에 적합한지 몰라 고민 중인 경우</p>
+						</div>
+						<div class="apply-item">
+							<h4>이력서 작성</h4>
+							<p>✔️ 서류 준비 과정에서 방향을 잡기 어려운 경우</p>
+						</div>
+						<div class="apply-item">
+							<h4>면접 준비</h4>
+							<p>✔️ 면접 경험이 부족하거나 실전 연습이 필요한 경우</p>
+						</div>
+						<div class="apply-item">
+							<h4>커리어 전환</h4>
+							<p>✔️ 전공이나 기존 경력 외의 새로운 진로를 고민할 경우</p>
+						</div>
+					</div>
+				</div>
+
+				<!-- 사전 검사 버튼 -->
+				<div class="pre-test-section">
+					<button class="pre-test-btn" onclick="goToPreTest()">상담 사전 검사</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
+
+</div>

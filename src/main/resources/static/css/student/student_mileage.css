@@ -1,0 +1,768 @@
+.mileage-content {
+	padding: 32px;
+	background: white;
+	width: 100%;
+	max-width: none;
+	margin: 0;
+}
+
+/* 컨테이너 레이아웃 조정 */
+.container-fluid {
+	padding: 0;
+}
+
+.row {
+	margin: 0;
+}
+
+.page-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 40px;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	color: #333;
+	margin: 0;
+}
+
+.convert-btn {
+	background: var(--main-color);
+	border: none;
+	color: white;
+	padding: 15px 30px;
+	border-radius: 0;
+	font-size: 1.1rem;
+	font-weight: 600;
+	transition: all 0.3s ease;
+}
+
+.convert-btn:hover {
+	background: #3d5a91;
+	color: white;
+}
+
+/* 마일리지 카드 */
+.mileage-cards {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	margin-bottom: 40px;
+	border: 2px solid #ddd;
+}
+
+.mileage-card {
+	background: #f8f9fa;
+	border-right: 1px solid #ddd;
+	padding: 25px 20px;
+	text-align: left;
+	transition: all 0.3s ease;
+}
+
+.mileage-card:last-child {
+	border-right: none;
+}
+
+.mileage-card:hover {
+	background: #e9ecef;
+}
+
+.card-title {
+	font-size: 1rem;
+	color: #666;
+	margin-bottom: 15px;
+	line-height: 1.4;
+	font-weight: 500;
+}
+
+.card-value {
+	font-size: 2rem;
+	font-weight: 700;
+	color: #4a6fa5;
+	margin: 0;
+}
+
+.card-unit {
+	font-size: 1.2rem;
+	color: #666;
+	margin-left: 5px;
+}
+
+/* 마일리지 내역 섹션 */
+.history-section {
+	background: white;
+	max-width: 100%;
+	box-sizing: border-box;
+}
+
+.section-header {
+	background: #f8f9fa;
+	padding: 20px 30px;
+	border-bottom: 1px solid #ddd;
+}
+
+.section-title {
+	font-size: 1.5rem;
+	font-weight: 600;
+	color: #333;
+	margin: 0;
+}
+
+.history-content {
+	display: grid;
+	grid-template-columns: 1fr 3fr;
+	height: 480px;
+	max-width: 100%;
+	overflow: hidden;
+	border: 2px solid #ddd;
+}
+
+/* 차트 영역 */
+.chart-area {
+	background: #f8f9fa;
+	padding: 30px;
+	border-right: 1px solid #ddd;
+	display: flex;
+	flex-direction: column;
+}
+
+.chart-container {
+	flex: 1;
+	position: relative;
+	min-height: 400px;
+}
+
+/* 테이블 영역 */
+.table-area {
+	background: white;
+	display: flex;
+	flex-direction: column;
+	max-width: 100%;
+	overflow: hidden;
+}
+
+.table-controls {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 15px 20px;
+	border-bottom: 1px solid #ddd;
+	background: #f8f9fa;
+}
+
+/* 필터 묶음만 세로 정렬 */
+.filter-group {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+
+.filter-section {
+	display: flex;
+	gap: 10px;
+	align-items: center;
+	flex-wrap: wrap;
+}
+
+.filter-section .form-select,
+.filter-section .form-control {
+	width: auto;
+	min-width: 120px;
+}
+
+.action-section {
+	display: flex;
+	gap: 8px;
+}
+
+.action-section .btn {
+	border-radius: 0;
+	white-space: nowrap;
+}
+
+.pagination-area {
+	padding: 15px 20px;
+	border-top: 1px solid #ddd;
+	background: #f8f9fa;
+}
+
+.table-scroll {
+	flex: 1;
+	overflow-x: auto;
+	overflow-y: auto;
+}
+
+.history-table {
+	width: 100%;
+	margin: 0;
+	font-size: 0.9rem;
+	height: 100%;
+}
+
+.history-table th {
+	background: #4a6fa5;
+	color: white;
+	font-weight: 600;
+	padding: 15px 10px;
+	text-align: center;
+	border-bottom: 1px solid #ddd;
+	white-space: nowrap;
+	position: sticky;
+	top: 0;
+}
+
+.history-table td {
+	padding: 12px 10px;
+	text-align: center;
+	border-bottom: 1px solid #f0f0f0;
+	vertical-align: middle;
+}
+
+.history-table tbody tr:hover {
+	background: #f8f9fa;
+}
+
+.status-badge {
+	padding: 4px 8px;
+	border-radius: 0;
+	font-size: 0.8rem;
+	font-weight: 600;
+}
+
+.status-applied {
+	background: #fff3cd;
+	color: #856404;
+	border: 1px solid #ffeaa7;
+}
+
+.status-cancelled {
+	background: #f8d7da;
+	color: #721c24;
+	border: 1px solid #f5c6cb;
+}
+
+.status-completed {
+	background: #d4edda;
+	color: #155724;
+	border: 1px solid #c3e6cb;
+}
+
+.score-positive {
+	color: #28a745;
+	font-weight: 600;
+}
+
+.score-negative {
+	color: #dc3545;
+	font-weight: 600;
+}
+
+/* 마일리지 가이드 콜랩스 */
+.guide-content {
+	background: #f8f9fa;
+	border: 1px solid #dee2e6;
+	border-top: none;
+	padding: 20px;
+}
+
+.guide-title {
+	font-weight: 600;
+	color: #495057;
+	margin-bottom: 10px;
+	font-size: 0.9rem;
+}
+
+.guide-list {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.guide-list li {
+	font-size: 0.85rem;
+	color: #6c757d;
+	padding: 3px 0;
+	padding-left: 15px;
+	position: relative;
+}
+
+.guide-list li:before {
+	content: "•";
+	color: var(--main-color);
+	font-weight: bold;
+	position: absolute;
+	left: 0;
+}
+
+/* 화살표 애니메이션 */
+#guideArrow {
+	transition: transform 0.3s ease;
+}
+
+[aria-expanded="true"] #guideArrow {
+	transform: rotate(180deg);
+}
+
+/* 알림 스타일 */
+.notification-area {
+	margin-bottom: 20px;
+}
+
+.notification-item {
+	background: #e8f5e8;
+	border: 1px solid #c3e6cb;
+	border-radius: 0;
+	padding: 12px 15px;
+	margin-bottom: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	animation: slideIn 0.3s ease-out;
+}
+
+.notification-new {
+	background: #fff3cd;
+	border-color: #ffeaa7;
+}
+
+.notification-content {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.notification-icon {
+	color: #28a745;
+	font-size: 1.1rem;
+}
+
+.notification-new .notification-icon {
+	color: #856404;
+}
+
+.notification-text {
+	font-size: 0.9rem;
+	margin: 0;
+}
+
+.notification-time {
+	font-size: 0.8rem;
+	color: #666;
+}
+
+.notification-close {
+	background: none;
+	border: none;
+	color: #666;
+	cursor: pointer;
+	padding: 0;
+	margin-left: 10px;
+}
+
+/* 개선된 마일리지 전환 모달 스타일 */
+.convert-modal .modal-dialog {
+	max-width: 900px;
+	margin: 2rem auto;
+}
+
+.convert-modal .modal-content {
+	border-radius: 15px;
+	background: linear-gradient(135deg, #ffffff, #f8fafe);
+	border: none;
+	box-shadow: 0 20px 40px rgba(74, 111, 165, 0.15);
+	overflow: hidden;
+}
+
+.convert-modal .modal-header {
+	background: linear-gradient(135deg, var(--main-color), #5a7db8);
+	color: white;
+	border: none;
+	padding: 20px 30px;
+	text-align: center;
+}
+
+.convert-modal .modal-title {
+	font-size: 1.5rem;
+	font-weight: 700;
+	color: white;
+	margin: 0;
+	letter-spacing: -0.5px;
+}
+
+.convert-modal .btn-close {
+	filter: brightness(0) invert(1);
+	opacity: 0.8;
+}
+
+.convert-modal .btn-close:hover {
+	opacity: 1;
+}
+
+.convert-modal .modal-body {
+	padding: 30px;
+	background: white;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 30px;
+	align-items: start;
+}
+
+/* 보유 마일리지 카드 */
+.current-mileage-card {
+	background: linear-gradient(135deg, #e8f4fd, #f0f8ff);
+	border: 2px solid var(--border-color);
+	padding: 25px;
+	margin-bottom: 20px;
+	text-align: center;
+	position: relative;
+}
+
+.current-mileage-card::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 4px;
+	background: linear-gradient(90deg, var(--main-color), var(--secondary-color));
+}
+
+.current-mileage-label {
+	font-size: 0.95rem;
+	color: #666;
+	margin-bottom: 10px;
+	font-weight: 500;
+}
+
+.current-mileage-value {
+	font-size: 2.5rem;
+	font-weight: 800;
+	color: var(--main-color);
+	margin: 0;
+	text-shadow: 0 2px 4px rgba(74, 111, 165, 0.1);
+}
+
+.current-mileage-unit {
+	font-size: 1.3rem;
+	color: #666;
+	margin-left: 8px;
+}
+
+/* 신청 마일리지 섹션 */
+.convert-section {
+	background: #fafbfc;
+	padding: 25px;
+	margin-bottom: 20px;
+	border-left: 4px solid var(--main-color);
+}
+
+.convert-section h6 {
+	font-size: 1.1rem;
+	font-weight: 600;
+	color: var(--main-color);
+	margin-bottom: 20px;
+}
+
+.convert-input-group {
+	position: relative;
+	max-width: 250px;
+}
+
+.convert-modal .form-control {
+	border: 2px solid #e9ecef;
+	padding: 12px 15px;
+	font-size: 1.1rem;
+	font-weight: 600;
+	text-align: left;
+	transition: all 0.3s ease;
+}
+
+.convert-modal .form-control:focus {
+	border-color: var(--main-color);
+	box-shadow: 0 0 0 0.2rem rgba(74, 111, 165, 0.2);
+	background: #f8fafe;
+}
+
+.convert-modal .input-group-text {
+	background: var(--main-color);
+	color: white;
+	border: 2px solid var(--main-color);
+	font-weight: 600;
+	padding: 12px 20px;
+}
+
+/* 전환 안내 박스 */
+.convert-info-box {
+	background: linear-gradient(135deg, #fff8e1, #fffbf0);
+	border: 2px solid #ffd54f;
+	padding: 20px;
+	margin-top: 20px;
+	margin-bottom: 0;
+	position: relative;
+}
+
+.convert-info-box::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 3px;
+	background: linear-gradient(90deg, #ffa726, #ffb74d);
+}
+
+.convert-info-title {
+	font-size: 1.1rem;
+	font-weight: 700;
+	color: #e65100;
+	margin-bottom: 15px;
+}
+
+.convert-info-list {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.convert-info-list li {
+	padding: 5px 0;
+	color: #bf360c;
+	font-weight: 500;
+	position: relative;
+	padding-left: 20px;
+}
+
+.convert-info-list li::before {
+	content: '▶';
+	position: absolute;
+	left: 0;
+	color: #ff8f00;
+	font-size: 0.8rem;
+}
+
+/* 계좌 정보 섹션 */
+.account-section {
+	background: #f5f7fa;
+	padding: 30px;
+	border: 1px solid #e1e5e9;
+	margin-top: 0;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.account-section h6 {
+	font-size: 1.2rem;
+	font-weight: 700;
+	color: #2c3e50;
+	margin-bottom: 25px;
+	padding-bottom: 15px;
+	border-bottom: 2px solid var(--main-color);
+	display: inline-block;
+}
+
+.account-field {
+	margin-bottom: 20px;
+}
+
+.account-label {
+	font-size: 0.9rem;
+	color: #5a6c7d;
+	margin-bottom: 8px;
+	font-weight: 600;
+	display: block;
+}
+
+.account-input {
+	background: white;
+	border: 1px solid #d1d9e0;
+	padding: 15px;
+	width: 100%;
+	font-weight: 500;
+	color: #2c3e50;
+	text-align: left;
+	font-size: 1rem;
+}
+
+.account-input:focus {
+	outline: none;
+	border-color: var(--main-color);
+	box-shadow: 0 0 0 2px rgba(74, 111, 165, 0.1);
+}
+
+/* 모달 푸터 */
+.convert-modal .modal-footer {
+	background: #f8f9fa;
+	border: none;
+	padding: 25px 30px;
+	justify-content: center;
+	gap: 15px;
+}
+
+.convert-modal .btn {
+	padding: 12px 30px;
+	font-size: 1rem;
+	font-weight: 600;
+	border-radius: 8px;
+	border: none;
+	min-width: 120px;
+	transition: all 0.3s ease;
+}
+
+.convert-modal .btn-outline-secondary {
+	background: white;
+	color: #6c757d;
+	border: 2px solid #dee2e6;
+}
+
+.convert-modal .btn-outline-secondary:hover {
+	background: #6c757d;
+	color: white;
+	transform: translateY(-2px);
+	box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+}
+
+.convert-modal .btn-primary {
+	background: linear-gradient(135deg, var(--main-color), #5a7db8);
+	color: white;
+	box-shadow: 0 4px 15px rgba(74, 111, 165, 0.3);
+}
+
+.convert-modal .btn-primary:hover {
+	background: linear-gradient(135deg, #3d5a91, #4a6fa5);
+	transform: translateY(-2px);
+	box-shadow: 0 6px 20px rgba(74, 111, 165, 0.4);
+}
+
+@keyframes slideIn {
+	from {
+		opacity: 0;
+		transform: translateY(-10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes slideOut {
+	from {
+		opacity: 1;
+		transform: translateY(0);
+	}
+	to {
+		opacity: 0;
+		transform: translateY(-10px);
+	}
+}
+
+@media (max-width: 1200px) {
+	.mileage-cards {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	.history-content {
+		grid-template-columns: 1fr;
+		height: auto;
+	}
+
+	.chart-area {
+		border-right: none;
+		border-bottom: 1px solid #ddd;
+		height: 280px;
+	}
+
+	.chart-container {
+		min-height: 220px;
+	}
+
+	.main-content {
+		padding: 25px;
+	}
+
+	.history-table tbody {
+		max-height: 150px;
+	}
+}
+	
+@media (max-width: 768px) {
+	.mileage-cards {
+		grid-template-columns: 1fr;
+	}
+
+	.page-header {
+		flex-direction: column;
+		gap: 15px;
+	}
+
+	.page-title {
+		font-size: 2rem;
+	}
+	
+	.main-content {
+		padding: 20px;
+	}
+	
+	.table-controls {
+		flex-direction: column;
+		gap: 15px;
+		align-items: stretch;
+	}
+	
+	.filter-section {
+		justify-content: center;
+	}
+
+	.action-section {
+		justify-content: center;
+	}
+
+	.notification-item {
+		padding: 10px;
+	}
+
+	.notification-text {
+		font-size: 0.85rem;
+	}
+
+	.chart-area {
+		height: 220px;
+	}
+
+	.chart-container {
+		min-height: 160px;
+	}
+
+	.history-table tbody {
+		max-height: 120px;
+	}
+
+	.history-content {
+		height: auto;
+	}
+	  
+	/* 모바일에서 사이드바가 접힐 때 메인 콘텐츠 전체 너비 사용 */
+	.container-fluid .row {
+		flex-wrap: wrap;
+	}
+
+	/* 모바일 모달 조정 */
+	.convert-modal .modal-dialog {
+		margin: 1rem;
+		max-width: none;
+	}
+
+	.convert-modal .modal-body {
+		padding: 25px 20px;
+		grid-template-columns: 1fr;
+		gap: 20px;
+	}
+
+	.current-mileage-value {
+		font-size: 2rem;
+	}
+}

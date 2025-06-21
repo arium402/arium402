@@ -1,0 +1,220 @@
+/* 오시는 길 페이지 스타일 */
+.directions-content {
+	padding: 32px;
+	background: white;
+	width: 100%;
+	max-width: none;
+	margin: 0;
+}
+
+.page-title {
+	font-size: 1.8rem;
+	font-weight: 700;
+	color: #333;
+	margin-bottom: 8px;
+}
+
+.page-title-divider {
+	width: 100%;
+	height: 2.5px;
+	background: var(--main-color);
+	margin-bottom: 32px;
+}
+
+/* 상단 이미지와 주소 섹션 */
+.image-address-section {
+	display: flex;
+	gap: 32px;
+	margin-bottom: 48px;
+	align-items: flex-start;
+}
+
+.university-image {
+	flex: 1;
+	max-width: 50%;
+}
+
+.university-image img {
+	width: 100%;
+	max-width: 500px;
+	height: 300px;
+	object-fit: cover;
+	border-radius: 10px;
+	box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.address-section {
+	flex: 1;
+	max-width: 50%;
+	text-align: right;
+	padding-left: 20px;
+}
+
+.address-title {
+	font-size: 1.6rem;
+	font-weight: 800;
+	color: var(--main-color);
+	margin-bottom: 20px;
+	text-align: right;
+}
+
+.address-info {
+	background: #f8f9fa;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	padding: 20px;
+	margin-bottom: 20px;
+	max-width: 450px;
+	margin-left: auto;
+}
+
+.address-item {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	margin-bottom: 8px;
+	font-size: 0.9rem;
+	gap: 15px;
+}
+
+.address-item:last-child {
+	margin-bottom: 0;
+}
+
+.address-label {
+	font-weight: 600;
+	color: var(--main-color);
+	min-width: 60px;
+	flex-shrink: 0;
+}
+
+.address-value {
+	color: #333;
+	text-align: right;
+	flex: 1;
+	max-width: 280px;
+	word-wrap: break-word;
+}
+
+/* 지도 섹션 */
+.map-section {
+	margin-top: 48px;
+}
+
+.map-title {
+	font-size: 1.4rem;
+	font-weight: 700;
+	color: #333;
+	margin-bottom: 24px;
+	text-align: left;
+	padding: 16px 0;
+	border-bottom: 2px solid var(--main-color);
+}
+
+.map-container {
+	width: 100%;
+	height: 350px;
+	border: 1px solid #ddd;
+	border-radius: 10px;
+	overflow: hidden;
+	box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+	position: relative;
+}
+
+.map-placeholder {
+	width: 100%;
+	height: 100%;
+	background: #f8f9fa;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #666;
+	font-size: 1.1rem;
+}
+
+/* 교통편 안내 */
+.transportation-section {
+	margin-top: 48px;
+}
+
+.transportation-title {
+	font-size: 1.4rem;
+	font-weight: 700;
+	color: #333;
+	margin-bottom: 24px;
+	text-align: left;
+	padding: 16px 0;
+	border-bottom: 2px solid var(--main-color);
+}
+
+.transport-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+	gap: 24px;
+}
+
+.transport-card {
+	background: white;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	padding: 20px;
+	box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.transport-card-title {
+	font-size: 1.1rem;
+	font-weight: 600;
+	color: var(--main-color);
+	margin-bottom: 12px;
+	display: flex;
+	align-items: center;
+}
+
+.transport-card-title i {
+	margin-right: 8px;
+	font-size: 1.2rem;
+}
+
+.transport-info {
+	color: #333;
+	line-height: 1.6;
+	font-size: 0.9rem;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+	.directions-content {
+		padding: 16px;
+	}
+	
+	.page-title {
+		font-size: 1.4rem;
+	}
+	
+	.image-address-section {
+		flex-direction: column;
+		gap: 20px;
+	}
+	
+	.university-image,
+	.address-section {
+		max-width: 100%;
+	}
+	
+	.address-section {
+		text-align: left;
+		padding-left: 0;
+	}
+	
+	.address-title {
+		text-align: left;
+	}
+	
+	.transport-grid {
+		grid-template-columns: 1fr;
+	}
+	
+	.map-container {
+		height: 280px;
+	}
+}

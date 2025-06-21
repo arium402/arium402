@@ -1,0 +1,25 @@
+<div th:fragment="header">
+
+	<header class="custom-header sticky-top">
+		<nav class="navbar navbar-expand-lg">
+			<div class="container-fluid">
+				<a class="navbar-brand" href="/">
+					<img th:src="@{/images/logo-header.png}" alt="한국방송통신대학교" height="32">
+				</a>
+				<div class="ms-auto d-flex align-items-center">
+					<a th:href="@{/student/my/mypage}" class="text-decoration-none">
+						<div class="d-flex align-items-center bg-white rounded-pill px-3 py-2 border me-3">
+							<i class="fas fa-user-circle text-primary me-2" style="font-size: 1rem;"></i>
+							<span class="text-primary fw-bold" style="font-size: 0.85rem;">홍길동</span>
+							<span class="ms-1" style="font-size: 0.85rem;">님</span>
+						</div>
+					</a>
+					<a href="#" onclick="logout(); return false;">
+						<i class="fas fa-sign-out-alt text-primary" style="font-size: 1.2rem;"></i>
+					</a>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+</div>

@@ -1,0 +1,397 @@
+<div th:fragment="view">
+
+<main class="col-md-9 col-lg-10 p-0" style="margin-left: 16.66667%; min-height: calc(100vh - 60px); width: 83.33333%;">
+	<div class="main-content">
+		<div class="mypage-content">
+			<div class="content-header">
+				<h2>학생 대시보드</h2>
+			</div>
+
+			<!-- 상단 정보 그리드 -->
+			<div class="top-info-grid">
+				<!-- 학생 정보 -->
+				<div class="student-card">
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+						<h3 style="margin: 0;">학생 정보</h3>
+						<button class="edit-btn" onclick="openEditModal()">
+							<i class="fas fa-edit" style="margin-right: 5px;"></i>수정
+						</button>
+					</div>
+					<div class="student-info-section">
+						<div class="student-photo">
+
+						</div>
+						<div class="student-details">
+							<div class="detail-row">
+								<span class="detail-label">이름:</span>
+								<span class="detail-value">홍길동</span>
+							</div>
+							<div class="detail-row">
+								<span class="detail-label">학번:</span>
+								<span class="detail-value">2025678282</span>
+							</div>
+							<div class="detail-row">
+								<span class="detail-label">학년:</span>
+								<span class="detail-value">3학년</span>
+							</div>
+							<div class="detail-row">
+								<span class="detail-label">대학:</span>
+								<span class="detail-value">인문대학</span>
+							</div>
+							<div class="detail-row">
+								<span class="detail-label">학과:</span>
+								<span class="detail-value">컴퓨터과학과</span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- 일정 알림 -->
+				<div class="alert-main-section">
+					<div class="alert-header">
+						<div style="display: flex; align-items: center;">
+							<i class="fas fa-bell text-warning me-2"></i>
+							<h3>최근 알림</h3>
+						</div>
+						<div style="display: flex; gap: 10px; align-items: center;">
+							<button class="btn btn-sm btn-outline-secondary" onclick="markAllAsRead()" style="font-size: 0.75rem; padding: 4px 8px;">
+								모두 읽음으로 표시
+							</button>
+							<button class="btn btn-sm btn-outline-primary" onclick="openNotificationSettings()" style="font-size: 0.75rem; padding: 4px 8px;">
+								<i class="fas fa-cog"></i> 설정
+							</button>
+						</div>
+					</div>
+					<div class="alert-content" id="alertContent">
+						<div class="alert-item urgent" onclick="goToPage('/student/diagnosis/satisfaction/125')">
+							<div class="alert-badge urgent">긴급</div>
+							<div class="alert-text">
+								<strong>만족도 조사 기간이 3일 남았습니다.</strong><br>
+								만족도 조사를 진행하세요.
+							</div>
+							<div class="alert-time">방금 전</div>
+						</div>
+
+						<div class="alert-item success" onclick="goToPage('/student/noncurricular/detail/123')">
+							<div class="alert-badge success">완료</div>
+							<div class="alert-text">
+								<strong>AI 프로그래밍 워크샵이 이수 처리되었습니다.</strong><br>
+								프로그램이 성공적으로 완료되었습니다.
+							</div>
+							<div class="alert-time">2시간 전</div>
+						</div>
+
+						<div class="alert-item info" onclick="goToPage('/student/noncurricular/detail/124')">
+							<div class="alert-badge info">신청</div>
+							<div class="alert-text">
+								<strong>창업 아이디어 경진대회가 승인되었습니다.</strong><br>
+								신청이 완료되었습니다.
+							</div>
+							<div class="alert-time">1일 전</div>
+						</div>
+
+						<div class="alert-item urgent" onclick="goToPage('/student/diagnosis/competency')">
+							<div class="alert-badge urgent">긴급</div>
+							<div class="alert-text">
+								<strong>핵심역량 진단 기간이 5일 남았습니다.</strong><br>
+								진단을 완료해주세요.
+							</div>
+							<div class="alert-time">3일 전</div>
+						</div>
+					</div>
+					<div class="alert-footer">
+						<button class="btn btn-sm btn-outline-primary" onclick="showAllAlerts()">
+							모든 알림 보기
+						</button>
+					</div>
+				</div>
+			</div>
+
+			<!-- 중간 정보 그리드 -->
+			<div class="middle-info-grid">
+				<!-- 마일리지 -->
+				<div class="student-card">
+					<h3 class="clickable" onclick="goToPage('/student/mileage/history')">마일리지</h3>
+					<div style="display: flex; gap: 20px; align-items: center; margin-top: 10px;">
+						<div style="padding: 20px; background: #1058a0; border-radius: 8px; text-align: center; min-width: 140px; color: white;">
+							<div style="font-size: 0.9rem; margin-bottom: 8px; font-weight: 600; opacity: 0.9;">잔여 마일리지</div>
+							<div style="font-size: 1.8rem; font-weight: 800;">0점</div>
+						</div>
+						<div style="flex: 1;">
+							<div class="chart-container" onclick="goToPage('/student/mileage/history')">
+								<div class="chart-bar-group">
+									<div class="chart-bar" style="height: 0%; background: #6c757d;">
+										<span class="bar-value">0</span>
+									</div>
+									<div class="chart-label">내 포인트</div>
+								</div>
+								<div class="chart-bar-group">
+									<div class="chart-bar" style="height: 100%; background: #28a745;">
+										<span class="bar-value">36254</span>
+									</div>
+									<div class="chart-label">학과평균</div>
+								</div>
+								<div class="chart-bar-group">
+									<div class="chart-bar" style="height: 37%; background: #17a2b8;">
+										<span class="bar-value">13583</span>
+									</div>
+									<div class="chart-label">학년평균</div>
+								</div>
+								<div class="chart-bar-group">
+									<div class="chart-bar" style="height: 7%; background: #e83e8c;">
+										<span class="bar-value">2584</span>
+									</div>
+									<div class="chart-label">전체평균</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- 핵심역량포인트 -->
+				<div class="student-card">
+					<h3>핵심역량지수</h3>
+					<div class="competency-section">
+						<div style="display: flex; gap: 20px; align-items: center; margin-top: 10px;">
+							<div style="padding: 20px; background: #1058a0; border-radius: 8px; text-align: center; min-width: 140px; color: white;">
+								<div style="font-size: 0.9rem; margin-bottom: 8px; font-weight: 600; opacity: 0.9;">핵심역량 지수</div>
+								<div style="font-size: 1.8rem; font-weight: 800;">16000점</div>
+							</div>
+							<div style="flex: 1;">
+								<div class="chart-container" onclick="goToPage('/student/competency/history')">
+									<div class="chart-bar-group">
+										<div class="chart-bar" style="height: 0%; background: #6c757d;">
+											<span class="bar-value">0</span>
+										</div>
+										<div class="chart-label">역학적<br>소통역량</div>
+									</div>
+									<div class="chart-bar-group">
+										<div class="chart-bar" style="height: 80%; background: #17a2b8;">
+											<span class="bar-value">16000</span>
+										</div>
+										<div class="chart-label">융합적<br>탐구역량</div>
+									</div>
+									<div class="chart-bar-group">
+										<div class="chart-bar" style="height: 100%; background: #28a745;">
+											<span class="bar-value">24000</span>
+										</div>
+										<div class="chart-label">창의적<br>혁신역량</div>
+									</div>
+									<div class="chart-bar-group">
+										<div class="chart-bar" style="height: 0%; background: #6c757d;">
+											<span class="bar-value">0</span>
+										</div>
+										<div class="chart-label">글로벌<br>리더역량</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- 하단 현황 그리드 -->
+			<div class="status-grid">
+				<!-- 비교과 프로그램 현황 -->
+				<div class="menu-card">
+					<h4 class="menu-title" onclick="goToPage('/student/noncurricular/mylist')">비교과 프로그램 현황</h4>
+					<div class="summary-grid">
+						<div class="summary-item" onclick="showDetail('noncurricular', 'applied')">
+							<div class="summary-number">8</div>
+							<div class="summary-label">신청</div>
+						</div>
+						<div class="summary-item" onclick="showDetail('noncurricular', 'participating')">
+							<div class="summary-number">3</div>
+							<div class="summary-label">참여</div>
+						</div>
+						<div class="summary-item" onclick="showDetail('noncurricular', 'completed')">
+							<div class="summary-number">12</div>
+							<div class="summary-label">이수</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- 상담 현황 -->
+				<div class="menu-card">
+					<h4 class="menu-title" onclick="goToPage('/student/counseling/mylist')">상담 현황</h4>
+					<div class="summary-grid">
+						<div class="summary-item" onclick="showDetail('counseling', 'applied')">
+							<div class="summary-number">2</div>
+							<div class="summary-label">신청</div>
+						</div>
+						<div class="summary-item" onclick="showDetail('counseling', 'progress')">
+							<div class="summary-number">1</div>
+							<div class="summary-label">진행</div>
+						</div>
+						<div class="summary-item" onclick="showDetail('counseling', 'completed')">
+							<div class="summary-number">5</div>
+							<div class="summary-label">완료</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
+
+<!-- 학생 정보 수정 모달 -->
+<div class="modal-overlay" id="editModal">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h3>학생 정보 수정</h3>
+			<button class="modal-close" onclick="closeEditModal()">&times;</button>
+		</div>
+		<div class="modal-body">
+			<form id="editForm">
+				<!-- 읽기 전용 정보 -->
+				<div class="form-row">
+					<div class="form-group">
+						<label for="studentName">이름</label>
+						<input type="text" id="studentName" value="홍길동" readonly>
+					</div>
+					<div class="form-group">
+						<label for="studentNumber">학번</label>
+						<input type="text" id="studentNumber" value="2025678282" readonly>
+					</div>
+				</div>
+
+				<div class="form-row">
+					<div class="form-group">
+						<label for="studentName">성별</label>
+						<input type="text" id="studentGender" value="남" readonly>
+					</div>
+					<div class="form-group">
+						<label for="studentNumber">생년월일</label>
+						<input type="text" id="studentBirth" value="2002-01-01" readonly>
+					</div>
+				</div>
+
+				<div class="form-row">
+					<div class="form-group">
+						<label for="admissionDate">입학일자</label>
+						<input type="date" id="admissionDate" value="2023-03-02" readonly>
+					</div>
+					<div class="form-group">
+						<label for="studentStatus">학생 상태</label>
+						<input type="text" id="studentStatus" value="재학" readonly>
+					</div>
+				</div>
+				<div class="form-row-3">
+					<div class="form-group">
+						<label for="studentCollege">대학</label>
+						<input type="text" id="studentCollege" value="인문대학" readonly>
+					</div>
+					<div class="form-group">
+						<label for="studentDepartment">학과</label>
+						<input type="text" id="studentDepartment" value="컴퓨터과학과" readonly>
+					</div>
+					<div class="form-group">
+						<label for="studentGrade">학년</label>
+						<input type="text" id="studentGrade" value="3학년" readonly>
+					</div>
+				</div>
+
+				<!-- 수정 가능한 정보 -->
+				<div class="form-row-3">
+					<div class="form-group">
+						<label for="admissionDate">은행</label>
+						<input type="text" id="bank" value="국민은행">
+					</div>
+					<div class="form-group">
+						<label for="studentStatus">계좌</label>
+						<input type="text" id="bankaccount" value="1235687215">
+					</div>
+					<div class="form-group">
+						<label for="studentStatus">예금주</label>
+						<input type="text" id="bankdepositor" value="홍길동" >
+					</div>
+				</div>
+
+				<!-- 주소 정보 -->
+				<div class="form-group">
+					<label>주소</label>
+					<div class="address-group">
+						<input type="text" id="postalCode" placeholder="우편번호" value="06234">
+						<input type="text" id="address" placeholder="주소" value="서울특별시 강남구 테헤란로 123" readonly>
+						<button type="button" class="address-btn" onclick="searchAddress()">주소검색</button>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="detailAddress">상세주소</label>
+					<input type="text" id="detailAddress" placeholder="상세주소를 입력하세요" value="456호">
+				</div>
+
+				<!-- 연락처 정보 -->
+				<div class="form-row">
+					<div class="form-group">
+						<label for="phoneNumber">연락처</label>
+						<input type="tel" id="phoneNumber" placeholder="010-0000-0000" value="010-1234-5678">
+					</div>
+					<div class="form-group">
+						<label for="email">이메일</label>
+						<input type="email" id="email" placeholder="example@email.com" value="hong@example.com">
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn-cancel" onclick="closeEditModal()">취소</button>
+			<button type="button" class="btn-save" onclick="saveStudentInfo()">저장</button>
+		</div>
+	</div>
+</div>
+
+<!-- 알림 설정 팝업 -->
+<div class="popup-overlay" id="notificationSettingsPopup">
+	<div class="popup-content">
+		<div class="popup-header">
+			<h4>알림 설정</h4>
+			<button class="popup-close" onclick="closeNotificationSettings()">&times;</button>
+		</div>
+		<div class="popup-body">
+			<div class="notification-setting">
+				<label for="urgentNotifications">긴급 알림</label>
+				<input type="checkbox" id="urgentNotifications" checked>
+			</div>
+			<div class="notification-setting">
+				<label for="programNotifications">비교과 프로그램 알림</label>
+				<input type="checkbox" id="programNotifications" checked>
+			</div>
+			<div class="notification-setting">
+				<label for="counselingNotifications">상담 관련 알림</label>
+				<input type="checkbox" id="counselingNotifications" checked>
+			</div>
+			<div class="notification-setting">
+				<label for="gradeNotifications">성적 관련 알림</label>
+				<input type="checkbox" id="gradeNotifications" checked>
+			</div>
+			<div class="notification-setting">
+				<label for="eventNotifications">행사 알림</label>
+				<input type="checkbox" id="eventNotifications" checked>
+			</div>
+			<div class="notification-setting">
+				<label for="systemNotifications">시스템 알림</label>
+				<input type="checkbox" id="systemNotifications" checked>
+			</div>
+			<div style="margin-top: 20px; text-align: center;">
+				<button class="btn btn-primary btn-sm" onclick="saveNotificationSettings()">저장</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 모든 알림 보기 팝업 -->
+<div class="popup-overlay all-alerts-popup" id="allAlertsPopup">
+	<div class="popup-content">
+		<div class="popup-header">
+			<h4>모든 알림</h4>
+			<button class="popup-close" onclick="closeAllAlertsPopup()">&times;</button>
+		</div>
+		<div class="popup-body" id="allAlertsContent">
+			<!-- 알림 내용이 여기에 동적으로 추가됩니다 -->
+		</div>
+	</div>
+</div>
+
+</div>

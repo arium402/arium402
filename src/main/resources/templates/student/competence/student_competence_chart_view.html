@@ -1,0 +1,40 @@
+<div th:fragment="view">
+
+<!-- Main Content -->
+<main class="col-md-9 col-lg-10 p-0" style="margin-left: 16.66667%; min-height: calc(100vh - 70px); width: 83.33333%; transform: translateZ(0);">
+	<div class="main-content">
+		<!-- 핵심역량 진단 결과 페이지 -->
+		<div class="result-content">
+			<!-- 페이지 제목 -->
+			<h1 class="page-title">핵심역량 진단 결과(통계)</h1>
+			<div class="page-title-divider"></div>
+
+			<!-- 사용자 정보 -->
+			<div class="user-info">
+				현재 <span style="color: #e67e22; font-weight: 700; font-size: 1.05em; text-shadow: 0 1px 2px rgba(0,0,0,0.1);">홍길동</span>님의 역량 지수
+			</div>
+
+			<!-- 차트와 점수 영역 -->
+			<div class="chart-score-container">
+				<!-- 차트 컨테이너 -->
+				<div class="chart-container show" id="chartContainer">
+					<div class="chart-title" id="chartTitle">
+						전체 핵심역량 현황
+					</div>
+					<canvas id="competencyChart"></canvas>
+					<div class="chart-legend" id="chartLegend">
+						<!-- 동적으로 생성됨 -->
+					</div>
+					<div style="height: 30px;"></div>
+				</div>
+
+				<!-- 점수 요약 -->
+				<div class="score-summary" id="scoreSummary">
+					<!-- 동적으로 생성됨 -->
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
+
+</div>

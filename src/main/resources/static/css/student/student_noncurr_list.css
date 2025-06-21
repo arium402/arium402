@@ -1,0 +1,403 @@
+/* 페이지 헤더 */
+.page-header {
+	margin-bottom: 0;
+	padding: 30px 30px 20px 30px;
+	background: white;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	color: #333;
+	margin: 0 0 10px 0;
+	padding-bottom: 15px;
+	border-bottom: 3px solid var(--main-color);
+	display: inline-block;
+}
+
+.page-subtitle {
+	font-size: 1.2rem;
+	color: #666;
+	margin: 0;
+}
+
+/* 필터 및 상태 안내 영역 */
+.filter-status-section {
+	background: white;
+	padding: 25px 30px;
+	margin-bottom: 0;
+	border-top: 1px solid #eee;
+	border-bottom: 1px solid #eee;
+}
+
+.filter-controls {
+	display: grid;
+	grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+	gap: 15px;
+	align-items: center;
+	margin-bottom: 20px;
+}
+
+.search-input, .filter-select {
+	border: 2px solid #ddd;
+	border-radius: 0;
+	padding: 12px 15px;
+	font-size: 0.9rem;
+	transition: border-color 0.3s ease;
+}
+
+.search-input:focus, .filter-select:focus {
+	border-color: var(--main-color);
+	box-shadow: 0 0 0 0.2rem rgba(74, 111, 165, 0.25);
+	outline: none;
+}
+
+.search-input::placeholder {
+	color: #999;
+}
+
+.status-guide {
+	display: flex;
+	align-items: center;
+	gap: 25px;
+	padding-top: 15px;
+	border-top: 1px solid #eee;
+}
+
+.status-guide-title {
+	font-weight: 600;
+	color: #333;
+	margin-right: 10px;
+}
+
+.status-item {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 0.9rem;
+}
+
+.status-dot {
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+	display: inline-block;
+}
+
+.status-dot.available {
+	background: #28a745;
+}
+
+.status-dot.closing {
+	background: #ffc107;
+}
+
+.status-dot.closed {
+	background: #dc3545;
+}
+
+.status-dot.ongoing {
+	background: #007bff;
+}
+
+/* 프로그램 그리드 */
+.program-grid {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 25px;
+	margin-bottom: 0;
+	padding: 30px;
+	background: white;
+}
+
+.program-card {
+	background: white;
+	border: 2px solid #ddd;
+	border-radius: 0;
+	overflow: hidden;
+	transition: all 0.3s ease;
+	box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+	height: auto;
+	display: flex;
+	flex-direction: column;
+}
+
+.program-card:hover {
+	border-color: var(--main-color);
+	box-shadow: 0 4px 15px rgba(74, 111, 165, 0.2);
+	transform: translateY(-2px);
+}
+
+.program-image {
+	width: 100%;
+	height: 160px;
+	background: linear-gradient(135deg, var(--light-bg), #e6f3ff);
+	border-bottom: 1px solid #ddd;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+}
+
+.program-image img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.program-image .placeholder-icon {
+	font-size: 3rem;
+	color: var(--main-color);
+	opacity: 0.5;
+}
+
+/* D-day 뱃지 */
+.dday-badge {
+	position: absolute;
+	top: 0;
+	left: 0;
+	background: #1565c0;
+	color: white;
+	padding: 6px 10px;
+	font-size: 0.75rem;
+	font-weight: 700;
+	border-radius: 0;
+	box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+	z-index: 10;
+}
+
+.dday-badge.urgent {
+	background: #dc3545;
+}
+
+.dday-badge.warning {
+	background: #1565c0;
+	color: white;
+}
+
+/* 상태 뱃지 */
+.status-badge {
+	position: absolute;
+	top: 12px;
+	right: 12px;
+	width: 15px;
+	height: 15px;
+	border-radius: 50%;
+	box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+	border: 2px solid white;
+}
+
+.status-available {
+	background: #28a745;
+}
+
+.status-closing {
+	background: #ffc107;
+}
+
+.status-closed {
+	background: #dc3545;
+}
+
+.status-ongoing {
+	background: #007bff;
+}
+
+.program-content {
+	padding: 0;
+	position: relative;
+	height: auto;
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+}
+
+.program-title {
+	font-size: 1.1rem;
+	font-weight: 700;
+	color: #333;
+	margin: 0;
+	padding: 15px 20px 10px 20px;
+	line-height: 1.3;
+	background: white;
+	border-bottom: 1px solid #eee;
+}
+
+.program-details {
+	padding: 15px 20px 20px 20px;
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+}
+
+.program-dates {
+	flex: 1;
+	margin-bottom: 15px;
+}
+
+.date-item {
+	margin-bottom: 8px;
+	font-size: 0.85rem;
+}
+
+.date-label {
+	color: #666;
+	font-weight: 500;
+	margin-right: 5px;
+}
+
+.date-value {
+	color: #333;
+	font-weight: 600;
+}
+
+.program-info {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 15px;
+	padding-top: 10px;
+	border-top: 1px solid #eee;
+}
+
+.program-points {
+	color: var(--main-color);
+	font-weight: 700;
+	font-size: 0.9rem;
+}
+
+.program-capacity {
+	color: #666;
+	font-weight: 600;
+	font-size: 0.9rem;
+}
+
+.program-capacity.full {
+	color: #dc3545;
+}
+
+/* 신청 버튼 */
+.apply-btn {
+	width: 100%;
+	padding: 10px;
+	border: 2px solid var(--main-color);
+	border-radius: 0;
+	background: var(--main-color);
+	color: white;
+	font-weight: 600;
+	font-size: 0.9rem;
+	transition: all 0.3s ease;
+	cursor: pointer;
+	margin-top: 10px;
+}
+
+.apply-btn:hover {
+	background: #3d5a91;
+	border-color: #3d5a91;
+}
+
+.apply-btn.disabled {
+	background: #6c757d;
+	border-color: #6c757d;
+	cursor: not-allowed;
+}
+
+.apply-btn.completed {
+	background: #28a745;
+	border-color: #28a745;
+	color: white;
+}
+
+/* 페이지네이션 */
+.pagination-wrapper {
+	display: flex;
+	justify-content: center;
+	margin-top: 0;
+	padding: 30px;
+	background: white;
+}
+
+.pagination .page-link {
+	border-radius: 0;
+	border: 1px solid #ddd;
+	color: #666;
+	padding: 10px 15px;
+	margin: 0 2px;
+}
+
+.pagination .page-link:hover {
+	background: var(--light-bg);
+	border-color: var(--main-color);
+	color: var(--main-color);
+}
+
+.pagination .page-item.active .page-link {
+	background: var(--main-color);
+	border-color: var(--main-color);
+	color: white;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 1200px) {
+	.program-grid {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+@media (max-width: 992px) {
+	.program-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+  
+	.filter-controls {
+		grid-template-columns: 1fr 1fr 1fr;
+		gap: 12px;
+	}
+	
+	.filter-controls > *:first-child {
+		grid-column: span 3;
+	}
+}
+
+@media (max-width: 768px) {
+	.page-header {
+		padding: 20px;
+	}
+	
+	.filter-status-section {
+		padding: 20px;
+	}
+	
+	.program-grid {
+		grid-template-columns: 1fr;
+		gap: 20px;
+		padding: 20px;
+	}
+	
+	.pagination-wrapper {
+		padding: 20px;
+	}
+	
+	.page-title {
+		font-size: 2rem;
+	}
+	
+	.filter-controls {
+		grid-template-columns: 1fr;
+		gap: 12px;
+	}
+	
+	.search-input, .filter-select {
+		width: 100%;
+	}
+	
+	.status-guide {
+		flex-wrap: wrap;
+		gap: 15px;
+	}
+	
+	.status-guide-title {
+		width: 100%;
+		margin-bottom: 5px;
+	}
+}

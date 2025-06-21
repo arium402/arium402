@@ -1,0 +1,81 @@
+<div th:fragment="sidebar">
+
+	<!-- Sidebar -->
+	<nav class="col-md-3 col-lg-2 sidebar p-0" style="position: fixed; top: 60px; left: 0; width: 16.66667%; height: calc(100vh - 60px); z-index: 999;">
+		<div class="sidebar-content">
+			<p class="title">메뉴</p>
+			<ul>
+				<li>
+					<a href="#" onclick="toggleSubmenu(this); return false;">
+						<i class="fas fa-home"></i>센터 소개
+					</a>
+					<ul class="submenu">
+						<li><a th:href="@{/student/intro/center}">- 센터 소개</a></li>
+						<li><a th:href="@{/student/intro/process}">- 프로세스 소개</a></li>
+						<li><a th:href="@{/student/intro/coming}">- 오시는 길</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="#" onclick="toggleSubmenu(this); return false;">
+						<i class="fas fa-comments"></i>상담
+					</a>
+					<ul class="submenu">
+						<li><span class="submenu-category">일반상담</span></li>
+						<li><a th:href="@{/student/counsel/main/psy}">- 심리</a></li>
+						<li><a th:href="@{/student/counsel/main/ano}">- 익명</a></li>
+						<li><a th:href="@{/student/counsel/main/cri}">- 위기</a></li>
+						<li><span class="submenu-category">학업상담</span></li>
+						<li><a th:href="@{/student/counsel/main/car}">- 진로/취업</a></li>
+						<li><a th:href="@{/student/counsel/main/con}">- 학습컨설팅</a></li>
+						<li style="background-color: #ffffff; border-radius: 4px; margin: 2px 8px;">
+							<a th:href="@{/student/counsel/add/addcheck}" style="color: #1d3455;"><b>신청내역</b></a>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<a href="#" onclick="toggleSubmenu(this); return false;">
+						<i class="fas fa-chart-line"></i>핵심역량
+					</a>
+					<ul class="submenu">
+						<li><a th:href="@{/student/competence/info}">- 소개</a></li>
+						<li><a th:href="@{/student/competence/test}">- 진단</a></li>
+						<li><a th:href="@{/student/competence/chart}">- 결과</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="#" onclick="toggleSubmenu(this); return false;">
+						<i class="fas fa-calendar-alt"></i>비교과
+					</a>
+					<ul class="submenu">
+						<li><a th:href="@{/student/noncurr/list}">- 비교과 목록/신청</a></li>
+						<li><a th:href="@{/student/noncurr/addcheck}">- 비교과 신청내역</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="#" onclick="toggleSubmenu(this); return false;">
+						<i class="fas fa-coins"></i>마일리지
+					</a>
+					<ul class="submenu">
+						<li><a th:href="@{/student/mileage/my}" onclick="showMileageHistory()">- 나의 마일리지</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="#" onclick="toggleSubmenu(this); return false;">
+						<i class="fas fa-clipboard-list"></i>게시판
+					</a>
+					<ul class="submenu">
+						<li><a th:href="@{/student/notice/ann}">- 공지사항</a></li>
+						<li><a th:href="@{/student/notice/asklist}">- 문의 게시판</a></li>
+						<li><a th:href="@{/student/notice/fq}">- FAQ</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	
+		<!-- 사이드바 하단 -->
+		<div class="sidebar-footer">
+			<img th:src="@{/images/logo-header.png}" alt="한국방송통신대학교" class="sidebar-footer-logo">
+		</div>
+	</nav>
+
+</div>

@@ -1,0 +1,289 @@
+/* 센터 소개 페이지 스타일 */
+.center-content {
+	padding: 32px !important;
+	background: white !important;
+	width: 100% !important;
+	max-width: none !important;
+	margin: 0 !important;
+}
+
+.page-title {
+	font-size: 1.8rem !important;
+	font-weight: 700 !important;
+	color: #333 !important;
+	margin-bottom: 32px !important;
+	position: relative !important;
+	padding-left: 20px !important;
+}
+
+.page-title::before {
+	content: '' !important;
+	position: absolute !important;
+	left: 0 !important;
+	top: 0 !important;
+	bottom: 0 !important;
+	width: 6px !important;
+	background: var(--main-color) !important;
+	border-radius: 3px !important;
+}
+
+.page-title-divider {
+	display: none !important;
+}
+
+/* 센터 소개 메인 섹션 */
+.center-intro-section {
+	display: flex !important;
+	gap: 40px !important;
+	margin-bottom: 48px !important;
+	align-items: stretch !important;
+}
+
+.center-image-container {
+	flex: 0 0 45% !important;
+	max-width: 45% !important;
+	display: flex !important;
+}
+
+.center-image {
+	width: 100% !important;
+	height: 100% !important;
+	border-radius: 10px !important;
+	box-shadow: 0 6px 20px rgba(0,0,0,0.15) !important;
+	object-fit: cover !important;
+	max-height: 450px !important;
+}
+
+.center-description {
+	flex: 1 !important;
+	padding-left: 20px !important;
+}
+
+.center-title {
+	font-size: 1.6rem !important;
+	font-weight: 700 !important;
+	color: var(--main-color) !important;
+	margin-bottom: 20px !important;
+	border-bottom: 2px solid var(--main-color) !important;
+	padding-bottom: 10px !important;
+	text-align: right !important;
+}
+
+.center-subtitle {
+	font-size: 1.1rem !important;
+	font-weight: 600 !important;
+	color: #666 !important;
+	margin-bottom: 24px !important;
+	line-height: 1.6 !important;
+}
+
+.center-text {
+	font-size: 0.9rem !important;
+	line-height: 1.8 !important;
+	color: #444 !important;
+	margin-bottom: 20px !important;
+}
+
+.highlight-box {
+	background: linear-gradient(135deg, #f8f9fa, #e9ecef) !important;
+	border-left: 4px solid var(--main-color) !important;
+	padding: 20px !important;
+	border-radius: 0 8px 8px 0 !important;
+	margin: 24px 0 !important;
+}
+
+.highlight-text {
+	font-size: 0.95rem !important;
+	font-weight: 600 !important;
+	color: var(--main-color) !important;
+	margin: 0 !important;
+	line-height: 1.6 !important;
+}
+
+/* 서비스 소개 섹션 */
+.services-section {
+	margin-top: 48px !important;
+}
+
+.services-title {
+	font-size: 1.4rem !important;
+	font-weight: 700 !important;
+	color: #333 !important;
+	margin-bottom: 32px !important;
+	text-align: center !important;
+	position: relative !important;
+}
+
+.services-title::after {
+	content: '' !important;
+	position: absolute !important;
+	bottom: -8px !important;
+	left: 50% !important;
+	transform: translateX(-50%) !important;
+	width: 120px !important;
+	height: 3px !important;
+	background: var(--main-color) !important;
+}
+
+.services-grid {
+	display: grid !important;
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+	gap: 24px !important;
+	margin-top: 40px !important;
+}
+
+.service-card {
+	background: white !important;
+	border: 1px solid #e0e6ed !important;
+	border-radius: 12px !important;
+	padding: 24px !important;
+	transition: all 0.3s ease !important;
+	box-shadow: 0 2px 8px rgba(0,0,0,0.08) !important;
+}
+
+.service-card:hover {
+	transform: translateY(-4px) !important;
+	box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
+	border-color: var(--main-color) !important;
+}
+
+.service-icon {
+	width: 48px !important;
+	height: 48px !important;
+	background: var(--main-color) !important;
+	border-radius: 50% !important;
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	margin-bottom: 20px !important;
+	color: white !important;
+	font-size: 1.2rem !important;
+}
+
+.service-title {
+	font-size: 1.1rem !important;
+	font-weight: 700 !important;
+	color: #333 !important;
+	margin-bottom: 15px !important;
+}
+
+.service-description {
+	font-size: 0.85rem !important;
+	color: #666 !important;
+	line-height: 1.6 !important;
+}
+
+/* 프로세스 플로우 */
+.process-section {
+	margin-top: 48px !important;
+	background: #f8f9fa !important;
+	padding: 40px !important;
+	border-radius: 12px !important;
+}
+
+.process-title {
+	font-size: 1.3rem !important;
+	font-weight: 700 !important;
+	color: #333 !important;
+	text-align: center !important;
+	margin-bottom: 32px !important;
+}
+
+.process-flow {
+	display: flex !important;
+	justify-content: space-between !important;
+	align-items: center !important;
+	flex-wrap: wrap !important;
+	gap: 16px !important;
+}
+
+.process-step {
+	flex: 1 !important;
+	min-width: 150px !important;
+	text-align: center !important;
+	position: relative !important;
+}
+
+.process-step:not(:last-child)::after {
+	content: '→' !important;
+	position: absolute !important;
+	right: -20px !important;
+	top: 50% !important;
+	transform: translateY(-50%) !important;
+	font-size: 1.5rem !important;
+	color: var(--main-color) !important;
+	font-weight: bold !important;
+}
+
+.process-number {
+	width: 40px !important;
+	height: 40px !important;
+	background: var(--main-color) !important;
+	color: white !important;
+	border-radius: 50% !important;
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	margin: 0 auto 12px auto !important;
+	font-weight: 700 !important;
+	font-size: 1.1rem !important;
+}
+
+.process-text {
+	font-size: 0.85rem !important;
+	font-weight: 600 !important;
+	color: #333 !important;
+	line-height: 1.4 !important;
+}
+
+/* Bootstrap 오버라이드 */
+.container-fluid {
+	padding: 0 !important;
+	margin: 0 !important;
+}
+
+.row {
+	margin: 0 !important;
+}
+
+.col-md-3, .col-lg-2, .col-md-9, .col-lg-10 {
+	padding: 0 !important;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+	.center-content {
+		padding: 16px !important;
+	}
+	
+	.center-intro-section {
+		flex-direction: column !important;
+		gap: 24px !important;
+	}
+	
+	.center-image-container {
+		flex: none !important;
+		max-width: 100% !important;
+	}
+	
+	.center-description {
+		padding-left: 0 !important;
+	}
+	
+	.services-grid {
+		grid-template-columns: 1fr !important;
+	}
+	
+	.process-flow {
+		flex-direction: column !important;
+		gap: 24px !important;
+	}
+	
+	.process-step:not(:last-child)::after {
+		content: '↓' !important;
+		right: auto !important;
+		bottom: -20px !important;
+		top: auto !important;
+		transform: none !important;
+	}
+}

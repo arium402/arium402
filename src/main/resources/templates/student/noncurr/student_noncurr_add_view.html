@@ -1,0 +1,106 @@
+<div th:fragment="view">
+
+<main class="col-md-9 col-lg-10 p-0" style="margin-left: 16.66667%; min-height: calc(100vh - 70px); width: 83.33333%;">
+	<div class="main-content">
+		<!-- 신청 페이지 -->
+		<div class="application-content">
+			<!-- 페이지 제목 -->
+			<h1 class="page-title">비교과 신청하기</h1>
+			<div class="page-title-divider"></div>
+
+			<!-- 프로그램 정보 -->
+			<h2 class="section-title">프로그램 정보</h2>
+			<div class="program-name">진로탐색 및 자기계발 워크샵</div>
+
+			<div class="program-info-details">
+				<div class="detail-item">
+					<span class="detail-label">운영기간:</span>
+					<span class="detail-value">2024-06-20 ~ 2024-06-22</span>
+				</div>
+	
+				<div class="detail-item">
+					<span class="detail-label">운영부서:</span>
+					<span class="detail-value">학생지원센터</span>
+				</div>
+	
+				<div class="detail-item">
+					<span class="detail-label">마일리지:</span>
+					<span class="detail-value mileage-value">50 P</span>
+				</div>
+	
+				<div class="detail-item">
+					<span class="detail-label">신청인원:</span>
+					<span class="detail-value capacity-value">18/30</span>
+				</div>
+			</div>
+
+			<!-- 학생 정보 -->
+			<h2 class="section-title">학생 정보</h2>
+
+			<div class="form-group">
+				<label class="form-label">이름</label>
+				<input type="text" class="form-input" id="studentName" readonly>
+				<button class="search-btn" onclick="openSearchModal()">검색</button>
+			</div>
+
+			<div class="form-group">
+				<label class="form-label">학번</label>
+				<input type="text" class="form-input" id="studentId" readonly>
+			</div>
+
+			<div class="form-group">
+				<label class="form-label">학과</label>
+				<input type="text" class="form-input" id="department" readonly>
+			</div>
+
+			<div class="form-group">
+				<label class="form-label">전화번호</label>
+				<input type="text" class="form-input" id="phone" readonly>
+			</div>
+
+			<div class="form-group">
+				<label class="form-label">E-Mail</label>
+				<input type="email" class="form-input" id="email" readonly>
+			</div>
+
+			<button class="submit-btn" onclick="submitApplication()">신청 완료</button>
+		</div>
+	</div>
+</main>
+
+<!-- 학생 검색 모달 -->
+<div id="searchModal" class="modal">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h3 class="modal-title">학생 정보 검색</h3>
+			<button class="close-btn" onclick="closeSearchModal()">&times;</button>
+		</div>
+
+		<div class="modal-body">
+			<div style="display: flex; gap: 10px; margin-bottom: 20px;">
+				<input type="text" class="search-input" id="searchInput" placeholder="이름을 입력하세요" oninput="searchStudents()" onkeypress="handleEnterKey(event)" style="margin-bottom: 0; flex: 1;">
+				<button class="search-btn" onclick="performSearch()" style="min-width: 80px;">검색</button>
+			</div>
+			<table class="search-results-table">
+				<thead>
+					<tr>
+						<th>NO</th>
+						<th>이름</th>
+						<th>학번</th>
+						<th>학과</th>
+						<th>HP</th>
+						<th>이메일</th>
+						<th>선택</th>
+					</tr>
+				</thead>
+				<tbody id="searchResults">
+					<tr>
+						<td colspan="7" class="no-results">이름을 입력하여 검색해주세요.</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+</div>

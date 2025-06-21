@@ -1,0 +1,339 @@
+<div th:fragment="view">
+
+<main class="col-md-9 col-lg-10 p-0" style="margin-left: 16.66667%; min-height: calc(100vh - 70px); width: 83.33333%;">
+	<div class="main-content">
+		<!-- 페이지 헤더 -->
+		<div class="page-header">
+			<h1 class="page-title">비교과 프로그램</h1>
+			<p class="page-subtitle">전체보기</p>
+		</div>
+
+		<!-- 검색 & 필터 및 상태 안내 -->
+		<div class="filter-status-section">
+			<div class="filter-controls">
+				<input type="text" class="search-input" placeholder="프로그램명을 검색하세요...">
+				<select class="filter-select">
+					<option value="">전체 카테고리</option>
+					<option value="career">진로상담</option>
+					<option value="psychology">심리상담</option>
+					<option value="startup">창업</option>
+					<option value="it">IT/디지털</option>
+					<option value="language">어학</option>
+				</select>
+				<select class="filter-select">
+					<option value="">전체 마일리지</option>
+					<option value="low">30P 이하</option>
+					<option value="mid">31-50P</option>
+					<option value="high">51P 이상</option>
+				</select>
+				<select class="filter-select">
+					<option value="">전체 상태</option>
+					<option value="available">신청가능</option>
+					<option value="closing">마감임박</option>
+					<option value="closed">마감</option>
+				</select>
+				<select class="filter-select">
+					<option value="">최신순</option>
+					<option value="mileage">마일리지순</option>
+					<option value="deadline">마감임박순</option>
+					<option value="popular">인기순</option>
+				</select>
+			</div>
+
+			<div class="status-guide">
+				<span class="status-guide-title">상태 안내:</span>
+				<div class="status-item">
+					<span class="status-dot available"></span>
+					<span>신청가능</span>
+				</div>
+				<div class="status-item">
+					<span class="status-dot closing"></span>
+					<span>마감임박</span>
+				</div>
+				<div class="status-item">
+					<span class="status-dot closed"></span>
+					<span>마감</span>
+				</div>
+			</div>
+		</div>
+
+		<!-- 프로그램 그리드 -->
+		<div class="program-grid">
+			<!-- 프로그램 카드 1 -->
+			<div class="program-card">
+				<div class="program-image">
+					<div class="dday-badge">D-13</div>
+					<div class="status-badge status-available"></div>
+					<i class="fas fa-graduation-cap placeholder-icon"></i>
+				</div>
+				<div class="program-content">
+					<h3 class="program-title">진로탐색 및 자기계발 워크샵</h3>
+					<div class="program-details">
+						<div class="program-dates">
+							<div class="date-item">
+								<span class="date-label">신청기간:</span>
+								<span class="date-value">2024.06.01 ~ 2024.06.15</span>
+							</div>
+							<div class="date-item">
+								<span class="date-label">운영기간:</span>
+								<span class="date-value">2024.06.20 ~ 2024.06.22</span>
+							</div>
+						</div>
+						<div class="program-info">
+								<span class="program-points">50 P</span>
+								<span class="program-capacity">18/30</span>
+						</div>
+						<button class="apply-btn" onclick="applyProgram(1)">
+							신청하기
+						</button>
+					</div>
+				</div>
+			</div>
+
+			<!-- 프로그램 카드 2 -->
+			<div class="program-card">
+				<div class="program-image">
+					<div class="dday-badge warning">D-8</div>
+					<div class="status-badge status-closing"></div>
+					<i class="fas fa-graduation-cap placeholder-icon"></i>
+				</div>
+				<div class="program-content">
+					<h3 class="program-title">창의적 사고력 개발 프로그램</h3>
+					<div class="program-details">
+						<div class="program-dates">
+							<div class="date-item">
+								<span class="date-label">신청기간:</span>
+								<span class="date-value">2024.06.05 ~ 2024.06.20</span>
+							</div>
+							<div class="date-item">
+								<span class="date-label">운영기간:</span>
+								<span class="date-value">2024.06.25 ~ 2024.06.27</span>
+							</div>
+						</div>
+						<div class="program-info">
+							<span class="program-points">45 P</span>
+							<span class="program-capacity">24/25</span>
+						</div>
+						<button class="apply-btn" onclick="applyProgram(2)">
+							신청하기
+						</button>
+					</div>
+				</div>
+			</div>
+
+			<!-- 프로그램 카드 3 -->
+			<div class="program-card">
+				<div class="program-image">
+					<div class="dday-badge">D-15</div>
+					<div class="status-badge status-available"></div>
+					<i class="fas fa-graduation-cap placeholder-icon"></i>
+				</div>
+				<div class="program-content">
+					<h3 class="program-title">리더십 스킬 향상 세미나</h3>
+					<div class="program-details">
+						<div class="program-dates">
+							<div class="date-item">
+								<span class="date-label">신청기간:</span>
+								<span class="date-value">2024.06.10 ~ 2024.06.25</span>
+							</div>
+							<div class="date-item">
+								<span class="date-label">운영기간:</span>
+								<span class="date-value">2024.07.01 ~ 2024.07.03</span>
+							</div>
+						</div>
+						<div class="program-info">
+							<span class="program-points">60 P</span>
+							<span class="program-capacity">12/20</span>
+						</div>
+						<button class="apply-btn completed" onclick="applyProgram(3)">
+							신청완료
+						</button>
+					</div>
+				</div>
+			</div>
+
+			<!-- 프로그램 카드 4 -->
+			<div class="program-card">
+				<div class="program-image">
+					<div class="dday-badge urgent">마감</div>
+					<div class="status-badge status-closed"></div>
+					<i class="fas fa-graduation-cap placeholder-icon"></i>
+				</div>
+				<div class="program-content">
+					<h3 class="program-title">심리상담 기초 이론과 실습</h3>
+					<div class="program-details">
+						<div class="program-dates">
+							<div class="date-item">
+								<span class="date-label">신청기간:</span>
+								<span class="date-value">2024.06.12 ~ 2024.06.28</span>
+							</div>
+							<div class="date-item">
+								<span class="date-label">운영기간:</span>
+								<span class="date-value">2024.07.05 ~ 2024.07.07</span>
+							</div>
+						</div>
+						<div class="program-info">
+							<span class="program-points">40 P</span>
+							<span class="program-capacity full">15/15</span>
+						</div>
+						<button class="apply-btn disabled" disabled>
+							마감
+						</button>
+					</div>
+				</div>
+			</div>
+
+			<!-- 프로그램 카드 5 -->
+			<div class="program-card">
+				<div class="program-image">
+					<div class="dday-badge">D-21</div>
+					<div class="status-badge status-available"></div>
+					<i class="fas fa-graduation-cap placeholder-icon"></i>
+				</div>
+				<div class="program-content">
+					<h3 class="program-title">취업 전략 및 면접 스킬 특강</h3>
+					<div class="program-details">
+						<div class="program-dates">
+							<div class="date-item">
+								<span class="date-label">신청기간:</span>
+								<span class="date-value">2024.06.15 ~ 2024.06.30</span>
+							</div>
+							<div class="date-item">
+								<span class="date-label">운영기간:</span>
+								<span class="date-value">2024.07.08 ~ 2024.07.10</span>
+							</div>
+						</div>
+						<div class="program-info">
+							<span class="program-points">35 P</span>
+							<span class="program-capacity">22/30</span>
+						</div>
+						<button class="apply-btn" onclick="applyProgram(5)">
+							신청하기
+						</button>
+					</div>
+				</div>
+			</div>
+
+			<!-- 프로그램 카드 6 -->
+			<div class="program-card">
+				<div class="program-image">
+					<div class="dday-badge">D-12</div>
+					<div class="status-badge status-available"></div>
+					<i class="fas fa-graduation-cap placeholder-icon"></i>
+				</div>
+				<div class="program-content">
+					<h3 class="program-title">창업 아이디어 발굴 워크샵</h3>
+					<div class="program-details">
+						<div class="program-dates">
+							<div class="date-item">
+								<span class="date-label">신청기간:</span>
+								<span class="date-value">2024.06.18 ~ 2024.07.02</span>
+							</div>
+							<div class="date-item">
+								<span class="date-label">운영기간:</span>
+								<span class="date-value">2024.07.12 ~ 2024.07.14</span>
+							</div>
+						</div>
+						<div class="program-info">
+							<span class="program-points">55 P</span>
+							<span class="program-capacity">15/25</span>
+						</div>
+						<button class="apply-btn" onclick="applyProgram(6)">
+							신청하기
+						</button>
+					</div>
+				</div>
+			</div>
+
+			<!-- 프로그램 카드 7 -->
+			<div class="program-card">
+				<div class="program-image">
+					<div class="dday-badge urgent">D-3</div>
+					<div class="status-badge status-closing"></div>
+					<i class="fas fa-graduation-cap placeholder-icon"></i>
+				</div>
+				<div class="program-content">
+					<h3 class="program-title">데이터 분석 기초 교육</h3>
+					<div class="program-details">
+						<div class="program-dates">
+							<div class="date-item">
+								<span class="date-label">신청기간:</span>
+								<span class="date-value">2024.06.20 ~ 2024.07.05</span>
+							</div>
+							<div class="date-item">
+								<span class="date-label">운영기간:</span>
+								<span class="date-value">2024.07.15 ~ 2024.07.17</span>
+							</div>
+						</div>
+						<div class="program-info">
+							<span class="program-points">65 P</span>
+							<span class="program-capacity">19/20</span>
+						</div>
+						<button class="apply-btn" onclick="applyProgram(7)">
+							신청하기
+						</button>
+					</div>
+				</div>
+			</div>
+
+			<!-- 프로그램 카드 8 -->
+			<div class="program-card">
+				<div class="program-image">
+					<div class="dday-badge urgent">마감</div>
+					<div class="status-badge status-closed"></div>
+						<i class="fas fa-graduation-cap placeholder-icon"></i>
+				</div>
+				<div class="program-content">
+					<h3 class="program-title">글로벌 커뮤니케이션 스킬</h3>
+					<div class="program-details">
+						<div class="program-dates">
+							<div class="date-item">
+								<span class="date-label">신청기간:</span>
+								<span class="date-value">2024.06.22 ~ 2024.07.08</span>
+							</div>
+							<div class="date-item">
+								<span class="date-label">운영기간:</span>
+								<span class="date-value">2024.07.18 ~ 2024.07.20</span>
+							</div>
+						</div>
+						<div class="program-info">
+							<span class="program-points">30 P</span>
+							<span class="program-capacity full">20/20</span>
+						</div>
+						<button class="apply-btn disabled" disabled>
+							마감
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- 페이지네이션 -->
+		<div class="pagination-wrapper">
+			<nav aria-label="페이지 네비게이션">
+				<ul class="pagination">
+					<li class="page-item disabled">
+						<a class="page-link" href="#" tabindex="-1" aria-disabled="true">이전</a>
+					</li>
+					<li class="page-item active" aria-current="page">
+						<a class="page-link" href="#">1</a>
+					</li>
+					<li class="page-item">
+						<a class="page-link" href="#">2</a>
+					</li>
+					<li class="page-item">
+						<a class="page-link" href="#">3</a>
+					</li>
+					<li class="page-item">
+						<a class="page-link" href="#">4</a>
+					</li>
+					<li class="page-item">
+						<a class="page-link" href="#">다음</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</main>
+
+</div>

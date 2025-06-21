@@ -1,0 +1,349 @@
+/* 상담사 선택 페이지 스타일 */
+.counselor-content {
+	padding: 32px;
+	background: white;
+	width: 100%;
+	max-width: none;
+	margin: 0;
+}
+
+.page-title {
+	font-size: 1.8rem;
+	font-weight: 700;
+	color: #333;
+	margin-bottom: 25px;
+	text-align: center;
+	position: relative;
+	padding-bottom: 15px;
+}
+
+.page-title::after {
+	content: '';
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 200px;
+	height: 3px;
+	background-color: #74b9ff;
+	border-radius: 2px;
+}
+
+.page-title-divider {
+	width: 100%;
+	height: 2.5px;
+	background: var(--main-color);
+	margin-bottom: 32px;
+}
+
+/* 주간 네비게이션 */
+.week-navigation {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 30px;
+	gap: 20px;
+}
+
+.nav-button {
+	background-color: #74b9ff;
+	color: white;
+	border: none;
+	padding: 8px 12px;
+	border-radius: 5px;
+	cursor: pointer;
+	font-size: 18px;
+	transition: background-color 0.3s;
+}
+
+.nav-button:hover {
+	background-color: #0984e3;
+}
+
+.week-display {
+	font-size: 20px;
+	font-weight: bold;
+	color: #2c3e50;
+	min-width: 200px;
+	text-align: center;
+}
+
+/* 타임테이블 스타일 */
+.timetable-container {
+	background-color: white;
+	border-radius: 10px;
+	padding: 15px;
+	box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+	overflow-x: auto;
+}
+
+.timetable {
+	width: 100%;
+	border-collapse: collapse;
+	min-width: 600px;
+}
+
+.timetable th, .timetable td {
+	border: 1px solid #ddd;
+	padding: 15px;
+	text-align: center;
+	vertical-align: middle;
+}
+
+.timetable th {
+	background-color: #74b9ff;
+	color: white;
+	font-weight: bold;
+}
+
+.time-slot {
+	background-color: #ecf0f1;
+	font-weight: bold;
+	color: #2c3e50;
+	width: 120px;
+}
+
+.counselor-cell {
+	position: relative;
+	background-color: white;
+	height: 60px;
+}
+
+/* 커스텀 드롭다운 스타일 */
+.custom-dropdown {
+	position: relative;
+	width: 140px;
+	margin: 0 auto;
+}
+
+.dropdown-button {
+	width: 100%;
+	padding: 8px 12px;
+	background-color: #f8f9fa;
+	color: #495057;
+	border: 1px solid #dee2e6;
+	border-radius: 8px;
+	cursor: pointer;
+	font-size: 13px;
+	font-weight: 500;
+	text-align: left;
+	position: relative;
+	transition: all 0.3s ease;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-button:hover {
+	background-color: #e9ecef;
+	border-color: #ced4da;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+	transform: translateY(-1px);
+}
+
+.dropdown-button::after {
+	content: '▼';
+	position: absolute;
+	right: 10px;
+	top: 50%;
+	transform: translateY(-50%);
+	font-size: 10px;
+	transition: transform 0.3s ease;
+}
+
+.dropdown-button.open::after {
+	transform: translateY(-50%) rotate(180deg);
+}
+
+.dropdown-list {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	right: 0;
+	background: white;
+	border: 1px solid #e0e6ed;
+	border-radius: 8px;
+	box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+	z-index: 1000;
+	max-height: 200px;
+	overflow-y: auto;
+	display: none;
+	margin-top: 4px;
+}
+
+.dropdown-list.show {
+	display: block;
+	animation: dropdownFadeIn 0.2s ease-out;
+}
+
+@keyframes dropdownFadeIn {
+	from {
+		opacity: 0;
+		transform: translateY(-10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.dropdown-item {
+	padding: 10px 12px;
+	cursor: pointer;
+	border-bottom: 1px solid #f1f3f4;
+	font-size: 13px;
+	color: #2d3436;
+	transition: all 0.2s ease;
+	position: relative;
+}
+
+.dropdown-item:last-child {
+	border-bottom: none;
+	border-radius: 0 0 8px 8px;
+}
+
+.dropdown-item:first-child {
+	border-radius: 8px 8px 0 0;
+}
+
+.dropdown-item:hover {
+	background-color: #f8f9fa;
+	color: #495057;
+}
+
+.dropdown-placeholder {
+	color: rgba(73, 80, 87, 0.7);
+	font-style: italic;
+}
+
+/* 대각선 헤더 스타일 */
+.diagonal-header {
+	position: relative;
+	background: linear-gradient(to top right, transparent 45%, #fff 45%, #fff 55%, transparent 55%);
+	width: 120px;
+	height: 60px;
+	padding: 0;
+}
+
+.diagonal-header::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(to top right, #74b9ff 49%, #fff 49%, #fff 51%, #74b9ff 51%);
+}
+
+.diagonal-header .time-text {
+	position: absolute;
+	bottom: 10px;
+	left: 10px;
+	color: white;
+	font-size: 14px;
+	font-weight: bold;
+	z-index: 2;
+}
+
+.diagonal-header .day-text {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	color: white;
+	font-size: 14px;
+	font-weight: bold;
+	z-index: 2;
+}
+
+/* 모달 스타일 */
+.modal {
+	display: none;
+	position: fixed;
+	z-index: 1000;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+	background-color: white;
+	margin: 15% auto;
+	padding: 30px;
+	border-radius: 10px;
+	width: 400px;
+	text-align: center;
+	box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.modal-title {
+	font-size: 20px;
+	font-weight: bold;
+	color: #2c3e50;
+	margin-bottom: 20px;
+}
+
+.modal-message {
+	font-size: 16px;
+	color: #34495e;
+	margin-bottom: 25px;
+	line-height: 1.5;
+}
+
+.modal-buttons {
+	display: flex;
+	gap: 15px;
+	justify-content: center;
+}
+
+.modal-button {
+	padding: 12px 25px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	font-size: 16px;
+	font-weight: bold;
+	transition: all 0.3s;
+}
+
+.confirm-button {
+	background-color: #27ae60;
+	color: white;
+}
+
+.confirm-button:hover {
+	background-color: #219a52;
+}
+
+.cancel-button {
+	background-color: #e74c3c;
+	color: white;
+}
+
+.cancel-button:hover {
+	background-color: #c0392b;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+	.counselor-content {
+		padding: 16px;
+	}
+	
+	.page-title {
+		font-size: 1.4rem;
+	}
+	
+	.modal-content {
+		width: 90%;
+		margin: 10% auto;
+	}
+	
+	.custom-dropdown {
+		width: 120px;
+	}
+	
+	.dropdown-button {
+		font-size: 12px;
+		padding: 6px 10px;
+	}
+}
