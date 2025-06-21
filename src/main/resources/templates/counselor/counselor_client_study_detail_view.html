@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <!-- 학습 컨설팅 내담자 상세 콘텐츠 프래그먼트 -->
+    <div th:fragment="studyClientDetailContent">
+        <button class="back-btn" onclick="goBack()">← 목록으로 돌아가기</button>
+        <div class="page-title">
+            내담자 상세 정보
+        </div>
+        
+        <!-- 학생 정보 섹션 -->
+        <div class="detail-container">
+            <div class="section-title">학생 정보</div>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">이름:</div>
+                    <div class="info-value" id="studentName">최수영</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">성별:</div>
+                    <div class="info-value" id="studentGender">여</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">생년월일:</div>
+                    <div class="info-value" id="studentBirth">2003-05-12</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">학번:</div>
+                    <div class="info-value" id="studentId">202312345</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">학과:</div>
+                    <div class="info-value" id="studentDepartment">심리학과</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">연락처:</div>
+                    <div class="info-value" id="studentPhone">010-4567-8901</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">이메일:</div>
+                    <div class="info-value" id="studentEmail">suyoung.choi@university.ac.kr</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">주소:</div>
+                    <div class="info-value" id="studentAddress">서울시 마포구 홍대로 456</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">신청유형:</div>
+                    <div class="info-value" id="applicationType">학습 컨설팅</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">이전 상담 경험:</div>
+                    <div class="info-value" id="previousCounseling">없음</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 사전 설문 조사 섹션 -->
+        <div class="detail-container">
+            <div class="section-title">사전 설문 조사</div>
+            
+            <!-- 현재 학년 -->
+            <div class="learning-section">
+                <div class="learning-section-title">현재 몇 학년에 재학중이십니까?</div>
+                <div class="radio-group" id="currentGrade">
+                    <div class="radio-item">
+                        <input type="radio" name="grade" value="1학년" disabled>
+                        <label>1학년</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" name="grade" value="2학년" checked disabled>
+                        <label>2학년</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" name="grade" value="3학년" disabled>
+                        <label>3학년</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" name="grade" value="4학년" disabled>
+                        <label>4학년</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 신청 목적 -->
+            <div class="learning-section">
+                <div class="learning-section-title">신청 목적 (복수 선택 가능)</div>
+                <div class="checkbox-group" id="applicationPurpose">
+                    <div class="checkbox-item">
+                        <input type="checkbox" checked disabled>
+                        <label>대학공부 전략(노트필기, 예복습, 과제 등)</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" checked disabled>
+                        <label>시험 및 성적관리</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" disabled>
+                        <label>시간 관리</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" disabled>
+                        <label>자격증 공부</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" checked disabled>
+                        <label>전공학습</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" disabled>
+                        <label>진학</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" disabled>
+                        <label>학습 습관 형성</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" disabled>
+                        <label>학업 강·약점 파악</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 현재 수강 과목 수 -->
+            <div class="learning-section">
+                <div class="learning-section-title">현재 수강하고 있는 과목 수</div>
+                <div class="radio-group" id="subjectCount">
+                    <div class="radio-item">
+                        <input type="radio" name="subjects" value="0개" disabled>
+                        <label>0개</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" name="subjects" value="1~2개" disabled>
+                        <label>1~2개</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" name="subjects" value="3~4개" disabled>
+                        <label>3~4개</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" name="subjects" value="5~6개" checked disabled>
+                        <label>5~6개</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" name="subjects" value="7개 이상" disabled>
+                        <label>7개 이상</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 평균 학습 시간 -->
+            <div class="learning-section">
+                <div class="learning-section-title">평균 학습 시간</div>
+                <div class="radio-group" id="studyTime">
+                    <div class="radio-item">
+                        <input type="radio" name="studyHours" value="1시간 미만" disabled>
+                        <label>1시간 미만</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" name="studyHours" value="1~3시간" checked disabled>
+                        <label>1~3시간</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" name="studyHours" value="3~6시간" disabled>
+                        <label>3~6시간</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" name="studyHours" value="6~9시간" disabled>
+                        <label>6~9시간</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" name="studyHours" value="9시간 이상" disabled>
+                        <label>9시간 이상</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 학습 성취도 -->
+            <div class="learning-section">
+                <div class="learning-section-title">학습 성취도</div>
+                <div class="radio-group" id="achievement">
+                    <div class="radio-item">
+                        <input type="radio" name="achievement" value="0~20%" disabled>
+                        <label>0~20%</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" name="achievement" value="20~40%" disabled>
+                        <label>20~40%</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" name="achievement" value="40~60%" checked disabled>
+                        <label>40~60%</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" name="achievement" value="60~80%" disabled>
+                        <label>60~80%</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" name="achievement" value="80~100%" disabled>
+                        <label>80~100%</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 학습 방법 -->
+            <div class="learning-section">
+                <div class="learning-section-title">학습 방법 (복수 선택 가능)</div>
+                <div class="checkbox-group" id="studyMethods">
+                    <div class="checkbox-item">
+                        <input type="checkbox" disabled>
+                        <label>문제풀이</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" checked disabled>
+                        <label>암기</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" checked disabled>
+                        <label>요약 정리</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" disabled>
+                        <label>스터디</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 학습 방해 요소 -->
+            <div class="learning-section">
+                <div class="learning-section-title">학습 방해 요소 (복수 선택 가능)</div>
+                <div class="checkbox-group" id="distractions">
+                    <div class="checkbox-item">
+                        <input type="checkbox" disabled>
+                        <label>텔레비전</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" disabled>
+                        <label>컴퓨터</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" disabled>
+                        <label>라디오</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" checked disabled>
+                        <label>스마트폰</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" disabled>
+                        <label>만화책</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" checked disabled>
+                        <label>친구</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 공부 장소 -->
+            <div class="learning-section">
+                <div class="learning-section-title">공부 장소 (복수 선택 가능)</div>
+                <div class="checkbox-group" id="studyPlaces">
+                    <div class="checkbox-item">
+                        <input type="checkbox" checked disabled>
+                        <label>기숙사</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" checked disabled>
+                        <label>도서관</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" disabled>
+                        <label>스터디 카페</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" disabled>
+                        <label>집</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" disabled>
+                        <label>카페</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" disabled>
+                        <label>학교</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 신청 사유 -->
+            <div class="application-reason">
+                <div class="application-reason-label">신청 사유</div>
+                <div class="application-reason-text" id="applicationReason">
+                    2학년이 되면서 전공 수업의 난이도가 높아져 공부 방법에 대한 고민이 많습니다. 고등학교 때의 암기 위주 공부법으로는 대학 수업을 따라가기 어려워서 효과적인 학습 전략을 배우고 싶습니다. 특히 심리학과 전공 과목들은 이론과 실습이 함께 있어서 어떻게 공부해야 할지 막막합니다. 성적 관리도 체계적으로 하고 싶고, 시험 준비를 더 효율적으로 하는 방법을 알고 싶어서 학습 컨설팅을 신청하게 되었습니다.
+                </div>
+            </div>
+        </div>
+
+        <!-- 상담 진행 정보 섹션 -->
+        <div class="detail-container">
+            <div class="section-title">상담 진행 정보</div>
+            <table class="counseling-table">
+                <thead>
+                    <tr>
+                        <th>날짜</th>
+                        <th>차수</th>
+                        <th>진행상태</th>
+                        <th>일지 작성여부</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2025-06-15</td>
+                        <td>1회</td>
+                        <td><span class="status-progress">진행</span></td>
+                        <td>
+                            <div class="radio-column">
+                                <span class="status-no">N</span>
+                                <input type="radio" name="selectedSession" value="2025-06-15-1" id="session-1" class="session-radio">
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- 버튼 섹션 -->
+            <div class="button-section">
+                <button class="btn btn-success" onclick="writeCounselingRecord()">상담일지 작성</button>
+                <button class="btn btn-secondary" onclick="completeCounseling()">상담 완료</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

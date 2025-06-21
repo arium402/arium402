@@ -1,0 +1,202 @@
+/* 헤더 스타일 */
+.header-bar {
+    background: white;
+    padding: 15px 30px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo a {
+    display: inline-block;
+    text-decoration: none;
+}
+
+.logo a:hover {
+    opacity: 0.8;
+}
+
+
+
+.logo img {
+    height: 40px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.user-name {
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 15px !important;
+}
+
+.profile-icon {
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+    position: relative;
+    color: #2c3e50;
+}
+
+.profile-icon:hover {
+    opacity: 0.7;
+}
+
+.profile-tooltip {
+    position: absolute;
+    bottom: -35px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #2c3e50;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px !important;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+}
+
+.profile-tooltip::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid #2c3e50;
+}
+
+.profile-icon:hover .profile-tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+
+.logout-btn {
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px !important;
+}
+
+.logout-btn:hover {
+    background: #5a6268;
+}
+
+/* 사이드바 스타일 */
+.main-container {
+    display: flex;
+    min-height: calc(100vh - 80px);
+}
+
+.sidebar {
+    width: 250px;
+    background: #3498db;
+    min-height: calc(100vh - 80px); /* 헤더 높이 제외한 최소 높이 */
+    height: auto; /* 콘텐츠에 따라 높이 자동 조정 */
+    overflow-y: auto; /* 메뉴가 많을 경우 스크롤 */
+    font-family: 'Noto Sans KR', Arial, sans-serif !important;
+}
+
+.sidebar-header {
+    background: #2980b9;
+    color: white;
+    padding: 20px;
+    font-size: 18px !important;
+    font-weight: 600;
+}
+
+.sidebar-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-menu li {
+    border-bottom: 1px solid #5dade2;
+}
+
+/* 사이드바 메뉴 링크 - 절대적 폰트 크기 고정 */
+.sidebar-menu a {
+    display: block !important;
+    color: white !important;
+    padding: 15px 20px !important;
+    text-decoration: none !important;
+    transition: all 0.3s ease !important;
+    font-size: 15px !important; /* 기본 메뉴 폰트 크기 고정 */
+    font-weight: 400 !important;
+    font-family: 'Noto Sans KR', Arial, sans-serif !important;
+    line-height: 1.4 !important;
+}
+
+.sidebar-menu a:hover {
+    background: #2980b9 !important;
+    color: white !important;
+    text-decoration: none !important;
+}
+
+.sidebar-menu a.active {
+    background: #e6a456 !important;
+    color: white !important;
+    text-decoration: none !important;
+}
+
+/* 메인 카테고리 - 절대적 폰트 크기 고정 */
+.sidebar-menu .main-category {
+    font-weight: 600 !important;
+    background: #2980b9 !important;
+    font-size: 16px !important; /* 메인 카테고리는 조금 더 크게 */
+    font-family: 'Noto Sans KR', Arial, sans-serif !important;
+}
+
+/* 서브 카테고리 - 절대적 폰트 크기 고정 */
+.sidebar-menu .sub-category {
+    padding-left: 35px !important;
+    font-size: 14px !important; /* 서브 카테고리 폰트 크기 고정 */
+    font-weight: 400 !important;
+    font-family: 'Noto Sans KR', Arial, sans-serif !important;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .main-container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        min-height: auto;
+    }
+    
+    /* 모바일에서도 폰트 크기 고정 */
+    .sidebar-menu a {
+        font-size: 15px !important;
+    }
+    
+    .sidebar-menu .main-category {
+        font-size: 16px !important;
+    }
+    
+    .sidebar-menu .sub-category {
+        font-size: 14px !important;
+    }
+}

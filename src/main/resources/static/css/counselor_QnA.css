@@ -1,0 +1,359 @@
+/* 문의게시판 페이지 전용 스타일 */
+
+/* 기본 레이아웃 스타일 */
+body {
+    font-family: 'Noto Sans KR', Arial, sans-serif;
+    background-color: #fef7f0;
+    margin: 0;
+    padding: 0;
+}
+
+.content-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.contents {
+    flex: 1;
+    padding: 30px;
+    background: white;
+    margin: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.board_title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 25px;
+    text-align: left;
+    border-bottom: 2px solid #e6a456;
+    padding-bottom: 10px;
+}
+
+.search-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 15px;
+}
+
+.search-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.search-input {
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    width: 250px;
+    font-size: 14px;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #e6a456;
+    box-shadow: 0 0 0 3px rgba(230, 164, 86, 0.1);
+}
+
+.search-btn {
+    background: #e6a456;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    color: white;
+    font-weight: 500;
+}
+
+.search-btn:hover {
+    background: #d4924a;
+}
+
+.sort-select {
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: white;
+    font-size: 14px;
+    min-width: 120px;
+    cursor: pointer;
+}
+
+.sort-select:focus {
+    outline: none;
+    border-color: #e6a456;
+    box-shadow: 0 0 0 3px rgba(230, 164, 86, 0.1);
+}
+
+.qna-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    margin-bottom: 30px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.qna-table thead {
+    background: #f8f9fa;
+}
+
+.qna-table th {
+    padding: 15px;
+    text-align: center;
+    font-weight: 600;
+    color: #2c3e50;
+    border-bottom: 2px solid #e9ecef;
+    font-size: 14px;
+}
+
+.qna-table td {
+    padding: 15px;
+    border-bottom: 1px solid #e9ecef;
+    color: #34495e;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.qna-table .title-cell {
+    text-align: left;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.qna-table .title-cell:hover {
+    color: #e6a456;
+    font-weight: 500;
+}
+
+.qna-table tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+.qna-table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+.qna-table .no-col {
+    width: 8%;
+}
+
+.qna-table .title-col {
+    width: 45%;
+}
+
+.qna-table .author-col {
+    width: 12%;
+}
+
+.qna-table .views-col {
+    width: 8%;
+}
+
+.qna-table .status-col {
+    width: 12%;
+}
+
+.qna-table .date-col {
+    width: 15%;
+}
+
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.status-waiting {
+    background: #ffeaa7;
+    color: #856404;
+}
+
+.status-answered {
+    background: #d1ecf1;
+    color: #0c5460;
+}
+
+.status-urgent {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    margin: 30px 0;
+}
+
+.pagination-btn {
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    background: white;
+    color: #333;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    font-size: 14px;
+}
+
+.pagination-btn:hover {
+    background: #e6a456;
+    color: white;
+    border-color: #e6a456;
+}
+
+.pagination-btn.active {
+    background: #e6a456;
+    color: white;
+    border-color: #e6a456;
+}
+
+.pagination-btn:disabled {
+    background: #f8f9fa;
+    color: #6c757d;
+    cursor: not-allowed;
+    border-color: #e9ecef;
+}
+
+.pagination-btn:disabled:hover {
+    background: #f8f9fa;
+    color: #6c757d;
+    border-color: #e9ecef;
+}
+
+.no-data {
+    text-align: center;
+    padding: 40px;
+    color: #7f8c8d;
+    font-style: italic;
+}
+
+.urgent-question {
+    background: #fff3cd;
+    border-left: 4px solid #e74c3c;
+}
+
+.urgent-question .title-cell {
+    font-weight: 600;
+    color: #721c24;
+}
+
+.stats-section {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    margin-bottom: 25px;
+    background: #e9ecef;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.stat-card {
+    background: white;
+    padding: 25px 20px;
+    text-align: center;
+    position: relative;
+    transition: background-color 0.2s ease;
+}
+
+.stat-card:hover {
+    background: #f8f9fa;
+}
+
+.stat-card.waiting {
+    border-top: 3px solid #f39c12;
+}
+
+.stat-card.answered {
+    border-top: 3px solid #27ae60;
+}
+
+.stat-card.urgent {
+    border-top: 3px solid #e74c3c;
+}
+
+.stat-card.total {
+    border-top: 3px solid #3498db;
+}
+
+.stat-number {
+    font-size: 24px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    font-size: 14px;
+    color: #7f8c8d;
+    font-weight: 500;
+}
+
+@media (max-width: 768px) {
+    .contents {
+        margin: 10px;
+        padding: 20px;
+    }
+    
+    .search-section {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .search-input {
+        width: 100%;
+    }
+    
+    .qna-table {
+        width: 100%;
+        font-size: 12px;
+    }
+    
+    .qna-table th,
+    .qna-table td {
+        padding: 8px;
+    }
+    
+    .qna-table .author-col,
+    .qna-table .views-col {
+        display: none;
+    }
+    
+    .qna-table .no-col {
+        width: 12%;
+    }
+    
+    .qna-table .title-col {
+        width: 50%;
+    }
+    
+    .qna-table .status-col {
+        width: 20%;
+    }
+    
+    .qna-table .date-col {
+        width: 18%;
+    }
+
+    .stats-section {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1px;
+    }
+
+    .stat-card {
+        padding: 20px 15px;
+    }
+}

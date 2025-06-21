@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>대시보드</title>
+    <link href="./css/bootstrap/bootstrap.css" rel="stylesheet" crossorigin="anonymous">
+    <link href="./css/home.css" rel="stylesheet">
+    <link href="./css/board.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', Arial, sans-serif;
+            background-color: #fef7f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header-bar {
+            background: white;
+            padding: 15px 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 40px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .profile-icon {
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+            position: relative;
+            color: #2c3e50;
+        }
+
+        .profile-icon:hover {
+            opacity: 0.7;
+        }
+
+        .profile-tooltip {
+            position: absolute;
+            bottom: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2c3e50;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+        }
+
+        .profile-tooltip::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-bottom: 5px solid #2c3e50;
+        }
+
+        .profile-icon:hover .profile-tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .logout-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .logout-btn:hover {
+            background: #5a6268;
+        }
+
+        .main-container {
+            display: flex;
+            min-height: calc(100vh - 80px);
+        }
+
+        .sidebar {
+            width: 250px;
+            background: #3498db;
+            height: calc(100vh - 80px); /* 헤더 높이 제외한 전체 높이 */
+            overflow-y: auto; /* 메뉴가 많을 경우 스크롤 */
+        }
+        .sidebar-header {
+            background: #2980b9;
+            color: white;
+            padding: 20px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-menu li {
+            border-bottom: 1px solid #5dade2;
+        }
+
+        .sidebar-menu a {
+            display: block;
+            color: white;
+            padding: 15px 20px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-menu a:hover {
+            background: #2980b9;
+            color: white;
+            text-decoration: none;
+        }
+
+        .sidebar-menu a.active {
+            background: #e6a456;
+            color: white;
+            text-decoration: none;
+        }
+
+        .sidebar-menu .main-category {
+            font-weight: 600;
+            background: #2980b9;
+        }
+
+        .sidebar-menu .sub-category {
+            padding-left: 35px;
+            font-size: 14px;
+        }
+
+        .content-area {
+            flex: 1;
+            padding: 30px;
+            width: 100%;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            grid-template-rows: auto auto;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 25px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .schedule-summary {
+            grid-column: 1 / 2;
+            grid-row: 1 / 2;
+            min-height: 280px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .schedule-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 0;
+            border-bottom: 1px solid #ecf0f1;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            flex: 1;
+        }
+
+        .schedule-item:hover {
+            background-color: #f8f9fa;
+            margin: 0 -25px;
+            padding-left: 25px;
+            padding-right: 25px;
+        }
+
+        .schedule-item:last-child {
+            border-bottom: none;
+        }
+
+        .schedule-label {
+            font-weight: 500;
+            color: #34495e;
+        }
+
+        .schedule-count {
+            font-size: 24px;
+            font-weight: 700;
+            color: #3498db;
+        }
+
+        .stats-chart {
+            grid-column: 2 / 3;
+            grid-row: 1 / 2;
+        }
+
+        .chart-container {
+            height: 280px;
+            position: relative;
+            background: #f8f9fa;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chart-legend {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 15px;
+            font-size: 12px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 8px 12px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .notices {
+            grid-column: 1 / 2;
+            grid-row: 2 / 3;
+        }
+
+        .notice-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .more-btn {
+            background: none;
+            border: 1px solid #bdc3c7;
+            color: #6c757d;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .more-btn:hover {
+            background: #f8f9fa;
+            border-color: #95a5a6;
+        }
+
+        .notice-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .notice-item {
+            padding: 12px 0;
+            border-bottom: 1px solid #ecf0f1;
+            cursor: pointer;
+        }
+
+        .notice-item:hover {
+            background-color: #f8f9fa;
+            margin: 0 -25px;
+            padding-left: 25px;
+            padding-right: 25px;
+        }
+
+        .notice-item:last-child {
+            border-bottom: none;
+        }
+
+        .notice-title {
+            font-weight: 500;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .notice-date {
+            font-size: 12px;
+            color: #7f8c8d;
+        }
+
+        /* 오늘의 스케줄 스타일 */
+        .today-schedule {
+            grid-column: 2 / 3;
+            grid-row: 2 / 3;
+        }
+
+        .schedule-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .schedule-list .schedule-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #e9ecef;
+            transition: background-color 0.2s ease;
+        }
+
+        .schedule-list .schedule-item:hover {
+            background-color: #f8f9fa;
+            margin: 0 -25px;
+            padding-left: 25px;
+            padding-right: 25px;
+            border-radius: 4px;
+        }
+
+        .schedule-list .schedule-item:last-child {
+            border-bottom: none;
+        }
+
+        .schedule-time {
+            width: 60px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #3498db;
+        }
+
+        .schedule-content {
+            flex: 1;
+            margin-left: 15px;
+        }
+
+        .schedule-title {
+            font-weight: 500;
+            color: #2c3e50;
+            margin-bottom: 3px;
+        }
+
+        .schedule-client {
+            font-size: 13px;
+            color: #6c757d;
+        }
+
+        .icon {
+            width: 16px;
+            height: 16px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                min-height: auto;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto auto auto;
+            }
+            
+            .schedule-summary {
+                grid-column: 1;
+                grid-row: 1;
+            }
+            
+            .stats-chart {
+                grid-column: 1;
+                grid-row: 2;
+            }
+            
+            .notices {
+                grid-column: 1;
+                grid-row: 3;
+            }
+
+            .today-schedule {
+                grid-column: 1;
+                grid-row: 4;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header-bar">
+        <div class="logo">
+            <img src="./images/logo-header.png" alt="로고">
+        </div>
+        <div class="user-info">
+            <span class="user-name">김상담 상담사</span>
+            <div class="profile-icon" onclick="goToMyPage()">
+                <svg fill="currentColor" viewBox="0 0 20 20" width="32" height="32">
+                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+                </svg>
+                <div class="profile-tooltip">마이페이지</div>
+            </div>
+            <button class="logout-btn">로그아웃</button>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <nav class="sidebar">
+            <ul class="sidebar-menu">
+                <li><a href="#" class="main-category">상담관리</a></li>
+                <li><a href="#" class="sub-category">신청자 관리</a></li>
+                <li><a href="#" class="sub-category">내담자 관리</a></li>
+                <li><a href="#" class="sub-category">상담 일정 확인</a></li>
+                <li><a href="#" class="sub-category">근무 일정 관리</a></li>
+                <li><a href="#" class="main-category">게시판 관리</a></li>
+                <li><a href="#" class="sub-category">공지사항</a></li>
+                <li><a href="#" class="sub-category">F&Q</a></li>
+                <li><a href="#" class="sub-category">문의 게시판</a></li>
+            </ul>
+        </nav>
+
+        <div class="content-area">
+            <div class="dashboard-grid">
+                <div class="card schedule-summary">
+                    <h3 class="card-title">
+                         <svg class="icon" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"></path>
+                        </svg>
+                        월간 상담통계
+                    </h3>
+                    <div style="margin-bottom: 20px;">
+                        <div style="font-weight: 600; color: #2c3e50; margin-bottom: 10px;">일반 상담</div>
+                        <div style="display: flex; gap: 20px;">
+                            <span><strong>심리</strong> <strong style="color: #e6a456;">24</strong>건</span>
+                            <span><strong>익명</strong> <strong style="color: #e6a456;">18</strong>건</span>
+                            <span><strong>위기</strong> <strong style="color: #e74c3c;">3</strong>건</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="font-weight: 600; color: #2c3e50; margin-bottom: 10px;">학업 상담</div>
+                        <div style="display: flex; gap: 20px;">
+                            <span><strong>진로/취업</strong> <strong style="color: #3498db;">16</strong>건</span>
+                            <span><strong>학습 컨설팅</strong> <strong style="color: #3498db;">12</strong>건</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card stats-chart">
+                    <h3 class="card-title">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"></path>
+                        </svg>
+                        전체 통계
+                    </h3>
+                    <div class="chart-container">
+                        <canvas id="statsChart" width="400" height="250"></canvas>
+                        <div class="chart-legend">
+                            <div style="display: flex; align-items: center; gap: 5px;">
+                                <div style="width: 12px; height: 12px; background: #e6a456;"></div>
+                                <span>일반상담</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 5px;">
+                                <div style="width: 12px; height: 12px; background: #3498db;"></div>
+                                <span>학업상담</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card notices">
+                    <div class="notice-header">
+                        <h3 class="card-title">
+                            <svg class="icon" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                            </svg>
+                            공지사항
+                        </h3>
+                        <button class="more-btn" onclick="goToNotices()">더보기</button>
+                    </div>
+                    <ul class="notice-list">
+                        <li class="notice-item" onclick="openNotice(1)">
+                            <div class="notice-title">2025년 상담 프로그램 운영 안내</div>
+                            <div class="notice-date">2025.06.10</div>
+                        </li>
+                        <li class="notice-item" onclick="openNotice(2)">
+                            <div class="notice-title">상담사 전문성 향상 워크숍 개최</div>
+                            <div class="notice-date">2025.06.08</div>
+                        </li>
+                        <li class="notice-item" onclick="openNotice(3)">
+                            <div class="notice-title">하계 휴무 일정 및 응급상담 안내</div>
+                            <div class="notice-date">2025.06.05</div>
+                        </li>
+                        <li class="notice-item" onclick="openNotice(4)">
+                            <div class="notice-title">온라인 상담 시스템 업그레이드 완료</div>
+                            <div class="notice-date">2025.06.01</div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 오늘의 스케줄 카드 추가 -->
+                <div class="card today-schedule">
+                    <h3 class="card-title">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path>
+                        </svg>
+                        오늘의 일정
+                    </h3>
+                    <div class="schedule-list">
+                        <div class="schedule-item">
+                            <div class="schedule-time">10:00</div>
+                            <div class="schedule-content">
+                                <div class="schedule-title">개별 학습상담</div>
+                                <div class="schedule-client">김학생</div>
+                            </div>
+                        </div>
+                        <div class="schedule-item">
+                            <div class="schedule-time">14:00</div>
+                            <div class="schedule-content">
+                                <div class="schedule-title">진로 상담</div>
+                                <div class="schedule-client">이학생</div>
+                            </div>
+                        </div>
+                        <div class="schedule-item">
+                            <div class="schedule-time">16:00</div>
+                            <div class="schedule-content">
+                                <div class="schedule-title">집단 상담</div>
+                                <div class="schedule-client">3학년 학습전략 그룹</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 상담 통계 차트 그리기
+        function drawStatsChart() {
+            const canvas = document.getElementById('statsChart');
+            const ctx = canvas.getContext('2d');
+            
+            // 차트 데이터 (6개월간 상담 건수)
+            const months = ['1월', '2월', '3월', '4월', '5월', '6월'];
+            const generalData = [45, 52, 38, 61, 48, 55]; // 일반상담
+            const academicData = [28, 34, 25, 39, 31, 35]; // 학업상담
+            
+            const canvasWidth = canvas.width;
+            const canvasHeight = canvas.height;
+            const chartWidth = canvasWidth - 80;
+            const chartHeight = canvasHeight - 80;
+            const startX = 50;
+            const startY = 40;
+            
+            // 배경
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+            
+            // 축 그리기
+            ctx.strokeStyle = '#bdc3c7';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(startX, startY);
+            ctx.lineTo(startX, startY + chartHeight);
+            ctx.lineTo(startX + chartWidth, startY + chartHeight);
+            ctx.stroke();
+            
+            // 데이터 점과 막대 그리기
+            const barWidth = (chartWidth / months.length) * 0.3;
+            const maxValue = Math.max(...generalData, ...academicData);
+            
+            months.forEach((month, index) => {
+                const x = startX + (chartWidth / months.length) * index + (chartWidth / months.length) * 0.5;
+                
+                // 일반상담 막대 (부드러운 주황색)
+                const generalHeight = (generalData[index] / maxValue) * (chartHeight - 20);
+                const generalY = startY + chartHeight - generalHeight;
+                ctx.fillStyle = '#e6a456';
+                ctx.fillRect(x - barWidth - 2, generalY, barWidth, generalHeight);
+                
+                // 학업상담 막대 (파란색)
+                const academicHeight = (academicData[index] / maxValue) * (chartHeight - 20);
+                const academicY = startY + chartHeight - academicHeight;
+                ctx.fillStyle = '#3498db';
+                ctx.fillRect(x + 2, academicY, barWidth, academicHeight);
+                
+                // 값 표시
+                ctx.fillStyle = '#2c3e50';
+                ctx.font = '10px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText(generalData[index], x - barWidth/2 - 2, generalY - 5);
+                ctx.fillText(academicData[index], x + barWidth/2 + 2, academicY - 5);
+                
+                // 월 표시
+                ctx.fillText(month, x, startY + chartHeight + 15);
+            });
+        }
+
+        // 마이페이지로 이동
+        function goToMyPage() {
+            // 새 창에서 마이페이지 열기
+            window.open('mypage.html', '_blank');
+        }
+
+        // 스케줄 관리로 이동
+        function goToSchedule(type) {
+            if (type === 'weekly') {
+                alert('일반 상담 상세보기로 이동합니다.');
+            } else if (type === 'monthly') {
+                alert('학업 상담 상세보기로 이동합니다.');
+            } else if (type === 'emergency') {
+                alert('진로/취업 상담 상세보기로 이동합니다.');
+            } else if (type === 'total') {
+                alert('학습 컨설팅 상세보기로 이동합니다.');
+            }
+        }
+
+        // 공지사항 상세보기
+        function openNotice(id) {
+            alert(`공지사항 ${id}번 상세보기 페이지로 이동합니다.`);
+            // window.location.href = `/notice/${id}`;
+        }
+
+        // 공지사항 전체보기
+        function goToNotices() {
+            alert('전체 공지사항 페이지로 이동합니다.');
+            // window.location.href = '/notices';
+        }
+
+        // 페이지 로드 시 차트 그리기
+        window.onload = function() {
+            drawStatsChart();
+        };
+
+        // 사이드바 메뉴 클릭 핸들링
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuLinks = document.querySelectorAll('.sidebar-menu a:not(.main-category)');
+            
+            menuLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // 모든 메뉴에서 active 클래스 제거
+                    menuLinks.forEach(l => l.classList.remove('active'));
+                    
+                    // 클릭된 메뉴에 active 클래스 추가
+                    this.classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
