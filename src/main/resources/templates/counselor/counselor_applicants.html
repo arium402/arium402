@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>신청자 관리</title>
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/css/bootstrap/bootstrap.css">
+    <link rel="stylesheet" href="/css/counselor_header-sidebar.css">
+    <link rel="stylesheet" href="/css/counselor_applicants.css">
+
+</head>
+<body>
+    <!-- 헤더 영역 -->
+    <div th:replace="~{fragments/counselor_header :: header}"></div>
+
+    <div class="main-container">
+        <!-- 사이드바 영역 -->
+        <div th:replace="~{fragments/counselor_sidebar :: sidebar}"></div>
+
+        <!-- 메인 콘텐츠 영역 -->
+        <div class="contents">
+            <h4 class="board_title">신청자 관리</h4>
+            
+            <!-- 검색 섹션 및 신청자 목록 뷰 -->
+            <div th:replace="~{counselor/counselor_applicants_view :: applicantContent}"></div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="/js/counselor/counselor_applicants.js"></script>
+    <script src="/js/counselor/counselor_header.js"></script>
+    <script src="/js/counselor/counselor_sidebar.js"></script>
+</body>
+</html>

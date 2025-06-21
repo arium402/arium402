@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <!-- 신청자 콘텐츠 전체 프래그먼트 (검색 섹션 + 목록) -->
+    <div th:fragment="applicantContent">
+        <!-- 검색 섹션 -->
+        <div class="search-section">
+            <select class="dropdown" id="searchTypeSelect">
+                <option value="all">전체</option>
+                <option value="name">이름</option>
+                <option value="department">학과</option>
+                <option value="studentId">학번</option>
+            </select>
+            <input type="text" class="search-input" id="searchInput" placeholder="검색어 입력">
+            <button class="search-btn" onclick="searchApplicants()">검색</button>
+            <span>날짜</span>
+            <input type="date" class="date-input" id="startDate">
+            <span>~</span>
+            <input type="date" class="date-input" id="endDate">
+            <button class="search-btn" onclick="searchApplicants()">조회</button>
+            <select class="dropdown" id="sortSelect" onchange="sortApplicants()">
+                <option value="date">최신순</option>
+                <option value="name">이름순</option>
+                <option value="studentId">학번순</option>
+                <option value="department">학과순</option>
+            </select>
+        </div>
+
+        <!-- 신청자 목록 -->
+        <div th:replace="~{counselor/counselor_applicants_view :: applicantList}"></div>
+    </div>
+
+    <!-- 신청자 목록 프래그먼트 -->
+    <div th:fragment="applicantList">
+        <table class="applicant-table">
+            <thead>
+                <tr>
+                    <th>NO</th>
+                    <th>신청자명</th>
+                    <th>학번</th>
+                    <th>학과</th>
+                    <th>신청일자</th>
+                </tr>
+            </thead>
+            <tbody id="applicantTableBody">
+                <!-- 샘플 데이터 (하드코딩) -->
+                <tr>
+                    <td>1</td>
+                    <td>김학생</td>
+                    <td>20230001</td>
+                    <td>컴퓨터공학과</td>
+                    <td>2025-06-20</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>이학생</td>
+                    <td>20230002</td>
+                    <td>경영학과</td>
+                    <td>2025-06-19</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>박학생</td>
+                    <td>20230003</td>
+                    <td>심리학과</td>
+                    <td>2025-06-18</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>최학생</td>
+                    <td>20230004</td>
+                    <td>교육학과</td>
+                    <td>2025-06-17</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>정학생</td>
+                    <td>20230005</td>
+                    <td>사회복지학과</td>
+                    <td>2025-06-16</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="pagination" id="pagination">
+            <!-- 페이지네이션 샘플 (하드코딩) -->
+            <button disabled>&lt;&lt;</button>
+            <button disabled>&lt;</button>
+            <button class="active">1</button>
+            <button disabled>&gt;</button>
+            <button disabled>&gt;&gt;</button>
+            <span class="page-info">1 / 1 페이지</span>
+        </div>
+    </div>
+</body>
+</html>

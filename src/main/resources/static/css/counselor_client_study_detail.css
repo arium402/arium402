@@ -1,0 +1,376 @@
+/* 학습 컨설팅 내담자 상세 정보 페이지 CSS */
+
+body {
+    font-family: 'Noto Sans KR', Arial, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+}
+
+/* 🚀 사이드바 페이지 끝까지 연장 해결책 - 최강 우선순위 */
+/* 더 구체적인 선택자로 강제 적용 */
+html body .main-container {
+    display: flex !important;
+    min-height: 100vh !important; /* 전체 화면 높이 */
+    height: auto !important; /* 콘텐츠에 따라 높이 자동 조정 */
+}
+
+/* 사이드바 최강 설정 */
+html body .main-container .sidebar,
+html body .sidebar,
+.main-container .sidebar {
+    height: auto !important; /* 자동 높이 */
+    min-height: 100vh !important; /* 전체 화면 높이 최소 보장 */
+    background: #3498db !important; /* 배경색도 확실히 */
+}
+
+/* 추가적인 강제 설정 */
+.sidebar {
+    height: auto !important;
+    min-height: 100vh !important;
+}
+
+body .main-container .content-area {
+    flex: 1 !important;
+    padding: 30px;
+    width: auto !important;
+}
+
+.content-area {
+    flex: 1;
+    padding: 30px;
+}
+
+.page-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+}
+
+.learning-badge {
+    background: #8e44ad;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-left: 10px;
+}
+
+.detail-container {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    padding: 30px;
+    margin-bottom: 20px;
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #3498db;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #ecf0f1;
+}
+
+.info-label {
+    font-weight: 600;
+    color: #34495e;
+    width: 120px;
+    flex-shrink: 0;
+}
+
+.info-value {
+    color: #2c3e50;
+    flex: 1;
+}
+
+.learning-section {
+    margin-bottom: 25px;
+}
+
+.learning-section-title {
+    font-weight: 600;
+    color: #34495e;
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.radio-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.radio-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #2c3e50;
+    font-size: 14px;
+    min-width: 120px;
+}
+
+.radio-item input[type="radio"] {
+    margin: 0;
+}
+
+.checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #2c3e50;
+    font-size: 14px;
+    min-width: 180px;
+}
+
+.checkbox-item input[type="checkbox"] {
+    margin: 0;
+}
+
+.application-reason {
+    margin-bottom: 20px;
+}
+
+.application-reason-label {
+    font-weight: 600;
+    color: #34495e;
+    margin-bottom: 10px;
+}
+
+.application-reason-text {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 6px;
+    border-left: 4px solid #8e44ad;
+    color: #2c3e50;
+    line-height: 1.6;
+}
+
+.counseling-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.counseling-table th,
+.counseling-table td {
+    border: 1px solid #bdc3c7;
+    padding: 12px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.counseling-table th {
+    background: #ecf0f1;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.status-yes {
+    color: #27ae60;
+    font-weight: 600;
+}
+
+.status-no {
+    color: #e74c3c;
+    font-weight: 600;
+}
+
+.status-progress {
+    color: #f39c12;
+    font-weight: 600;
+}
+
+.status-complete {
+    color: #27ae60;
+    font-weight: 600;
+}
+
+.radio-column {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.session-radio {
+    margin: 0;
+}
+
+.button-section {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: #3498db;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #2980b9;
+}
+
+.btn-success {
+    background: #27ae60;
+    color: white;
+}
+
+.btn-success:hover {
+    background: #229954;
+}
+
+.btn-secondary {
+    background: #95a5a6;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #7f8c8d;
+}
+
+.btn-danger {
+    background: #e74c3c;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #c0392b;
+}
+
+.back-btn {
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.back-btn:hover {
+    background: #5a6268;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .main-container {
+        flex-direction: column !important;
+    }
+    
+    body .main-container .sidebar {
+        width: 100% !important;
+        min-height: auto !important;
+        height: auto !important;
+    }
+
+    .content-area {
+        padding: 20px;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .button-section {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .btn {
+        width: 200px;
+    }
+
+    .radio-group,
+    .checkbox-group {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .counseling-table {
+        font-size: 12px;
+    }
+
+    .counseling-table th,
+    .counseling-table td {
+        padding: 8px;
+    }
+
+    .radio-item,
+    .checkbox-item {
+        min-width: auto;
+    }
+
+    .page-title {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .learning-badge {
+        margin-left: 0;
+    }
+}
+
+/* 🔥 최종 강제 설정 - 맨 마지막에 적용 */
+/* 사이드바를 어떤 방법으로든 페이지 끝까지 연장 */
+.sidebar,
+div[class*="sidebar"],
+.main-container > div:first-child {
+    height: auto !important;
+    min-height: 100vh !important;
+    box-sizing: border-box !important;
+}
+
+/* flexbox로 강제 늘리기 */
+.main-container {
+    display: flex !important;
+    align-items: stretch !important; /* 자식 요소들을 같은 높이로 */
+    min-height: 100vh !important;
+}
+
+/* JavaScript로도 강제 적용할 수 있는 스타일 */
+.force-full-height {
+    height: auto !important;
+    min-height: 100vh !important;
+}

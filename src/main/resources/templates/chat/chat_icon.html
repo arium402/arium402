@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <!-- 채팅 아이콘 프래그먼트 -->
+    <div th:fragment="chatIcon" class="chat-icon-widget">
+        <button class="chat-icon-button" onclick="openChatWindow()" aria-label="상담 채팅">
+            <!-- 간단한 말풍선 아이콘 -->
+            <svg class="chat-bubble-icon" fill="white" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12c0 2.85 1.2 5.41 3.11 7.24L3 23l3.76-2.11C8.59 21.8 10.25 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/>
+                <!-- 점 3개 -->
+                <circle cx="8" cy="12" r="1.5"/>
+                <circle cx="12" cy="12" r="1.5"/>
+                <circle cx="16" cy="12" r="1.5"/>
+            </svg>
+        </button>
+    </div>
+
+    <style>
+        /* 채팅 아이콘 위젯 */
+        .chat-icon-widget {
+            position: fixed !important;
+            bottom: 25px !important;
+            right: 25px !important;
+            z-index: 9999 !important;
+            pointer-events: none;
+        }
+
+        /* 채팅 아이콘 버튼 */
+        .chat-icon-button {
+            width: 60px !important;
+            height: 60px !important;
+            background: linear-gradient(135deg, #e6a456 0%, #d4932b 100%) !important;
+            border: none !important;
+            border-radius: 50% !important;
+            cursor: pointer !important;
+            box-shadow: 0 4px 15px rgba(230, 164, 86, 0.4) !important;
+            transition: all 0.3s ease !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            pointer-events: auto !important;
+            position: relative !important;
+        }
+
+        .chat-icon-button:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 6px 20px rgba(230, 164, 86, 0.6) !important;
+            background: linear-gradient(135deg, #d4932b 0%, #c87f1a 100%) !important;
+        }
+
+        .chat-icon-button:active {
+            transform: translateY(0) !important;
+        }
+
+        /* 말풍선 아이콘 */
+        .chat-bubble-icon {
+            width: 32px !important;
+            height: 32px !important;
+        }
+
+        /* 모바일 반응형 */
+        @media (max-width: 768px) {
+            .chat-icon-widget {
+                bottom: 20px !important;
+                right: 20px !important;
+            }
+            
+            .chat-icon-button {
+                width: 55px !important;
+                height: 55px !important;
+            }
+            
+            .chat-bubble-icon {
+                width: 28px !important;
+                height: 28px !important;
+            }
+        }
+    </style>
+
+    <script>
+        // 채팅창 열기 함수
+        function openChatWindow() {
+            console.log('상담 채팅창 열기');
+            // 새 창으로 채팅 페이지 열기
+            window.open('/chat/counselor', 'chatWindow', 'width=400,height=600,scrollbars=no,resizable=yes');
+        }
+    </script>
+</body>
+</html>

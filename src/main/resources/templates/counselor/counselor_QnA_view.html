@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <section th:fragment="content" class="contents">
+        <h4 class="board_title">문의게시판</h4>
+        
+        <div class="search-section">
+            <div class="search-wrapper">
+                <input type="text" class="search-input" placeholder="제목 또는 내용을 검색하세요" id="searchInput">
+                <button class="search-btn" onclick="searchQnA()">검색</button>
+            </div>
+            
+            <select class="sort-select" id="sortSelect" onchange="sortQnA()">
+                <option value="latest">최신순</option>
+                <option value="urgent">긴급순</option>
+                <option value="waiting">답변대기</option>
+                <option value="answered">답변완료</option>
+            </select>
+        </div>
+        
+        <div class="table-container">
+            <table class="qna-table">
+                <colgroup>
+                    <col class="no-col">
+                    <col class="title-col">
+                    <col class="author-col">
+                    <col class="views-col">
+                    <col class="status-col">
+                    <col class="date-col">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>NO</th>
+                        <th>제목</th>
+                        <th>글쓴이</th>
+                        <th>조회수</th>
+                        <th>답변상태</th>
+                        <th>날짜</th>
+                    </tr>
+                </thead>
+                <tbody id="qnaList">
+                    <tr class="urgent-question">
+                        <td>53</td>
+                        <td class="title-cell" onclick="openQnA(1)">
+                            [긴급] 상담 예약 취소 관련 문의
+                        </td>
+                        <td>김학생</td>
+                        <td>5</td>
+                        <td><span class="status-badge status-urgent">긴급문의</span></td>
+                        <td>2025-06-14</td>
+                    </tr>
+                    <tr class="urgent-question">
+                        <td>52</td>
+                        <td class="title-cell" onclick="openQnA(2)">
+                            [긴급] 심리검사 결과 상담 요청
+                        </td>
+                        <td>이학생</td>
+                        <td>8</td>
+                        <td><span class="status-badge status-urgent">긴급문의</span></td>
+                        <td>2025-06-13</td>
+                    </tr>
+                    <tr class="urgent-question">
+                        <td>44</td>
+                        <td class="title-cell" onclick="openQnA(3)">
+                            [긴급] 위기상담 신청 방법
+                        </td>
+                        <td>임학생</td>
+                        <td>7</td>
+                        <td><span class="status-badge status-urgent">긴급문의</span></td>
+                        <td>2025-06-05</td>
+                    </tr>
+                    <tr>
+                        <td>51</td>
+                        <td class="title-cell" onclick="openQnA(4)">
+                            온라인 상담 시간 변경 가능한가요?
+                        </td>
+                        <td>박학생</td>
+                        <td>12</td>
+                        <td><span class="status-badge status-waiting">답변대기</span></td>
+                        <td>2025-06-12</td>
+                    </tr>
+                    <tr>
+                        <td>50</td>
+                        <td class="title-cell" onclick="openQnA(5)">
+                            진로상담 신청 방법이 궁금합니다
+                        </td>
+                        <td>최학생</td>
+                        <td>18</td>
+                        <td><span class="status-badge status-answered">답변완료</span></td>
+                        <td>2025-06-11</td>
+                    </tr>
+                    <tr>
+                        <td>49</td>
+                        <td class="title-cell" onclick="openQnA(6)">
+                            상담 내용 비밀보장 관련 질문
+                        </td>
+                        <td>정학생</td>
+                        <td>23</td>
+                        <td><span class="status-badge status-answered">답변완료</span></td>
+                        <td>2025-06-10</td>
+                    </tr>
+                    <tr>
+                        <td>48</td>
+                        <td class="title-cell" onclick="openQnA(7)">
+                            집단상담 프로그램 참여 문의
+                        </td>
+                        <td>한학생</td>
+                        <td>15</td>
+                        <td><span class="status-badge status-waiting">답변대기</span></td>
+                        <td>2025-06-09</td>
+                    </tr>
+                    <tr>
+                        <td>47</td>
+                        <td class="title-cell" onclick="openQnA(8)">
+                            학습전략 상담 예약 가능 시간
+                        </td>
+                        <td>양학생</td>
+                        <td>31</td>
+                        <td><span class="status-badge status-answered">답변완료</span></td>
+                        <td>2025-06-08</td>
+                    </tr>
+                    <tr>
+                        <td>46</td>
+                        <td class="title-cell" onclick="openQnA(9)">
+                            심리검사 종류와 소요시간 안내
+                        </td>
+                        <td>조학생</td>
+                        <td>27</td>
+                        <td><span class="status-badge status-answered">답변완료</span></td>
+                        <td>2025-06-07</td>
+                    </tr>
+                    <tr>
+                        <td>45</td>
+                        <td class="title-cell" onclick="openQnA(10)">
+                            상담료 할인 제도가 있나요?
+                        </td>
+                        <td>윤학생</td>
+                        <td>19</td>
+                        <td><span class="status-badge status-waiting">답변대기</span></td>
+                        <td>2025-06-06</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="pagination">
+            <button class="pagination-btn" id="prevBtn" onclick="changePage(-1)">＜</button>
+            <button class="pagination-btn active" onclick="goToPage(1)">1</button>
+            <button class="pagination-btn" onclick="goToPage(2)">2</button>
+            <button class="pagination-btn" id="nextBtn" onclick="changePage(1)">＞</button>
+        </div>
+    </section>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <!-- 사이드바 프래그먼트 - onclick 제거 -->
+    <nav th:fragment="sidebar" class="sidebar">
+        <ul class="sidebar-menu">
+            <li><a href="#" class="main-category">상담관리</a></li>
+            <li><a th:href="@{/counselor/applicants}" class="sub-category">신청자 관리</a></li>
+            <li><a th:href="@{/counselor/clients}" class="sub-category">내담자 관리</a></li>
+            <li><a th:href="@{/counselor/schedule_check}" class="sub-category">상담 일정 확인</a></li>
+            <li><a th:href="@{/counselor/counseling_schedule}" class="sub-category">근무 일정 관리</a></li>
+            <li><a href="#" class="main-category">게시판 관리</a></li>
+            <li><a th:href="@{/counselor/notice}" class="sub-category">공지사항</a></li>
+            <li><a th:href="@{/counselor/faq}" class="sub-category">F&Q</a></li>
+            <li><a th:href="@{/counselor/QnA}" class="sub-category">문의 게시판</a></li>
+        </ul>
+    </nav>
+    <script src="/js/counselor/counselor_sidebar.js"></script>
+</body>
+</html>

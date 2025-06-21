@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <!-- 내담자 상세 콘텐츠 프래그먼트 -->
+    <div th:fragment="clientDetailContent">
+        <button class="back-btn" onclick="goBack()">← 목록으로 돌아가기</button>
+        <div class="page-title">내담자 상세 정보</div>
+        
+        <!-- 학생 정보 섹션 (항상 표시) -->
+        <div class="detail-container">
+            <div class="section-title">학생 정보</div>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">이름:</div>
+                    <div class="info-value" id="studentName">김민수</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">성별:</div>
+                    <div class="info-value" id="studentGender">남</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">생년월일:</div>
+                    <div class="info-value" id="studentBirth">2002-03-15</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">학번:</div>
+                    <div class="info-value" id="studentId">202012345</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">학과:</div>
+                    <div class="info-value" id="studentDepartment">컴퓨터공학과</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">연락처:</div>
+                    <div class="info-value" id="studentPhone">010-1234-5678</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">이메일:</div>
+                    <div class="info-value" id="studentEmail">minsu.kim@university.ac.kr</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">주소:</div>
+                    <div class="info-value" id="studentAddress">서울시 강남구 테헤란로 123</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">신청유형:</div>
+                    <div class="info-value" id="applicationType">개인상담</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">이전 상담 경험:</div>
+                    <div class="info-value" id="previousCounseling">없음</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 기존 정보 섹션들 (상세보기 모드) -->
+        <!-- 사전 검사 결과 섹션 -->
+        <div class="detail-container">
+            <div class="section-title">사전 검사 결과</div>
+           
+            <!-- 관계 정보 -->
+            <div class="checkbox-section">
+                <div class="checkbox-section-title">관계 (복수 선택 가능)</div>
+                <div class="checkbox-group" id="relationshipInfo">
+                    <div class="checkbox-item">
+                        <input type="checkbox" checked disabled>
+                        <label>가족관계</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" disabled>
+                        <label>교우관계</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" disabled>
+                        <label>친구관계</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" checked disabled>
+                        <label>대인관계</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 정서 정보 -->
+            <div class="checkbox-section">
+                <div class="checkbox-section-title">정서 (복수 선택 가능)</div>
+                <div class="checkbox-group" id="emotionInfo">
+                    <div class="checkbox-item">
+                        <input type="checkbox" disabled>
+                        <label>우울</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" disabled>
+                        <label>불안/긴장</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" disabled>
+                        <label>강박</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" disabled>
+                        <label>화/분노/분노</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" checked disabled>
+                        <label>스트레스</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" disabled>
+                        <label>외로움</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" disabled>
+                        <label>자살생각</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" disabled>
+                        <label>감정기복 조절</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 생활습관 -->
+            <div class="checkbox-section">
+                <div class="checkbox-section-title">생활습관 (복수 선택 가능)</div>
+                <div class="checkbox-group" id="lifestyleInfo">
+                    <div class="checkbox-item">
+                        <input type="checkbox" disabled>
+                        <label>주의집중</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" disabled>
+                        <label>불면증</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" disabled>
+                        <label>중독(게임, 술등, 도박, 스마트폰)</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" checked disabled>
+                        <label>자해</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" disabled>
+                        <label>폭력적 행동</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 이상/성 -->
+            <div class="checkbox-section">
+                <div class="checkbox-section-title">이상/성 (복수 선택 가능)</div>
+                <div class="checkbox-group" id="idealSexInfo">
+                    <div class="checkbox-item">
+                        <input type="checkbox" disabled>
+                        <label>성문제 (이성, 성욕적, 성희롱, 성폭력)</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" disabled>
+                        <label>이성관계</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" disabled>
+                        <label>데이트폭력</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 기타 -->
+            <div class="checkbox-section">
+                <div class="checkbox-section-title">기타</div>
+                <div class="checkbox-group" id="otherInfo">
+                    <div class="checkbox-item">
+                        <input type="checkbox" disabled>
+                        <label>상실의 의미와 목적</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" disabled>
+                        <label>경제적 어려움</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" disabled>
+                        <label>결혼/건강</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" disabled>
+                        <label>종교적/영적</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" disabled>
+                        <label>그 외 다른 어려움</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 현재 어려움 -->
+            <div class="current-concern">
+                <div class="current-concern-label">현재 어려움 *</div>
+                <div class="current-concern-text" id="currentConcern">
+                    현재 어려움에 대해 작성해 주세요. (1~2줄)
+                    
+                    학업 스트레스로 인한 불안감과 수면 장애가 가장 큰 어려움입니다. 과제나 시험 준비를 할 때 집중력이 떨어지고, 자꾸 부정적인 생각이 들어 일상생활에 지장을 받고 있습니다.
+                </div>
+            </div>
+        </div>
+
+        <!-- 상담 진행 정보 섹션 -->
+        <div class="detail-container">
+            <div class="section-title">상담 진행 정보</div>
+            <table class="counseling-table">
+                <thead>
+                    <tr>
+                        <th>날짜</th>
+                        <th>차수</th>
+                        <th>진행상태</th>
+                        <th>일지 작성여부</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2025-06-12</td>
+                        <td>5회</td>
+                        <td><span class="status-progress">진행</span></td>
+                        <td>
+                            <div class="radio-column">
+                                <span class="status-no">N</span>
+                                <input type="radio" name="selectedSession" value="2025-06-12-5" id="session-5" class="session-radio">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2025-06-05</td>
+                        <td>4회</td>
+                        <td><span class="status-complete">완료</span></td>
+                        <td><span class="status-yes">Y</span></td>
+                    </tr>
+                    <tr>
+                        <td>2025-05-29</td>
+                        <td>3회</td>
+                        <td><span class="status-complete">완료</span></td>
+                        <td><span class="status-yes">Y</span></td>
+                    </tr>
+                    <tr>
+                        <td>2025-05-22</td>
+                        <td>2회</td>
+                        <td><span class="status-complete">완료</span></td>
+                        <td>
+                            <div class="radio-column">
+                                <span class="status-no">N</span>
+                                <input type="radio" name="selectedSession" value="2025-05-22-2" id="session-2" class="session-radio">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2025-05-15</td>
+                        <td>1회</td>
+                        <td><span class="status-complete">완료</span></td>
+                        <td><span class="status-yes">Y</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- 버튼 섹션 -->
+            <div class="button-section">
+                <button class="btn btn-primary" onclick="scheduleNextCounseling()">다음 상담 예약</button>
+                <button class="btn btn-success" onclick="writeCounselingRecord()">상담일지 작성</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
