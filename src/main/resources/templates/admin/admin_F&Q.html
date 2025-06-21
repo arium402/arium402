@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="https://www.thymeleaf.org/">
+    <head th:replace="~{/admin_config.html :: admin_config}"></head>
+    <title>F&Q 관리 - 관리자 페이지</title>
+    <link rel="stylesheet" th:href="@{/css/admin/admin_F&Q.css?v=1}">
+    
+    <body class="sb-nav-fixed">
+         <!-- 상단 네비게이션 바 -->
+        <nav th:replace="~{/admin_top.html :: admin_top}"></nav>
+     
+        <div id="layoutSidenav">
+             <!-- 사이드바 -->
+            <div th:replace="~{/admin_sidebar.html :: admin_sidebar}"> </div>
+            
+            <!-- 메인 컨텐츠 -->
+            <div id="layoutSidenav_content">
+                <div class="main-content">
+                    <!-- 페이지 제목 -->
+                    <h1 class="page-title">F&Q 관리</h1>
+                    <div class="title-divider"></div>
+                    
+                    <!-- 페이지 목록 섹션 -->
+                    <div class="management-section">
+                        <div class="section-header">
+                            <h2 class="section-title">
+                                <span class="material-symbols-outlined">folder</span>
+                                페이지 목록
+                            </h2>
+                            <button class="btn-register" onclick="registerPage()">
+                                <i class="fas fa-plus"></i> 페이지 등록
+                            </button>
+                        </div>
+                        
+                        <!-- 페이지 목록 테이블 -->
+                        <table class="data-table" id="pageTable">
+                            <thead>
+                                <tr>
+                                    <th style="width: 10%;">NO</th>
+                                    <th style="width: 30%;">대분류</th>
+                                    <th style="width: 40%;">소분류</th>
+                                    <th style="width: 20%;">등록일</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pageTableBody">
+                                <!-- 데이터는 JavaScript로 동적 생성 -->
+                            </tbody>
+                        </table>
+
+                        <!-- 페이지 목록 페이지네이션 -->
+                        <div class="pagination-container">
+                            <div class="pagination" id="pagePagination">
+                                <!-- 페이지네이션 버튼이 여기에 동적으로 추가됩니다 -->
+                            </div>
+                            <div class="pagination-info" id="pagePaginationInfo">
+                                <!-- 페이지 정보가 여기에 표시됩니다 -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- F&Q 목록 섹션 -->
+                    <div class="management-section">
+                        <div class="section-header">
+                            <h2 class="section-title">
+                                <span class="material-symbols-outlined">help</span>
+                                F&Q 목록
+                            </h2>
+                            <button class="btn-register" onclick="registerFAQ()">
+                                <i class="fas fa-plus"></i> F&Q 등록
+                            </button>
+                        </div>
+                        
+                        <!-- 필터 및 검색 영역 -->
+                        <div class="filter-area">
+                            <!-- 분류 탭 -->
+                            <div class="tab-container">
+                                <button class="tab-btn active" data-category="all">전체</button>
+                                <button class="tab-btn" data-category="extracurricular">비교과</button>
+                                <button class="tab-btn" data-category="counseling">상담</button>
+                                <button class="tab-btn" data-category="etc">기타</button>
+                            </div>
+
+                            <!-- 필터 및 검색 컨트롤 -->
+                            <div class="filter-controls">
+                                <!-- 공개/비공개 필터 -->
+                                <select class="filter-dropdown" id="visibilityFilter">
+                                    <option value="all">전체</option>
+                                    <option value="public">공개</option>
+                                    <option value="private">비공개</option>
+                                </select>
+
+                                <!-- 검색 영역 -->
+                                <div class="search-container">
+                                    <select class="search-type" id="searchType">
+                                        <option value="title">제목</option>
+                                        <option value="content">내용</option>
+                                    </select>
+                                    <input type="text" class="search-input" id="searchInput" placeholder="검색어를 입력하세요">
+                                    <button class="search-btn" onclick="searchFAQ()">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- F&Q 목록 테이블 -->
+                        <table class="data-table" id="faqTable">
+                            <thead>
+                                <tr>
+                                    <th style="width: 8%;">NO</th>
+                                    <th style="width: 35%;">제목</th>
+                                    <th style="width: 12%;">분류</th>
+                                    <th style="width: 18%;">소분류</th>
+                                    <th style="width: 12%;">공개여부</th>
+                                    <th style="width: 15%;">등록일</th>
+                                </tr>
+                            </thead>
+                            <tbody id="faqTableBody">
+                                <!-- 데이터는 JavaScript로 동적 생성 -->
+                            </tbody>
+                        </table>
+
+                        <!-- F&Q 목록 페이지네이션 -->
+                        <div class="pagination-container">
+                            <div class="pagination" id="faqPagination">
+                                <!-- 페이지네이션 버튼이 여기에 동적으로 추가됩니다 -->
+                            </div>
+                            <div class="pagination-info" id="faqPaginationInfo">
+                                <!-- 페이지 정보가 여기에 표시됩니다 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+  <script th:src="@{/js/admin/admin_F&Q.js}"></script>
+    </body>
+</html>

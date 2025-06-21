@@ -1,0 +1,130 @@
+@charset "UTF-8";
+  /* 전체 페이지 스타일 */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .radio_color{
+            filter: brightness(0.8);
+        }
+
+        .container_layout {
+            padding: 20px;
+        }
+
+        .form_write {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .form_write td {
+            padding: 10px;
+        }
+
+        .form_write input[type="text"],
+        .form_write input[type="email"],
+        .form_write input[type="date"],
+        .form_write input[type="file"],
+        .form_write select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box; /* padding과 border를 포함한 전체 크기 조정 */
+        }
+        .form_write input[type="text"][readonly]{
+			background-color: white;        
+			width: 100%;
+    		padding: 8px;
+    		border: 1px solid #ccc;
+    		border-radius: 4px;
+    		box-sizing: border-box;
+        }
+	    .form_write input[type="date"]{
+	    	width:300px;
+	         padding: 7px;
+	    }
+	    .form_write input[type="file"] {
+	         width:300px;
+	         padding: 5px;
+	     }
+	        
+	     .form_write select {
+	       	max-width: unset;
+			height: 42px;
+	      }
+
+        .form_write textarea {
+        	width : 100%;
+            resize: vertical; /* 세로 방향으로 크기 조절 가능 */
+        }
+
+        .form-buttons {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .form-buttons .btn {
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+
+        .form_write .row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .form_write .col {
+            flex: 1;
+        }
+        
+        .form_write .col-half {
+            flex: 0 0 50%;
+        }
+         @media (max-width: 768px) {
+        table {
+        	
+            width: 100%;
+            display: block;
+            overflow-x: auto;
+        }
+        
+        table > colgroup{
+        display : none;
+        }
+        
+        table > tbody{
+        	display : grid;
+        }
+
+        .form_write {
+            width: 100%;
+        }
+
+        .form_write td {
+            display: block;
+            width: 100%;
+        }
+
+        .form_buttons {
+            text-align: center;
+        }
+    }
+
+    /* 기본 열 너비 설정 */
+    .col-apply-category {
+        width: 15%;
+    }
+
+    .col-apply-method {
+        width: 35%;
+    }
+
+    .col-apply-department {
+        width: 15%;
+    }
+
+    .col-apply-contact {
+        width: 35%;
+    }

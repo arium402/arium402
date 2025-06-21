@@ -1,0 +1,40 @@
+@charset "UTF-8";
+   body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        /* 히어로 섹션 스타일 */
+        .hero-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f0f8ff; /* 연한 파란색 배경 */
+            height: 18vh; /* 화면 높이의 1/7 */
+            background-image: url('https://www.shutterstock.com/image-photo/campus-ucsb-university-california-santa-260nw-2452707805.jpg'); /* 배경 이미지 */
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box; /* 패딩을 포함한 전체 크기 조정 */
+        }
+
+        .hero-content {
+            max-width: 80%;
+        }
+
+        .hero-content h1 {
+            font-size: 2rem; /* 제목 크기 */
+            margin: 0;
+            padding-bottom: 10px;
+            overflow-wrap: break-word; /* 긴 단어가 줄 바꿈되도록 */
+        }
+
+        /* 추가 콘텐츠 스타일 */
+        .more-section {
+            padding: 10px; /* padding 조정 */
+            text-align: center;
+            box-sizing: border-box; /* 패딩을 포함한 전체 크기 조정 */
+            height: 5vh; /* 섹션의 높이 조정 */
+        }

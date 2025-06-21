@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>게시판 view</title>
+    <link href="../css/bootstrap/bootstrap.css" rel="stylesheet" crossorigin="anonymous">
+    <link href="../css/home.css?v=2" rel="stylesheet">
+    <link href="../css/board.css" rel="stylesheet">
+    <script src="../js/board.js"></script>
+</head>
+<body>
+<header>
+	<div class="container_layout">
+		<nav class="nav">
+			<a class="nav-link logo"><img alt="" src="../images/logo-header.png"></a>
+			<ul class="nav nav-underline" id="major_menu"></ul>
+		</nav>
+
+		<div class="side_area">
+			<p id="login_icon">
+				<img alt="로그인" src="../basic-login.svg">
+			</p>
+			<p id="logout_icon" style="display : none;">
+				<img alt="로그아웃" src="../basic-logout.svg">
+			</p>
+			<div class="menu" id="menu_toggle_btn">
+				<img alt="메뉴" src="../header-menu.svg" style="cursor:pointer;">
+			</div>
+			<div class="shownav" id="shownav_menu" style="display: none;">
+				<!-- 예시 메뉴 리스트 -->
+				<ul class="nav nav-underline">
+					<li class="nav-item">
+						<a class="nav-link">월간</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link">주간</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link">상담 신청 리스트</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link">상담 일지 리스트</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link">공지사항</a>
+					</li>
+				</ul>
+			</div>
+			<script>
+			document.getElementById('menu_toggle_btn').onclick = function() {
+				var nav = document.getElementById('shownav_menu');
+				nav.style.display = nav.style.display === 'block' ? 'none' : 'block';
+			};
+			</script>
+		</div>
+	</div>
+	</header>
+
+<article class="container_layout">
+	<nav class="side_navbar">
+	<p class="title">상담 일정관리</p>
+<ul>
+    <li>
+        <a href="#" class="menu-toggle">상담일정 관리</a>
+        <div class="menu-container">
+            <ul class="submenu">
+                <li>월간</li>
+                <li>주간</li>
+            </ul>
+        </div>
+    </li>
+
+    <li>
+        <a href="#" class="menu-toggle">상담자 리스트</a>
+        <div class="menu-container">
+            <ul class="submenu">
+                <li>상담 신청 리스트</li>
+                <li>상담 일지 리스트</li>
+            </ul>
+        </div>
+    </li>
+    
+    <li>
+        <a href="#" class="menu-toggle">게시판</a>
+        <div class="menu-container">
+            <ul class="submenu">
+                <li>공지사항</li>
+            </ul>
+        </div>
+    </li>
+</ul>
+</nav>
+	
+	<section class="contents">
+		 <h4 class="board_title">공지사항</h4>
+		<div class="table_conatiner">
+            <table class="form_write view">
+        	    <colgroup>
+                    <col style="width: 150px; background-color: #f1f1f1;">
+                    <col style="width: auto;">
+                </colgroup>
+                <tbody>
+                    <tr>
+                        <th><label>제목</label></th>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th><label>작성자</label></th>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th><label>내용</label></th>
+                        <td></td>
+                    </tr>
+                    <tr>
+                    <th><label>첨부파일</label></th>
+                    <td></td>
+                    </tr>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="form-buttons">
+                        	<div class="between">
+	                        	<span class="left">
+		                        	<a class="btn btn-secondary" href="./list.html">목록</a>
+	                            </span>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+		</div>
+	</section>
+</article>
+
+	<footer>
+	<div class="footer-content container_layout">
+		<div class="footer-left">
+			<address>[12345] 서울 마포구 신촌로 176 중앙빌딩</address>
+			<br> Tel: 02-1234-5678 | Fax : 033-1234-5678 | E-mail : abcd@naver.com <br>
+			<P>
+				<small>COPYRIGHT(C) <span>한국방송통신대학교</span>.All RIGHT RESERVED.</small>
+			</p>
+		</div>
+		<div class="footer-right">
+			<img src="../images/logo-header.png" alt="회사 로고" class="footer-logo">
+		</div>
+	</div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,349 @@
+<div th:fragment="content">
+    <button class="back-btn" onclick="goBack()">← 목록으로 돌아가기</button>
+    <div class="page-title">
+        내담자 상세 정보
+    </div>
+
+    <!-- 학생 정보 섹션 -->
+    <div class="detail-container">
+        <div class="section-title">학생 정보</div>
+        <div class="info-grid">
+            <div class="info-item">
+                <div class="info-label">이름:</div>
+                <div class="info-value" id="studentName">박진호</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">성별:</div>
+                <div class="info-value" id="studentGender">남</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">생년월일:</div>
+                <div class="info-value" id="studentBirth">2001-09-28</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">학번:</div>
+                <div class="info-value" id="studentId">202112345</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">학과:</div>
+                <div class="info-value" id="studentDepartment">경영학과</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">연락처:</div>
+                <div class="info-value" id="studentPhone">010-3456-7890</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">이메일:</div>
+                <div class="info-value" id="studentEmail">jinho.park@university.ac.kr</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">주소:</div>
+                <div class="info-value" id="studentAddress">서울시 종로구 세종로 789</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">신청유형:</div>
+                <div class="info-value" id="applicationType">취업/진로 상담</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">이전 상담 경험:</div>
+                <div class="info-value" id="previousCounseling">없음</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 사전 검사 결과 섹션 -->
+    <div class="detail-container">
+        <div class="section-title">사전 검사 결과</div>
+        
+        <!-- 현재 학년 -->
+        <div class="career-section">
+            <div class="career-section-title">현재 몇 학년에 재학중이십니까?</div>
+            <div class="radio-group" id="currentGrade">
+                <div class="radio-item">
+                    <input type="radio" name="grade" value="1학년" disabled>
+                    <label>1학년</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" name="grade" value="2학년" disabled>
+                    <label>2학년</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" name="grade" value="3학년" checked disabled>
+                    <label>3학년</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" name="grade" value="4학년" disabled>
+                    <label>4학년</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- 진로 설정 여부 -->
+        <div class="career-section">
+            <div class="career-section-title">진로 설정 여부</div>
+            <div class="radio-group" id="careerDecision">
+                <div class="radio-item">
+                    <input type="radio" name="careerStatus" value="진로 정하지 못함" checked disabled>
+                    <label>진로 정하지 못함</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" name="careerStatus" value="대략적인 진로 정함" disabled>
+                    <label>대략적인 진로 정함</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" name="careerStatus" value="진로 구체적으로 정함" disabled>
+                    <label>진로 구체적으로 정함</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- 희망 직무 분야 -->
+        <div class="career-section">
+            <div class="career-section-title">희망 직무 분야 (복수 선택 가능)</div>
+            <div class="checkbox-group" id="jobField">
+                <div class="checkbox-item">
+                    <input type="checkbox" disabled>
+                    <label>과학</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" disabled>
+                    <label>교육직</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" disabled>
+                    <label>공공·기업 고위직</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" disabled>
+                    <label>문화·예술·스포츠</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" disabled>
+                    <label>미용·숙박·여행·오락</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" disabled>
+                    <label>법률·행정</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" checked disabled>
+                    <label>보건·사회복지 및 종교</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" checked disabled>
+                    <label>정보통신</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" disabled>
+                    <label>조리·음식 서비스</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- 희망 기업 -->
+        <div class="career-section">
+            <div class="career-section-title">희망 기업 (복수 선택 가능)</div>
+            <div class="checkbox-group" id="preferredCompany">
+                <div class="checkbox-item">
+                    <input type="checkbox" disabled>
+                    <label>중소기업</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" checked disabled>
+                    <label>중견기업</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" checked disabled>
+                    <label>대기업</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" disabled>
+                    <label>공기업</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" disabled>
+                    <label>공공기관</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" disabled>
+                    <label>창업</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" disabled>
+                    <label>기타</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- 희망 근무지 -->
+        <div class="career-section">
+            <div class="career-section-title">희망 근무지 (복수 선택 가능)</div>
+            <div class="checkbox-group" id="preferredLocation">
+                <div class="checkbox-item">
+                    <input type="checkbox" disabled>
+                    <label>전국</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" disabled>
+                    <label>강원</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" checked disabled>
+                    <label>경기</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" disabled>
+                    <label>경남</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" disabled>
+                    <label>경북</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" disabled>
+                    <label>광주</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" disabled>
+                    <label>대구</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" disabled>
+                    <label>대전</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" disabled>
+                    <label>부산</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" checked disabled>
+                    <label>서울</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" disabled>
+                    <label>세종</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" disabled>
+                    <label>울산</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" disabled>
+                    <label>인천</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" disabled>
+                    <label>전남</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" disabled>
+                    <label>전북</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" disabled>
+                    <label>제주</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" disabled>
+                    <label>충남</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" disabled>
+                    <label>충북</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- 근무 형태 -->
+        <div class="career-section">
+            <div class="career-section-title">근무 형태</div>
+            <div class="radio-group" id="workType">
+                <div class="radio-item">
+                    <input type="radio" name="workType" value="비정규직" disabled>
+                    <label>비정규직</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" name="workType" value="정규직" checked disabled>
+                    <label>정규직</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" name="workType" value="프리랜서" disabled>
+                    <label>프리랜서</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" name="workType" value="기타" disabled>
+                    <label>기타</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- 희망 연봉 -->
+        <div class="career-section">
+            <div class="career-section-title">희망 연봉 (만원)</div>
+            <div class="radio-group" id="expectedSalary">
+                <div class="radio-item">
+                    <input type="radio" name="salary" value="2800~2900" disabled>
+                    <label>2800~2900</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" name="salary" value="2900~3000" disabled>
+                    <label>2900~3000</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" name="salary" value="3000~3100" checked disabled>
+                    <label>3000~3100</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" name="salary" value="3100~3200" disabled>
+                    <label>3100~3200</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" name="salary" value="3200이상" disabled>
+                    <label>3200이상</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- 신청 사유 -->
+        <div class="application-reason">
+            <div class="application-reason-label">신청 사유</div>
+            <div class="application-reason-text" id="applicationReason">
+                3학년이 되면서 취업에 대한 걱정이 많아졌습니다. 경영학과 전공으로 무엇을 할 수 있는지, 어떤 분야로 진로를 정해야 할지 혼란스럽습니다. 막연하게 대기업에 들어가고 싶다는 생각은 있지만, 구체적으로 어떤 준비를 해야 하는지 모르겠고, 자신의 적성과 능력에 대해서도 확신이 서지 않습니다. 전문적인 진로 상담을 통해 명확한 방향을 찾고 싶어 신청하게 되었습니다.
+            </div>
+        </div>
+    </div>
+
+    <!-- 상담 진행 정보 섹션 -->
+    <div class="detail-container">
+        <div class="section-title">상담 진행 정보</div>
+        <table class="counseling-table">
+            <thead>
+                <tr>
+                    <th>날짜</th>
+                    <th>차수</th>
+                    <th>진행상태</th>
+                    <th>일지 작성여부</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>2025-06-14</td>
+                    <td>1회</td>
+                    <td><span class="status-progress">진행</span></td>
+                    <td>
+                        <div class="radio-column">
+                            <span class="status-no">N</span>
+                            <input type="radio" name="selectedSession" value="2025-06-14-1" id="session-1" class="session-radio">
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- 버튼 섹션 -->
+        <div class="button-section">
+            <button class="btn btn-success" onclick="writeCounselingRecord()">상담일지 작성</button>
+            <button class="btn btn-secondary" onclick="completeCounseling()">상담 완료</button>
+        </div>
+    </div>
+</div>

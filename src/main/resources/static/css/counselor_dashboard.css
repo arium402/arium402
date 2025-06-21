@@ -1,0 +1,263 @@
+/* 전체 레이아웃 */
+body {
+    font-family: 'Noto Sans KR', Arial, sans-serif;
+    background-color: #fef7f0;
+    margin: 0;
+    padding: 0;
+}
+
+.content-area {
+    flex: 1;
+    padding: 30px;
+    width: 100%;
+}
+
+/* 대시보드 그리드 */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 20px;
+    width: 100%;
+}
+
+/* 카드 스타일 */
+.card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    padding: 25px;
+}
+
+.card-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.icon {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+/* 월간 상담통계 카드 */
+.schedule-summary {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+    min-height: 280px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.schedule-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 0;
+    border-bottom: 1px solid #ecf0f1;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    flex: 1;
+}
+
+.schedule-item:hover {
+    background-color: #f8f9fa;
+    margin: 0 -25px;
+    padding-left: 25px;
+    padding-right: 25px;
+}
+
+.schedule-item:last-child {
+    border-bottom: none;
+}
+
+.schedule-label {
+    font-weight: 500;
+    color: #34495e;
+}
+
+.schedule-count {
+    font-size: 24px;
+    font-weight: 700;
+    color: #3498db;
+}
+
+/* 통계 차트 카드 */
+.stats-chart {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+}
+
+.chart-container {
+    height: 280px;
+    position: relative;
+    background: #f8f9fa;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chart-legend {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 15px;
+    font-size: 12px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 8px 12px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* 공지사항 카드 */
+.notices {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+}
+
+.notice-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.more-btn {
+    background: none;
+    border: 1px solid #bdc3c7;
+    color: #6c757d;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.more-btn:hover {
+    background: #f8f9fa;
+    border-color: #95a5a6;
+}
+
+.notice-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.notice-item {
+    padding: 12px 0;
+    border-bottom: 1px solid #ecf0f1;
+    cursor: pointer;
+}
+
+.notice-item:hover {
+    background-color: #f8f9fa;
+    margin: 0 -25px;
+    padding-left: 25px;
+    padding-right: 25px;
+}
+
+.notice-item:last-child {
+    border-bottom: none;
+}
+
+.notice-title {
+    font-weight: 500;
+    color: #2c3e50;
+    margin-bottom: 5px;
+}
+
+.notice-date {
+    font-size: 12px;
+    color: #7f8c8d;
+}
+
+/* 오늘의 스케줄 카드 */
+.today-schedule {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+}
+
+.schedule-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.schedule-list .schedule-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #e9ecef;
+    transition: background-color 0.2s ease;
+}
+
+.schedule-list .schedule-item:hover {
+    background-color: #f8f9fa;
+    margin: 0 -25px;
+    padding-left: 25px;
+    padding-right: 25px;
+    border-radius: 4px;
+}
+
+.schedule-list .schedule-item:last-child {
+    border-bottom: none;
+}
+
+.schedule-time {
+    width: 60px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #3498db;
+}
+
+.schedule-content {
+    flex: 1;
+    margin-left: 15px;
+}
+
+.schedule-title {
+    font-weight: 500;
+    color: #2c3e50;
+    margin-bottom: 3px;
+}
+
+.schedule-client {
+    font-size: 13px;
+    color: #6c757d;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto auto;
+    }
+    
+    .schedule-summary {
+        grid-column: 1;
+        grid-row: 1;
+    }
+    
+    .stats-chart {
+        grid-column: 1;
+        grid-row: 2;
+    }
+    
+    .notices {
+        grid-column: 1;
+        grid-row: 3;
+    }
+
+    .today-schedule {
+        grid-column: 1;
+        grid-row: 4;
+    }
+}

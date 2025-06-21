@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="https://www.thymeleaf.org/">
+    <head th:replace="~{/admin_config.html :: admin_config}"></head>
+    <title>F&Q 상세 - 관리자 페이지</title>
+    <link rel="stylesheet" th:href="@{/css/admin/admin_F&Q_detail.css?v=1}">
+    
+    <body class="sb-nav-fixed">
+         <!-- 상단 네비게이션 바 -->
+        <nav th:replace="~{/admin_top.html :: admin_top}"></nav>
+     
+        <div id="layoutSidenav">
+            <!-- 사이드바 -->
+            <div th:replace="~{/admin_sidebar.html :: admin_sidebar}"> </div>
+            
+            <!-- 메인 컨텐츠 -->
+            <div id="layoutSidenav_content">
+                <div class="main-content">
+                    <!-- 페이지 제목 -->
+                    <h1 class="page-title">F&Q 상세</h1>
+                    <div class="title-divider"></div>
+                    
+                    <!-- F&Q 상세 섹션 -->
+                    <div class="faq-detail-section">
+                        <div class="section-header">
+                            <i class="fas fa-info-circle"></i> F&Q 상세 정보
+                        </div>
+                        
+                        <div class="detail-content">
+                            <!-- 대분류 -->
+                            <div class="form-group">
+                                <label class="form-label">대분류</label>
+                                <select class="form-select" id="mainCategory" disabled>
+                                    <option value="extracurricular" selected>비교과</option>
+                                    <option value="counseling">상담</option>
+                                    <option value="etc">기타</option>
+                                </select>
+                            </div>
+
+                            <!-- 소분류 -->
+                            <div class="form-group">
+                                <label class="form-label">소분류</label>
+                                <select class="form-select" id="subCategory" disabled>
+                                    <option value="program" selected>프로그램 안내</option>
+                                    <option value="application">신청 방법</option>
+                                    <option value="certificate">수료증 발급</option>
+                                    <option value="language">어학 프로그램</option>
+                                </select>
+                            </div>
+
+                            <!-- 공개여부 -->
+                            <div class="form-group">
+                                <label class="form-label">공개여부</label>
+                                <div class="visibility-group">
+                                    <div class="radio-group">
+                                        <input type="radio" id="public" name="visibility" value="public" class="radio-input" checked disabled>
+                                        <label for="public" class="radio-label">공개</label>
+                                    </div>
+                                    <div class="radio-group">
+                                        <input type="radio" id="private" name="visibility" value="private" class="radio-input" disabled>
+                                        <label for="private" class="radio-label">비공개</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 질문 -->
+                            <div class="qa-section question-section">
+                                <div class="qa-header question">
+                                    <i class="fas fa-question-circle"></i>
+                                    Q.
+                                </div>
+                                <div class="qa-content">
+비교과 프로그램은 어떻게 신청하나요?
+                                </div>
+                            </div>
+
+                            <!-- 답변 -->
+                            <div class="qa-section answer-section">
+                                <div class="qa-header answer">
+                                    <i class="fas fa-check-circle"></i>
+                                    A.
+                                </div>
+                                <div class="qa-content">
+비교과 프로그램 신청은 학교 홈페이지에 로그인 후 '비교과' 메뉴에서 신청하실 수 있습니다.
+
+신청 절차는 다음과 같습니다:
+1. 홈페이지 로그인
+2. 비교과 메뉴 클릭
+3. 원하는 프로그램 선택
+4. 신청서 작성 및 제출
+5. 승인 확인
+
+신청 기간은 각 프로그램별로 상이하므로 공지사항을 정기적으로 확인해주세요.
+문의사항이 있으시면 학생지원센터(02-0000-0000)로 연락주시기 바랍니다.
+                                </div>
+                            </div>
+
+                            <!-- 등록일자/수정일자 -->
+                            <div class="date-info">
+                                <div class="date-item">
+                                    <span class="date-label">등록일자:</span>
+                                    <span class="date-value" id="registrationDate">2025.06.15 14:30</span>
+                                </div>
+                                <div class="date-item">
+                                    <span class="date-label">수정일자:</span>
+                                    <span class="date-value" id="modificationDate">2025.06.16 09:15</span>
+                                </div>
+                            </div>
+
+                            <!-- 액션 버튼 -->
+                            <div class="action-buttons">
+                                <button class="btn-edit" onclick="editFAQ()">
+                                    <i class="fas fa-edit"></i>
+                                    수정
+                                </button>
+                                <button class="btn-list" onclick="goToList()">
+                                    <i class="fas fa-list"></i>
+                                    목록
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+     <script th:src="@{/js/admin/admin_F&Q_detail.js}"></script>    
+    </body>
+</html>

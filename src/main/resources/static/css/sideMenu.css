@@ -1,0 +1,15 @@
+@charset "UTF-8";
+
+
+/* Active 상태일 때 글씨를 하얗게 표시 */
+.nav-link.active,
+.submenu-item.active {
+    color: white !important; /* 글씨를 하얗게 강조 */
+    background-color: rgba(255, 255, 255, 0.2); /* 선택된 메뉴의 배경 강조 */
+}
+
+/* 메뉴 선택 시 기본 스타일을 유지 */
+.nav-link:hover, 
+.submenu-item:hover {
+    color: white; /* hover 시 글씨 하얗게 */
+}

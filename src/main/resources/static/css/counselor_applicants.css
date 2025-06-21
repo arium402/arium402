@@ -1,0 +1,236 @@
+/* 신청자 관리 페이지 스타일 */
+body {
+    font-family: 'Noto Sans KR', Arial, sans-serif;
+    background-color: #fef7f0;
+    margin: 0;
+    padding: 0;
+}
+
+/* 🚀 사이드바 페이지 끝까지 연장 해결책 - 최강 우선순위 */
+/* 더 구체적인 선택자로 강제 적용 */
+html body .main-container {
+    display: flex !important;
+    min-height: 100vh !important; /* 전체 화면 높이 */
+    height: auto !important; /* 콘텐츠에 따라 높이 자동 조정 */
+}
+
+/* 사이드바 최강 설정 */
+html body .main-container .sidebar,
+html body .sidebar,
+.main-container .sidebar {
+    height: auto !important; /* 자동 높이 */
+    min-height: 100vh !important; /* 전체 화면 높이 최소 보장 */
+    background: #3498db !important; /* 배경색도 확실히 */
+}
+
+/* 추가적인 강제 설정 */
+.sidebar {
+    height: auto !important;
+    min-height: 100vh !important;
+}
+
+.contents {
+    flex: 1;
+    padding: 30px;
+    background: white;
+    margin: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.board_title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 25px;
+    text-align: left;
+}
+
+.search-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.search-input {
+    border: 1px solid #bdc3c7;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 150px;
+}
+
+.date-input {
+    border: 1px solid #bdc3c7;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 120px;
+}
+
+.search-btn {
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.search-btn:hover {
+    background: #2980b9;
+}
+
+.dropdown {
+    border: 1px solid #bdc3c7;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    background: white;
+}
+
+.applicant-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.applicant-table th,
+.applicant-table td {
+    border: 1px solid #bdc3c7;
+    padding: 12px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.applicant-table th {
+    background: #ecf0f1;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.applicant-table tbody tr {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.applicant-table tbody tr:hover {
+    background: #f8f9fa;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    margin-top: 20px;
+}
+
+.pagination button {
+    border: 1px solid #bdc3c7;
+    background: white;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+    min-width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.pagination button:hover:not(:disabled) {
+    background: #f8f9fa;
+    border-color: #3498db;
+}
+
+.pagination button.active {
+    background: #3498db;
+    color: white;
+    border-color: #3498db;
+}
+
+.pagination button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: #f8f9fa;
+    color: #6c757d;
+}
+
+.pagination .page-info {
+    margin: 0 10px;
+    font-size: 14px;
+    color: #6c757d;
+}
+
+.no-data {
+    text-align: center;
+    padding: 40px;
+    color: #7f8c8d;
+    font-size: 16px;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .contents {
+        margin: 10px;
+        padding: 20px;
+    }
+
+    .search-section {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .search-input,
+    .date-input {
+        width: 100%;
+    }
+
+    .applicant-table {
+        font-size: 12px;
+    }
+
+    .applicant-table th,
+    .applicant-table td {
+        padding: 8px 4px;
+    }
+
+    .pagination {
+        flex-wrap: wrap;
+    }
+
+    .pagination button {
+        min-width: 32px;
+        height: 32px;
+        font-size: 12px;
+    }
+}
+
+/* 🔥 최종 강제 설정 - 맨 마지막에 적용 */
+/* 사이드바를 어떤 방법으로든 페이지 끝까지 연장 */
+.sidebar,
+div[class*="sidebar"],
+.main-container > div:first-child {
+    height: auto !important;
+    min-height: 100vh !important;
+    box-sizing: border-box !important;
+}
+
+/* flexbox로 강제 늘리기 */
+.main-container {
+    display: flex !important;
+    align-items: stretch !important; /* 자식 요소들을 같은 높이로 */
+    min-height: 100vh !important;
+}
+
+/* JavaScript로도 강제 적용할 수 있는 스타일 */
+.force-full-height {
+    height: auto !important;
+    min-height: 100vh !important;
+}

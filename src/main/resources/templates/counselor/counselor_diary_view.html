@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<body>
+    <div th:fragment="content">
+        <button class="back-btn" onclick="goBack()">← 목록으로 돌아가기</button>
+        <div class="page-title">상담일지 작성</div>
+        
+        <!-- 학생 정보 섹션 -->
+        <div class="detail-container">
+            <div class="section-title">학생 정보</div>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">이름:</div>
+                    <div class="info-value" id="studentName">-</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">성별:</div>
+                    <div class="info-value" id="studentGender">-</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">생년월일:</div>
+                    <div class="info-value" id="studentBirth">-</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">학번:</div>
+                    <div class="info-value" id="studentId">-</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">학과:</div>
+                    <div class="info-value" id="studentDepartment">-</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">연락처:</div>
+                    <div class="info-value" id="studentPhone">-</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">이메일:</div>
+                    <div class="info-value" id="studentEmail">-</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">주소:</div>
+                    <div class="info-value" id="studentAddress">-</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 상담 진행 정보 섹션 -->
+        <div class="detail-container">
+            <div class="section-title">상담 진행 정보</div>
+            <div class="session-info">
+                <div class="session-detail-item">
+                    <div class="session-detail-label">상담 날짜:</div>
+                    <div class="session-detail-value" id="sessionDate">-</div>
+                </div>
+                <div class="session-detail-item">
+                    <div class="session-detail-label">상담 차수:</div>
+                    <div class="session-detail-value" id="sessionNumber">-</div>
+                </div>
+                <div class="session-detail-item">
+                    <div class="session-detail-label">상담 유형:</div>
+                    <div class="session-detail-value" id="counselingType">개인상담</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 상담일지 작성 섹션 -->
+        <div class="detail-container">
+            <div class="section-title">상담일지 작성</div>
+            
+            <form id="counselingRecordForm">
+                <div class="form-group">
+                    <label for="counselingGoal" class="form-label required">상담 목표</label>
+                    <textarea id="counselingGoal" name="counselingGoal" class="form-control textarea" placeholder="이번 상담 세션의 목표를 구체적으로 작성해주세요."></textarea>
+                    <div class="error-message" id="counselingGoalError">상담 목표를 입력해주세요.</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="counselingProcess" class="form-label required">상담 과정</label>
+                    <textarea id="counselingProcess" name="counselingProcess" class="form-control textarea" placeholder="상담 진행 과정과 주요 내용을 시간 순서에 따라 상세히 작성해주세요."></textarea>
+                    <div class="error-message" id="counselingProcessError">상담 과정을 입력해주세요.</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="clientResponse" class="form-label required">내담자 반응</label>
+                    <textarea id="clientResponse" name="clientResponse" class="form-control textarea" placeholder="내담자의 반응, 감정 변화, 언어적/비언어적 표현 등을 작성해주세요."></textarea>
+                    <div class="error-message" id="clientResponseError">내담자 반응을 입력해주세요.</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="counselorObservation" class="form-label">상담자 관찰 내용</label>
+                    <textarea id="counselorObservation" name="counselorObservation" class="form-control textarea" placeholder="상담자가 관찰한 내담자의 상태, 변화, 특이사항 등을 작성해주세요."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="usedTechniques" class="form-label">사용된 상담 기법</label>
+                    <textarea id="usedTechniques" name="usedTechniques" class="form-control textarea" placeholder="이번 상담에서 사용한 상담 기법이나 접근 방법을 작성해주세요."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="sessionOutcome" class="form-label">상담 성과</label>
+                    <textarea id="sessionOutcome" name="sessionOutcome" class="form-control textarea" placeholder="이번 상담을 통해 달성한 성과나 진전사항을 작성해주세요."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="nextPlan" class="form-label">다음 상담 계획</label>
+                    <textarea id="nextPlan" name="nextPlan" class="form-control textarea" placeholder="다음 상담을 위한 계획, 준비사항, 중점적으로 다룰 내용을 작성해주세요."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="additionalNotes" class="form-label">기타 특이사항</label>
+                    <textarea id="additionalNotes" name="additionalNotes" class="form-control textarea" placeholder="기타 특이사항, 추가 메모, 주의사항 등을 작성해주세요."></textarea>
+                </div>
+            </form>
+
+            <!-- 버튼 섹션 -->
+            <div class="button-section">
+                <button class="btn btn-secondary" onclick="cancelRecord()">취소</button>
+                <button class="btn btn-success" onclick="saveRecord()">등록</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

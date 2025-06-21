@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <section th:fragment="content" class="contents">
+        <div class="page-header">
+            <h4 class="page-title">문의게시판 상세보기</h4>
+            <button class="back-btn" onclick="goBack()">← 목록으로</button>
+        </div>
+
+        <!-- 긴급 알림 -->
+        <div class="urgent-alert">
+            <div class="urgent-alert-icon">⚠️</div>
+            <div class="urgent-alert-text">긴급 문의입니다! 최우선으로 답변해주세요.</div>
+        </div>
+
+        <!-- 문의 내용 섹션 -->
+        <div class="question-section">
+            <div class="question-header">
+                <div class="question-info">
+                    <h3 class="question-title">
+                        [긴급] 상담 예약 취소 관련 문의
+                        <span class="urgent-indicator">긴급</span>
+                    </h3>
+                    <div class="question-meta">
+                        <span>작성자: 김학생</span>
+                        <span>등록일: 2025-06-14 14:30</span>
+                        <span>조회수: 5</span>
+                    </div>
+                </div>
+                <div class="status-badge status-urgent">긴급문의</div>
+            </div>
+            
+            <div class="question-content">
+                <p>안녕하세요. 급한 일이 생겨서 문의드립니다.</p>
+                
+                <p>내일(6월 15일) 오후 2시에 예약된 개별상담을 취소하고 싶습니다. 
+                갑자기 가족 응급상황이 발생해서 어쩔 수 없이 취소하게 되었습니다.</p>
+                
+                <p>취소 절차가 어떻게 되는지, 그리고 다시 예약을 잡을 수 있는 가장 빠른 날짜가 언제인지 알고 싶습니다.</p>
+                
+                <p>답변 부탁드리며, 가능하시다면 빠른 답변 부탁드립니다.</p>
+                
+                <p>감사합니다.</p>
+
+                <div class="file-attachments">
+                    <strong>첨부파일:</strong>
+                    <div class="file-list">
+                        <div class="file-item">예약확인서.pdf</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 답변 작성 섹션 -->
+        <div class="answer-section">
+            <div class="answer-header">
+                <h4 class="answer-title">답변 작성하기</h4>
+            </div>
+            
+            <form class="answer-form" id="answerForm">
+                <div class="form-group">
+                    <label class="form-label">답변자</label>
+                    <input type="text" class="form-input" value="김상담 상담사" readonly>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">답변 내용 <span style="color: #e74c3c;">*</span></label>
+                    <textarea class="form-textarea urgent-textarea" id="answerContent" placeholder="긴급 문의에 대한 답변을 작성해주세요.&#10;&#10;- 긴급한 상황이므로 신속하고 정확한 답변을 작성해주세요&#10;- 필요시 즉시 연락 가능한 방법을 안내해주세요&#10;- 추가 도움이 필요한 경우 즉시 대응 방안을 제시해주세요" required></textarea>
+                </div>
+
+                <div class="button-section">
+                    <button type="button" class="btn btn-urgent" onclick="saveAnswer()">긴급 답변 등록</button>
+                </div>
+            </form>
+        </div>
+    </section>
+</body>
+</html>

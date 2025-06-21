@@ -1,0 +1,141 @@
+<div th:fragment="content">
+    <div class="schedule-container">
+        <h4 class="board_title">상담 일정 확인</h4>
+        
+        <div class="schedule-header">
+            <div class="date-navigation">
+                <button class="nav-btn" id="prevWeek">‹</button>
+                <span class="date-range" id="dateRange">2025.06.15 ~ 2025.06.21</span>
+                <button class="nav-btn" id="nextWeek">›</button>
+            </div>
+        </div>
+
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color legend-available"></div>
+                <span>상담 예약</span>
+            </div>
+        </div>
+
+        <table class="schedule-table">
+            <thead>
+                <tr id="tableHeader">
+                    <th class="time-header">시간</th>
+                    <th class="date-header weekend">06.15(일)</th>
+                    <th class="date-header">06.16(월)</th>
+                    <th class="date-header">06.17(화)</th>
+                    <th class="date-header">06.18(수)</th>
+                    <th class="date-header">06.19(목)</th>
+                    <th class="date-header">06.20(금)</th>
+                    <th class="date-header weekend">06.21(토)</th>
+                </tr>
+            </thead>
+            <tbody id="scheduleBody">
+                <tr>
+                    <td class="time-slot">09:00 ~ 10:00</td>
+                    <td class="schedule-cell weekend"></td>
+                    <td class="schedule-cell"></td>
+                    <td class="schedule-cell">
+                        <div class="appointment" onclick="goToStudentDetail('202012345', '박지호')">박지호</div>
+                    </td>
+                    <td class="schedule-cell">
+                        <div class="appointment" onclick="goToStudentDetail('202012350', '김영수')">김영수</div>
+                    </td>
+                    <td class="schedule-cell">
+                        <div class="appointment" onclick="goToStudentDetail('202012356', '이민정')">이민정</div>
+                    </td>
+                    <td class="schedule-cell"></td>
+                    <td class="schedule-cell weekend"></td>
+                </tr>
+                <tr>
+                    <td class="time-slot">10:00 ~ 11:00</td>
+                    <td class="schedule-cell weekend"></td>
+                    <td class="schedule-cell"></td>
+                    <td class="schedule-cell">
+                        <div class="appointment" onclick="goToStudentDetail('202012346', '최은진')">최은진</div>
+                    </td>
+                    <td class="schedule-cell">
+                        <div class="appointment" onclick="goToStudentDetail('202012351', '정우진')">정우진</div>
+                    </td>
+                    <td class="schedule-cell">
+                        <div class="appointment" onclick="goToStudentDetail('202012357', '강소연')">강소연</div>
+                    </td>
+                    <td class="schedule-cell"></td>
+                    <td class="schedule-cell weekend"></td>
+                </tr>
+                <tr>
+                    <td class="time-slot">11:00 ~ 12:00</td>
+                    <td class="schedule-cell weekend"></td>
+                    <td class="schedule-cell"></td>
+                    <td class="schedule-cell">
+                        <div class="appointment" onclick="goToStudentDetail('202012347', '윤서현')">윤서현</div>
+                    </td>
+                    <td class="schedule-cell">
+                        <div class="appointment" onclick="goToStudentDetail('202012352', '한지민')">한지민</div>
+                    </td>
+                    <td class="schedule-cell"></td>
+                    <td class="schedule-cell">
+                        <div class="appointment" onclick="goToStudentDetail('202012358', '오태석')">오태석</div>
+                    </td>
+                    <td class="schedule-cell weekend"></td>
+                </tr>
+                <tr>
+                    <td class="time-slot">12:00 ~ 13:00</td>
+                    <td class="schedule-cell weekend"></td>
+                    <td class="schedule-cell"></td>
+                    <td class="schedule-cell"></td>
+                    <td class="schedule-cell"></td>
+                    <td class="schedule-cell"></td>
+                    <td class="schedule-cell"></td>
+                    <td class="schedule-cell weekend"></td>
+                </tr>
+                <tr>
+                    <td class="time-slot">13:00 ~ 14:00</td>
+                    <td class="schedule-cell weekend"></td>
+                    <td class="schedule-cell"></td>
+                    <td class="schedule-cell"></td>
+                    <td class="schedule-cell">
+                        <div class="appointment" onclick="goToStudentDetail('202012353', '나현우')">나현우</div>
+                    </td>
+                    <td class="schedule-cell"></td>
+                    <td class="schedule-cell">
+                        <div class="appointment" onclick="goToStudentDetail('202012359', '문지훈')">문지훈</div>
+                    </td>
+                    <td class="schedule-cell weekend"></td>
+                </tr>
+                <tr>
+                    <td class="time-slot">14:00 ~ 15:00</td>
+                    <td class="schedule-cell weekend"></td>
+                    <td class="schedule-cell"></td>
+                    <td class="schedule-cell">
+                        <div class="appointment" onclick="goToStudentDetail('202012348', '임소진')">임소진</div>
+                    </td>
+                    <td class="schedule-cell">
+                        <div class="appointment" onclick="goToStudentDetail('202012354', '조민혁')">조민혁</div>
+                    </td>
+                    <td class="schedule-cell"></td>
+                    <td class="schedule-cell">
+                        <div class="appointment" onclick="goToStudentDetail('202012360', '배수연')">배수연</div>
+                    </td>
+                    <td class="schedule-cell weekend"></td>
+                </tr>
+                <tr>
+                    <td class="time-slot">15:00 ~ 16:00</td>
+                    <td class="schedule-cell weekend"></td>
+                    <td class="schedule-cell"></td>
+                    <td class="schedule-cell">
+                        <div class="appointment" onclick="goToStudentDetail('202012349', '홍길동')">홍길동</div>
+                    </td>
+                    <td class="schedule-cell">
+                        <div class="appointment" onclick="goToStudentDetail('202012355', '신민아')">신민아</div>
+                    </td>
+                    <td class="schedule-cell"></td>
+                    <td class="schedule-cell">
+                        <div class="appointment" onclick="goToStudentDetail('202012361', '전수빈')">전수빈</div>
+                    </td>
+                    <td class="schedule-cell weekend"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

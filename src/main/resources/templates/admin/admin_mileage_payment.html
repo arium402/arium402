@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="https://www.thymeleaf.org/">
+    <head th:replace="~{/admin_config.html :: admin_config}"></head>
+    <title>마일리지 지급 - 관리자 페이지</title>
+    <link rel="stylesheet" th:href="@{/css/admin/admin_mileage_payment.css?v=1}">
+    
+    <body class="sb-nav-fixed">
+        <!-- 상단 네비게이션 바 -->
+        <nav th:replace="~{/admin_top.html :: admin_top}"></nav>
+     
+     
+        <div id="layoutSidenav">
+           <!-- 사이드바 -->
+            <div th:replace="~{/admin_sidebar.html :: admin_sidebar}"> </div>
+            
+            <!-- 메인 컨텐츠 -->
+            <div id="layoutSidenav_content">
+                <div class="main-content">
+                    <!-- 페이지 제목 -->
+                    <h1 class="page-title">마일리지 지급</h1>
+                    <div class="title-divider"></div>
+                    
+
+
+                    <!-- 프로그램 목록 섹션 -->
+                    <div class="program-section">
+                        <div class="program-header">
+                            프로그램 목록
+                        </div>
+                        
+                        <!-- 탭 메뉴 -->
+                        <div class="program-tabs">
+                            <div class="tab-container">
+                                <button class="tab-btn active" data-tab="all">전체</button>
+                                <button class="tab-btn" data-tab="waiting">대기</button>
+                                <button class="tab-btn" data-tab="completed">완료</button>
+                            </div>
+                        </div>
+
+                        <!-- 프로그램 테이블 -->
+                        <table class="program-table" id="programTable">
+                            <thead>
+                                <tr>
+                                    <th style="width: 8%;">NO</th>
+                                    <th style="width: 40%;">프로그램 이름</th>
+                                    <th style="width: 25%;">운영기간</th>
+                                    <th style="width: 12%;">인원</th>
+                                    <th style="width: 15%;">지급여부</th>
+                                </tr>
+                            </thead>
+                            <tbody id="programTableBody">
+                                <!-- 데이터는 JavaScript로 동적 생성 -->
+                            </tbody>
+                        </table>
+
+                        <!-- 페이지네이션 -->
+                        <div class="pagination-container">
+                            <div class="pagination" id="pagination">
+                                <!-- 페이지네이션 버튼이 여기에 동적으로 추가됩니다 -->
+                            </div>
+                            <div class="pagination-info" id="paginationInfo">
+                                <!-- 페이지 정보가 여기에 표시됩니다 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+          <script th:src="@{/js/admin/admin_mileage_payment.js}"></script>
+    </body>
+</html>

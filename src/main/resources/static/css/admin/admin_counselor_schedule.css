@@ -1,0 +1,336 @@
+@charset "UTF-8";
+
+
+/* 필터 영역 */
+.filter-section {
+    background: white;
+    padding: 25px 30px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border-left: 4px solid #3498db;
+    transition: all 0.3s ease;
+}
+
+.filter-section:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+}
+
+.filter-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.filter-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.filter-label {
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.filter-select {
+    padding: 10px 15px;
+    border: 2px solid #e9ecef;
+    background: white;
+    color: #495057;
+    font-size: 0.9rem;
+    min-width: 150px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filter-select:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    transform: translateY(-1px);
+}
+
+.filter-select:hover {
+    border-color: #bdc3c7;
+}
+
+.search-area {
+    display: flex;
+    align-items: center;
+    gap: 0;
+}
+
+.search-type-select {
+    padding: 10px 15px;
+    border: 2px solid #e9ecef;
+    border-right: none;
+    background: white;
+    color: #495057;
+    font-size: 0.9rem;
+    min-width: 120px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.search-type-select:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+.search-input {
+    padding: 10px 15px;
+    border: 2px solid #e9ecef;
+    border-right: none;
+    font-size: 0.9rem;
+    width: 200px;
+    transition: all 0.3s ease;
+}
+
+.search-input:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+.search-btn {
+    padding: 10px 20px;
+    background: #3498db;
+    color: white;
+    border: 2px solid #3498db;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.search-btn:hover {
+    background: #2980b9;
+    border-color: #2980b9;
+    transform: translateY(-1px);
+}
+
+/* 테이블 스타일 */
+.table-container {
+    background: white;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    overflow: hidden;
+    border-left: 4px solid #3498db;
+    transition: all 0.3s ease;
+}
+
+.table-container:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+}
+
+.data-table {
+    width: 100%;
+    margin: 0;
+    background: white;
+    font-size: 0.95rem;
+}
+
+.data-table thead {
+    background: #f8f9fa;
+}
+
+.data-table th {
+    padding: 18px 20px;
+    font-weight: 600;
+    text-align: center;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #e9ecef;
+    position: relative;
+    color: #2c3e50;
+}
+
+.data-table th:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 25%;
+    height: 50%;
+    width: 1px;
+    background: rgba(44, 62, 80, 0.2);
+}
+
+.data-table tbody tr {
+    transition: all 0.3s ease;
+    border-bottom: 1px solid #f1f1f1;
+    cursor: pointer;
+}
+
+.data-table tbody tr:hover {
+    background: linear-gradient(90deg, #f8f9fa, #e3f2fd);
+    transform: translateX(8px);
+    box-shadow: 0 3px 15px rgba(52, 152, 219, 0.15);
+}
+
+.data-table td {
+    padding: 16px 20px;
+    text-align: center;
+    border: none;
+    vertical-align: middle;
+    font-size: 0.9rem;
+    color: #495057;
+}
+
+.data-table .col-no {
+    width: 10%;
+    font-weight: 600;
+    color: #7f8c8d;
+}
+
+.data-table .col-name {
+    width: 25%;
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 1rem;
+}
+
+.data-table .col-empno {
+    width: 30%;
+    color: #495057;
+    font-family: 'Courier New', monospace;
+    font-weight: 500;
+}
+
+.data-table .col-field {
+    width: 35%;
+    color: #495057;
+    font-weight: 500;
+}
+
+/* 페이지네이션 스타일 */
+.pagination-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-top: 30px;
+    padding: 20px 0;
+}
+
+.pagination {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.pagination-btn {
+    padding: 10px 15px;
+    border: 2px solid #e9ecef;
+    background: white;
+    color: #495057;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    min-width: 45px;
+    text-align: center;
+}
+
+.pagination-btn:hover:not(.active):not(.disabled) {
+    border-color: #3498db;
+    background: #3498db;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+}
+
+.pagination-btn.active {
+    background: #2c3e50;
+    border-color: #2c3e50;
+    color: white;
+    font-weight: 700;
+}
+
+.pagination-btn.disabled {
+    background: #f8f9fa;
+    color: #ced4da;
+    cursor: not-allowed;
+    border-color: #e9ecef;
+}
+
+.pagination-btn.disabled:hover {
+    transform: none;
+    box-shadow: none;
+    background: #f8f9fa;
+    border-color: #e9ecef;
+    color: #ced4da;
+}
+
+.pagination-info {
+    color: #6c757d;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+
+/* 구분선 */
+.title-divider {
+    height: 4px;
+    background: linear-gradient(90deg, #3498db, #2980b9);
+    margin-bottom: 30px;
+    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+    #layoutSidenav_nav {
+        width: 100%;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+    }
+    
+    #layoutSidenav_nav.show {
+        transform: translateX(0);
+    }
+    
+    #layoutSidenav_content {
+        margin-left: 0;
+        width: 100%;
+    }
+    
+    .main-content {
+        padding: 15px;
+    }
+    
+    .filter-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+    
+    .filter-left {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+    
+    .search-area {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .search-type-select,
+    .search-input {
+        border-right: 2px solid #e9ecef;
+        width: 100%;
+    }
+    
+    .data-table {
+        font-size: 0.8rem;
+    }
+    
+    .data-table th,
+    .data-table td {
+        padding: 10px 8px;
+    }
+}
