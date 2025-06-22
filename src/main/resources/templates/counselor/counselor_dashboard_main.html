@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>상담사 대시보드</title>
+    
+    <!-- Bootstrap CSS -->
+  <!-- CSS -->
+  <link rel="stylesheet" href="/css/bootstrap/bootstrap.css">
+  <link rel="stylesheet" href="/css/counselor_header-sidebar.css">
+  <link rel="stylesheet" href="/css/counselor_dashboard.css">
+
+</head>
+<body>
+    <!-- 헤더 영역 -->
+    <div th:replace="~{fragments/counselor_header :: header}"></div>
+
+    <div class="main-container">
+        <!-- 사이드바 영역 -->
+        <div th:replace="~{fragments/counselor_sidebar :: sidebar}"></div>
+
+        <!-- 메인 콘텐츠 영역 -->
+        <div class="content-area">
+            <div class="dashboard-grid">
+                <!-- 월간 상담통계 카드 -->
+                <div class="card schedule-summary">
+                    <h3 class="card-title">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"></path>
+                        </svg>
+                        월간 상담통계
+                    </h3>
+                    <div style="margin-bottom: 20px;">
+                        <div style="font-weight: 600; color: #2c3e50; margin-bottom: 10px;">일반 상담</div>
+                        <div style="display: flex; gap: 20px;">
+                            <span><strong>심리</strong> <strong style="color: #e6a456;">24</strong>건</span>
+                            <span><strong>익명</strong> <strong style="color: #e6a456;">18</strong>건</span>
+                            <span><strong>위기</strong> <strong style="color: #e74c3c;">3</strong>건</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="font-weight: 600; color: #2c3e50; margin-bottom: 10px;">학업 상담</div>
+                        <div style="display: flex; gap: 20px;">
+                            <span><strong>진로/취업</strong> <strong style="color: #3498db;">16</strong>건</span>
+                            <span><strong>학습 컨설팅</strong> <strong style="color: #3498db;">12</strong>건</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 전체 통계 차트 카드 -->
+                <div class="card stats-chart">
+                    <h3 class="card-title">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"></path>
+                        </svg>
+                        전체 통계
+                    </h3>
+                    <div class="chart-container">
+                        <canvas id="statsChart" width="400" height="250"></canvas>
+                        <div class="chart-legend">
+                            <div style="display: flex; align-items: center; gap: 5px;">
+                                <div style="width: 12px; height: 12px; background: #e6a456;"></div>
+                                <span>일반상담</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 5px;">
+                                <div style="width: 12px; height: 12px; background: #3498db;"></div>
+                                <span>학업상담</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 공지사항 카드 -->
+                <div class="card notices">
+                    <div class="notice-header">
+                        <h3 class="card-title">
+                            <svg class="icon" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                            </svg>
+                            공지사항
+                        </h3>
+                        <button class="more-btn" onclick="goToNotices()">더보기</button>
+                    </div>
+                    <ul class="notice-list">
+                        <li class="notice-item" onclick="openNotice(1)">
+                            <div class="notice-title">2025년 상담 프로그램 운영 안내</div>
+                            <div class="notice-date">2025.06.10</div>
+                        </li>
+                        <li class="notice-item" onclick="openNotice(2)">
+                            <div class="notice-title">상담사 전문성 향상 워크숍 개최</div>
+                            <div class="notice-date">2025.06.08</div>
+                        </li>
+                        <li class="notice-item" onclick="openNotice(3)">
+                            <div class="notice-title">하계 휴무 일정 및 응급상담 안내</div>
+                            <div class="notice-date">2025.06.05</div>
+                        </li>
+                        <li class="notice-item" onclick="openNotice(4)">
+                            <div class="notice-title">온라인 상담 시스템 업그레이드 완료</div>
+                            <div class="notice-date">2025.06.01</div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 오늘의 스케줄 카드 -->
+                <div class="card today-schedule">
+                    <h3 class="card-title">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path>
+                        </svg>
+                        오늘의 일정
+                    </h3>
+                    <div class="schedule-list">
+                        <div class="schedule-item">
+                            <div class="schedule-time">10:00</div>
+                            <div class="schedule-content">
+                                <div class="schedule-title">개별 학습상담</div>
+                                <div class="schedule-client">김학생</div>
+                            </div>
+                        </div>
+                        <div class="schedule-item">
+                            <div class="schedule-time">14:00</div>
+                            <div class="schedule-content">
+                                <div class="schedule-title">진로 상담</div>
+                                <div class="schedule-client">이학생</div>
+                            </div>
+                        </div>
+                        <div class="schedule-item">
+                            <div class="schedule-time">16:00</div>
+                            <div class="schedule-content">
+                                <div class="schedule-title">집단 상담</div>
+                                <div class="schedule-client">3학년 학습전략 그룹</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+  	<script src="/js/counselor/counselor_sidebar.js"></script>
+  	<script src="/js/counselor/counselor_header.js"></script>
+  	<script src="/js/counselor/counselor_dashboard.js"></script>
+</body>
+</html>

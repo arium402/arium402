@@ -1,0 +1,497 @@
+/* 마이페이지 전용 스타일 */
+
+/* 기본 레이아웃 스타일 */
+body {
+    font-family: 'Noto Sans KR', Arial, sans-serif;
+    background-color: #fff5e6;
+    margin: 0;
+    padding: 0;
+}
+
+.main-container {
+    display: flex;
+    min-height: calc(100vh - 80px);
+    gap: 0;
+}
+
+.content-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.contents {
+    flex: 1;
+    padding: 30px;
+    background: #fef7f0;
+    min-height: calc(100vh - 80px);
+    margin: 0;
+    border-left: 1px solid #5dade2;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e6a456;
+}
+
+.page-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.back-btn {
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.back-btn:hover {
+    background: #2980b9;
+    transform: translateY(-1px);
+}
+
+.mypage-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.card {
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.card-header {
+    background: #f8f9fa;
+    padding: 20px 25px;
+    border-bottom: 1px solid #e9ecef;
+    font-size: 18px;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.card-body {
+    padding: 25px;
+}
+
+/* 프로필 정보 카드 */
+.profile-card {
+    grid-column: 1 / -1;
+}
+
+.profile-content {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 30px;
+    align-items: start;
+}
+
+.profile-image {
+    width: 180px;
+    height: 220px;
+    background: #f8f9fa;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #6c757d;
+}
+
+.profile-icon-large {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 10px;
+}
+
+.profile-details {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.detail-label {
+    font-size: 14px;
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.detail-value {
+    font-size: 16px;
+    color: #2c3e50;
+    font-weight: 600;
+    padding: 10px 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+/* 상담 통계 카드 */
+.stats-section {
+    margin-bottom: 30px;
+}
+
+.stats-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e6a456;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.stats-grid.weekly {
+    grid-template-columns: 1fr 1fr;
+}
+
+.stats-grid.monthly {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.stat-item {
+    text-align: center;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 6px;
+    border-left: 4px solid #3498db;
+    transition: all 0.2s ease;
+}
+
+.stat-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.stat-item.completed {
+    border-left-color: #27ae60;
+}
+
+.stat-item.pending {
+    border-left-color: #f39c12;
+}
+
+.stat-number {
+    font-size: 24px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    font-size: 13px;
+    color: #6c757d;
+    font-weight: 500;
+}
+
+/* 스케줄 카드 */
+.schedule-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.schedule-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #e9ecef;
+    transition: background-color 0.2s ease;
+}
+
+.schedule-item:hover {
+    background-color: #f8f9fa;
+    margin: 0 -25px;
+    padding-left: 25px;
+    padding-right: 25px;
+    border-radius: 4px;
+}
+
+.schedule-item:last-child {
+    border-bottom: none;
+}
+
+.schedule-time {
+    width: 60px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #3498db;
+}
+
+.schedule-content {
+    flex: 1;
+    margin-left: 15px;
+}
+
+.schedule-title {
+    font-weight: 500;
+    color: #2c3e50;
+    margin-bottom: 3px;
+}
+
+.schedule-client {
+    font-size: 13px;
+    color: #6c757d;
+}
+
+.edit-profile-btn {
+    background: #e6a456;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    margin-top: 20px;
+}
+
+.edit-profile-btn:hover {
+    background: #d4924a;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(230, 164, 86, 0.3);
+}
+
+/* 모달 스타일 */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-overlay.show {
+    display: flex;
+}
+
+.modal-container {
+    background: white;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-header {
+    padding: 20px 25px;
+    border-bottom: 1px solid #e9ecef;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8f9fa;
+}
+
+.modal-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0;
+}
+
+.modal-close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #6c757d;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.modal-close-btn:hover {
+    background: #e9ecef;
+    color: #2c3e50;
+}
+
+.modal-body {
+    padding: 25px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: #2c3e50;
+    margin-bottom: 8px;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e9ecef;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #2c3e50;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.form-input:read-only {
+    background-color: #f8f9fa;
+    color: #6c757d;
+    cursor: not-allowed;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.modal-footer {
+    padding: 20px 25px;
+    border-top: 1px solid #e9ecef;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    background: #f8f9fa;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    min-width: 80px;
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #5a6268;
+}
+
+.btn-primary {
+    background: #3498db;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #2980b9;
+}
+
+.readonly-hint {
+    font-size: 12px;
+    color: #6c757d;
+    margin-top: 4px;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .contents {
+        padding: 20px;
+    }
+    
+    .mypage-content {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .profile-content {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        text-align: center;
+    }
+    
+    .profile-details {
+        grid-template-columns: 1fr;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .stats-grid.monthly {
+        grid-template-columns: 1fr;
+    }
+    
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .modal-container {
+        width: 95%;
+        margin: 20px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-footer {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+    }
+}

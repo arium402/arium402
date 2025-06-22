@@ -1,0 +1,160 @@
+/* 핵심역량 소개 페이지 스타일 */
+.competency-content {
+	padding: 32px;
+	background: white;
+	width: 100%;
+	max-width: none;
+	margin: 0;
+}
+
+.page-title {
+	font-size: 1.8rem;
+	font-weight: 700;
+	color: #333;
+	margin-bottom: 8px;
+}
+
+.page-title-divider {
+	width: 100%;
+	height: 2.5px;
+	background: var(--main-color);
+	margin-bottom: 32px;
+}
+
+/* 핵심역량 원형 도표 스타일 */
+.competency-diagram {
+	width: 100%;
+	max-width: 900px;
+	margin: 0 auto 48px auto;
+	position: relative;
+	text-align: center;
+}
+
+.competency-image {
+	width: 100%;
+	max-width: 900px;
+	height: auto;
+	margin: 0 auto;
+	display: block;
+	border-radius: 10px;
+	box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* 핵심역량 구성체계 스타일 */
+.competency-system {
+	margin-top: 48px;
+}
+
+.system-title {
+	font-size: 1.4rem;
+	font-weight: 700;
+	color: #333;
+	margin-bottom: 24px;
+	text-align: left;
+	padding: 16px 0;
+	border-bottom: 2px solid var(--main-color);
+}
+
+.competency-table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-bottom: 32px;
+	background: white;
+	box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.competency-table th {
+	background: var(--main-color);
+	color: white;
+	padding: 16px 12px;
+	text-align: center;
+	font-weight: 600;
+	font-size: 0.9rem;
+	border: 1px solid #ddd;
+}
+
+.competency-table td {
+	padding: 16px 12px;
+	border: 1px solid #ddd;
+	vertical-align: top;
+}
+
+.competency-table .competency-name {
+	background: #f8f9fa;
+	font-weight: 600;
+	color: var(--main-color);
+	text-align: center;
+	width: 160px;
+	font-size: 0.8rem;
+}
+
+.competency-table .competency-description {
+	color: #333;
+	line-height: 1.5;
+	font-size: 0.75rem;
+}
+
+/* 진단하기 버튼 스타일 */
+.diagnosis-button-container {
+	text-align: center;
+	margin-top: 32px;
+	padding: 16px 0;
+}
+
+.diagnosis-button {
+	display: inline-block;
+	background: var(--main-color);
+	color: white;
+	font-size: 1rem;
+	font-weight: 600;
+	padding: 12px 32px;
+	text-decoration: none;
+	border: none;
+	border-radius: 0;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.diagnosis-button:hover {
+	background: #3d5a8a;
+	color: white;
+	transform: translateY(-2px);
+	box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {  
+	.competency-content {
+		padding: 16px;
+	}
+	
+	.page-title {
+		font-size: 1.4rem;
+	}
+	
+	.competency-image {
+		max-width: 100%;
+		padding: 15px;
+	}
+	
+	.competency-table th,
+	.competency-table td {
+		padding: 12px 8px;
+		font-size: 0.7rem;
+	}
+
+	.competency-table .competency-name {
+		width: 120px;
+		font-size: 0.7rem;
+	}
+	 
+	.competency-table .competency-description {
+		font-size: 0.65rem;
+	}
+	 
+	.diagnosis-button {
+		font-size: 0.85rem;
+		padding: 10px 24px;
+	}
+}

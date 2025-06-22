@@ -1,0 +1,127 @@
+<div th:fragment="view">
+
+<main class="col-md-9 col-lg-10 p-0" style="margin-left: 16.66667%; min-height: calc(100vh - 70px);">
+	<div class="main-content">
+		<div class="notice-container">
+			<!-- 공지사항 헤더 -->
+			<div class="notice-header">
+				<h1 class="notice-title">
+					<i class="fas fa-bullhorn me-3"></i>공지사항
+				</h1>
+			</div>
+
+			<!-- 공지사항 상세 컨텐츠 -->
+			<div class="notice-content">
+				<!-- 탭 영역 -->
+				<div class="notice-tabs">
+					<div class="tab-buttons">
+						<button class="tab-btn active">전체</button>
+						<button class="tab-btn">비교과</button>
+						<button class="tab-btn">상담</button>
+						<button class="tab-btn">기타</button>
+					</div>
+				</div>
+
+				<!-- 공지사항 제목 -->
+				<h2 class="detail-title">2025년 하계 비교과 프로그램 신청 안내</h2>
+
+				<!-- 공지사항 정보 -->
+				<div class="detail-info">
+					<div class="info-item">
+						<span class="info-label">No</span>
+						<span class="info-value">156</span>
+					</div>
+					<div class="info-item">
+						<span class="info-label">작성일</span>
+						<span class="info-value">2025.06.18</span>
+					</div>
+					<div class="info-item">
+						<span class="info-label">작성자</span>
+						<span class="info-value">비교과팀</span>
+					</div>
+					<div class="info-item">
+						<span class="info-label">조회수</span>
+						<span class="info-value">234</span>
+					</div>
+				</div>
+
+				<!-- 공지사항 내용 -->
+				<div class="detail-content">
+					<h3>2025년 하계 비교과 프로그램 안내</h3>
+					<p>
+						안녕하세요. 한국방송통신대학교 학생상담센터입니다.<br>
+						2025년 하계 방학 기간 중 운영될 비교과 프로그램에 대해 안내드립니다.
+					</p>
+
+					<h3>프로그램 개요</h3>
+					<ul>
+						<li><strong>운영 기간:</strong> 2025년 7월 1일(화) ~ 8월 31일(일)</li>
+						<li><strong>신청 기간:</strong> 2025년 6월 20일(금) ~ 6월 30일(월)</li>
+						<li><strong>참가 대상:</strong> 재학생 전체</li>
+						<li><strong>운영 방식:</strong> 온라인/오프라인 병행</li>
+					</ul>
+
+					<h3>주요 프로그램</h3>
+					<p><strong>1. 리더십 개발 프로그램</strong></p>
+					<ul>
+						<li>일정: 7월 5일 ~ 7월 19일 (매주 토요일, 총 3회)</li>
+						<li>장소: 온라인 화상회의</li>
+						<li>내용: 팀 빌딩, 의사소통 기법, 갈등 관리 등</li>
+						<li>정원: 30명</li>
+					</ul>
+
+					<p><strong>2. 창업 아이디어 경진대회</strong></p>
+					<ul>
+						<li>일정: 8월 10일 ~ 8월 24일</li>
+						<li>장소: 대학교 본관 강당</li>
+						<li>내용: 아이디어 발표, 멘토링, 시상</li>
+						<li>정원: 제한 없음 (팀 단위 참가)</li>
+					</ul>
+
+					<p><strong>3. 진로 탐색 워크숍</strong></p>
+					<ul>
+						<li>일정: 7월 중 매주 수요일 (총 4회)</li>
+						<li>장소: 온라인/오프라인 선택</li>
+						<li>내용: 적성 검사, 진로 상담, 취업 전략</li>
+						<li>정원: 50명</li>
+					</ul>
+
+					<h3>신청 방법</h3>
+					<p>
+						학생상담센터 홈페이지 → 비교과 프로그램 → 신청하기 메뉴를 통해 신청하실 수 있습니다.<br>
+						선착순 마감이므로 빠른 신청 바랍니다.
+					</p>
+
+					<h3>혜택</h3>
+					<ul>
+						<li>프로그램 수료증 발급</li>
+						<li>마일리지 적립 (프로그램별 차등 지급)</li>
+						<li>우수 참가자 시상 및 장학금 지급</li>
+						<li>진로 상담 우선 예약 권한</li>
+					</ul>
+
+					<h3>문의사항</h3>
+					<p>
+						기타 궁금한 사항은 학생상담센터로 문의해 주시기 바랍니다.<br>
+						<strong>전화:</strong> 02-123-4567<br>
+						<strong>이메일:</strong> counsel@knou.ac.kr
+					</p>
+
+					<p style="margin-top: 30px; text-align: center; font-weight: 600; color: var(--primary-color);">
+						많은 참여 부탁드립니다.
+					</p>
+				</div>
+
+				<!-- 버튼 영역 -->
+				<div class="button-area">
+					<a href="#" class="back-btn" onclick="goBackToList(); return false;">
+						<i class="fas fa-list"></i>
+						목록으로
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
+
+</div>

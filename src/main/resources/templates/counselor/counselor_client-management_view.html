@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+</head>
+<body>
+<!-- 내담자 콘텐츠 전체 프래그먼트 (검색 섹션 + 목록) -->
+<div th:fragment="clientContent">
+    <h4 class="board_title">내담자 관리</h4>
+    
+    <!-- 검색 섹션 -->
+    <div class="search-section">
+        <select class="dropdown" id="searchTypeSelect">
+            <option value="all">전체</option>
+            <option value="name">이름</option>
+            <option value="department">학과</option>
+            <option value="studentId">학번</option>
+        </select>
+        <input type="text" class="search-input" id="searchInput" placeholder="검색어 입력">
+        <button class="search-btn" onclick="searchClients()">검색</button>
+        <span>날짜</span>
+        <input type="date" class="date-input" id="startDate">
+        <span>~</span>
+        <input type="date" class="date-input" id="endDate">
+        <button class="search-btn" onclick="searchClients()">조회</button>
+        <select class="dropdown" id="sortSelect" onchange="sortClients()">
+            <option value="date">최신순</option>
+            <option value="name">이름순</option>
+            <option value="studentId">학번순</option>
+            <option value="department">학과순</option>
+        </select>
+    </div>
+
+    <!-- 내담자 목록 -->
+    <div th:replace="~{counselor/counselor_client-management_view :: clientList}"></div>
+</div>
+
+<!-- 내담자 목록 프래그먼트 -->
+<div th:fragment="clientList">
+    <table class="client-table">
+        <thead>
+            <tr>
+                <th>NO</th>
+                <th>이름</th>
+                <th>학번</th>
+                <th>학과</th>
+                <th>상담시작일자</th>
+                <th>상담진행</th>
+                <th>상담 차수</th>
+            </tr>
+        </thead>
+        <tbody id="clientTableBody">
+            <!-- 샘플 데이터 (하드코딩) -->
+            <tr onclick="goToClientDetail(1)">
+                <td>1</td>
+                <td>김내담</td>
+                <td>20210001</td>
+                <td>심리학과</td>
+                <td>2025-06-01</td>
+                <td><span class="status-progress">진행</span></td>
+                <td>3회</td>
+            </tr>
+            <tr onclick="goToClientDetail(2)">
+                <td>2</td>
+                <td>이상담</td>
+                <td>20210002</td>
+                <td>교육학과</td>
+                <td>2025-05-28</td>
+                <td><span class="status-complete">종료</span></td>
+                <td>8회</td>
+            </tr>
+            <tr onclick="goToClientDetail(3)">
+                <td>3</td>
+                <td>박치료</td>
+                <td>20210003</td>
+                <td>사회복지학과</td>
+                <td>2025-05-25</td>
+                <td><span class="status-progress">진행</span></td>
+                <td>5회</td>
+            </tr>
+            <tr onclick="goToClientDetail(4)">
+                <td>4</td>
+                <td>최도움</td>
+                <td>20210004</td>
+                <td>컴퓨터공학과</td>
+                <td>2025-05-20</td>
+                <td><span class="status-progress">진행</span></td>
+                <td>2회</td>
+            </tr>
+            <tr onclick="goToClientDetail(5)">
+                <td>5</td>
+                <td>정해결</td>
+                <td>20210005</td>
+                <td>경영학과</td>
+                <td>2025-05-15</td>
+                <td><span class="status-complete">종료</span></td>
+                <td>10회</td>
+            </tr>
+            
+            <!-- 검색 결과가 없을 때 표시 (동적으로 추가/제거 예정) -->
+            <!-- <tr><td colspan="7" class="no-data">검색 결과가 없습니다.</td></tr> -->
+        </tbody>
+    </table>
+
+    <div class="pagination" id="pagination">
+        <!-- 페이지네이션 샘플 (하드코딩) -->
+        <button disabled>&lt;&lt;</button>
+        <button disabled>&lt;</button>
+        <button class="active">1</button>
+        <button disabled>&gt;</button>
+        <button disabled>&gt;&gt;</button>
+        <span class="page-info">1 / 1 페이지</span>
+    </div>
+    
+    
+</div>
+
+
+</body>
+</html>

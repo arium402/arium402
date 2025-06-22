@@ -1,0 +1,126 @@
+<div th:fragment="view">
+
+<!-- Main Content -->
+<main class="col-md-9 col-lg-10 p-0" style="margin-left: 16.66667%; min-height: calc(100vh - 60px); width: 83.33333%;">
+	<div class="main-content">
+		<!-- 핵심역량 소개 페이지 -->
+		<div class="competency-content">
+			<!-- 페이지 제목 -->
+			<h1 class="page-title">핵심역량 소개</h1>
+			<div class="page-title-divider"></div>
+
+			<!-- 핵심역량 원형 도표 -->
+			<div class="competency-diagram">
+				<!-- 핵심역량 다이어그램 이미지 -->
+				<img th:src="@{/images/student-competence.png}"
+					alt="핵심역량 다이어그램" 
+					class="competency-image"
+					style="border: 2px solid #ddd; background: #f8f9fa; padding: 20px;">
+			</div>
+
+			<!-- 핵심역량 구성체계 -->
+			<div class="competency-system">
+				<h2 class="system-title">핵심역량 구성체계</h2>
+	
+				<!-- 협력적 소통역량 -->
+				<table class="competency-table">
+					<thead>
+						<tr>
+							<th colspan="2">협력적 소통역량</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="competency-name">의사소통능력</td>
+							<td class="competency-description">상대방의 말을 정확하게 이해하고, 자신의 생각과 의도를 효과적으로 표현, 전달하는 능력</td>
+						</tr>
+						<tr>
+							<td class="competency-name">인성능력</td>
+							<td class="competency-description">인간으로서 갖추어야 하는 도덕적 품성 및 시민과 작업인으로서 보편적으로 지켜야할 윤리 등을 준수하는 능력</td>
+						</tr>
+						<tr>
+							<td class="competency-name">대인관계능력</td>
+							<td class="competency-description">다양한 배경을 지닌 사람들과 원만한 관계를 유지하고, 조직의 일원으로 참여하는 협력하면서 업무수행을 향상 시킬 수 있는 능력</td>
+						</tr>
+					</tbody>
+				</table>
+	
+				<!-- 융합적 탐구역량 -->
+				<table class="competency-table">
+					<thead>
+						<tr>
+							<th colspan="2">융합적 탐구역량</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="competency-name">종합적 사고력</td>
+							<td class="competency-description">해결해야 할 과제를 논리적으로 분석•분류하고 타당한 근거나 기준을 설정하여 평가할 수 있는 능력</td>
+						</tr>
+						<tr>
+							<td class="competency-name">지식탐구능력</td>
+							<td class="competency-description">전공지식과 기술을 습득하는 과정에서 학습내용을 올바르게 이해하고 깊이 있게 연구하여 문제를 인식하는 능력</td>
+						</tr>
+						<tr>
+							<td class="competency-name">문제해결능력</td>
+							<td class="competency-description">문제의 특성을 파악하고, 최적의 대안을 선택하여 의사결정을 이루며, 이를 적절하게 해결하는 능력</td>
+						</tr>
+					</tbody>
+				</table>
+	
+				<!-- 창의적 혁신역량 -->
+				<table class="competency-table">
+					<thead>
+						<tr>
+							<th colspan="2">창의적 혁신역량</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="competency-name">창의력</td>
+							<td class="competency-description">상상력과 호기심을 발휘해 기존과는 다른 새로운 방식으로 시안에 접근해 새로운 개념, 아이디어, 방법 등을 이끌어내는 능력</td>
+						</tr>
+						<tr>
+							<td class="competency-name">자원활용능력</td>
+							<td class="competency-description">적절한 도구나 기법을 효과적으로 동원해 정보, 사람 등 다양하고 수많은 지원 중에서 적합한 자원을 수집하여 선별하고 활용하는 능력</td>
+						</tr>
+						<tr>
+							<td class="competency-name">자기관리능력</td>
+							<td class="competency-description">스스로 학습동기를  고취하여 학습과정 및 전략을 결정하며, 자신의 관습과 방법을 변화시키고 유지하는 능력</td>
+						</tr>
+					</tbody>
+				</table>
+		
+				<!-- 글로컬 리더역량 -->
+				<table class="competency-table">
+					<thead>
+						<tr>
+							<th colspan="2">글로컬 리더역량</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="competency-name">리더십</td>
+							<td class="competency-description">공동의 목표를 달성하기 위해 다른 사람에게 긍정적 에너지를 부여하며, 책임감을 가지고 조직을 이끌어나가는 능력</td>
+						</tr>
+						<tr>
+							<td class="competency-name">외국어능력</td>
+							<td class="competency-description">세계화 시대에 개인에게 요구되어지는 외국어와 관련된 읽기, 쓰기, 말하기, 듣기를 통한 외국인과의 의사소통능력</td>
+						</tr>
+						<tr>
+							<td class="competency-name">글로컬 시민역량</td>
+							<td class="competency-description">글로컬 시민으로서 지역 및 전세계와 연대감을 갖고, 자신의 책임을 다하는 능력</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<!-- 진단하기 버튼 -->
+			<div class="diagnosis-button-container">
+				<a href="#" class="diagnosis-button" onclick="startDiagnosis(); return false;">진단하기</a>
+			</div>
+		</div>
+	</div>
+</main>
+
+</div>

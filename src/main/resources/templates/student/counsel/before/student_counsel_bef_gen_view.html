@@ -1,0 +1,194 @@
+<div th:fragment="view">
+
+<!-- Main Content -->
+<main class="col-md-9 col-lg-10 p-0" style="margin-left: 16.66667%; min-height: calc(100vh - 60px); width: 83.33333%;">
+	<div class="main-content">
+		<!-- 취업/진로 사전 검사 페이지 -->
+		<div class="pretest-content">
+			<!-- 페이지 제목 -->
+			<h1 class="page-title">일반 상담 사전 검사</h1>
+			<div class="page-title-divider"></div>
+			<p class="page-subtitle">심리, 익명, 위기 상담 전 사전 검사를 통해 보다 효과적인 상담을 진행할 수 있습니다.</p>
+
+			<div class="form-container">
+				<form id="careerForm">
+					<!-- 1. 관계 -->
+					<div class="question-group">
+						<div class="question-title">
+							<span class="question-number">1</span>
+							관계
+							<span class="multiple-choice">(복수 선택 가능)</span>
+						</div>
+						<div class="options-grid">
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="relation1" name="relation" value="가족관계">
+								<label for="relation1">가족관계</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="relation2" name="relation" value="교우관계">
+								<label for="relation2">교우관계</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="relation3" name="relation" value="친구관계">
+								<label for="relation3">친구관계</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="relation4" name="relation" value="대인관계">
+								<label for="relation4">대인관계</label>
+							</div>
+						</div>
+					</div>
+
+					<!-- 2. 정서 -->
+					<div class="question-group">
+						<div class="question-title">
+							<span class="question-number">2</span>
+							정서
+							<span class="multiple-choice">(복수 선택 가능)</span>
+						</div>
+						<div class="options-grid">
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="emotion1" name="emotion" value="우울">
+								<label for="emotion1">우울</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="emotion2" name="emotion" value="불안/긴장">
+								<label for="emotion2">불안/긴장</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="emotion3" name="emotion" value="강박">
+								<label for="emotion3">강박</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="emotion4" name="emotion" value="화/분노">
+								<label for="emotion4">화/분노</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="emotion5" name="emotion" value="스트레스">
+								<label for="emotion5">스트레스</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="emotion6" name="emotion" value="외로움">
+								<label for="emotion6">외로움</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="emotion7" name="emotion" value="자살생각">
+								<label for="emotion7">자살생각</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="emotion8" name="emotion" value="감정기복 조절">
+								<label for="emotion8">감정기복 조절</label>
+							</div>
+						</div>
+					</div>
+
+					<!-- 3. 생활습관 -->
+					<div class="question-group">
+						<div class="question-title">
+							<span class="question-number">3</span>
+							생활습관
+							<span class="multiple-choice">(복수 선택 가능)</span>
+						</div>
+						<div class="options-grid">
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="habit1" name="habit" value="주의집중">
+								<label for="habit1">주의집중</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="habit2" name="habit" value="불면증">
+								<label for="habit2">불면증</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="habit3" name="habit" value="중독 (게임, 술, 도박, 스마트폰)">
+								<label for="habit3">중독 (게임, 술, 도박, 스마트폰)</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="habit4" name="habit" value="자해">
+								<label for="habit4">자해</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="habit5" name="habit" value="폭력적 행동">
+								<label for="habit5">폭력적 행동</label>
+							</div>
+						</div>
+					</div>
+
+					<!-- 4. 이상/성 -->
+					<div class="question-group">
+						<div class="question-title">
+							<span class="question-number">4</span>
+							이상/성
+							<span class="multiple-choice">(복수 선택 가능)</span>
+						</div>
+						<div class="options-grid">
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="gender1" name="gender" value="성문제 (이성, 성욕적, 성희롱, 성폭력)">
+								<label for="gender1">성문제 (이성, 성욕적, 성희롱, 성폭력)</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="gender2" name="gender" value="이성관계">
+								<label for="gender2">이성관계</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="gender3" name="gender" value="데이트 폭력">
+								<label for="gender3">데이트 폭력</label>
+							</div>
+						</div>
+					</div>
+
+					<!-- 5. 기타 -->
+					<div class="question-group">
+						<div class="question-title">
+							<span class="question-number">5</span>
+							기타
+							<span class="multiple-choice">(복수 선택 가능)</span>
+						</div>
+						<div class="options-grid">
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="other1" name="other" value="상실의 의미와 목적">
+								<label for="other1">상실의 의미와 목적</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="other2" name="other" value="경제적 어려움">
+								<label for="other2">경제적 어려움</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="other3" name="other" value="결혼/건강">
+								<label for="other3">결혼/건강</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="other4" name="other" value="종교적/영적">
+								<label for="other4">종교적/영적</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="other5" name="other" value="그 외 다른 어려움">
+								<label for="other5">그 외 다른 어려움</label>
+							</div>
+						</div>
+					</div>
+
+					<!-- 6. 현재 어려움 -->
+					<div class="question-group">
+						<div class="question-title">
+							<span class="question-number">6</span>
+							현재 어려움
+						</div>
+						<div class="textarea-container">
+							<textarea id="currentDifficulty" name="currentDifficulty" placeholder="현재 겪고 계신 어려움에 대해 자세히 설명해 주세요." oninput="updateCharCount(this)"></textarea>
+							<div class="char-count">
+								<span id="charCount">0</span> / 1000자
+							</div>
+						</div>
+					</div>
+
+					<!-- 하단 버튼 -->
+					<div class="form-footer">
+						<button type="button" class="counselor-select-btn" onclick="selectCounselor()">상담사 선택</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</main>
+
+</div>

@@ -1,0 +1,230 @@
+/* 내담자 관리 페이지 CSS */
+
+/* 전체 레이아웃 높이 보장 */
+html, body {
+    height: 100%;
+    min-height: 100vh;
+}
+
+body {
+    font-family: 'Noto Sans KR', Arial, sans-serif;
+    background-color: #fef7f0;
+    margin: 0;
+    padding: 0;
+}
+
+/* 사이드바 높이 강제 확장 - 이 페이지에서만 적용 */
+.sidebar {
+    height: 100vh !important;
+    min-height: 100vh !important;
+}
+
+/* 메인 컨테이너 높이 보장 */
+.main-container {
+    min-height: 100vh;
+    display: flex;
+}
+
+/* 콘텐츠 영역 높이 보장 */
+.content-area {
+    flex: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.contents {
+    flex: 1;
+    padding: 30px;
+    background: white;
+    margin: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    min-height: calc(100vh - 140px); /* 헤더 + 마진 고려 */
+}
+
+.board_title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 25px;
+    text-align: left;
+    padding-bottom: 10px;
+}
+
+.search-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.search-input {
+    border: 1px solid #bdc3c7;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 150px;
+}
+
+.date-input {
+    border: 1px solid #bdc3c7;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 120px;
+}
+
+.search-btn {
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.search-btn:hover {
+    background: #2980b9;
+}
+
+.dropdown {
+    border: 1px solid #bdc3c7;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    background: white;
+}
+
+.client-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.client-table th,
+.client-table td {
+    border: 1px solid #bdc3c7;
+    padding: 12px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.client-table th {
+    background: #ecf0f1;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.client-table tbody tr {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.client-table tbody tr:hover {
+    background: #f8f9fa;
+}
+
+.status-progress {
+    color: #3498db;
+    font-weight: 600;
+}
+
+.status-complete {
+    color: #27ae60;
+    font-weight: 600;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    margin-top: 20px;
+}
+
+.pagination button {
+    border: 1px solid #bdc3c7;
+    background: white;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+    min-width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.pagination button:hover:not(:disabled) {
+    background: #f8f9fa;
+    border-color: #3498db;
+}
+
+.pagination button.active {
+    background: #3498db;
+    color: white;
+    border-color: #3498db;
+}
+
+.pagination button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: #f8f9fa;
+    color: #6c757d;
+}
+
+.pagination .page-info {
+    margin: 0 10px;
+    font-size: 14px;
+    color: #6c757d;
+}
+
+.no-data {
+    text-align: center;
+    padding: 40px;
+    color: #7f8c8d;
+    font-size: 16px;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .contents {
+        margin: 10px;
+        padding: 20px;
+        min-height: calc(100vh - 120px);
+    }
+
+    .search-section {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .search-input,
+    .date-input {
+        width: 100%;
+    }
+
+    .client-table {
+        font-size: 12px;
+    }
+
+    .client-table th,
+    .client-table td {
+        padding: 8px 4px;
+    }
+
+    .pagination {
+        flex-wrap: wrap;
+    }
+
+    .pagination button {
+        min-width: 32px;
+        height: 32px;
+        font-size: 12px;
+    }
+}

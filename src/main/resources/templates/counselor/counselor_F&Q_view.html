@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <section th:fragment="content" class="contents">
+        <h4 class="board_title">F&Q</h4>
+        
+        <div class="search-section">
+            <input type="text" class="search-input" placeholder="궁금한 내용을 검색해보세요..." id="searchInput" onkeyup="searchFAQ()">
+        </div>
+        
+        <div class="faq-tabs">
+            <button class="tab-button active" onclick="showTab('crisis')">위기</button>
+            <button class="tab-button" onclick="showTab('psychology')">심리</button>
+            <button class="tab-button" onclick="showTab('anonymous')">익명</button>
+            <button class="tab-button" onclick="showTab('career')">진로/취업</button>
+            <button class="tab-button" onclick="showTab('learning')">학습컨설팅</button>
+        </div>
+
+        <!-- 위기 상담 FAQ -->
+        <div class="faq-content active" id="crisis">
+            <div class="category-description">
+                <h4>위기 상담</h4>
+                <p>심리적 위기 상황에서의 응급 상담 및 지원에 관한 자주 묻는 질문입니다.</p>
+            </div>
+
+            <!-- 기존 3개 질문 유지 -->
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleAnswer(this)">
+                    <span class="question-text">Q. 위기상황에서 즉시 상담을 받을 수 있나요?</span>
+                    <span class="question-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="answer-content">
+                        <span class="answer-label">A:</span> 위기상황 시 24시간 핫라인(02-1234-5678)을 통해 즉시 상담을 받으실 수 있습니다. 평일 야간이나 주말에도 응급상담 담당자가 대기하고 있으며, 필요시 즉시 면접상담도 가능합니다.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleAnswer(this)">
+                    <span class="question-text">Q. 자해나 자살 생각이 들 때 어떻게 해야 하나요?</span>
+                    <span class="question-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="answer-content">
+                        <span class="answer-label">A:</span> 즉시 위기상담 핫라인(02-1234-5678)으로 연락하거나, 학생상담센터로 직접 방문해주세요. 또한 생명의전화(1393), 청소년전화(1388) 등 24시간 운영되는 상담서비스도 이용하실 수 있습니다. 혼자 견디려 하지 마시고 반드시 도움을 요청해주세요.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleAnswer(this)">
+                    <span class="question-text">Q. 위기상담은 비밀이 보장되나요?</span>
+                    <span class="question-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="answer-content">
+                        <span class="answer-label">A:</span> 모든 상담 내용은 엄격히 비밀보장 원칙에 따라 보호됩니다. 다만, 본인이나 타인의 생명에 위험이 있다고 판단되는 경우에는 안전을 위해 보호자나 관련 기관에 알릴 수 있습니다. 이런 경우에도 사전에 충분히 설명드리고 동의를 구합니다.
+                    </div>
+                </div>
+            </div>
+
+            <!-- 신규 2개 질문 추가 -->
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleAnswer(this)">
+                    <span class="question-text">Q. 갑작스런 공황발작이 왔을 때 대처 방법은?</span>
+                    <span class="question-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="answer-content">
+                        <span class="answer-label">A:</span> 천천히 심호흡을 하며 안정적인 자세를 취하세요. 주변에 신뢰할 수 있는 사람에게 도움을 요청하고 필요시 전문의 상담을 받는 것이 좋습니다.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleAnswer(this)">
+                    <span class="question-text">Q. 긴급 상황 시 가족에게 알리는 절차는?</span>
+                    <span class="question-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="answer-content">
+                        <span class="answer-label">A:</span> 상담자가 위기 상황을 판단하면, 사전 동의를 받은 보호자 혹은 지정된 가족에게 즉시 연락하여 상황을 공유하고 지원을 요청합니다.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 심리 상담 FAQ -->
+        <div class="faq-content" id="psychology">
+            <div class="category-description">
+                <h4>심리 상담</h4>
+                <p>개인의 심리적 어려움과 정신건강에 관한 전문 상담 서비스입니다.</p>
+            </div>
+
+            <!-- 기존 3개 질문 유지 -->
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleAnswer(this)">
+                    <span class="question-text">Q. 심리상담은 몇 회기 정도 받아야 하나요?</span>
+                    <span class="question-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="answer-content">
+                        <span class="answer-label">A:</span> 개인차가 있지만 일반적으로 단기상담은 6-10회기, 장기상담은 20회기 이상 진행됩니다. 첫 상담에서 상담사와 함께 목표를 설정하고 적절한 회기 수를 논의하게 됩니다. 상담 진행 과정에서 언제든 조정이 가능합니다.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleAnswer(this)">
+                    <span class="question-text">Q. 상담료는 얼마인가요?</span>
+                    <span class="question-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="answer-content">
+                        <span class="answer-label">A:</span> 재학생의 경우 개별상담은 회기당 30,000원, 집단상담은 20,000원입니다. 경제적 어려움이 있는 학생들을 위한 할인 제도도 운영하고 있으니 상담 시 문의해주세요. 첫 상담(인테이크)은 무료로 진행됩니다.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleAnswer(this)">
+                    <span class="question-text">Q. 심리검사는 어떤 것들이 있나요?</span>
+                    <span class="question-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="answer-content">
+                        <span class="answer-label">A:</span> 성격검사(MMPI-2, MBTI), 지능검사(K-WAIS-IV), 투사검사(로르샤흐, TAT), 진로탐색검사(Holland 검사) 등 다양한 심리검사를 시행하고 있습니다. 검사 결과는 전문상담사가 자세히 해석해드리며, 개별 상담과 연계하여 진행할 수 있습니다.
+                    </div>
+                </div>
+            </div>
+
+            <!-- 신규 2개 질문 추가 -->
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleAnswer(this)">
+                    <span class="question-text">Q. 집중력 저하를 개선할 수 있는 방법은?</span>
+                    <span class="question-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="answer-content">
+                        <span class="answer-label">A:</span> 규칙적인 휴식과 운동, 명상 등으로 뇌를 재충전하세요. 상담을 통해 개인별 집중 패턴을 분석하고 맞춤 전략을 세울 수도 있습니다.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleAnswer(this)">
+                    <span class="question-text">Q. 불안 장애가 의심되면 어떻게 하나요?</span>
+                    <span class="question-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="answer-content">
+                        <span class="answer-label">A:</span> 초기 증상이 지속되면 전문의 진료를 권유드리며, 상담을 통해 불안 원인을 파악한 뒤 인지행동치료(CBT) 등의 치료법을 적용합니다.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 익명 상담 FAQ -->
+        <div class="faq-content" id="anonymous">
+            <div class="category-description">
+                <h4>익명 상담</h4>
+                <p>신원을 밝히지 않고 받을 수 있는 익명 상담 서비스에 대한 안내입니다.</p>
+            </div>
+
+            <!-- 기존 3개 질문 유지 -->
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleAnswer(this)">
+                    <span class="question-text">Q. 익명상담은 어떻게 신청하나요?</span>
+                    <span class="question-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="answer-content">
+                        <span class="answer-label">A:</span> 온라인 플랫폼을 통해 가명으로 신청하실 수 있습니다. 전화상담의 경우 번호표시 제한으로 연락주시면 되고, 온라인 채팅상담은 홈페이지에서 닉네임만으로 이용 가능합니다. 신원확인 절차 없이 바로 상담받으실 수 있습니다.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleAnswer(this)">
+                    <span class="question-text">Q. 익명상담도 전문상담사가 진행하나요?</span>
+                    <span class="question-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="answer-content">
+                        <span class="answer-label">A:</span> 네, 익명상담도 동일하게 전문 자격을 갖춘 상담사가 진행합니다. 상담의 질이나 전문성에는 차이가 없으며, 다만 지속적인 관리나 심화상담이 필요한 경우에는 실명상담으로 전환을 권해드릴 수 있습니다.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleAnswer(this)">
+                    <span class="question-text">Q. 익명상담 시간대는 언제인가요?</span>
+                    <span class="question-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="answer-content">
+                        <span class="answer-label">A:</span> 온라인 채팅상담은 평일 오전 10시~오후 8시, 전화상담은 평일 오후 2시~6시에 운영됩니다. 토요일에는 오전 10시~오후 2시까지 제한적으로 운영하며, 일요일과 공휴일은 휴무입니다.
+                    </div>
+                </div>
+            </div>
+
+            <!-- 신규 2개 질문 추가 -->
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleAnswer(this)">
+                    <span class="question-text">Q. 익명상담 중 사진이나 파일 전송이 가능한가요?</span>
+                    <span class="question-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="answer-content">
+                        <span class="answer-label">A:</span> 현재는 텍스트 기반 상담만 가능하며, 안전 및 개인정보 보호를 위해 파일 전송 서비스는 제공되지 않습니다.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleAnswer(this)">
+                    <span class="question-text">Q. 익명상담 기록은 어떻게 관리되나요?</span>
+                    <span class="question-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="answer-content">
+                        <span class="answer-label">A:</span> 모든 채팅 기록은 암호화되어 저장되며, 일정 기간 후 안전하게 파기됩니다. 개인정보는 일체 수집되지 않습니다.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 진로/취업 상담 FAQ -->
+        <div class="faq-content" id="career">
+            <div class="category-description">
+                <h4>진로/취업 상담</h4>
+                <p>진로 탐색, 취업 준비, 직업 선택에 관한 전문적인 상담과 지원 서비스입니다.</p>
+            </div>
+
+            <!-- 기존 3개 질문 유지 -->
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleAnswer(this)">
+                    <span class="question-text">Q. 진로상담은 몇 학년부터 받을 수 있나요?</span>
+                    <span class="question-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="answer-content">
+                        <span class="answer-label">A:</span> 1학년부터 가능합니다. 오히려 일찍 시작할수록 체계적인 진로설계가 가능합니다. 1-2학년은 자기탐색과 전공적합성 확인에, 3-4학년은 구체적인 취업준비와 진로결정에 초점을 맞춰 상담을 진행합니다.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleAnswer(this)">
+                    <span class="question-text">Q. 취업 면접 연습도 도움받을 수 있나요?</span>
+                    <span class="question-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="answer-content">
+                        <span class="answer-label">A:</span> 네, 모의면접 프로그램을 운영하고 있습니다. 개별 모의면접과 집단 모의면접 모두 가능하며, 영상 촬영을 통한 피드백도 제공합니다. 자소서 작성법, 면접 매너, 예상 질문 대비 등 종합적인 면접 준비를 도와드립니다.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleAnswer(this)">
+                    <span class="question-text">Q. 진로적성검사는 어떤 것들이 있나요?</span>
+                    <span class="question-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="answer-content">
+                        <span class="answer-label">A:</span> Holland 적성검사, Strong 직업흥미검사, MBTI 성격유형검사, 직업가치관검사 등을 시행하고 있습니다. 각 검사는 상담과 연계하여 개인별 맞춤 해석을 제공하며, 구체적인 진로방향 설정에 도움을 드립니다.
+                    </div>
+                </div>
+            </div>
+
+            <!-- 신규 2개 질문 추가 -->
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleAnswer(this)">
+                    <span class="question-text">Q. 희망 직무 탐색은 어떻게 하나요?</span>
+                    <span class="question-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="answer-content">
+                        <span class="answer-label">A:</span> 직무 분석 워크숍과 진로검사 결과를 바탕으로 관심 분야와 역량을 매칭하여 희망 직무를 탐색합니다.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleAnswer(this)">
+                    <span class="question-text">Q. 자기소개서 첨삭 서비스가 있나요?</span>
+                    <span class="question-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="answer-content">
+                        <span class="answer-label">A:</span> 예, 전문상담사가 자기소개서를 검토하고 피드백을 제공합니다. 내용 구성, 표현 방식, 키워드 활용 방법 등을 조언해 드립니다.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 학습컨설팅 FAQ -->
+        <div class="faq-content" id="learning">
+            <div class="category-description">
+                <h4>학습컨설팅</h4>
+                <p>효과적인 학습방법과 학업 성취 향상을 위한 개인별 맞춤 컨설팅 서비스입니다.</p>
+            </div>
+
+            <!-- 기존 3개 질문 유지 -->
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleAnswer(this)">
+                    <span class="question-text">Q. 학습컨설팅은 어떤 내용을 다루나요?</span>
+                    <span class="question-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="answer-content">
+                        <span class="answer-label">A:</span> 개인별 학습스타일 분석, 효과적인 노트필기법, 시간관리 및 계획수립, 시험불안 극복, 집중력 향상, 기억법과 암기전략 등을 다룹니다. 학습 진단을 통해 개인의 강점과 약점을 파악하고 맞춤형 학습전략을 제공합니다.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleAnswer(this)">
+                    <span class="question-text">Q. 학습컨설팅은 몇 회기로 진행되나요?</span>
+                    <span class="question-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="answer-content">
+                        <span class="answer-label">A:</span> 일반적으로 4-6회기로 진행됩니다. 1회기는 학습진단 및 목표설정, 2-4회기는 구체적인 학습전략 수립과 실습, 마지막 회기는 점검 및 보완으로 구성됩니다. 필요에 따라 추가 상담도 가능합니다.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleAnswer(this)">
+                    <span class="question-text">Q. 성적이 오르지 않아 고민인데 도움받을 수 있나요?</span>
+                    <span class="question-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="answer-content">
+                        <span class="answer-label">A:</span> 네, 성적 향상을 위한 종합적인 분석과 솔루션을 제공합니다. 현재 학습방법을 점검하고, 효율적인 공부법을 찾아드립니다. 또한 학습동기 부족이나 시험불안 등 심리적 요인도 함께 다루어 근본적인 해결책을 제시합니다.
+                    </div>
+                </div>
+            </div>
+
+            <!-- 신규 2개 질문 추가 -->
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleAnswer(this)">
+                    <span class="question-text">Q. 시험 불안을 줄이는 팁은?</span>
+                    <span class="question-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="answer-content">
+                        <span class="answer-label">A:</span> 모의 시험을 통해 익숙해지세요. 시험 전에는 충분한 휴식과 명상을 통해 긴장을 완화하는 것이 도움이 됩니다.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleAnswer(this)">
+                    <span class="question-text">Q. 온라인 강의 집중을 위한 방법은?</span>
+                    <span class="question-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="answer-content">
+                        <span class="answer-label">A:</span> 학습 전 환경을 정리하고, 주요 포인트를 노트에 미리 작성하는 습관을 들이세요. 짧은 휴식을 주기적으로 가지면 집중 유지에 도움이 됩니다.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

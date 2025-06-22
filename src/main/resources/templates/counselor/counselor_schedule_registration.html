@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>내 일정 등록</title>
+    <link rel="stylesheet" href="/css/bootstrap/bootstrap.css">
+    <link rel="stylesheet" href="/css/counselor_schedule_registration.css">
+</head>
+<body>
+
+        <div class="content-area">
+            <!-- 내용 영역 -->
+                <section class="contents">
+        <h4 class="board_title">내 일정 등록</h4>
+        
+        <!-- 기본 정보 -->
+        <div class="form-section">
+            <div class="section-title">
+                <div class="section-icon">1</div>
+                기본 정보
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">등록 년도</label>
+                    <select class="form-select" id="scheduleYear">
+                        <option value="2025">2025년</option>
+                        <option value="2026">2026년</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">등록 월</label>
+                    <select class="form-select" id="scheduleMonth">
+                        <option value="1">1월</option>
+                        <option value="2">2월</option>
+                        <option value="3">3월</option>
+                        <option value="4">4월</option>
+                        <option value="5">5월</option>
+                        <option value="6" selected>6월</option>
+                        <option value="7">7월</option>
+                        <option value="8">8월</option>
+                        <option value="9">9월</option>
+                        <option value="10">10월</option>
+                        <option value="11">11월</option>
+                        <option value="12">12월</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- 주간 근무 시간 설정 -->
+        <div class="form-section">
+            <div class="section-title">
+                <div class="section-icon">2</div>
+                주간 근무 시간 설정
+            </div>
+            
+            <div class="work-time-section">
+                <div class="time-input-group">
+                    <label class="form-label">근무 시간</label>
+                    <div class="time-inputs">
+                        <input type="time" class="form-input" id="startTime" value="09:00">
+                        <span class="time-separator">~</span>
+                        <input type="time" class="form-input" id="endTime" value="18:00">
+                    </div>
+                </div>
+
+                <div class="work-days-group">
+                    <label class="form-label">근무 요일 (월~금 중 선택)</label>
+                    <div class="days-checkboxes">
+                        <div class="day-checkbox-group">
+                            <input type="checkbox" class="day-checkbox" id="monday" value="1" checked>
+                            <label class="day-label" for="monday">월요일</label>
+                        </div>
+                        <div class="day-checkbox-group">
+                            <input type="checkbox" class="day-checkbox" id="tuesday" value="2" checked>
+                            <label class="day-label" for="tuesday">화요일</label>
+                        </div>
+                        <div class="day-checkbox-group">
+                            <input type="checkbox" class="day-checkbox" id="wednesday" value="3" checked>
+                            <label class="day-label" for="wednesday">수요일</label>
+                        </div>
+                        <div class="day-checkbox-group">
+                            <input type="checkbox" class="day-checkbox" id="thursday" value="4" checked>
+                            <label class="day-label" for="thursday">목요일</label>
+                        </div>
+                        <div class="day-checkbox-group">
+                            <input type="checkbox" class="day-checkbox" id="friday" value="5" checked>
+                            <label class="day-label" for="friday">금요일</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="consultation-time-section">
+                <label class="form-label">상담 가능 시간대</label>
+                <div class="consultation-checkboxes">
+                    <div class="consultation-checkbox-group">
+                        <input type="checkbox" class="consultation-checkbox" id="allTime" value="all" checked>
+                        <label class="consultation-label" for="allTime">전체 시간</label>
+                    </div>
+                    <div class="consultation-checkbox-group">
+                        <input type="checkbox" class="consultation-checkbox" id="morning" value="morning">
+                        <label class="consultation-label" for="morning">오전 (9~12시)</label>
+                    </div>
+                    <div class="consultation-checkbox-group">
+                        <input type="checkbox" class="consultation-checkbox" id="lunch" value="lunch">
+                        <label class="consultation-label" for="lunch">점심 (12~13시)</label>
+                    </div>
+                    <div class="consultation-checkbox-group">
+                        <input type="checkbox" class="consultation-checkbox" id="afternoon" value="afternoon">
+                        <label class="consultation-label" for="afternoon">오후 (13~16시)</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 버튼 그룹 -->
+        <div class="btn-group">
+            <button type="button" class="btn btn-secondary" onclick="resetForm()">초기화</button>
+            <button type="button" class="btn btn-light" onclick="cancelForm()">취소</button>
+            <button type="button" class="btn btn-primary" onclick="saveSchedule()">일정 저장</button>
+        </div>
+    </section>
+        </div>
+    
+
+    <!-- JavaScript 파일 -->
+    <script src="/js/counselor/counselor_schedule_registration.js"></script>
+    
+</body>
+</html>

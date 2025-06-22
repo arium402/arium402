@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>내담자 상세 정보</title>
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/css/bootstrap/bootstrap.css">
+    <link rel="stylesheet" href="/css/counselor_header-sidebar.css">
+    <link rel="stylesheet" href="/css/counselor_client_advice_detail.css">
+    <link rel="stylesheet" href="/css/chat/chat_icon.css">
+</head>
+<body>
+    <!-- 헤더 영역 -->
+    <div th:replace="~{fragments/counselor_header :: header}"></div>
+
+    <div class="main-container">
+        <!-- 사이드바 영역 -->
+        <div th:replace="~{fragments/counselor_sidebar :: sidebar}"></div>
+
+        <!-- 메인 콘텐츠 영역 -->
+        <div class="content-area">
+            <!-- 내담자 상세 콘텐츠 -->
+            <div th:replace="~{counselor/counselor_client_advice_detail_view :: clientDetailContent}"></div>
+        </div>
+    </div>
+		<!-- 🎯 채팅 아이콘 -->
+<div class="chat-icon-widget">
+    <button class="chat-icon-button" onclick="openChatWindow()" aria-label="상담 채팅">
+        <svg class="chat-bubble-icon" fill="white" viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12c0 2.85 1.2 5.41 3.11 7.24L3 23l3.76-2.11C8.59 21.8 10.25 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/>
+            <circle cx="8" cy="12" r="1.5"/>
+            <circle cx="12" cy="12" r="1.5"/>
+            <circle cx="16" cy="12" r="1.5"/>
+        </svg>
+    </button>
+</div>
+
+<script>
+function openChatWindow() {
+    window.open('/chat/counselor', 'chatWindow', 'width=500,height=700,scrollbars=no,resizable=yes');
+}
+</script>
+	
+	
+    <!-- JavaScript -->
+    <script src="/js/counselor/counselor_client_advice_detail.js"></script>
+    <script src="/js/counselor/counselor_header.js"></script>
+    <script src="/js/counselor/counselor_sidebar.js"></script>
+</body>
+</html>

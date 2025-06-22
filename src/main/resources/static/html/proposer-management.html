@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>신청자 관리</title>
+    <link href="./css/bootstrap/bootstrap.css" rel="stylesheet" crossorigin="anonymous">
+    <link href="./css/home.css" rel="stylesheet">
+    <link href="./css/board.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', Arial, sans-serif;
+            background-color: #fef7f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header-bar {
+            background: white;
+            padding: 15px 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 40px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .profile-icon {
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+            position: relative;
+            color: #2c3e50;
+        }
+
+        .profile-icon:hover {
+            opacity: 0.7;
+        }
+
+        .profile-tooltip {
+            position: absolute;
+            bottom: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2c3e50;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+        }
+
+        .profile-tooltip::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-bottom: 5px solid #2c3e50;
+        }
+
+        .profile-icon:hover .profile-tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .logout-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .logout-btn:hover {
+            background: #5a6268;
+        }
+
+        .main-container {
+            display: flex;
+            min-height: calc(100vh - 80px);
+        }
+
+        .sidebar {
+            width: 250px;
+            background: #3498db;
+            min-height: 100%;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-menu li {
+            border-bottom: 1px solid #5dade2;
+        }
+
+        .sidebar-menu a {
+            display: block;
+            color: white;
+            padding: 15px 20px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-menu a:hover {
+            background: #2980b9;
+            color: white;
+            text-decoration: none;
+        }
+
+        .sidebar-menu a.active {
+            background: #e6a456;
+            color: white;
+            text-decoration: none;
+        }
+
+        .sidebar-menu .main-category {
+            font-weight: 600;
+            background: #2980b9;
+        }
+
+        .sidebar-menu .sub-category {
+            padding-left: 35px;
+            font-size: 14px;
+        }
+
+        .contents {
+            flex: 1;
+            padding: 30px;
+            background: white;
+            margin: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .board_title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            text-align: left;
+            /* 선 제거: padding-bottom과 border-bottom 제거 */
+        }
+        
+
+        .search-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            border: 1px solid #bdc3c7;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            width: 150px;
+        }
+
+        .date-input {
+            border: 1px solid #bdc3c7;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            width: 120px;
+        }
+
+        .search-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .search-btn:hover {
+            background: #2980b9;
+        }
+
+        .dropdown {
+            border: 1px solid #bdc3c7;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            background: white;
+        }
+
+        .applicant-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .applicant-table th,
+        .applicant-table td {
+            border: 1px solid #bdc3c7;
+            padding: 12px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .applicant-table th {
+            background: #ecf0f1;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .applicant-table tbody tr {
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .applicant-table tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            margin-top: 20px;
+        }
+
+        .pagination button {
+            border: 1px solid #bdc3c7;
+            background: white;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 14px;
+            min-width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .pagination button:hover:not(:disabled) {
+            background: #f8f9fa;
+            border-color: #3498db;
+        }
+
+        .pagination button.active {
+            background: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: #f8f9fa;
+            color: #6c757d;
+        }
+
+        .pagination .page-info {
+            margin: 0 10px;
+            font-size: 14px;
+            color: #6c757d;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: #7f8c8d;
+            font-size: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                min-height: auto;
+            }
+
+            .contents {
+                margin: 10px;
+                padding: 20px;
+            }
+
+            .search-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-input,
+            .date-input {
+                width: 100%;
+            }
+
+            .applicant-table {
+                font-size: 12px;
+            }
+
+            .applicant-table th,
+            .applicant-table td {
+                padding: 8px 4px;
+            }
+
+            .pagination {
+                flex-wrap: wrap;
+            }
+
+            .pagination button {
+                min-width: 32px;
+                height: 32px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header-bar">
+        <div class="logo">
+            <img src="./images/logo-header.png" alt="로고">
+        </div>
+        <div class="user-info">
+            <span class="user-name">김상담 상담사</span>
+            <div class="profile-icon" onclick="goToMyPage()">
+                <svg fill="currentColor" viewBox="0 0 20 20" width="32" height="32">
+                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+                </svg>
+                <div class="profile-tooltip">마이페이지</div>
+            </div>
+            <button class="logout-btn">로그아웃</button>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <nav class="sidebar">
+            <ul class="sidebar-menu">
+                <li><a href="#" class="main-category">상담관리</a></li>
+                <li><a href="#" class="sub-category active">신청자 관리</a></li>
+                <li><a href="#" class="sub-category">내담자 관리</a></li>
+                <li><a href="#" class="sub-category">상담 일정 확인</a></li>
+                <li><a href="#" class="sub-category">근무 일정 관리</a></li>
+                <li><a href="#" class="main-category">게시판 관리</a></li>
+                <li><a href="#" class="sub-category">공지사항</a></li>
+                <li><a href="#" class="sub-category">F&Q</a></li>
+                <li><a href="#" class="sub-category">문의 게시판</a></li>
+            </ul>
+        </nav>
+
+        <div class="contents">
+            <h4 class="board_title">신청자 관리</h4>
+            
+            <div class="search-section">
+                <select class="dropdown" id="searchTypeSelect">
+                    <option value="all">전체</option>
+                    <option value="name">이름</option>
+                    <option value="department">학과</option>
+                    <option value="studentId">학번</option>
+                </select>
+                <input type="text" class="search-input" id="searchInput" placeholder="검색어 입력">
+                <button class="search-btn" onclick="searchApplicants()">검색</button>
+                <span>날짜</span>
+                <input type="date" class="date-input" id="startDate">
+                <span>~</span>
+                <input type="date" class="date-input" id="endDate">
+                <button class="search-btn" onclick="searchApplicants()">조회</button>
+                <select class="dropdown" id="sortSelect" onchange="sortApplicants()">
+                    <option value="date">최신순</option>
+                    <option value="name">이름순</option>
+                    <option value="studentId">학번순</option>
+                    <option value="department">학과순</option>
+                </select>
+            </div>
+
+            <table class="applicant-table">
+                <thead>
+                    <tr>
+                        <th>NO</th>
+                        <th>신청자명</th>
+                        <th>학번</th>
+                        <th>학과</th>
+                        <th>신청일자</th>
+                    </tr>
+                </thead>
+                <tbody id="applicantTableBody">
+                    <!-- 데이터가 여기에 동적으로 추가됩니다 -->
+                </tbody>
+            </table>
+
+            <div class="pagination" id="pagination">
+                <!-- 페이지네이션이 여기에 동적으로 생성됩니다 -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 샘플 데이터 (더 많은 데이터 추가)
+        let applicants = [];
+        for (let i = 1; i <= 50; i++) {
+            applicants.push({
+                id: i,
+                name: `학생${i}`,
+                studentId: `202300${String(i).padStart(2, '0')}`,
+                department: ['컴퓨터공학과', '경영학과', '심리학과', '교육학과', '사회복지학과', '국어국문학과', '체육학과', '간호학과', '예술학과'][i % 9],
+                applyDate: new Date(2025, 5, 16 - (i % 30)).toISOString().split('T')[0]
+            });
+        }
+
+        let filteredApplicants = [...applicants];
+        let currentPage = 1;
+        const itemsPerPage = 10;
+
+        // 페이지네이션 렌더링 함수
+        function renderPagination() {
+            const totalPages = Math.ceil(filteredApplicants.length / itemsPerPage);
+            const paginationContainer = document.getElementById('pagination');
+            
+            if (totalPages <= 1) {
+                paginationContainer.innerHTML = '';
+                return;
+            }
+
+            let paginationHTML = '';
+            
+            // 맨 앞으로 버튼
+            paginationHTML += `<button onclick="goToPage(1)" ${currentPage === 1 ? 'disabled' : ''}>&lt;&lt;</button>`;
+            
+            // 이전 페이지 버튼
+            paginationHTML += `<button onclick="changePage(-1)" ${currentPage === 1 ? 'disabled' : ''}>&lt;</button>`;
+
+            // 페이지 번호들 (최대 5개)
+            const maxVisiblePages = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+            let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+            
+            // 끝 페이지가 총 페이지보다 작을 때 시작 페이지 조정
+            if (endPage - startPage + 1 < maxVisiblePages) {
+                startPage = Math.max(1, endPage - maxVisiblePages + 1);
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                paginationHTML += `<button onclick="goToPage(${i})" ${i === currentPage ? 'class="active"' : ''}>${i}</button>`;
+            }
+
+            // 다음 페이지 버튼
+            paginationHTML += `<button onclick="changePage(1)" ${currentPage === totalPages ? 'disabled' : ''}>&gt;</button>`;
+            
+            // 맨 뒤로 버튼
+            paginationHTML += `<button onclick="goToPage(${totalPages})" ${currentPage === totalPages ? 'disabled' : ''}>&gt;&gt;</button>`;
+
+            // 페이지 정보
+            paginationHTML += `<span class="page-info">${currentPage} / ${totalPages} 페이지</span>`;
+
+            paginationContainer.innerHTML = paginationHTML;
+        }
+
+        // 테이블 렌더링 함수
+        function renderTable() {
+            const tbody = document.getElementById('applicantTableBody');
+            tbody.innerHTML = '';
+
+            if (filteredApplicants.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="no-data">검색 결과가 없습니다.</td></tr>';
+                renderPagination();
+                return;
+            }
+
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const pageItems = filteredApplicants.slice(startIndex, endIndex);
+
+            pageItems.forEach((applicant, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${startIndex + index + 1}</td>
+                    <td>${applicant.name}</td>
+                    <td>${applicant.studentId}</td>
+                    <td>${applicant.department}</td>
+                    <td>${applicant.applyDate}</td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            renderPagination();
+        }
+
+        // 특정 페이지로 이동
+        function goToPage(page) {
+            const totalPages = Math.ceil(filteredApplicants.length / itemsPerPage);
+            if (page >= 1 && page <= totalPages) {
+                currentPage = page;
+                renderTable();
+            }
+        }
+
+        // 페이지 변경 함수
+        function changePage(direction) {
+            const totalPages = Math.ceil(filteredApplicants.length / itemsPerPage);
+            const newPage = currentPage + direction;
+            
+            if (newPage >= 1 && newPage <= totalPages) {
+                currentPage = newPage;
+                renderTable();
+            }
+        }
+
+        // 검색 함수
+        function searchApplicants() {
+            const searchType = document.getElementById('searchTypeSelect').value;
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            
+            filteredApplicants = applicants.filter(applicant => {
+                let matchesSearch = true;
+                
+                // 검색 유형에 따른 필터링
+                if (searchTerm !== '') {
+                    switch(searchType) {
+                        case 'name':
+                            matchesSearch = applicant.name.toLowerCase().includes(searchTerm);
+                            break;
+                        case 'department':
+                            matchesSearch = applicant.department.toLowerCase().includes(searchTerm);
+                            break;
+                        case 'studentId':
+                            matchesSearch = applicant.studentId.includes(searchTerm);
+                            break;
+                        case 'all':
+                        default:
+                            matchesSearch = applicant.name.toLowerCase().includes(searchTerm) ||
+                                            applicant.studentId.includes(searchTerm) ||
+                                            applicant.department.toLowerCase().includes(searchTerm);
+                            break;
+                    }
+                }
+                
+                // 날짜 필터링
+                let matchesDateRange = true;
+                if (startDate && endDate) {
+                    const applyDate = new Date(applicant.applyDate);
+                    const start = new Date(startDate);
+                    const end = new Date(endDate);
+                    matchesDateRange = applyDate >= start && applyDate <= end;
+                } else if (startDate) {
+                    const applyDate = new Date(applicant.applyDate);
+                    const start = new Date(startDate);
+                    matchesDateRange = applyDate >= start;
+                } else if (endDate) {
+                    const applyDate = new Date(applicant.applyDate);
+                    const end = new Date(endDate);
+                    matchesDateRange = applyDate <= end;
+                }
+                
+                return matchesSearch && matchesDateRange;
+            });
+            
+            currentPage = 1; // 검색 후 첫 페이지로
+            sortApplicants();
+        }
+
+        // 정렬 함수
+        function sortApplicants() {
+            const sortBy = document.getElementById('sortSelect').value;
+            
+            filteredApplicants.sort((a, b) => {
+                switch(sortBy) {
+                    case 'date':
+                        return new Date(b.applyDate) - new Date(a.applyDate); // 최신순 (내림차순)
+                    case 'name':
+                        return a.name.localeCompare(b.name, 'ko');
+                    case 'studentId':
+                        return a.studentId.localeCompare(b.studentId);
+                    case 'department':
+                        return a.department.localeCompare(b.department, 'ko');
+                    default:
+                        return 0;
+                }
+            });
+            
+            renderTable();
+        }
+
+        // 마이페이지로 이동
+        function goToMyPage() {
+            window.open('mypage.html', '_blank');
+        }
+
+        // 페이지 로드 시 초기화
+        window.onload = function() {
+            sortApplicants(); // 초기 로드 시 최신순으로 정렬
+        };
+
+        // 사이드바 메뉴 클릭 핸들링
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuLinks = document.querySelectorAll('.sidebar-menu a:not(.main-category)');
+            
+            menuLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // 모든 메뉴에서 active 클래스 제거
+                    menuLinks.forEach(l => l.classList.remove('active'));
+                    
+                    // 클릭된 메뉴에 active 클래스 추가
+                    this.classList.add('active');
+                });
+            });
+        });
+
+        // 엔터키로 검색 실행
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchApplicants();
+            }
+        });
+
+        // 검색 유형 변경 시 검색어 placeholder 업데이트
+        document.getElementById('searchTypeSelect').addEventListener('change', function() {
+            const searchInput = document.getElementById('searchInput');
+            const searchType = this.value;
+            
+            switch(searchType) {
+                case 'name':
+                    searchInput.placeholder = '이름 입력';
+                    break;
+                case 'department':
+                    searchInput.placeholder = '학과명 입력';
+                    break;
+                case 'studentId':
+                    searchInput.placeholder = '학번 입력';
+                    break;
+                case 'all':
+                default:
+                    searchInput.placeholder = '검색어 입력';
+                    break;
+            }
+        });
+    </script>
+</body>
+</html>

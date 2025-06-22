@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <section th:fragment="content" class="contents">
+        <h4 class="board_title">공지사항</h4>
+        
+        <div class="search-section">
+            <div class="search-wrapper">
+                <input type="text" class="search-input" placeholder="제목 또는 내용을 검색하세요" id="searchInput">
+                <button class="search-btn" onclick="searchNotices()">검색</button>
+            </div>
+            
+            <select class="sort-select" id="sortSelect" onchange="sortNotices()">
+                <option value="latest">최신순</option>
+                <option value="oldest">등록순</option>
+                <option value="title">제목순</option>
+            </select>
+        </div>
+        
+        <div class="table-container">
+            <table class="notice-table">
+                <colgroup>
+                    <col class="no-col">
+                    <col class="title-col">
+                    <col class="author-col">
+                    <col class="views-col">
+                    <col class="date-col">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>NO</th>
+                        <th>제목</th>
+                        <th>작성자</th>
+                        <th>조회수</th>
+                        <th>등록일</th>
+                    </tr>
+                </thead>
+                <tbody id="noticeList">
+                    <tr class="important-notice">
+                        <td><span class="notice-badge">공지</span></td>
+                        <td class="title-cell" onclick="openNotice(1)">
+                            2025년 상담 프로그램 운영 안내
+                        </td>
+                        <td>관리자</td>
+                        <td>156</td>
+                        <td>2025-06-10</td>
+                    </tr>
+                    <tr class="important-notice">
+                        <td><span class="notice-badge">중요</span></td>
+                        <td class="title-cell" onclick="openNotice(2)">
+                            상담사 전문성 향상 워크숍 개최 안내
+                        </td>
+                        <td>관리자</td>
+                        <td>134</td>
+                        <td>2025-06-08</td>
+                    </tr>
+                    <tr>
+                        <td>15</td>
+                        <td class="title-cell" onclick="openNotice(3)">
+                            하계 휴무 일정 및 응급상담 안내
+                        </td>
+                        <td>관리자</td>
+                        <td>89</td>
+                        <td>2025-06-05</td>
+                    </tr>
+                    <tr>
+                        <td>14</td>
+                        <td class="title-cell" onclick="openNotice(4)">
+                            온라인 상담 시스템 업그레이드 완료
+                        </td>
+                        <td>관리자</td>
+                        <td>72</td>
+                        <td>2025-06-01</td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td class="title-cell" onclick="openNotice(5)">
+                            상담 만족도 조사 결과 발표
+                        </td>
+                        <td>관리자</td>
+                        <td>95</td>
+                        <td>2025-05-28</td>
+                    </tr>
+                    <tr>
+                        <td>12</td>
+                        <td class="title-cell" onclick="openNotice(6)">
+                            신입 상담사 교육 일정 안내
+                        </td>
+                        <td>관리자</td>
+                        <td>68</td>
+                        <td>2025-05-25</td>
+                    </tr>
+                    <tr>
+                        <td>11</td>
+                        <td class="title-cell" onclick="openNotice(7)">
+                            상담실 환경 개선 공사 완료
+                        </td>
+                        <td>관리자</td>
+                        <td>54</td>
+                        <td>2025-05-22</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td class="title-cell" onclick="openNotice(8)">
+                            개인정보 보호 교육 실시 안내
+                        </td>
+                        <td>관리자</td>
+                        <td>123</td>
+                        <td>2025-05-20</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td class="title-cell" onclick="openNotice(9)">
+                            상담 일지 작성 양식 업데이트
+                        </td>
+                        <td>관리자</td>
+                        <td>47</td>
+                        <td>2025-05-18</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td class="title-cell" onclick="openNotice(10)">
+                            청소년 상담 프로그램 신설 안내
+                        </td>
+                        <td>관리자</td>
+                        <td>78</td>
+                        <td>2025-05-15</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="pagination">
+            <button class="pagination-btn" id="prevBtn" onclick="changePage(-1)">＜</button>
+            <button class="pagination-btn active" onclick="goToPage(1)">1</button>
+            <button class="pagination-btn" onclick="goToPage(2)">2</button>
+            <button class="pagination-btn" id="nextBtn" onclick="changePage(1)">＞</button>
+        </div>
+    </section>
+</body>
+</html>
