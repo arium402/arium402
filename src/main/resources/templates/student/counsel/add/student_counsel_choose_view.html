@@ -1,0 +1,55 @@
+<div th:fragment="view">
+
+<!-- Main Content -->
+<main class="col-md-9 col-lg-10 p-0" style="margin-left: 16.66667%; min-height: calc(100vh - 60px); width: 83.33333%;">
+	<div class="main-content">
+		<!-- 상담사 선택 페이지 -->
+		<div class="counselor-content">
+			<!-- 페이지 제목 -->
+			<h1 class="page-title">상담사 시간표</h1>
+
+			<!-- 주간 네비게이션 -->
+			<div class="week-navigation">
+				<button class="nav-button" onclick="changeWeek(-1)">‹</button>
+				<div class="week-display" id="week-display">2025.06.16 ~ 2025.06.20</div>
+				<button class="nav-button" onclick="changeWeek(1)">›</button>
+			</div>
+
+			<!-- 타임테이블 -->
+			<div class="timetable-container">
+				<table class="timetable">
+					<thead>
+						<tr>
+							<th class="diagonal-header">
+								<span class="time-text">시간</span>
+								<span class="day-text">요일</span>
+							</th>
+							<th>월</th>
+							<th>화</th>
+							<th>수</th>
+							<th>목</th>
+							<th>금</th>
+						</tr>
+					</thead>
+					<tbody id="timetable-body">
+					 	<!-- 타임테이블 내용이 여기에 동적으로 생성됩니다 -->
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</main>
+
+<!-- 확인 모달 -->
+<div id="confirmModal" class="modal">
+	<div class="modal-content">
+		<div class="modal-title">상담 신청 확인</div>
+		<div class="modal-message" id="modal-message"></div>
+		<div class="modal-buttons">
+			<button class="modal-button confirm-button" onclick="confirmBooking()">예</button>
+			<button class="modal-button cancel-button" onclick="closeModal()">아니요</button>
+		</div>
+	</div>
+</div>
+
+</div>

@@ -1,0 +1,58 @@
+<div th:fragment="view">
+
+<main class="col-md-9 col-lg-10 p-0" style="margin-left: 16.66667%; min-height: calc(100vh - 70px); width: 83.33333%;">
+	<div class="main-content">
+		<!-- 신청내역 페이지 -->
+		<div class="history-content">
+			<!-- 페이지 제목 -->
+			<h1 class="page-title">비교과 신청내역</h1>
+			<div class="page-title-divider"></div>
+
+			<!-- 검색 및 필터 영역 -->
+			<div class="search-filter-section">
+				<div class="search-filter-container">
+					<div class="filter-tabs">
+						<button class="filter-tab active" onclick="setFilter('all')">전체</button>
+						<button class="filter-tab" onclick="setFilter('applied')">신청</button>
+						<button class="filter-tab" onclick="setFilter('ongoing')">진행</button>
+						<button class="filter-tab" onclick="setFilter('completed')">완료</button>
+					</div>
+
+					<div class="search-container">
+						<input type="text" class="search-input" id="searchInput" placeholder="프로그램명을 입력하여 검색하세요" oninput="filterPrograms()">
+						<button class="search-btn" onclick="performSearch()">검색</button>
+					</div>
+				</div>
+			</div>
+
+			<!-- 신청내역 테이블 -->
+			<table class="history-table">
+				<thead>
+					<tr>
+						<th style="width: 8%;">NO</th>
+						<th style="width: 35%;">프로그램 이름</th>
+						<th style="width: 25%;">운영기간</th>
+						<th style="width: 12%;">상태</th>
+						<th style="width: 20%;">만족도 조사</th>
+					</tr>
+				</thead>
+				<tbody id="programTableBody">
+					<!-- 동적으로 생성될 내용 -->
+				</tbody>
+			</table>
+
+			<!-- 페이지네이션 -->
+			<div class="pagination-container">
+				<div class="pagination">
+					<button onclick="changePage('prev')" disabled>◀</button>
+					<button onclick="changePage(1)" class="active">1</button>
+					<button onclick="changePage(2)">2</button>
+					<button onclick="changePage(3)">3</button>
+					<button onclick="changePage('next')">▶</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
+    
+</div>

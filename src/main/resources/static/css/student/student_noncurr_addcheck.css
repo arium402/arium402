@@ -1,0 +1,289 @@
+/* 신청내역 페이지 스타일 */
+.history-content {
+	padding: 40px;
+	background: white;
+	width: 100%;
+	max-width: none;
+	margin: 0;
+}
+
+.page-title {
+	font-size: 2.2rem;
+	font-weight: 700;
+	color: #333;
+	margin-bottom: 10px;
+}
+
+.page-title-divider {
+	width: 100%;
+	height: 3px;
+	background: var(--main-color);
+	margin-bottom: 40px;
+}
+
+/* 검색 및 필터 영역 */
+.search-filter-section {
+	margin-bottom: 30px;
+	background: white;
+	padding: 25px 0;
+}
+
+.search-filter-container {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 20px;
+}
+
+.filter-tabs {
+	display: flex;
+	gap: 5px;
+}
+
+.filter-tab {
+	padding: 10px 20px;
+	border: 1px solid #ddd;
+	background: white;
+	color: #666;
+	font-size: 0.9rem;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+
+.filter-tab:hover {
+	background: #f8f9fa;
+}
+
+.filter-tab.active {
+	background: var(--main-color);
+	color: white;
+	border-color: var(--main-color);
+}
+
+.search-container {
+	display: flex;
+	gap: 10px;
+	min-width: 350px;
+}
+
+.search-input {
+	flex: 1;
+	padding: 12px 15px;
+	border: 2px solid #ddd;
+	border-radius: 0;
+	font-size: 1rem;
+	background: white;
+}
+
+.search-input:focus {
+	outline: none;
+	border-color: var(--main-color);
+}
+
+.search-btn {
+	padding: 12px 20px;
+	background: var(--main-color);
+	color: white;
+	border: none;
+	border-radius: 0;
+	font-size: 1rem;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	min-width: 80px;
+}
+
+.search-btn:hover {
+	background: #3d5a91;
+}
+
+.no-results {
+	text-align: center;
+	color: #666;
+	padding: 40px 20px;
+	font-size: 1rem;
+}
+
+/* 테이블 스타일 */
+.history-table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-bottom: 40px;
+	background: white;
+}
+
+.history-table th {
+	background: #f8f9fa;
+	padding: 15px 12px;
+	text-align: center;
+	border: 1px solid #ddd;
+	font-weight: 600;
+	color: #333;
+	font-size: 1rem;
+}
+
+.history-table td {
+	padding: 15px 12px;
+	text-align: center;
+	border: 1px solid #ddd;
+	color: #333;
+	font-size: 0.95rem;
+}
+
+.history-table tr:hover {
+	background: rgba(74, 111, 165, 0.05);
+}
+
+.program-name {
+	text-align: left;
+	font-weight: 600;
+	color: var(--main-color);
+}
+
+.status-badge {
+	padding: 5px 12px;
+	border-radius: 4px;
+	font-size: 0.85rem;
+	font-weight: 600;
+	display: inline-block;
+}
+
+.status-applied {
+	background: #e3f2fd;
+	color: #1976d2;
+}
+
+.status-ongoing {
+	background: #fff3e0;
+	color: #f57c00;
+}
+
+.status-completed {
+	background: #e8f5e8;
+	color: #2e7d32;
+}
+
+.satisfaction-btn {
+	background: var(--main-color);
+	color: white;
+	border: none;
+	padding: 6px 16px;
+	border-radius: 0;
+	font-size: 0.85rem;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+
+.satisfaction-btn:hover {
+	background: #3d5a91;
+}
+
+.satisfaction-completed {
+	color: #2e7d32;
+	font-weight: 600;
+	font-size: 0.85rem;
+}
+
+.satisfaction-none {
+	color: #999;
+	font-size: 0.9rem;
+}
+
+/* 페이지네이션 스타일 */
+.pagination-container {
+	display: flex;
+	justify-content: center;
+	margin-top: 30px;
+}
+
+.pagination {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+}
+
+.pagination button {
+	padding: 8px 12px;
+	border: 1px solid #ddd;
+	background: white;
+	color: #333;
+	font-size: 0.9rem;
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+
+.pagination button:hover {
+	background: #f8f9fa;
+}
+
+.pagination button.active {
+	background: var(--main-color);
+	color: white;
+	border-color: var(--main-color);
+}
+
+.pagination button:disabled {
+	color: #999;
+	cursor: not-allowed;
+}
+
+.pagination button:disabled:hover {
+	background: white;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+	.history-content {
+		padding: 20px;
+		width: 95%;
+	}
+	
+	.history-table {
+		font-size: 0.85rem;
+	}
+	
+	.history-table th,
+	.history-table td {
+		padding: 10px 8px;
+	}
+	
+	.page-title {
+		font-size: 1.8rem;
+	}
+	
+	.search-filter-section {
+		padding: 15px 0;
+	}
+	
+	.search-filter-container {
+		flex-direction: column;
+		gap: 15px;
+		align-items: stretch;
+	}
+	
+	.search-container {
+		min-width: auto;
+		order: 2;
+	}
+	
+	.filter-tabs {
+		order: 1;
+		flex-wrap: wrap;
+		gap: 8px;
+		justify-content: center;
+	}
+	
+	.search-btn {
+		width: auto;
+	}
+	
+	.filter-tab {
+		flex: 1;
+		min-width: 60px;
+		text-align: center;
+		padding: 8px 12px;
+		font-size: 0.85rem;
+	}
+}

@@ -1,0 +1,36 @@
+<div th:fragment="view">
+
+<main class="col-md-9 col-lg-10 p-0" style="margin-left: 16.66667%; min-height: calc(100vh - 70px);">
+	<div class="main-content">
+		<div class="faq-container">
+			<!-- FAQ 헤더 -->
+			<div class="faq-header">
+				<h1 class="faq-title">
+					<i class="fas fa-question-circle me-3"></i>자주묻는질문 (FAQ)
+				</h1>
+			</div>
+
+			<!-- FAQ 컨텐츠 -->
+			<div class="faq-content">
+				<!-- 대분류 탭 -->
+				<div class="main-tabs">
+					<button class="main-tab-btn active" onclick="showMainTab('비교과')">비교과</button>
+					<button class="main-tab-btn" onclick="showMainTab('상담')">상담</button>
+					<button class="main-tab-btn" onclick="showMainTab('기타')">기타</button>
+				</div>
+
+				<!-- 소분류 탭 -->
+				<div class="sub-tabs" id="sub-tabs">
+					<!-- JavaScript로 동적 생성 -->
+				</div>
+
+				<!-- FAQ 목록 -->
+				<div class="faq-list" id="faq-list">
+					<!-- JavaScript로 동적 생성 -->
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
+    
+</div>
