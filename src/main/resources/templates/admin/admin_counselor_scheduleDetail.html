@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="https://www.thymeleaf.org/">
+     <head th:replace="~{/admin_config.html :: admin_config}"></head>
+    <title>상담사 일정 상세 - 관리자 페이지</title>
+    <link rel="stylesheet" th:href="@{/css/admin/admin_counselor_scheduleDetail.css?v=1}">
+
+    <body class="sb-nav-fixed">
+        <!-- 상단 네비게이션 바 -->
+        <nav th:replace="~{/admin_top.html :: admin_top}"> </nav>
+     
+        <div id="layoutSidenav">
+            <!-- 사이드바 -->
+            <div th:replace="~{/admin_sidebar.html :: admin_sidebar}"> </div>
+            
+            <!-- 메인 컨텐츠 -->
+            <div id="layoutSidenav_content">
+                <div class="main-content">
+                    <!-- 상담자 정보 섹션 -->
+                    <h2 class="section-title">상담자 정보</h2>
+                    <div class="counselor-info">
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <div class="info-label">이름</div>
+                                <div class="info-value" id="counselorName">김상담</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">사번</div>
+                                <div class="info-value" id="counselorEmpNo">EMP001</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">분야</div>
+                                <div class="info-value" id="counselorField">심리상담</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 근무 일정 섹션 -->
+                    <h2 class="section-title">근무 일정</h2>
+                    <div class="schedule-section">
+                        <div class="month-selector">
+                            <button class="month-nav-btn" onclick="changeMonth(-1)">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <div class="month-display" onclick="openDateModal()" id="currentMonth">
+                                6월
+                            </div>
+                            <button class="month-nav-btn" onclick="changeMonth(1)">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="schedule-info">
+                            <div class="schedule-item">
+                                <div class="schedule-label">근무 시간</div>
+                                <div class="schedule-value" id="workTime">09:00 ~ 18:00</div>
+                            </div>
+                            <div class="schedule-item">
+                                <div class="schedule-label">근무 요일</div>
+                                <div class="schedule-value" id="workDays">월, 화, 수, 목, 금</div>
+                            </div>
+                            <div class="schedule-item">
+                                <div class="schedule-label">상담 시간</div>
+                                <div class="schedule-value" id="consultationTime">오전 / 오후</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 상담 내역 섹션 -->
+                    <h2 class="section-title">상담 내역</h2>
+                    <div class="consultation-section">
+                        <div class="consultation-table-container">
+                            <table class="consultation-table">
+                                <thead>
+                                    <tr>
+                                        <th class="col-no">NO</th>
+                                        <th class="col-date">일자</th>
+                                        <th class="col-time">시간</th>
+                                        <th class="col-student-id">학번</th>
+                                        <th class="col-student-name">이름</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="consultationTableBody">
+                                    <tr>
+                                        <td class="col-no">1</td>
+                                        <td class="col-date">2024-06-03</td>
+                                        <td class="col-time">09:00</td>
+                                        <td class="col-student-id">202301001</td>
+                                        <td class="col-student-name">김학생</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="col-no">2</td>
+                                        <td class="col-date">2024-06-03</td>
+                                        <td class="col-time">10:00</td>
+                                        <td class="col-student-id">202301002</td>
+                                        <td class="col-student-name">이학생</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="col-no">3</td>
+                                        <td class="col-date">2024-06-04</td>
+                                        <td class="col-time">14:00</td>
+                                        <td class="col-student-id">202301003</td>
+                                        <td class="col-student-name">박학생</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="col-no">4</td>
+                                        <td class="col-date">2024-06-05</td>
+                                        <td class="col-time">11:00</td>
+                                        <td class="col-student-id">202301004</td>
+                                        <td class="col-student-name">최학생</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="col-no">5</td>
+                                        <td class="col-date">2024-06-06</td>
+                                        <td class="col-time">15:00</td>
+                                        <td class="col-student-id">202301005</td>
+                                        <td class="col-student-name">정학생</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="col-no">6</td>
+                                        <td class="col-date">2024-06-07</td>
+                                        <td class="col-time">10:30</td>
+                                        <td class="col-student-id">202301006</td>
+                                        <td class="col-student-name">강학생</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="col-no">7</td>
+                                        <td class="col-date">2024-06-10</td>
+                                        <td class="col-time">13:00</td>
+                                        <td class="col-student-id">202301007</td>
+                                        <td class="col-student-name">윤학생</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="col-no">8</td>
+                                        <td class="col-date">2024-06-11</td>
+                                        <td class="col-time">16:00</td>
+                                        <td class="col-student-id">202301008</td>
+                                        <td class="col-student-name">임학생</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 날짜/월 선택 모달 -->
+        <div id="dateModal" class="date-modal">
+            <div class="date-modal-content">
+                <div class="date-modal-header">
+                    <h3>날짜 선택</h3>
+                    <span class="date-modal-close" onclick="closeDateModal()">&times;</span>
+                </div>
+                <div class="date-modal-body">
+                    <div class="date-selector">
+                        <select class="date-select" id="yearSelect">
+                            <option value="2024">2024년</option>
+                            <option value="2025">2025년</option>
+                        </select>
+                        <select class="date-select" id="monthSelect">
+                            <option value="1">1월</option>
+                            <option value="2">2월</option>
+                            <option value="3">3월</option>
+                            <option value="4">4월</option>
+                            <option value="5">5월</option>
+                            <option value="6" selected>6월</option>
+                            <option value="7">7월</option>
+                            <option value="8">8월</option>
+                            <option value="9">9월</option>
+                            <option value="10">10월</option>
+                            <option value="11">11월</option>
+                            <option value="12">12월</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="date-modal-footer">
+                    <button class="date-btn date-cancel-btn" onclick="closeDateModal()">취소</button>
+                    <button class="date-btn date-confirm-btn" onclick="confirmDateChange()">확인</button>
+                </div>
+            </div>
+        </div>
+        <script th:src="@{/js/admin/admin_counselor_scheduleDetail.js}" ></script>
+    </body>
+</html>

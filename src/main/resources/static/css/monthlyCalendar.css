@@ -1,0 +1,123 @@
+.calendar-container {
+	width: 90%;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	position: relative;
+}
+
+.calendar-header {
+	display: flex;
+	align-items: center;
+	padding: 10px;
+	background-color: #f4f4f4;
+	border-bottom: 1px solid #ddd;
+	position: relative;
+}
+
+.calendar-header .controls {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.calendar-header .controls button {
+	padding: 10px 20px;
+	font-size: 16px;
+	cursor: pointer;
+	border: none;
+	background: none;
+	color: #333;
+}
+
+.calendar-header .controls button:hover {
+	background-color: #ddd;
+}
+
+.calendar-header .title {
+	flex: 1;
+	text-align: center;
+	font-size: 20px;
+}
+
+.view-controls {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	position: absolute;
+	right: 10px;
+}
+
+.view-controls button {
+	padding: 5px 10px;
+	font-size: 14px;
+	cursor: pointer;
+}
+
+.calendar {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+.calendar th {
+	height: 30px; /* 요일 칸의 높이 */
+	padding: 10px;
+	text-align: center;
+	background-color: #f4f4f4;
+	border: 1px solid #ddd;
+}
+
+.calendar td {
+	width: 14.2%; /* 100% / 7일 */
+	height: 100px; /* 기본 높이 설정 */
+	padding: 5px; /* 여백 조정 */
+	text-align: left;
+	vertical-align: top;
+	border: 1px solid #ddd;
+	box-sizing: border-box;
+	position: relative;
+	overflow: hidden; /* 내용이 넘칠 경우 숨김 */
+}
+
+.today {
+	background-color: #e0e0e0; /* 연한 회색으로 변경 */
+}
+
+.event-box {
+	padding: 5px;
+	border-radius: 4px;
+	margin-top: 5px;
+	text-align: left;
+	color: #000;
+	box-sizing: border-box;
+	font-size: 12px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	height: 20px; /* 일정 박스의 높이 고정 */
+	position: relative;
+	cursor : pointer;
+}
+
+
+.modal-dialog {margin : 0; max-width : 700px; height : 550px; top : 45%;}
+.modal-content {border : 0;}
+.modal-content .modal-header {background-color : var(--gray-color)}
+.modal-content .modal-header h5 {font-weight : bold}
+.modal-content .modal-header h5 + button {border : 0; background-color : transparent;}
+.modal-content .modal-body{
+	padding: 1rem;
+    flex: unset;
+    overflow-y: auto;
+}
+    
+
+/* 모바일 화면에서 테이블 스타일 */
+@media ( max-width : 900px) { 
+.calendar-container .event-box {flex-direction : column; height : auto; align-items:start; min-width : 50px;}
+}
+
+@media ( max-width : 767.98px) {
+.modal-dialog {width : 90%; height : 70%;}
+.calendar-container {overflow-x:auto;}
+.calendar td {min-width : 60px;}
+}
+

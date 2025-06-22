@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="https://www.thymeleaf.org/">
+    <head th:replace="~{/admin_config.html :: admin_config}"></head>
+    <title>관리자 페이지</title>
+    <link rel="stylesheet" th:href="@{/css/admin/admin_dashboard.css?v=1}">
+    
+    <body class="sb-nav-fixed">
+       
+        <!-- 상단 네비게이션 바 -->
+        <nav th:replace="~{/admin_top.html :: admin_top}"></nav>
+            
+     
+        <div id="layoutSidenav">
+            <!-- 사이드바 -->
+            <div th:replace="~{/admin_sidebar.html :: admin_sidebar}"> </div>
+            
+            <!-- 메인 컨텐츠 -->
+            <div id="layoutSidenav_content">
+                <div class="dashboard-container">
+                    <!-- 상단 섹션 -->
+                    <div class="top-section">
+                        <!-- 상담 관리 -->
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <h3><span class="material-symbols-outlined">psychology</span>상담 관리</h3>
+                                <span class="card-subtitle">최근 상담 신청 내역</span>
+                            </div>
+                            <div class="card-content">
+                                <div class="table-container">
+                                    <table class="data-table">
+                                        <thead>
+                                            <tr>
+                                                <th>신청일</th>
+                                                <th>학번</th>
+                                                <th>상담분야</th>
+                                                <th>상태</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>2024.06.15</td>
+                                                <td>202*****</td>
+                                                <td>심리상담</td>
+                                                <td><span class="status pending">대기중</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2024.06.14</td>
+                                                <td>202*****</td>
+                                                <td>진로상담</td>
+                                                <td><span class="status completed">완료</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2024.06.14</td>
+                                                <td>202*****</td>
+                                                <td>학습컨설팅</td>
+                                                <td><span class="status in-progress">진행중</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2024.06.13</td>
+                                                <td>202*****</td>
+                                                <td>위기상담</td>
+                                                <td><span class="status completed">완료</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2024.06.13</td>
+                                                <td>202*****</td>
+                                                <td>익명상담</td>
+                                                <td><span class="status pending">대기중</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 비교과 관리 -->
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <h3><span class="material-symbols-outlined">school</span>비교과 관리</h3>
+                                <span class="card-subtitle">최근 비교과 신청 내역</span>
+                            </div>
+                            <div class="card-content">
+                                <div class="table-container">
+                                    <table class="data-table">
+                                        <thead>
+                                            <tr>
+                                                <th>신청일</th>
+                                                <th>학번</th>
+                                                <th>프로그램명</th>
+                                                <th>상태</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>2024.06.15</td>
+                                                <td>202*****</td>
+                                                <td>토익 특강</td>
+                                                <td><span class="status pending">신청</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2024.06.14</td>
+                                                <td>202*****</td>
+                                                <td>취업 특강</td>
+                                                <td><span class="status completed">참여완료</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2024.06.14</td>
+                                                <td>202*****</td>
+                                                <td>컴활 자격증</td>
+                                                <td><span class="status in-progress">참여중</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2024.06.13</td>
+                                                <td>202*****</td>
+                                                <td>리더십 특강</td>
+                                                <td><span class="status completed">참여완료</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2024.06.12</td>
+                                                <td>202*****</td>
+                                                <td>창업 동아리</td>
+                                                <td><span class="status pending">신청</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 하단 섹션 -->
+                    <div class="bottom-section">
+                        <!-- 상담 통계 -->
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <h3><span class="material-symbols-outlined">analytics</span>통계 (상담)</h3>
+                                <span class="card-subtitle">분야별 상담 현황</span>
+                            </div>
+                            <div class="card-content">
+                                <div class="chart-container">
+                                    <canvas id="counselingChart"></canvas>
+                                </div>
+                                <div class="chart-legend">
+                                    <div class="legend-item">
+                                        <span class="legend-color" style="background: #e74c3c;"></span>
+                                        위기상담 (15%)
+                                    </div>
+                                    <div class="legend-item">
+                                        <span class="legend-color" style="background: #3498db;"></span>
+                                        심리상담 (25%)
+                                    </div>
+                                    <div class="legend-item">
+                                        <span class="legend-color" style="background: #2ecc71;"></span>
+                                        익명상담 (20%)
+                                    </div>
+                                    <div class="legend-item">
+                                        <span class="legend-color" style="background: #f39c12;"></span>
+                                        진로/취업 (30%)
+                                    </div>
+                                    <div class="legend-item">
+                                        <span class="legend-color" style="background: #9b59b6;"></span>
+                                        학습컨설팅 (10%)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 비교과 통계 -->
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <h3><span class="material-symbols-outlined">bar_chart</span>통계 (비교과)</h3>
+                                <span class="card-subtitle">월별 참여 현황</span>
+                            </div>
+                            <div class="card-content">
+                                <div class="chart-container">
+                                    <canvas id="extracurricularChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 마일리지 -->
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <h3><span class="material-symbols-outlined">stars</span>마일리지</h3>
+                                <span class="card-subtitle">수령 대기 리스트</span>
+                            </div>
+                            <div class="card-content">
+                                <div class="mileage-list">
+                                    <div class="mileage-item">
+                                        <div class="mileage-info">
+                                            <div class="student-id">202*****</div>
+                                            <div class="mileage-reason">토익 특강 참여</div>
+                                        </div>
+                                        <div class="mileage-points">+50P</div>
+                                    </div>
+                                    <div class="mileage-item">
+                                        <div class="mileage-info">
+                                            <div class="student-id">202*****</div>
+                                            <div class="mileage-reason">취업 특강 참여</div>
+                                        </div>
+                                        <div class="mileage-points">+30P</div>
+                                    </div>
+                                    <div class="mileage-item">
+                                        <div class="mileage-info">
+                                            <div class="student-id">202*****</div>
+                                            <div class="mileage-reason">상담 참여</div>
+                                        </div>
+                                        <div class="mileage-points">+20P</div>
+                                    </div>
+                                    <div class="mileage-item">
+                                        <div class="mileage-info">
+                                            <div class="student-id">202*****</div>
+                                            <div class="mileage-reason">컴활 자격증 취득</div>
+                                        </div>
+                                        <div class="mileage-points">+100P</div>
+                                    </div>
+                                    <div class="mileage-item">
+                                        <div class="mileage-info">
+                                            <div class="student-id">202*****</div>
+                                            <div class="mileage-reason">동아리 활동</div>
+                                        </div>
+                                        <div class="mileage-points">+40P</div>
+                                    </div>
+                                    <div class="mileage-item">
+                                        <div class="mileage-info">
+                                            <div class="student-id">202*****</div>
+                                            <div class="mileage-reason">봉사활동 참여</div>
+                                        </div>
+                                        <div class="mileage-points">+60P</div>
+                                    </div>
+                                    <div class="mileage-item">
+                                        <div class="mileage-info">
+                                            <div class="student-id">202*****</div>
+                                            <div class="mileage-reason">학술대회 참가</div>
+                                        </div>
+                                        <div class="mileage-points">+80P</div>
+                                    </div>
+                                    <div class="mileage-item">
+                                        <div class="mileage-info">
+                                            <div class="student-id">202*****</div>
+                                            <div class="mileage-reason">멘토링 참여</div>
+                                        </div>
+                                        <div class="mileage-points">+25P</div>
+                                    </div>
+                                </div>
+                                <div class="mileage-total">
+                                    <strong>총 대기 마일리지: 405P</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+                
+   <script th:src="@{/js/admin/admin_dashboards.js}"></script>  
+   
+        
+    </body>
+</html>

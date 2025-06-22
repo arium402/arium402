@@ -1,0 +1,27 @@
+   <!-- fragment 이름은 sidebarHeader 로 지정 -->
+ <div th:fragment="sidebarHeader">
+	<div class="container_layout">
+		<nav class="nav">
+			<a class="nav-link logo" th:href="@{/}">
+				<img alt="로고" th:src="@{/images/logo-header.png}">
+			</a>
+			<ul class="nav nav-underline" id="major_menu">
+				<li class="nav-item">
+					<a class="nav-link" th:href="@{/center/intro}">상담센터 소개</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" th:href="@{/center/psychology}">심리상담</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" th:href="@{/center/academic}">학업상담</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" th:href="@{/center/selfcheck}">자가 진단</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" th:href="@{/center/resources}">자료실</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
+</div>

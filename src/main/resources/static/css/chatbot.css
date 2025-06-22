@@ -1,0 +1,92 @@
+@charset "UTF-8";
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #eff1fb;
+        }
+        header {
+            background-color: #004080;
+            height: 50px;
+            width: 100%;
+            position: fixed;
+            z-index: 1000;
+        }
+        p, h5 {
+        	margin-bottom: 0;
+        }
+        section {
+        	margin-bottom: 30px;
+        }
+        .header-content {
+            display: flex;
+            align-items: center; /* 수직 중앙 정렬 */
+            height: 100%; /* 부모 요소의 높이에 맞추기 */
+            padding: 0 15px; /* 좌우 여백 */
+        }
+        .header-content p {
+            color: #fff;
+            margin-right: auto;
+           	font-weight: bold;
+        }
+        .header-content img {
+            width: 20px;
+            height: 20px;
+        }
+        main {
+        	padding: 25px;
+        }
+        .home-chatbot-ment {
+        	margin-top: 10px;
+        	margin-bottom: 25px;
+        }
+        .home-chatbot-btn button{
+        	border-color: transparent;
+        	border-radius: 10px;
+        	border: 5pt;
+			width: 100%;
+			height: 45px;
+			background-color: gray;
+			margin-bottom: 10px;
+			color: #fff;
+        }
+        .customer {
+        	padding-left: 30%;
+        	display: flex;
+        	flex-direction: row-reverse;
+        }
+        .chatbot {
+        	padding-right: 30%;
+        	display: inline-flex;
+        	flex-direction: column;
+        }
+        .ment-customer {
+        	padding: 15px;
+        	border-color: transparent;
+        	border-radius: 10px;
+        	background-color: #fff;
+        	width: auto;
+        	max-width: 500px;
+        }
+        .ment-chatbot {
+        	padding: 15px;
+        	max-width: 500px;
+        	margin-bottom: 10px;
+        }
+        .chatbot .text {
+        	padding: 15px;
+        	border-color: transparent;
+        	border-radius: 10px;
+        	background-color: #e0e2ef;
+        	width: auto;
+        	max-width: 500px;
+        }
+        .chatbot-btn {
+        	padding-top: 5px;
+        }
+        .chatbot-btn button {
+			border-color: transparent;
+        	border-radius: 10px;
+        	border: 5pt;
+        	background-color: #111952;
+        	color: #fff;
+		}

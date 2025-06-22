@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F&Q</title>
+    <link rel="stylesheet" href="/css/bootstrap/bootstrap.css">
+    <link rel="stylesheet" href="/css/counselor_header-sidebar.css">
+    <link rel="stylesheet" href="/css/counselor_F&Q.css">
+</head>
+<body>
+    <!-- 헤더 영역 -->
+    <div th:replace="~{fragments/counselor_header :: header}"></div>
+
+    <div class="main-container">
+        <!-- 사이드바 영역 -->
+        <div th:replace="~{fragments/counselor_sidebar :: sidebar}"></div>
+
+        <div class="content-area">
+            <!-- 내용 영역 -->
+            <div th:replace="~{counselor/counselor_F&Q_view :: content}"></div>
+        </div>
+    </div>
+
+    <!-- JavaScript 파일 -->
+    <script src="/js/counselor/counselor_F&Q.js"></script>
+    <script src="/js/counselor/counselor_header.js"></script>
+    <script src="/js/counselor/counselor_sidebar.js"></script>
+</body>
+</html>

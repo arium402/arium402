@@ -1,0 +1,282 @@
+@charset "UTF-8";
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f9f9f9;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.page-selector{
+	padding: 6px 12px; /* 높이 조정 */
+    font-size: 14px;
+    box-sizing: border-box;
+    height: 36px; /* 같은 높이로 맞추기 */
+    line-height: 24px; /* 텍스트의 세로 정렬을 맞추기 */
+    width: 130px;
+    margin-bottom : 10px;
+    text-align: center;
+}
+.search-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.search-bar select{
+	text-align: center;
+}
+.search-bar select, .search-bar input {
+    padding: 6px 12px; /* 높이 조정 */
+    font-size: 14px;
+    box-sizing: border-box;
+    height: 36px; /* 같은 높이로 맞추기 */
+    line-height: 24px; /* 텍스트의 세로 정렬을 맞추기 */
+    width: 130px;
+}
+.search-bar input{
+	width : 250px;
+}
+
+.search-bar button,.search-bar input[type='button'] {
+    padding: 6px 12px;
+    font-size: 14px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    height: 36px; /* 버튼의 높이 맞추기 */
+    line-height: 24px; /* 버튼의 텍스트 세로 정렬 맞추기 */
+    width : auto;
+}
+
+.search-bar button:hover {
+    background-color: #45a049;
+}
+
+/* 반응형 디자인 */
+@media screen and (max-width: 767.98px) {
+    .search-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .search-bar select, 
+    .search-bar input, 
+    .search-bar button {
+        margin-bottom: 10px;
+        width: 100%;
+    }
+    
+    .search-bar button {
+        width: auto;
+        margin-top: 10px;
+    }
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    
+}
+
+table, th, td {
+    border: 1px solid #ccc;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+.add-consultation {
+    text-align: right;
+    margin-top: 10px;
+}
+
+.add-consultation a {
+    color: red;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.add-consultation a:hover {
+    text-decoration: underline;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.pagination span {
+    padding: 8px 16px;
+    margin: 0 4px;
+    background-color: #f2f2f2;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+
+.pagination span:hover {
+    background-color: #ddd;
+}
+
+/* 반응형 테이블 스타일 */
+@media screen and (max-width: 768px) {
+    table, thead, tbody, th, td, tr {
+        display: block;
+    }
+
+    thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    tr {
+        margin: 0 0 1rem 0;
+    }
+
+    tr:nth-child(odd) {
+        background: #f9f9f9;
+    }
+
+    td {
+        border: none;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        padding-left: 50% !important;
+        text-align: right;
+    }
+
+    td:before {
+        position: absolute;
+        top: 50%;
+        left: 6px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align: left;
+        transform: translateY(-50%);
+    }
+    .table-bordered td {padding-left : 0!important;}
+	.table-bordered td:before { display : none;}
+
+    td:nth-of-type(1):before { content: "NO"; }
+    td:nth-of-type(2):before { content: "이름"; }
+    td:nth-of-type(3):before { content: "사번"; }
+    td:nth-of-type(4):before { content: "소속"; }
+    td:nth-of-type(5):before { content: "상담분류"; }
+    td:nth-of-type(6):before { content: "이메일"; }
+    td:nth-of-type(7):before { content: "전화번호"; }
+    td:nth-of-type(8):before { content: "등록일"; }
+}
+
+.sidebar-modal {
+    position: fixed;
+    top: 0;
+    right: -400px; /* 숨긴 상태에서는 화면 밖에 위치 */
+    width: 400px;
+    height: 100%;
+    background-color: #f8f9fa;
+    border-left: 1px solid #ddd;
+    padding: 20px;
+    box-shadow: -2px 0 5px rgba(0,0,0,0.5);
+    transition: right 0.3s ease;
+    z-index: 1000;
+    overflow-y:auto;
+}
+
+.sidebar-modal.open {
+    right: 0; /* 모달이 열릴 때 화면에 보이도록 이동 */
+}
+
+/* 닫기 버튼 스타일 */
+#closeSidebar {
+    position: absolute;
+    top: 70px;
+    left: -50px;
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    display:none;
+}
+
+#closeSidebar::before {
+    content: "✕"; /* 'X' 표시 */
+    font-size: 16px;
+    color: black;
+}
+
+/* 테이블 행에 마우스를 올렸을 때 커서 변경 */
+#counselorTable tbody tr {
+    cursor: pointer;
+}
+
+/* 테이블 행을 클릭했을 때 배경색 변경 */
+#counselorTable tbody tr.selected {
+    background-color: #e2e6ea;
+}
+#btn_modify{
+	background-color: #4CAF50;
+}
+#btn_delete{
+	background-color: #FF5733;
+}
+#btn_C_menu{
+	background-color: #2C3E50;
+}
+.button{
+	background-color: rgb(0, 0, 0,0.5);
+	border-radius: 5px 5px;
+	width : auto;
+	height : 30px;
+	border : none;
+	color: white;
+	box-shadow: 0px 0px 1px #444;
+}
+#btn_modify.button:hover,
+#btn_delete.button:hover,
+#btn_C_menu:hover {
+    box-shadow: 0px 0px 4px #444;
+}
+
+/* 추가 */
+.catecory.modal {width: 90%; height: 80%;max-width : 800px;}
+.catecory.modal .search-bar { display: block; margin: 0; border: 0;}
+.catecory.modal input[type='text'][readonly] {background-color: #ddd;border: 1px solid #999;}
+.catecory.modal .close {font-size : 40px; line-height : 1;}
+
+@media screen and (max-width: 768px) {
+	.catecory.modal th {width : 100% !important;}
+	.catecory.modal td {width : 100% !important; padding-left : 10px !important; text-align : left;}
+	.catecory.modal td:before {display : none;}
+	
+	.catecory.modal input[type='button'],
+	.catecory.modal input[type='text'],
+	.catecory.modal input[type='number'],
+	.catecory.modal select {width : 100%;}
+	
+}
+
+
+

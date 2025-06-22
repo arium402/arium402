@@ -1,0 +1,63 @@
+<div th:fragment="view">
+
+<main class="col-md-9 col-lg-10 p-0" style="margin-left: 16.66667%; min-height: calc(100vh - 60px); width: 83.33333%;">
+	<div class="main-content">
+		<!-- 익명 상담 페이지 -->
+		<div class="counseling-content">
+			<!-- 페이지 제목 -->
+			<h1 class="page-title">익명 상담</h1>
+			<div class="page-title-divider"></div>
+
+			<!-- 상담 프로세스 -->
+			<div class="process-section">
+				<h2 class="process-title">상담 프로세스</h2>
+				<div class="process-flow">
+					<div class="process-step">사전 검사</div>
+					<div class="process-arrow">→</div>
+					<div class="process-step">상담 신청</div>
+					<div class="process-arrow">→</div>
+					<div class="process-step">상담 진행</div>
+				</div>
+			</div>
+
+			<!-- 상담 설명 소개 -->
+			<div class="intro-section">
+				<h2 class="intro-title">익명 상담</h2>
+				<p class="intro-description">
+					익명상담은 사용자가 자신의 신원이나 개인 정보를 공개하지 않고 상담을 받을 수 있는 서비스를 말합니다.<br>
+					상담 과정에서 자신의 이름, 연락처, 또는 기타 식별 정보를 제공할 필요가 없습니다.<br>
+					이로 인해 신원 노출에 대한 걱정 없이 자유롭게 문제를 상담할 수 있습니다.
+				</p>
+
+				<div class="when-to-apply">
+					<h3 class="when-title">이럴 때 신청하세요</h3>
+					<div class="apply-grid">
+						<div class="apply-item">
+							<h4>민감한 문제</h4>
+							<p>✔️ 자살 생각, 성적 학대, 심각한 중독 문제 등 민감하고 개인적인 문제를 다룰 경우</p>
+						</div>
+						<div class="apply-item">
+							<h4>프라이버시 보호</h4>
+							<p>✔️ 직장, 학교, 가족 등에서의 신원 노출이나 사생활 침해를 우려하는 경우</p>
+						</div>
+						<div class="apply-item">
+							<h4>경험 부족</h4>
+							<p>✔️ 상담을 받기 전 경험이 부족하거나 상담에 대해 불안한 감정을 느끼는 경우</p>
+						</div>
+						<div class="apply-item">
+							<h4>비밀 유지</h4>
+							<p>✔️ 법적 문제, 비밀을 지켜야 하는 상황 (예: 고발, 법적 조치가 필요한 경우 등)</p>
+						</div>
+					</div>
+				</div>
+
+				<!-- 사전 검사 버튼 -->
+				<div class="pre-test-section">
+					<button class="pre-test-btn" onclick="goToPreTest()">상담 사전 검사</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
+
+</div>

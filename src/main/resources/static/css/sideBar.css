@@ -1,0 +1,206 @@
+@charset "UTF-8";
+
+/* 기본 스타일링 */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f9f9f9;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.search-bar select, .search-bar input {
+    padding: 5px;
+    font-size: 14px;
+    margin-right: 10px;
+}
+
+.search-bar button {
+    padding: 6px 12px;
+    font-size: 14px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.search-bar button:hover {
+    background-color: #45a049;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+table, th, td {
+    border: 1px solid #ccc;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.pagination {
+    display: flex;
+    list-style: none;
+    padding: 0;
+}
+
+.page-link {
+    text-decoration: none;
+    color: #333;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    margin: 0 2px;
+    transition: background-color 0.3s;
+}
+
+.page-link:hover {
+    background-color: #f2f2f2;
+}
+
+.page-link.active,.pagination a:has(span.active) {
+    background-color: #ddd;
+    color: #fff;
+/*     pointer-events: none; */
+    border-color: #ddd;
+}
+
+.pagination a > span {
+	padding: 0;
+    margin: 0;
+    background-color: unset;
+    border: 0;
+}
+
+/* 사이드바 스타일링 */
+.sidebar-modal {
+    position: fixed;
+    top: 0;
+    right: -400px;
+    width: 400px;
+    height: 100%;
+    background-color: #f8f9fa;
+    border-left: 1px solid #ddd;
+    padding: 20px;
+    box-shadow: -2px 0 5px rgba(0,0,0,0.5);
+    transition: right 0.3s ease;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    max-height: 100vh;
+    overflow-y: auto;
+}
+
+.sidebar-modal.open {
+    right: 0;
+}
+
+.sidebar-modal h2 {
+    font-size: 22px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.sidebar-modal label {
+    display: block;
+    font-weight: bold;
+    margin: 10px 0 5px;
+}
+
+.sidebar-modal input[type="text"],
+.sidebar-modal textarea,
+.sidebar-modal select {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    box-sizing: border-box;
+}
+
+.sidebar-modal input[type="text"][readonly],
+.sidebar-modal textarea[readonly] {
+	background-color: #ddd;
+}
+
+.sidebar-modal textarea {
+    resize: vertical;
+    height: 100px;
+}
+
+.sidebar-modal input[type="text"]:focus,
+.sidebar-modal textarea:focus,
+.sidebar-modal select:focus {
+    border-color: #4CAF50;
+    outline: none;
+}
+
+.sidebar-modal button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: auto;
+}
+
+.sidebar-modal button.chat {background-color : #FF5733; margin-top : 5px;}
+
+.sidebar-modal button:hover {
+    background-color: #45a049;
+}
+
+.sidebar-modal button.chat:hover {background-color: #e53935;}
+
+#counselorTable tbody tr.selected {
+    background-color: #e2e6ea;
+}
+
+#counselorTable tbody tr {
+    cursor: pointer;
+}
+
+#closeSidebar {
+    position: absolute;
+    top: 10px;  /* 모달의 상단에 배치 */
+    left: 10px; /* 모달의 왼쪽 상단에 배치 */
+    background-color: transparent; 
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 1001;
+}
+
+#closeSidebar:hover {
+    color: red;
+}
+

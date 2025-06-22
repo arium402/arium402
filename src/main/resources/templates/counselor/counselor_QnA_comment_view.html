@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <section th:fragment="content" class="contents">
+        <div class="page-header">
+            <h4 class="page-title">문의게시판 상세보기</h4>
+            <button class="back-btn" onclick="goBack()">← 목록으로</button>
+        </div>
+
+        <!-- 문의 내용 섹션 -->
+        <div class="question-section">
+            <div class="question-header">
+                <div class="question-info">
+                    <h3 class="question-title">
+                        진로상담 신청 방법이 궁금합니다
+                    </h3>
+                    <div class="question-meta">
+                        <span>작성자: 최학생</span>
+                        <span>등록일: 2025-06-11 09:15</span>
+                        <span>조회수: 18</span>
+                    </div>
+                </div>
+                <div class="status-badge status-answered">답변완료</div>
+            </div>
+            
+            <div class="question-content">
+                <p>안녕하세요.</p>
+                
+                <p>저는 현재 3학년 학생이고, 졸업 후 진로에 대해 고민이 많습니다.
+                진로상담을 받고 싶은데 어떻게 신청하면 되는지 궁금합니다.</p>
+                
+                <p>구체적으로 알고 싶은 내용:</p>
+                <p>1. 진로상담 신청 방법<br>
+                2. 상담 가능한 시간<br>
+                3. 온라인/오프라인 상담 가능 여부<br>
+                4. 준비해야 할 자료가 있는지</p>
+                
+                <p>답변 부탁드립니다. 감사합니다.</p>
+            </div>
+        </div>
+
+        <!-- 기존 답변 표시 -->
+        <div class="answer-section">
+            <div class="answer-header">
+                <h4 class="answer-title">답변</h4>
+                <button class="edit-button" onclick="enableEdit()">
+                    <svg width="14" height="14" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"></path>
+                    </svg>
+                    수정
+                </button>
+            </div>
+            
+            <div class="view-mode" id="answerView">
+                <div class="existing-answer">
+                    <div class="existing-answer-header">
+                        <div class="existing-answer-info">
+                            <strong>김상담 상담사</strong> | 2025-06-11 15:30
+                        </div>
+                    </div>
+                    <div class="existing-answer-content">안녕하세요, 최학생님.
+
+진로상담 신청에 대해 안내드립니다.
+
+**진로상담 신청 방법:**
+1. 학생상담센터 홈페이지 접속
+2. '상담신청' 메뉴 클릭
+3. 진로상담 선택 후 신청서 작성
+4. 희망 날짜/시간 선택
+
+**상담 가능 시간:**
+- 평일: 오전 9시 ~ 오후 6시
+- 토요일: 오전 9시 ~ 오후 1시
+- 일요일/공휴일: 휴무
+
+**상담 방식:**
+- 대면상담: 학생상담센터 방문
+- 온라인상담: Zoom 화상상담
+- 전화상담: 사전 예약 시 가능
+
+**준비자료:**
+- 특별한 준비물은 없습니다
+- 진로 관련 고민이나 질문 정리해오시면 도움됩니다
+
+추가 문의사항이 있으시면 언제든 연락주세요.
+상담센터: 02-1234-5678
+
+감사합니다.</div>
+                </div>
+            </div>
+
+            <div class="edit-mode" id="answerEdit">
+                <textarea class="form-textarea" id="answerTextarea">안녕하세요, 최학생님.
+
+진로상담 신청에 대해 안내드립니다.
+
+**진로상담 신청 방법:**
+1. 학생상담센터 홈페이지 접속
+2. '상담신청' 메뉴 클릭
+3. 진로상담 선택 후 신청서 작성
+4. 희망 날짜/시간 선택
+
+**상담 가능 시간:**
+- 평일: 오전 9시 ~ 오후 6시
+- 토요일: 오전 9시 ~ 오후 1시
+- 일요일/공휴일: 휴무
+
+**상담 방식:**
+- 대면상담: 학생상담센터 방문
+- 온라인상담: Zoom 화상상담
+- 전화상담: 사전 예약 시 가능
+
+**준비자료:**
+- 특별한 준비물은 없습니다
+- 진로 관련 고민이나 질문 정리해오시면 도움됩니다
+
+추가 문의사항이 있으시면 언제든 연락주세요.
+상담센터: 02-1234-5678
+
+감사합니다.</textarea>
+                <div class="edit-actions">
+                    <button class="btn btn-cancel" onclick="cancelEdit()">취소</button>
+                    <button class="btn btn-save" onclick="saveAnswer()">저장</button>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

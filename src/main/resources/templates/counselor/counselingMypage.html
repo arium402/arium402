@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>상담사 마이페이지</title>
+<style>
+    body {
+        font-family: 'Noto Sans KR', Arial, sans-serif;
+        background-color: #fff5e6;
+        margin: 0;
+        padding: 0;
+    }
+
+    .header-bar {
+        background: white;
+        padding: 15px 30px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+    }
+
+    .logo img {
+        height: 40px;
+    }
+
+    .user-info {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .user-name {
+        font-weight: 600;
+        color: #2c3e50;
+    }
+
+    .profile-icon {
+        width: 32px;
+        height: 32px;
+        cursor: pointer;
+        transition: opacity 0.2s ease;
+        position: relative;
+        color: #2c3e50;
+    }
+
+    .profile-icon:hover {
+        opacity: 0.7;
+    }
+
+    .logout-btn {
+        background: #6c757d;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    .logout-btn:hover {
+        background: #5a6268;
+    }
+
+    .main-container {
+        display: flex;
+        min-height: calc(100vh - 80px);
+        gap: 0;
+    }
+
+    .sidebar {
+        width: 250px;
+        background: #3498db;
+        min-height: 100%;
+    }
+
+    .sidebar-header {
+        background: #2980b9;
+        color: white;
+        padding: 20px;
+        font-size: 18px;
+        font-weight: 600;
+    }
+
+    .sidebar-menu {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .sidebar-menu li {
+        border-bottom: 1px solid #5dade2;
+    }
+
+    .sidebar-menu a {
+        display: block;
+        color: white;
+        padding: 15px 20px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .sidebar-menu a:hover {
+        background: #2980b9;
+        color: white;
+        text-decoration: none;
+    }
+
+    .sidebar-menu a.active {
+        background: #e6a456;
+        color: white;
+        text-decoration: none;
+    }
+
+    .sidebar-menu .main-category {
+        font-weight: 600;
+        background: #2980b9;
+    }
+
+    .sidebar-menu .sub-category {
+        padding-left: 35px;
+        font-size: 14px;
+    }
+
+    .contents {
+        flex: 1;
+        padding: 30px;
+        background: #fef7f0;
+        min-height: calc(100vh - 80px);
+        margin: 0;
+        border-left: 1px solid #5dade2;
+    }
+
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #e6a456;
+    }
+
+    .page-title {
+        font-size: 24px;
+        font-weight: 600;
+        color: #2c3e50;
+    }
+
+    .back-btn {
+        background: #3498db;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.2s ease;
+    }
+
+    .back-btn:hover {
+        background: #2980b9;
+        transform: translateY(-1px);
+    }
+
+    .mypage-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+    }
+
+    .card {
+        background: white;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .card-header {
+        background: #f8f9fa;
+        padding: 20px 25px;
+        border-bottom: 1px solid #e9ecef;
+        font-size: 18px;
+        font-weight: 600;
+        color: #2c3e50;
+    }
+
+    .card-body {
+        padding: 25px;
+    }
+
+    /* 프로필 정보 카드 */
+    .profile-card {
+        grid-column: 1 / -1;
+    }
+
+    .profile-content {
+        display: grid;
+        grid-template-columns: 200px 1fr;
+        gap: 30px;
+        align-items: start;
+    }
+
+    .profile-image {
+        width: 180px;
+        height: 220px;
+        background: #f8f9fa;
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: #6c757d;
+    }
+
+    .profile-icon-large {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 10px;
+    }
+
+    .profile-details {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    .detail-item {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .detail-label {
+        font-size: 14px;
+        color: #6c757d;
+        font-weight: 500;
+    }
+
+    .detail-value {
+        font-size: 16px;
+        color: #2c3e50;
+        font-weight: 600;
+        padding: 10px 0;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    /* 상담 통계 카드 */
+    .stats-section {
+        margin-bottom: 30px;
+    }
+
+    .stats-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 15px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #e6a456;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .stats-grid.weekly {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .stats-grid.monthly {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .stat-item {
+        text-align: center;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 6px;
+        border-left: 4px solid #3498db;
+        transition: all 0.2s ease;
+    }
+
+    .stat-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .stat-item.completed {
+        border-left-color: #27ae60;
+    }
+
+    .stat-item.pending {
+        border-left-color: #f39c12;
+    }
+
+    .stat-number {
+        font-size: 24px;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 5px;
+    }
+
+    .stat-label {
+        font-size: 13px;
+        color: #6c757d;
+        font-weight: 500;
+    }
+
+    /* 스케줄 카드 */
+    .schedule-list {
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    .schedule-item {
+        display: flex;
+        align-items: center;
+        padding: 12px 0;
+        border-bottom: 1px solid #e9ecef;
+        transition: background-color 0.2s ease;
+    }
+
+    .schedule-item:hover {
+        background-color: #f8f9fa;
+        margin: 0 -25px;
+        padding-left: 25px;
+        padding-right: 25px;
+        border-radius: 4px;
+    }
+
+    .schedule-item:last-child {
+        border-bottom: none;
+    }
+
+    .schedule-time {
+        width: 60px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #3498db;
+    }
+
+    .schedule-content {
+        flex: 1;
+        margin-left: 15px;
+    }
+
+    .schedule-title {
+        font-weight: 500;
+        color: #2c3e50;
+        margin-bottom: 3px;
+    }
+
+    .schedule-client {
+        font-size: 13px;
+        color: #6c757d;
+    }
+
+    .edit-profile-btn {
+        background: #e6a456;
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        margin-top: 20px;
+    }
+
+    .edit-profile-btn:hover {
+        background: #d4924a;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(230, 164, 86, 0.3);
+    }
+
+    @media (max-width: 768px) {
+        .main-container {
+            flex-direction: column;
+        }
+        
+        .sidebar {
+            width: 100%;
+            min-height: auto;
+        }
+        
+        .contents {
+            padding: 20px;
+        }
+        
+        .mypage-content {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        
+        .profile-content {
+            grid-template-columns: 1fr;
+            gap: 20px;
+            text-align: center;
+        }
+        
+        .profile-details {
+            grid-template-columns: 1fr;
+        }
+        
+        .stats-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .stats-grid.monthly {
+            grid-template-columns: 1fr;
+        }
+        
+        .page-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 15px;
+        }
+    }
+</style>
+</head>
+<body>
+    <div class="header-bar">
+        <div class="logo">
+            <img src="/images/logo-header.png" alt="로고">
+        </div>
+        <div class="user-info">
+            <span class="user-name">김상담 상담사</span>
+            <div class="profile-icon" onclick="goToMyPage()">
+                <svg fill="currentColor" viewBox="0 0 20 20" width="32" height="32">
+                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+                </svg>
+            </div>
+            <button class="logout-btn">로그아웃</button>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <nav class="sidebar">
+            <ul class="sidebar-menu">
+                <li><a href="#" class="main-category">상담관리</a></li>
+                <li><a href="#" class="sub-category">신청자 관리</a></li>
+                <li><a href="#" class="sub-category">내담자 관리</a></li>
+                <li><a href="#" class="sub-category">상담 일정 확인</a></li>
+                <li><a href="#" class="sub-category">근무 일정 관리</a></li>
+                <li><a href="#" class="main-category">게시판 관리</a></li>
+                <li><a href="#" class="sub-category">공지사항</a></li>
+                <li><a href="#" class="sub-category">F&Q</a></li>
+                <li><a href="#" class="sub-category">문의 게시판</a></li>
+            </ul>
+        </nav>
+
+        <section class="contents">
+            <div class="page-header">
+                <h4 class="page-title">마이페이지</h4>
+                <button class="back-btn" onclick="goToMain()">← 메인으로</button>
+            </div>
+
+            <div class="mypage-content">
+                <!-- 프로필 정보 -->
+                <div class="card profile-card">
+                    <div class="card-header">프로필 정보</div>
+                    <div class="card-body">
+                        <div class="profile-content">
+                            <div class="profile-image">
+                                <svg class="profile-icon-large" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span>프로필 사진</span>
+                            </div>
+                            <div class="profile-details">
+                                <div class="detail-item">
+                                    <div class="detail-label">이름</div>
+                                    <div class="detail-value">김상담</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">사번</div>
+                                    <div class="detail-value">C2020001</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">전화번호</div>
+                                    <div class="detail-value">010-1234-5678</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">이메일</div>
+                                    <div class="detail-value">counselor@knou.ac.kr</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">입사일</div>
+                                    <div class="detail-value">2020-01-15</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">전문분야</div>
+                                    <div class="detail-value">진로/취업</div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="edit-profile-btn" onclick="editProfile()">프로필 수정</button>
+                    </div>
+                </div>
+
+                <!-- 상담 통계 -->
+                <div class="card">
+                    <div class="card-header">상담 통계</div>
+                    <div class="card-body">
+                        <div class="stats-section">
+                            <div class="stats-title">이번주 통계</div>
+                            <div class="stats-grid weekly">
+                                <div class="stat-item completed">
+                                    <div class="stat-number">12</div>
+                                    <div class="stat-label">완료</div>
+                                </div>
+                                <div class="stat-item pending">
+                                    <div class="stat-number">3</div>
+                                    <div class="stat-label">예정</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="stats-section">
+                            <div class="stats-title">이번달 통계</div>
+                            <div class="stats-grid monthly">
+                                <div class="stat-item completed">
+                                    <div class="stat-number">45</div>
+                                    <div class="stat-label">완료</div>
+                                </div>
+                                <div class="stat-item pending">
+                                    <div class="stat-number">8</div>
+                                    <div class="stat-label">예정</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 오늘의 스케줄 -->
+                <div class="card">
+                    <div class="card-header">오늘의 스케줄</div>
+                    <div class="card-body">
+                        <div class="schedule-list">
+                            <div class="schedule-item">
+                                <div class="schedule-time">10:00</div>
+                                <div class="schedule-content">
+                                    <div class="schedule-title">개별 학습상담</div>
+                                    <div class="schedule-client">김학생</div>
+                                </div>
+                            </div>
+                            <div class="schedule-item">
+                                <div class="schedule-time">14:00</div>
+                                <div class="schedule-content">
+                                    <div class="schedule-title">진로 상담</div>
+                                    <div class="schedule-client">이학생</div>
+                                </div>
+                            </div>
+                            <div class="schedule-item">
+                                <div class="schedule-time">16:00</div>
+                                <div class="schedule-content">
+                                    <div class="schedule-title">집단 상담</div>
+                                    <div class="schedule-client">3학년 학습전략 그룹</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // 메인으로 돌아가기
+        function goToMain() {
+            window.location.href = 'dashboard.html';
+        }
+
+        // 마이페이지 (현재 페이지)
+        function goToMyPage() {
+            alert('현재 마이페이지입니다.');
+        }
+
+        // 프로필 수정
+        function editProfile() {
+            alert('프로필 수정 페이지로 이동합니다.');
+        }
+
+        // 사이드바 메뉴 클릭 핸들링
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuLinks = document.querySelectorAll('.sidebar-menu a:not(.main-category)');
+            
+            menuLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // 모든 메뉴에서 active 클래스 제거
+                    menuLinks.forEach(l => l.classList.remove('active'));
+                    
+                    // 클릭된 메뉴에 active 클래스 추가
+                    this.classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,303 @@
+/* 전체 레이아웃 스타일 */
+body {
+    font-family: 'Noto Sans KR', Arial, sans-serif;
+    background-color: #fef7f0;
+    margin: 0;
+    padding: 0;
+    font-size: 15px;
+}
+
+.main-container {
+    display: flex;
+    min-height: calc(100vh - 80px);
+}
+
+.content-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 메인 콘텐츠 영역 스타일 */
+.contents {
+    flex: 1;
+    padding: 30px;
+    background: white;
+    margin: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.board_title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 25px;
+    text-align: left;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #2c3e50;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.add-schedule-btn {
+    background: #e6a456;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+}
+
+.add-schedule-btn:hover {
+    background: #d49543;
+}
+
+.calendar-navigation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+    gap: 20px;
+}
+
+.nav-btn {
+    background: #3498db;
+    color: white;
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+}
+
+.nav-btn:hover {
+    background: #2980b9;
+}
+
+.current-month {
+    font-size: 20px;
+    font-weight: 600;
+    color: #2c3e50;
+    min-width: 150px;
+    text-align: center;
+}
+
+.calendar-container {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    overflow: hidden;
+    width: 100%;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    width: 100%;
+}
+
+.calendar-header-cell {
+    background: #f8f9fa;
+    padding: 12px 8px;
+    text-align: center;
+    font-weight: 600;
+    color: #495057;
+    border-bottom: 2px solid #e9ecef;
+    border-right: 1px solid #e9ecef;
+    font-size: 14px;
+}
+
+.calendar-header-cell:last-child {
+    border-right: none;
+}
+
+.calendar-header-cell.weekend {
+    color: #e74c3c;
+}
+
+.calendar-cell {
+    min-height: 100px;
+    border-bottom: 1px solid #e9ecef;
+    border-right: 1px solid #e9ecef;
+    padding: 8px;
+    position: relative;
+    background: white;
+    transition: background-color 0.2s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.calendar-cell:hover {
+    background: #f8f9fa;
+}
+
+.calendar-cell:nth-child(7n) {
+    border-right: none;
+}
+
+.calendar-cell.other-month {
+    background: #f8f9fa;
+    color: #adb5bd;
+}
+
+.calendar-cell.today {
+    background: #fff3cd;
+    border: 2px solid #ffc107;
+}
+
+.calendar-cell.holiday {
+    background: #ffe6e6;
+}
+
+.calendar-cell.vacation {
+    background: #e8f4f8;
+}
+
+.date-number {
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 5px;
+    text-align: left;
+}
+
+.schedule-info {
+    font-size: 11px;
+    line-height: 1.3;
+    flex: 1;
+}
+
+.counseling-count {
+    background: #3498db;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 500;
+    margin-bottom: 2px;
+    display: inline-block;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.counseling-count:hover {
+    background: #2980b9;
+    transform: scale(1.05);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.vacation-mark {
+    background: #17a2b8;
+    color: white;
+    padding: 2px 5px;
+    border-radius: 4px;
+    font-size: 9px;
+    font-weight: 500;
+    margin-bottom: 2px;
+    display: inline-block;
+    max-width: fit-content;
+}
+
+.holiday-mark {
+    background: #dc3545;
+    color: white;
+    padding: 2px 5px;
+    border-radius: 4px;
+    font-size: 9px;
+    font-weight: 500;
+    margin-bottom: 2px;
+    display: inline-block;
+    max-width: fit-content;
+}
+
+.legend {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    margin-top: 15px;
+    padding: 15px;
+    background: white;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #495057;
+}
+
+.legend-color {
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 1200px) {
+    .main-container {
+        flex-direction: column;
+    }
+    
+    .contents {
+        margin: 10px;
+        padding: 20px;
+    }
+    
+    .calendar-cell {
+        min-height: 110px;
+        padding: 10px;
+    }
+    
+    .date-number {
+        font-size: 16px;
+    }
+    
+    .schedule-info {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 768px) {
+    .contents {
+        padding: 15px;
+    }
+    
+    .calendar-cell {
+        min-height: 90px;
+        padding: 8px;
+    }
+    
+    .calendar-header {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+    
+    .legend {
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+    
+    .date-number {
+        font-size: 14px;
+    }
+    
+    .schedule-info {
+        font-size: 11px;
+    }
+}

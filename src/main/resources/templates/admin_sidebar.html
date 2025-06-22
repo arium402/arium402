@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="https://www.thymeleaf.org/">
+
+<body>
+ <!-- 사이드바 -->
+ <div id="layoutSidenav_nav" th:fragment="admin_sidebar">
+   <nav class="sb-sidenav" id="sidenavAccordion" > 
+       <div class="sb-sidenav-menu">
+           <div class="nav">
+               <!-- 상담사 관리 -->
+               <div class="nav-item">
+                   <a class="nav-link main-menu" href="#">
+                       <span class="material-symbols-outlined">account_circle</span>
+                       상담사 관리
+                   </a>
+                   <div class="sub-menu">
+                       <a class="nav-link" href="#">상담사 목록</a>
+                       <a class="nav-link" href="#">상담사 일정 관리</a>
+                       <a class="nav-link" href="#">상담사 통계</a>
+                   </div>
+               </div>
+
+               <!-- 상담 관리 -->
+               <div class="nav-item">
+                   <a class="nav-link main-menu active" href="#">
+                       <span class="material-symbols-outlined">psychology</span>
+                       상담 관리
+                   </a>
+                   <div class="sub-menu">
+                       <a class="nav-link" href="#">상담 신청 내역</a>
+                       <a class="nav-link active" href="#">상담 분야별 통계</a>
+                   </div>
+               </div>
+
+               <!-- 비교과 -->
+               <div class="nav-item">
+                   <a class="nav-link main-menu" href="#">
+                       <span class="material-symbols-outlined">school</span>
+                       비교과
+                   </a>
+                   <div class="sub-menu">
+                       <a class="nav-link" href="#">비교과 관리</a>
+                       <a class="nav-link" href="#">비교과 통계</a>
+                   </div>
+               </div>
+
+               <!-- 마일리지 -->
+               <div class="nav-item">
+                   <a class="nav-link main-menu" href="#">
+                       <span class="material-symbols-outlined">stars</span>
+                       마일리지
+                   </a>
+                   <div class="sub-menu">
+                       <a class="nav-link" href="#">마일리지 지급</a>
+                       <a class="nav-link" href="#">마일리지 전환</a>
+                   </div>
+               </div>
+
+               <!-- 게시판 관리 -->
+                <div class="nav-item">
+                    <a class="nav-link main-menu" href="#">
+                        <span class="material-symbols-outlined">forum</span>
+                        게시판 관리
+                    </a>
+                    <div class="sub-menu">
+                        <a class="nav-link" href="#">공지사항 관리</a>
+                        <a class="nav-link" href="#">F&Q 관리</a>
+                        <a class="nav-link" href="#">문의게시판 관리</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="sb-sidenav-footer">
+            <div class="logo-container">
+                <img src="/images/logo-header.png" alt="한국방송통신대학교 로고" class="school-logo">
+            </div>
+            <div class="version-info">관리자 시스템 v2.0</div>
+            <div class="university-name">한국방송통신대학교</div>
+        </div>
+    </nav>
+</div>
+</body>
+</html>

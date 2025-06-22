@@ -1,0 +1,287 @@
+/* 공지사항 상세 페이지 전용 스타일 */
+
+/* 기본 레이아웃 스타일 */
+body {
+    font-family: 'Noto Sans KR', Arial, sans-serif;
+    background-color: #fef7f0;
+    margin: 0;
+    padding: 0;
+}
+
+.main-container {
+    display: flex;
+    min-height: calc(100vh - 80px);
+}
+
+.content-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.contents {
+    flex: 1;
+    padding: 30px;
+    background: white;
+    margin: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.back-btn {
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.back-btn:hover {
+    background: #2980b9;
+    transform: translateY(-1px);
+}
+
+.board_title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #2c3e50;
+    text-align: left;
+    border-bottom: 2px solid #e6a456;
+    padding-bottom: 10px;
+    margin: 0;
+}
+
+.notice-detail {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.notice-header {
+    background: #f8f9fa;
+    padding: 25px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.notice-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+.notice-meta {
+    display: flex;
+    gap: 30px;
+    font-size: 14px;
+    color: #6c757d;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.meta-label {
+    font-weight: 500;
+    color: #2c3e50;
+}
+
+.notice-badge {
+    background: #e74c3c;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-right: 10px;
+}
+
+.notice-content {
+    padding: 30px;
+    min-height: 400px;
+}
+
+.content-text {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+.content-section {
+    margin-bottom: 25px;
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e6a456;
+}
+
+.highlight-box {
+    background: #fff5e6;
+    border-left: 4px solid #e6a456;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 0 6px 6px 0;
+}
+
+.highlight-box .highlight-title {
+    font-weight: 600;
+    color: #b8860b;
+    margin-bottom: 10px;
+}
+
+.info-list {
+    list-style: none;
+    padding: 0;
+    margin: 15px 0;
+}
+
+.info-list li {
+    padding: 8px 0;
+    padding-left: 20px;
+    position: relative;
+    color: #34495e;
+}
+
+.info-list li:before {
+    content: "•";
+    color: #e6a456;
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+}
+
+/* 이전글/다음글 네비게이션 */
+.notice-navigation {
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.nav-item {
+    padding: 15px 20px;
+    border-bottom: 1px solid #e9ecef;
+    transition: background-color 0.2s ease;
+}
+
+.nav-item:last-child {
+    border-bottom: none;
+}
+
+.nav-item:hover:not(.disabled) {
+    background: #f8f9fa;
+}
+
+.nav-label {
+    font-size: 12px;
+    color: #6c757d;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.nav-title {
+    font-size: 14px;
+    color: #2c3e50;
+    cursor: pointer;
+}
+
+.nav-title.disabled {
+    color: #6c757d;
+    cursor: default;
+}
+
+.nav-title:hover:not(.disabled) {
+    color: #e6a456;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    padding: 25px;
+    border-top: 1px solid #e9ecef;
+    background: #f8f9fa;
+}
+
+.btn {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-list {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-list:hover {
+    background: #5a6268;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+}
+
+.icon {
+    width: 16px;
+    height: 16px;
+}
+
+@media (max-width: 768px) {
+    .contents {
+        margin: 10px;
+        padding: 20px;
+    }
+    
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .notice-meta {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .notice-content {
+        padding: 20px;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn {
+        width: 100%;
+        max-width: 200px;
+        justify-content: center;
+    }
+}

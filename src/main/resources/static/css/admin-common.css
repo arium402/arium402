@@ -1,0 +1,201 @@
+/* 관리자 페이지 공통 스타일 */
+
+/* 사이드바 스타일 수정 */
+.sb-sidenav {
+    background-color: #ffffff !important;
+    border-right: 1px solid #ddd;
+}
+
+.sb-sidenav .nav-link {
+    color: #333 !important;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    margin: 3px 8px;
+    padding: 12px 15px;
+    border-radius: 0 !important;
+    display: block;
+}
+
+.sb-sidenav .nav-link:hover {
+    background-color: #e8f5e8 !important;
+    color: #2d8a47 !important;
+}
+
+.sb-sidenav .nav-link.active {
+    background-color: #2d8a47 !important;
+    color: white !important;
+    border-color: #2d8a47 !important;
+}
+
+.sb-sidenav-footer {
+    background-color: #ffffff !important;
+    border-top: 1px solid #ddd;
+}
+
+/* 상단 네비게이션 바 스타일 개선 */
+.sb-topnav {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+    border-bottom: 3px solid #2d8a47;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+    font-weight: 700 !important;
+    font-size: 1.4rem !important;
+    color: #343a40 !important;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.navbar-brand:hover {
+    color: #2d8a47 !important;
+}
+
+.sb-topnav .input-group {
+    color: #495057 !important;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.sb-topnav .navbar-nav .nav-link {
+    color: #495057 !important;
+    transition: all 0.3s ease;
+}
+
+.sb-topnav .navbar-nav .nav-link:hover {
+    color: #2d8a47 !important;
+    background-color: rgba(45, 138, 71, 0.1);
+    border-radius: 4px;
+}
+
+.sb-topnav .dropdown-menu {
+    border-radius: 0 !important;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.sb-topnav .btn-link {
+    color: #495057 !important;
+    transition: all 0.3s ease;
+}
+
+.sb-topnav .btn-link:hover {
+    color: #2d8a47 !important;
+}
+
+/* 상담 탭 스타일 */
+.counseling-tabs {
+    margin: 20px 0;
+    border-bottom: none;
+}
+
+.counseling-tabs .nav-item {
+    margin-right: 5px;
+}
+
+.counseling-tabs .nav-link {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    color: #333;
+    padding: 12px 24px;
+    border-radius: 0 !important;
+    border-bottom: none;
+    font-weight: 500;
+}
+
+.counseling-tabs .nav-link:hover {
+    background-color: #f8f9fa;
+    border-color: #ddd;
+    color: #333;
+}
+
+.counseling-tabs .nav-link.active {
+    color: white !important;
+}
+
+.counseling-tabs .crisis-tab.active {
+    background-color: #dc6868 !important;
+    border-color: #dc6868 !important;
+}
+
+.counseling-tabs .psychology-tab.active {
+    background-color: #2d8a47 !important;
+    border-color: #2d8a47 !important;
+}
+
+.counseling-tabs .anonymous-tab.active {
+    background-color: #7db46c !important;
+    border-color: #7db46c !important;
+    color: white !important;
+}
+
+/* 탭 컨텐츠 */
+.tab-content {
+    border: 1px solid #ddd;
+    border-top: none;
+    padding: 20px;
+    background-color: white;
+}
+
+/* 검색바 및 버튼 스타일 */
+.search-bar select,
+.search-bar input,
+.search-bar button,
+.search input,
+.search button {
+    border-radius: 0 !important;
+}
+
+/* 테이블 스타일 */
+table {
+    border-radius: 0 !important;
+}
+
+table th,
+table td {
+    border-radius: 0 !important;
+}
+
+/* 버튼 스타일 */
+.btn {
+    border-radius: 0 !important;
+}
+
+/* 페이지네이션 */
+.pagination .page-link {
+    border-radius: 0 !important;
+}
+
+.pagination span {
+    display: inline-block;
+    padding: 8px 12px;
+    margin: 0 2px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    color: #333;
+    text-decoration: none;
+    border-radius: 0 !important;
+}
+
+.pagination span:hover {
+    background-color: #f8f9fa;
+}
+
+/* 모달 스타일 */
+.modal-content {
+    border-radius: 0 !important;
+}
+
+.modal > div {
+    border-radius: 0 !important;
+}
+
+.form-control {
+    border-radius: 0 !important;
+}
+
+/* 달력 및 기타 요소 스타일 */
+.calendar button {
+    border-radius: 0 !important;
+}

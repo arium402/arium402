@@ -1,0 +1,174 @@
+<div th:fragment="view">
+
+<main class="col-md-9 col-lg-10 p-0" style="margin-left: 16.66667%; min-height: calc(100vh - 70px);">
+	<div class="main-content">
+		<div class="notice-container">
+			<!-- 공지사항 헤더 -->
+			<div class="notice-header">
+				<h1 class="notice-title">
+					<i class="fas fa-bullhorn me-3"></i>공지사항
+				</h1>
+			</div>
+
+			<!-- 공지사항 컨텐츠 -->
+			<div class="notice-content">
+				<!-- 탭과 검색 영역 -->
+				<div class="notice-tabs">
+					<div class="tab-buttons">
+						<button class="tab-btn active" onclick="changeTab('all')">전체</button>
+						<button class="tab-btn" onclick="changeTab('extracurricular')">비교과</button>
+						<button class="tab-btn" onclick="changeTab('counseling')">상담</button>
+						<button class="tab-btn" onclick="changeTab('etc')">기타</button>
+					</div>
+
+					<div class="search-area">
+						<select class="search-select" id="searchType">
+							<option value="title">제목</option>
+							<option value="content">내용</option>
+							<option value="author">작성자</option>
+						</select>
+						<input type="text" class="search-input" id="searchInput" placeholder="검색어를 입력하세요">
+						<button class="search-btn" onclick="searchNotices()">
+							<i class="fas fa-search"></i> 검색
+						</button>
+					</div>
+				</div>
+
+				<!-- 공지사항 테이블 -->
+				<table class="notice-table">
+					<thead>
+						<tr>
+							<th class="no-col">No</th>
+							<th class="title-col">제목</th>
+							<th class="date-col">작성일</th>
+							<th class="author-col">작성자</th>
+							<th class="views-col">조회수</th>
+						</tr>
+					</thead>
+					<tbody id="noticeTableBody">
+						<!-- 고정 공지사항 -->
+						<tr class="pinned">
+							<td class="no-col"><i class="fas fa-thumbtack pin-icon"></i>공지</td>
+							<td class="title-col">
+								<a th:href="@{/student/notice/anndetail}" class="notice-title-link">[중요] 2025학년도 1학기 학사일정 안내</a>
+							</td>
+							<td class="date-col">2025.02.01</td>
+							<td class="author-col">관리자</td>
+							<td class="views-col">1,523</td>
+						</tr>
+						<tr class="pinned">
+							<td class="no-col"><i class="fas fa-thumbtack pin-icon"></i>공지</td>
+							<td class="title-col">
+								<a th:href="@{/student/notice/anndetail}" class="notice-title-link">[필독] 학생상담센터 이용 안내</a>
+							</td>
+							<td class="date-col">2025.01.15</td>
+							<td class="author-col">관리자</td>
+							<td class="views-col">987</td>
+						</tr>
+
+						<!-- 일반 공지사항 -->
+						<tr>
+							<td class="no-col">156</td>
+							<td class="title-col">
+								<a th:href="@{/student/notice/anndetail}" class="notice-title-link">2025년 하계 비교과 프로그램 신청 안내</a>
+							</td>
+							<td class="date-col">2025.06.18</td>
+							<td class="author-col">비교과팀</td>
+							<td class="views-col">234</td>
+						</tr>
+						<tr>
+							<td class="no-col">155</td>
+							<td class="title-col">
+								<a th:href="@{/student/notice/anndetail}" class="notice-title-link">마일리지 적립 기준 변경 안내</a>
+							</td>
+							<td class="date-col">2025.06.17</td>
+							<td class="author-col">학생지원팀</td>
+							<td class="views-col">156</td>
+						</tr>
+						<tr>
+							<td class="no-col">154</td>
+							<td class="title-col">
+								<a th:href="@{/student/notice/anndetail}" class="notice-title-link">온라인 진로상담 예약 시스템 오픈</a>
+							</td>
+							<td class="date-col">2025.06.16</td>
+							<td class="author-col">상담팀</td>
+							<td class="views-col">189</td>
+						</tr>
+						<tr>
+							<td class="no-col">153</td>
+							<td class="title-col">
+								<a th:href="@{/student/notice/anndetail}" class="notice-title-link">핵심역량 진단 결과 공개 안내</a>
+							</td>
+							<td class="date-col">2025.06.15</td>
+							<td class="author-col">역량개발팀</td>
+							<td class="views-col">298</td>
+						</tr>
+						<tr>
+							<td class="no-col">152</td>
+							<td class="title-col">
+								<a th:href="@{/student/notice/anndetail}" class="notice-title-link">학습컨설팅 신청 방법 변경 안내</a>
+							</td>
+							<td class="date-col">2025.06.14</td>
+							<td class="author-col">상담팀</td>
+							<td class="views-col">167</td>
+						</tr>
+						<tr>
+							<td class="no-col">151</td>
+							<td class="title-col">
+								<a th:href="@{/student/notice/anndetail}" class="notice-title-link">2025년 하계방학 센터 운영시간 안내</a>
+							</td>
+							<td class="date-col">2025.06.13</td>
+							<td class="author-col">관리자</td>
+							<td class="views-col">123</td>
+						</tr>
+						<tr>
+							<td class="no-col">150</td>
+							<td class="title-col">
+								<a th:href="@{/student/notice/anndetail}" class="notice-title-link">익명상담 서비스 개선 안내</a>
+							</td>
+							<td class="date-col">2025.06.12</td>
+							<td class="author-col">상담팀</td>
+							<td class="views-col">245</td>
+						</tr>
+						<tr>
+							<td class="no-col">149</td>
+							<td class="title-col">
+								<a th:href="@{/student/notice/anndetail}" class="notice-title-link">익명상담 서비스 개선 안내</a>
+							</td>
+							<td class="date-col">2025.06.12</td>
+							<td class="author-col">상담팀</td>
+							<td class="views-col">245</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<!-- 페이징 -->
+				<div class="pagination-wrapper">
+					<div class="pagination">
+						<a href="#" class="page-btn" onclick="changePage(1)">
+							<i class="fas fa-angle-double-left"></i>
+						</a>
+						<a href="#" class="page-btn" onclick="changePage(15)">
+							<i class="fas fa-angle-left"></i>
+						</a>
+						<a href="#" class="page-btn" onclick="changePage(13)">13</a>
+						<a href="#" class="page-btn" onclick="changePage(14)">14</a>
+						<a href="#" class="page-btn" onclick="changePage(15)">15</a>
+						<a href="#" class="page-btn active" onclick="changePage(16)">16</a>
+						<a href="#" class="page-btn" onclick="changePage(17)">17</a>
+						<a href="#" class="page-btn" onclick="changePage(18)">18</a>
+						<a href="#" class="page-btn" onclick="changePage(19)">19</a>
+						<a href="#" class="page-btn" onclick="changePage(17)">
+							<i class="fas fa-angle-right"></i>
+						</a>
+						<a href="#" class="page-btn" onclick="changePage(25)">
+							<i class="fas fa-angle-double-right"></i>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
+   
+</div>

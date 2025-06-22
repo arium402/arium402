@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <!-- 헤더 프래그먼트 -->
+    <div th:fragment="header" class="header-bar">
+        <div class="logo">
+        <a th:href="@{/counselor/dashboard}">
+            <img th:src="@{/images/logo-header.png}" alt="로고">
+        </a>
+        </div>
+        <div class="user-info">
+            <span class="user-name">김상담 상담사</span>
+            <div class="profile-icon" onclick="goToMyPage()">
+                <svg fill="currentColor" viewBox="0 0 20 20" width="32" height="32">
+                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+                </svg>
+                <div class="profile-tooltip"><a href="/counselor/mypage">마이페이지</a></div>
+            </div>
+            <button class="logout-btn">로그아웃</button>
+        </div>
+    </div>
+</body>
+
+</html>

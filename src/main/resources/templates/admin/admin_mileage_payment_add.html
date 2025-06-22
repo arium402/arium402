@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="https://www.thymeleaf.org/">
+    <head th:replace="~{/admin_config.html :: admin_config}"></head>
+    <title>마일리지 지급 상세 - 관리자 페이지</title>
+    <link rel="stylesheet" th:href="@{/css/admin/admin_mileage_payment_add.css?v=1}">
+    
+    <body class="sb-nav-fixed">
+       <!-- 상단 네비게이션 바 -->
+        <nav th:replace="~{/admin_top.html :: admin_top}"></nav>
+     
+        <div id="layoutSidenav">
+            <!-- 사이드바 -->
+            <div th:replace="~{/admin_sidebar.html :: admin_sidebar}"> </div>
+            
+            <!-- 메인 컨텐츠 -->
+            <div id="layoutSidenav_content">
+                <div class="main-content">
+                    <!-- 프로그램 정보 섹션 -->
+                    <div class="program-info-section">
+                        <div class="program-info-header">
+                            프로그램 정보
+                        </div>
+                        <div class="program-info-content">
+                            <div class="program-title">토익 특강 프로그램</div>
+                            <div class="program-period">2024-03-15 ~ 2024-05-30</div>
+                            <div class="program-details">
+                                <div class="program-participants">인원 25명</div>
+                                <div class="program-mileage">마일리지 50점</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 신청자 리스트 섹션 -->
+                    <div class="applicant-section">
+                        <div class="applicant-header">
+                            <span>신청자 리스트</span>
+                            <button class="bulk-payment-btn" onclick="bulkPayment()">
+                                <i class="fas fa-coins"></i> 전체 지급
+                            </button>
+                        </div>
+                        
+                        <!-- 테이블 -->
+                        <div class="table-container">
+                            <table class="applicant-table">
+                                <thead>
+                                    <tr>
+                                        <th class="col-no">NO</th>
+                                        <th class="col-student-id">학번</th>
+                                        <th class="col-name">이름</th>
+                                        <th class="col-department">학과</th>
+                                        <th class="col-completion">이수여부</th>
+                                        <th class="col-satisfaction">만족도 여부</th>
+                                        <th class="col-payment">지급</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="applicantTableBody">
+                                    <!-- 데이터가 여기에 동적으로 추가됩니다 -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- 하단 버튼 영역 -->
+                    <div class="bottom-actions">
+                        <button class="list-btn" onclick="goToList()">
+                            <i class="fas fa-list"></i> 목록
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    <script th:src="@{/js/admin/admin_mileage_payment_add.js}"></script>    
+    </body>
+</html>
