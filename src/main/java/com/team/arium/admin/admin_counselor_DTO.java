@@ -1,0 +1,16 @@
+package com.team.arium.admin;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class admin_counselor_DTO {
+	private String emplName;
+    private String cnslCd;
+    private String emplTellno;
+    private String emplEmlAddr;
+    private String emplStatCd;
+}

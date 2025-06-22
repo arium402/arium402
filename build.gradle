@@ -73,6 +73,11 @@ dependencies {
     //JPA
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	
+	//JSON 
+	// https://mvnrepository.com/artifact/org.json/json
+	implementation 'org.json:json:20250107'
+	// https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
+	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 	
 	//lombok   
 	compileOnly 'org.projectlombok:lombok' //코드 작성을 줄여 주는 Lombok 애너테이션(@Getter, @Setter 등)

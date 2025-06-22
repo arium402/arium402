@@ -13,100 +13,114 @@ document.getElementById('counselorPhone').addEventListener('input', function(e) 
 
 // 메시지 표시 함수
 function showMessage(type, message) {
-    // 모든 메시지 숨기기
     document.querySelector("#successMessage").style.display = 'none';
     document.querySelector("#errorMessage").style.display = 'none';
-    
-    // 해당 메시지 표시
+
     const messageElement = document.getElementById(type + 'Message');
-	console.log("messageElement : " + messageElement)
-    if (message) {
-        messageElement.innerHTML = messageElement.innerHTML.replace(/>.+<\//, '>' + message + '</');
-    }
-    messageElement.style.display = 'block';
+    const textElement = messageElement.querySelector('.message-text');
     
-    // 3초 후 자동 숨김
+    if (textElement) {
+        textElement.textContent = message;
+    }
+
+    messageElement.style.display = 'block';
+
     setTimeout(() => {
         messageElement.style.display = 'none';
     }, 3000);
-    
-    // 메시지로 스크롤
+
     messageElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
-// 폼 제출 처리
-document.querySelector("#counselorAddBtn").addEventListener('click', function(e) {
+//등록 버튼 클릭시 
+document.querySelector("#counselorAddBtn").addEventListener('click', function() {
    	const cns_name = document.querySelector("#counselorName");
 	const cns_field = document.querySelector("#counselorField");
 	const cns_phone = document.querySelector("#counselorPhone");
 	const cns_mail = document.querySelector("#counselorEmail");
 	
-	 // 폼 데이터 수집
-    const formData = {
-        name: cns_name.value.trim(),
-        field: cns_field.value,
-        phone: cns_phone.value.trim(),
-        email:cns_mail.value.trim(),
-        status: '재직',
-    };
+	//형식검사
+	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+	const phoneRegex = /^010-\d{4}-\d{4}$/;
     
-    // 유효성 검사
-    if (!formData.name) {
+	const cns_info = {
+		emplName : cns_name.value.trim(),
+        cnslCd: cns_field.value,
+		emplTellno: cns_phone.value.trim(),
+		emplEmlAddr: cns_mail.value.trim(),
+		emplStatCd:"31"
+  	};
+	
+	
+	// 유효성 검사
+    if (cns_name.value=="") {
         showMessage('error', '상담사의 이름을 입력해주세요.');
-        document.getElementById('counselorName').focus();
-        return;
+        cns_name.focus();
     }
-    
-    if (!formData.field) {
+	else if (cns_field.value=="") {
         showMessage('error', '상담분야를 선택해주세요.');
-        document.getElementById('counselorField').focus();
-        return;
+        cns_field.focus();
     }
-    
-    if (!formData.phone) {
+	else if (cns_phone.value=="") {
         showMessage('error', '전화번호를 입력해주세요.');
-        document.getElementById('counselorPhone').focus();
-        return;
+        cns_phone.focus();
     }
-    
-    if (!formData.email) {
+	else if (!phoneRegex.test(cns_phone.value)) {
+       showMessage('error', '올바른 전화번호 형식을 입력해주세요. (010-0000-0000)');
+       cns_phone.focus();
+   }
+    else if (cns_mail.value=="") {
         showMessage('error', '이메일을 입력해주세요.');
-        document.getElementById('counselorEmail').focus();
-        return;
+       	cns_mail.focus();
     }
-    
-    // 이메일 형식 검사
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email)) {
+    else if (!emailRegex.test(cns_mail.value)) {
         showMessage('error', '올바른 이메일 형식을 입력해주세요.');
-        document.getElementById('counselorEmail').focus();
-        return;
+        cns_mail.focus();
     }
-    
-    // 전화번호 형식 검사
-    const phoneRegex = /^010-\d{4}-\d{4}$/;
-    if (!phoneRegex.test(formData.phone)) {
-        showMessage('error', '올바른 전화번호 형식을 입력해주세요. (010-0000-0000)');
-        document.getElementById('counselorPhone').focus();
-        return;
-    }
-    
-    // 실제로는 서버에 데이터를 전송
-    console.log('등록할 데이터:', formData);
-    
-    // 성공 메시지 표시
-    showMessage('success');
-    
-    // 폼 초기화
-    document.getElementById('counselorForm').reset();
-    
-    // 5초 후 목록 페이지로 이동 확인
-    setTimeout(() => {
-        if (confirm('상담사 목록 페이지로 이동하시겠습니까?')) {
-            window.location.href = 'counselor_list.html';
-        }
-    }, 2000);
+	else {
+		//데이터 전송
+		addCounselor(cns_info)
+	}
 });
+
+
+//상담사 등록 ajax
+function addCounselor(cns_info){
+	
+	fetch("/admin/admin_counselorList_addOk", {
+		method: "PUT",
+		headers: {'content-type': 'application/json'},
+		body : JSON.stringify(cns_info)
+		
+	}).then(function(data) {
+		return data.text();
+
+	}).then(function(result) {
+		console.log("result : " + result)
+		if(result=="ok"){
+			
+			// 성공 메시지 표시
+		   showMessage('success');
+		   
+		   // 폼 초기화
+		   document.querySelector("#counselorForm").reset();
+		   
+		   // 5초 후 목록 페이지로 이동 확인
+		   setTimeout(() => {
+		       if (confirm('상담사 목록 페이지로 이동하시겠습니까?')) {
+		       		location.href = "./admin/admin_counselorList";
+		       }
+		   }, 2000);
+		   
+		}else if(result=="fail"){
+			alert("BOM 등록에 실패했습니다.");
+		}
+
+	}).catch(function(error) {
+		console.log("통신오류발생" + error);
+	}); 
+	
+}
 
 // 취소 버튼 처리
 function cancelRegister() {
