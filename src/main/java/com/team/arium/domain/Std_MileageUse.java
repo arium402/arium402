@@ -15,7 +15,8 @@ import java.time.LocalDateTime;
 @Table(name = "STD_MILEAGE_USE",
        uniqueConstraints = @UniqueConstraint(columnNames = {"STD_ID", "APLY_DT"}))
 public class Std_MileageUse {
-    
+// 학생 마일리지 사용 신청 
+	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "MLG_USE_ID")

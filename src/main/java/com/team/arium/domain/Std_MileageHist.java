@@ -15,7 +15,8 @@ import java.time.LocalDateTime;
 @Table(name = "STD_MILEAGE_HIST",
        uniqueConstraints = @UniqueConstraint(columnNames = {"STD_ID", "CMP_ID", "SUR_EVAL_ID"}))
 public class Std_MileageHist {
-    
+//학생 마일리지 점수 
+	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "MLG_ID")
