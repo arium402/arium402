@@ -1,0 +1,127 @@
+<div th:fragment="view">
+
+<main class="col-md-9 col-lg-10 p-0" style="margin-left: 16.66667%; min-height: calc(100vh - 60px); width: 83.33333%;">
+	<div class="main-content">
+		<!-- 오시는 길 페이지 -->
+		<div class="directions-content">
+			<!-- 페이지 제목 -->
+			<h1 class="page-title">오시는 길</h1>
+			<div class="page-title-divider"></div>
+
+			<!-- 이미지와 주소 섹션 -->
+			<div class="image-address-section">
+				<!-- 대학 건물 이미지 -->
+				<div class="university-image">
+					<img th:src="@{/images/school.png}" 
+						alt="한국방송통신대학교 본관" 
+						style="width: 100%; height: auto;">
+				</div>
+	
+				<!-- 주소 정보 -->
+				<div class="address-section">
+					<h2 class="address-title">캠퍼스 안내</h2>
+					<div class="address-info">
+						<div class="address-item">
+							<span class="address-label">주소</span>
+							<span class="address-value">서울특별시 종로구 대학로 86 (동숭동)</span>
+						</div>
+						<div class="address-item">
+							<span class="address-label">우편번호</span>
+							<span class="address-value">03087</span>
+						</div>
+						<div class="address-item">
+							<span class="address-label">대표전화</span>
+							<span class="address-value">02-3668-4114</span>
+						</div>
+						<div class="address-item">
+							<span class="address-label">팩스</span>
+							<span class="address-value">02-3668-4759</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- 지도 섹션 -->
+			<div class="map-section">
+				<h2 class="map-title">위치안내</h2>
+				<div class="map-container">
+					<img th:src="@{/images/map.png}" 
+						alt="한국방송통신대학교 위치 지도" 
+						style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;" />
+					<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; background: rgba(255,255,255,0.9); padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+						<i class="fas fa-map-marker-alt" style="font-size: 2rem; color: var(--main-color); margin-bottom: 12px;"></i>
+						<h4 style="margin: 0 0 8px 0; color: var(--main-color);">한국방송통신대학교</h4>
+						<p style="margin: 0; font-size: 0.9rem; color: #666;">서울 종로구 대학로 86</p>
+						<p style="margin: 4px 0 0 0; font-size: 0.8rem; color: #999;">지하철 4호선 혜화역 2번 출구 도보 5분</p>
+					</div>
+				</div>
+				<div style="text-align: center; margin-top: 16px;">
+					<a href="https://map.naver.com/v5/search/%ED%95%9C%EA%B5%AD%EB%B0%A9%EC%86%A1%ED%86%B5%EC%8B%A0%EB%8C%80%ED%95%99%EA%B5%90" 
+						target="_blank" 
+						style="display: inline-block; background: var(--main-color); color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: 600; margin-right: 10px;">
+						<i class="fas fa-map-marker-alt me-2"></i>네이버 지도에서 보기
+					</a>
+					<a href="https://maps.google.com/maps?q=한국방송통신대학교" 
+						target="_blank" 
+						style="display: inline-block; background: #4285f4; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: 600;">
+						<i class="fas fa-map-marker-alt me-2"></i>구글 지도에서 보기
+					</a>
+				</div>
+			</div>
+
+			<!-- 교통편 안내 -->
+			<div class="transportation-section">
+				<h2 class="transportation-title">교통편 안내</h2>
+				<div class="transport-grid">
+					<div class="transport-card">
+						<div class="transport-card-title">
+							<i class="fas fa-subway"></i>
+							지하철
+						</div>
+						<div class="transport-info">
+							<strong>4호선 혜화역</strong><br>
+							• 2번 출구에서 도보 5분<br>
+							• 대학로 방향으로 직진<br><br>
+							<strong>6호선 안국역</strong><br>
+							• 1번 출구에서 도보 10분<br>
+							• 종로 방향으로 이동
+						</div>
+					</div>
+
+					<div class="transport-card">
+						<div class="transport-card-title">
+							<i class="fas fa-bus"></i>
+							버스
+						</div>
+						<div class="transport-info">
+							<strong>일반버스</strong><br>
+							• 109, 140, 273, 601번<br>
+							• 혜화동, 로터리 정류장 하차<br><br>
+							<strong>마을버스</strong><br>
+							• 종로02번<br>
+							• 대학로입구 정류장 하차
+						</div>
+					</div>
+
+					<div class="transport-card">
+						<div class="transport-card-title">
+							<i class="fas fa-car"></i>
+							자가용
+						</div>
+						<div class="transport-info">
+							<strong>주차안내</strong><br>
+							• 교내 주차장 이용 가능<br>
+							• 방문자 주차 등록 필요<br>
+							• 주차요금: 시간당 2,000원<br><br>
+							<strong>네비게이션</strong><br>
+							• 한국방송통신대학교 검색<br>
+							• 서울 종로구 대학로 86
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
+
+</div>

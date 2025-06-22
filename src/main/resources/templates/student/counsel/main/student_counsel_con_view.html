@@ -1,0 +1,62 @@
+<div th:fragment="view">
+
+<main class="col-md-9 col-lg-10 p-0" style="margin-left: 16.66667%; min-height: calc(100vh - 60px); width: 83.33333%;">
+	<div class="main-content">
+		<!-- 학습 컨설팅 페이지 -->
+		<div class="counseling-content">
+			<!-- 페이지 제목 -->
+			<h1 class="page-title">학습 컨설팅</h1>
+			<div class="page-title-divider"></div>
+
+			<!-- 상담 프로세스 -->
+			<div class="process-section">
+				<h2 class="process-title">상담 프로세스</h2>
+				<div class="process-flow">
+					<div class="process-step">사전 검사</div>
+					<div class="process-arrow">→</div>
+					<div class="process-step">상담 신청</div>
+					<div class="process-arrow">→</div>
+					<div class="process-step">상담 진행</div>
+				</div>
+			</div>
+
+			<!-- 상담 설명 소개 -->
+			<div class="intro-section">
+				<h2 class="intro-title">학습 컨설팅</h2>
+				<p class="intro-description">
+					학업 컨설팅은 학생이나 학습자가 자신의 학업 목표를 달성하고, 학습 성과를 향상시키기 위해 전문적인 조언과 지원을 받는 과정입니다.<br>
+					학업 컨설팅은 교육과정, 학습 전략, 시간 관리, 학습 스타일, 성적 향상 등 다양한 학업 관련 문제를 다룹니다.
+				</p>
+
+				<div class="when-to-apply">
+					<h3 class="when-title">이럴 때 신청하세요</h3>
+					<div class="apply-grid">
+						<div class="apply-item">
+							<h4>학습 동기 부족</h4>
+							<p>✔️ 공부할 의욕이 없고 목표가 뚜렷하지 않을 경우</p>
+						</div>
+						<div class="apply-item">
+							<h4>시간 관리</h4>
+							<p>✔️ 공부 계획을 세우기 어렵거나 계획대로 실행이 되지 않을 경우</p>
+						</div>
+						<div class="apply-item">
+							<h4>성적 저하</h4>
+							<p>✔️ 학업 성취도가 낮아지고 향상 방법이 필요할 경우</p>
+						</div>
+						<div class="apply-item">
+							<h4>학습 전략 부족</h4>
+							<p>✔️ 공부 방법이 비효율적이거나 집중이 잘 되지 않을 경우</p>
+						</div>
+					</div>
+				</div>
+
+				<!-- 사전 검사 버튼 -->
+				<div class="pre-test-section">
+					<button class="pre-test-btn" onclick="goToPreTest()">상담 사전 검사</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
+
+</div>

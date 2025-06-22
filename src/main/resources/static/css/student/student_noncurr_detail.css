@@ -1,0 +1,314 @@
+/* 프로그램 상세 영역 */
+.program-detail {
+	padding: 25px 35px;
+	background: white;
+}
+
+.detail-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	margin-bottom: 30px;
+}
+
+.apply-btn-header {
+	background: var(--main-color);
+	color: white;
+	border: none;
+	padding: 10px 25px;
+	font-size: 1rem;
+	font-weight: 600;
+	border-radius: 0;
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+
+.apply-btn-header:hover {
+	background: #3d5a91;
+	transform: translateY(-2px);
+}
+
+.program-info-section {
+	display: flex;
+	gap: 30px;
+	margin-bottom: 40px;
+	padding-bottom: 25px;
+	border-bottom: 1px solid #ddd;
+}
+
+.program-image-container {
+	flex-shrink: 0;
+	width: 280px;
+	height: 200px;
+	background: linear-gradient(135deg, var(--light-bg), #e6f3ff);
+	border: 2px solid #ddd;
+	border-radius: 8px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow: hidden;
+}
+
+.program-image-container img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.program-image-container .placeholder-icon {
+	font-size: 3rem;
+	color: var(--main-color);
+	opacity: 0.5;
+}
+
+.program-details {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.program-title {
+	font-size: 1.8rem;
+	font-weight: 700;
+	color: #333;
+	margin-bottom: 20px;
+	line-height: 1.3;
+}
+
+.detail-item {
+	display: flex;
+	align-items: center;
+	margin-bottom: 12px;
+	font-size: 1rem;
+}
+
+.detail-label {
+	color: #666;
+	font-weight: 600;
+	margin-right: 15px;
+	min-width: 90px;
+}
+
+.detail-value {
+	color: #333;
+	font-weight: 600;
+}
+
+.mileage-value {
+	color: var(--main-color);
+	font-weight: 700;
+	font-size: 1.1rem;
+}
+
+.capacity-value {
+	color: #333;
+	font-weight: 600;
+}
+
+.capacity-value.warning {
+	color: #dc3545;
+}
+
+/* 핵심역량 그래프 섹션 */
+.competency-section {
+	margin-bottom: 40px;
+}
+
+.section-title {
+	font-size: 1.5rem;
+	font-weight: 700;
+	color: #333;
+	margin-bottom: 20px;
+	padding-bottom: 8px;
+	border-bottom: 3px solid var(--main-color);
+	display: inline-block;
+}
+
+.competency-charts {
+	display: flex;
+	gap: 50px;
+	align-items: flex-start;
+}
+
+.chart-container {
+	flex: 1;
+}
+
+.chart-title {
+	font-size: 1.1rem;
+	font-weight: 600;
+	color: #333;
+	margin-bottom: 15px;
+	text-align: center;
+}
+
+.chart-wrapper {
+	position: relative;
+	height: 250px;
+	width: 100%;
+	background: white;
+	border: 2px solid #eee;
+	border-radius: 8px;
+	padding: 15px;
+	box-sizing: border-box;
+}
+
+.chart-wrapper canvas {
+	max-width: 100% !important;
+	max-height: 100% !important;
+}
+
+/* 프로그램 설명 섹션 */
+.description-section {
+	margin-bottom: 35px;
+}
+
+.program-description {
+	background: #f8f9fa;
+	padding: 25px;
+	border-radius: 8px;
+	font-size: 1rem;
+	line-height: 1.7;
+	color: #333;
+}
+
+.program-description p {
+	margin-bottom: 15px;
+}
+
+.program-description ul {
+	margin-bottom: 15px;
+}
+
+/* 첨부파일 섹션 */
+.attachment-section {
+	margin-bottom: 35px;
+}
+
+.attachment-files {
+	background: #f8f9fa;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	padding: 18px;
+}
+
+.no-files-message {
+	text-align: center;
+	color: #666;
+	font-size: 0.95rem;
+	padding: 18px;
+}
+
+.file-item {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 10px 12px;
+	background: white;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	margin-bottom: 8px;
+	transition: all 0.3s ease;
+}
+
+.file-item:hover {
+	border-color: var(--main-color);
+	box-shadow: 0 2px 8px rgba(74, 111, 165, 0.1);
+}
+
+.file-info {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.file-icon {
+	color: var(--main-color);
+	font-size: 1.1rem;
+}
+
+.file-details {
+	display: flex;
+	flex-direction: column;
+}
+
+.file-name {
+	font-weight: 600;
+	color: #333;
+	margin-bottom: 2px;
+	font-size: 0.95rem;
+}
+
+.file-size {
+	color: #999;
+	font-size: 0.8rem;
+}
+
+.download-btn {
+	background: var(--main-color);
+	color: white;
+	border: none;
+	padding: 6px 14px;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 0.85rem;
+	transition: all 0.3s ease;
+}
+
+.download-btn:hover {
+	background: #3d5a91;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 1200px) {
+	.competency-charts {
+		flex-direction: column;
+		gap: 25px;
+	}
+	
+	.chart-wrapper {
+		height: 230px;
+	}
+}
+
+@media (max-width: 992px) {
+	.program-info-section {
+		flex-direction: column;
+		gap: 25px;
+	}
+  
+	.program-image-container {
+		width: 100%;
+		max-width: 350px;
+		margin: 0 auto;
+	}
+}
+
+@media (max-width: 768px) {
+	.program-detail {
+		padding: 18px;
+	}
+	
+	.detail-header {
+		flex-direction: column;
+		gap: 18px;
+	}
+	
+	.apply-btn-header {
+		width: 100%;
+		text-align: center;
+	}
+	
+	.program-title {
+		font-size: 1.5rem;
+	}
+	
+	.competency-charts {
+		gap: 18px;
+	}
+	
+	.chart-wrapper {
+		height: 200px;
+	}
+}

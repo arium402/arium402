@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="https://www.thymeleaf.org/">
+    <head th:replace="~{/admin_config.html :: admin_config}"></head>
+     <title>공지사항 등록 - 관리자 페이지</title>
+     <link rel="stylesheet" th:href="@{/css/admin/admin_notice_add.css?v=1}">
+     
+    <body class="sb-nav-fixed">
+        <!-- 상단 네비게이션 바 -->
+        <nav th:replace="~{/admin_top.html :: admin_top}"></nav>
+     
+        <div id="layoutSidenav">
+           <!-- 사이드바 -->
+            <div th:replace="~{/admin_sidebar.html :: admin_sidebar}"> </div>
+            
+            <!-- 메인 컨텐츠 -->
+            <div id="layoutSidenav_content">
+                <div class="main-content">
+                    <!-- 페이지 제목 -->
+                    <h1 class="page-title">공지사항 등록</h1>
+                    <div class="title-divider"></div>
+                    
+                    <!-- 공지사항 등록 폼 -->
+                    <form id="noticeRegisterForm">
+                        <div class="notice-register">
+                            <div class="notice-content">
+                                <!-- 제목 -->
+                                <div class="field-group">
+                                    <div class="field-label">제목</div>
+                                    <input type="text" class="field-input" id="noticeTitle" placeholder="공지사항 제목을 입력하세요" required>
+                                </div>
+                                
+                                <!-- 분류 -->
+                                <div class="field-group">
+                                    <div class="field-label">분류</div>
+                                    <select class="field-select" id="noticeCategory" required>
+                                        <option value="">분류를 선택하세요</option>
+                                        <option value="extracurricular">비교과</option>
+                                        <option value="counseling">상담</option>
+                                        <option value="other">기타</option>
+                                    </select>
+                                </div>
+                                
+                                <!-- 공개여부 & 고정여부 -->
+                                <div class="field-group">
+                                    <div class="field-row">
+                                        <div>
+                                            <div class="field-label">공개여부</div>
+                                            <select class="field-select" id="isPublic" required>
+                                                <option value="">선택하세요</option>
+                                                <option value="Y">공개</option>
+                                                <option value="N">비공개</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <div class="field-label">고정여부</div>
+                                            <select class="field-select" id="isFixed" required>
+                                                <option value="">선택하세요</option>
+                                                <option value="Y">고정</option>
+                                                <option value="N">일반</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- 내용 -->
+                                <div class="field-group">
+                                    <div class="field-label">내용</div>
+                                    <textarea class="content-editor" id="noticeContent" placeholder="공지사항 내용을 입력하세요" required></textarea>
+                                </div>
+                                
+                                <!-- 첨부파일 -->
+                                <div class="field-group">
+                                    <div class="field-label">첨부파일</div>
+                                    <div class="attachment-section">
+                                        <!-- 기존 파일 목록 (비어있음) -->
+                                        <div class="current-files" id="currentFiles">
+                                            첨부된 파일이 없습니다.
+                                        </div>
+                                        
+                                        <!-- 새 파일 업로드 -->
+                                        <div class="file-upload" onclick="document.getElementById('fileInput').click()">
+                                            <input type="file" id="fileInput" multiple accept=".pdf,.doc,.docx,.xlsx,.xls,.ppt,.pptx,.jpg,.jpeg,.png,.gif">
+                                            <div class="upload-text">클릭하여 파일 추가</div>
+                                            <div class="upload-hint">여러 파일을 동시에 선택할 수 있습니다</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="action-buttons">
+                                <button type="submit" class="btn btn-register">
+                                    <i class="fas fa-plus icon"></i>
+                                    등록
+                                </button>
+                                <button type="button" class="btn btn-cancel" onclick="cancelRegister()">
+                                    <i class="fas fa-times icon"></i>
+                                    취소
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+         <script th:src="@{/js/admin/admin_notice_add.js}"></script>
+    </body>
+</html>

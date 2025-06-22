@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="https://www.thymeleaf.org/">
+    <head th:replace="~{/admin_config.html :: admin_config}"></head>
+    <title>상담 분야별 통계 - 관리자 페이지</title>
+    <link rel="stylesheet" th:href="@{/css/admin/admin_counselingType_stats.css?v=1}">
+    
+    <body class="sb-nav-fixed">
+    
+        <!-- 상단 네비게이션 바 -->
+        <nav th:replace="~{/admin_top.html :: admin_top}"></nav>
+     
+        <div id="layoutSidenav">
+            <!-- 사이드바 -->
+            <div th:replace="~{/admin_sidebar.html :: admin_sidebar}"> </div>
+            
+            <!-- 메인 컨텐츠 -->
+            <div id="layoutSidenav_content">
+                <div class="main-content">
+                    <!-- 페이지 제목 -->
+                    <h1 class="page-title">상담 분야별 통계</h1>
+                    <div class="title-divider"></div>
+                    
+                    <!-- 년도/학기 선택 -->
+                    <div class="period-selector">
+                        <div class="period-controls">
+                            <span class="period-label">통계 기간</span>
+                            <select class="period-select" id="yearSelect">
+                                <option value="2025">2025년</option>
+                                <option value="2024">2024년</option>
+                                <option value="2023">2023년</option>
+                                <option value="2022">2022년</option>
+                            </select>
+                            <select class="period-select" id="semesterSelect">
+                                <option value="1">1학기</option>
+                                <option value="2">2학기</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- 일반 상담 섹션 -->
+                    <div class="category-section">
+                        <h2 class="category-title">일반 상담</h2>
+
+                        <!-- 심리 상담 -->
+                        <div class="counseling-type">
+                            <h3 class="type-title">심리 상담</h3>
+                            <div class="semester-info">
+                                <div class="semester-title" id="psychologySemesterTitle">2025학년도 1학기 통계</div>
+                                <div class="stats-summary">
+                                    <div class="stat-item">
+                                        <div class="stat-label">완료</div>
+                                        <div class="stat-value" id="psychologyCompleted">28 건</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-label">예정</div>
+                                        <div class="stat-value" id="psychologyScheduled">12 건</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="charts-container">
+                                <div class="chart-box">
+                                    <div class="chart-title">성별 통계</div>
+                                    <div class="chart-content">
+                                        <canvas class="chart-canvas" id="psychologyGenderChart"></canvas>
+                                        <div class="chart-legend">
+                                            <div class="legend-item">
+                                                <div class="legend-color" style="background-color: #ff6b6b;"></div>
+                                                <span>여자</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <div class="legend-color" style="background-color: #4ecdc4;"></div>
+                                                <span>남자</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="chart-box">
+                                    <div class="chart-title">학년별 통계</div>
+                                    <div class="chart-content">
+                                        <canvas class="chart-canvas" id="psychologyGradeChart"></canvas>
+                                        <div class="chart-legend">
+                                            <div class="legend-item">
+                                                <div class="legend-color" style="background-color: #3498db;"></div>
+                                                <span>1학년</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <div class="legend-color" style="background-color: #e74c3c;"></div>
+                                                <span>2학년</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <div class="legend-color" style="background-color: #f39c12;"></div>
+                                                <span>3학년</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <div class="legend-color" style="background-color: #27ae60;"></div>
+                                                <span>4학년</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 익명 상담 -->
+                        <div class="counseling-type">
+                            <h3 class="type-title">익명 상담</h3>
+                            <div class="semester-info">
+                                <div class="semester-title" id="anonymousSemesterTitle">2025학년도 1학기 통계</div>
+                                <div class="stats-summary">
+                                    <div class="stat-item">
+                                        <div class="stat-label">완료</div>
+                                        <div class="stat-value" id="anonymousCompleted">15 건</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-label">예정</div>
+                                        <div class="stat-value" id="anonymousScheduled">8 건</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="charts-container">
+                                <div class="chart-box">
+                                    <div class="chart-title">성별 통계</div>
+                                    <div class="chart-content">
+                                        <canvas class="chart-canvas" id="anonymousGenderChart"></canvas>
+                                        <div class="chart-legend">
+                                            <div class="legend-item">
+                                                <div class="legend-color" style="background-color: #ff6b6b;"></div>
+                                                <span>여자</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <div class="legend-color" style="background-color: #4ecdc4;"></div>
+                                                <span>남자</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="chart-box">
+                                    <div class="chart-title">학년별 통계</div>
+                                    <div class="chart-content">
+                                        <canvas class="chart-canvas" id="anonymousGradeChart"></canvas>
+                                        <div class="chart-legend">
+                                            <div class="legend-item">
+                                                <div class="legend-color" style="background-color: #3498db;"></div>
+                                                <span>1학년</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <div class="legend-color" style="background-color: #e74c3c;"></div>
+                                                <span>2학년</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <div class="legend-color" style="background-color: #f39c12;"></div>
+                                                <span>3학년</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <div class="legend-color" style="background-color: #27ae60;"></div>
+                                                <span>4학년</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 위기 상담 -->
+                        <div class="counseling-type">
+                            <h3 class="type-title">위기 상담</h3>
+                            <div class="semester-info">
+                                <div class="semester-title" id="crisisSemesterTitle">2025학년도 1학기 통계</div>
+                                <div class="stats-summary">
+                                    <div class="stat-item">
+                                        <div class="stat-label">완료</div>
+                                        <div class="stat-value" id="crisisCompleted">8 건</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-label">예정</div>
+                                        <div class="stat-value" id="crisisScheduled">3 건</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="charts-container">
+                                <div class="chart-box">
+                                    <div class="chart-title">성별 통계</div>
+                                    <div class="chart-content">
+                                        <canvas class="chart-canvas" id="crisisGenderChart"></canvas>
+                                        <div class="chart-legend">
+                                            <div class="legend-item">
+                                                <div class="legend-color" style="background-color: #ff6b6b;"></div>
+                                                <span>여자</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <div class="legend-color" style="background-color: #4ecdc4;"></div>
+                                                <span>남자</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="chart-box">
+                                    <div class="chart-title">학년별 통계</div>
+                                    <div class="chart-content">
+                                        <canvas class="chart-canvas" id="crisisGradeChart"></canvas>
+                                        <div class="chart-legend">
+                                            <div class="legend-item">
+                                                <div class="legend-color" style="background-color: #3498db;"></div>
+                                                <span>1학년</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <div class="legend-color" style="background-color: #e74c3c;"></div>
+                                                <span>2학년</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <div class="legend-color" style="background-color: #f39c12;"></div>
+                                                <span>3학년</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <div class="legend-color" style="background-color: #27ae60;"></div>
+                                                <span>4학년</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 구분선 -->
+                    <div class="section-divider"></div>
+
+                    <!-- 학업 상담 섹션 -->
+                    <div class="category-section">
+                        <h2 class="category-title">학업 상담</h2>
+
+                        <!-- 진로/취업 -->
+                        <div class="counseling-type">
+                            <h3 class="type-title">진로/취업</h3>
+                            <div class="semester-info">
+                                <div class="semester-title" id="careerSemesterTitle">2025학년도 1학기 통계</div>
+                                <div class="stats-summary">
+                                    <div class="stat-item">
+                                        <div class="stat-label">완료</div>
+                                        <div class="stat-value" id="careerCompleted">35 건</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-label">예정</div>
+                                        <div class="stat-value" id="careerScheduled">18 건</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="charts-container">
+                                <div class="chart-box">
+                                    <div class="chart-title">성별 통계</div>
+                                    <div class="chart-content">
+                                        <canvas class="chart-canvas" id="careerGenderChart"></canvas>
+                                        <div class="chart-legend">
+                                            <div class="legend-item">
+                                                <div class="legend-color" style="background-color: #ff6b6b;"></div>
+                                                <span>여자</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <div class="legend-color" style="background-color: #4ecdc4;"></div>
+                                                <span>남자</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="chart-box">
+                                    <div class="chart-title">학년별 통계</div>
+                                    <div class="chart-content">
+                                        <canvas class="chart-canvas" id="careerGradeChart"></canvas>
+                                        <div class="chart-legend">
+                                            <div class="legend-item">
+                                                <div class="legend-color" style="background-color: #3498db;"></div>
+                                                <span>1학년</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <div class="legend-color" style="background-color: #e74c3c;"></div>
+                                                <span>2학년</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <div class="legend-color" style="background-color: #f39c12;"></div>
+                                                <span>3학년</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <div class="legend-color" style="background-color: #27ae60;"></div>
+                                                <span>4학년</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 학습 컨설팅 -->
+                        <div class="counseling-type">
+                            <h3 class="type-title">학습 컨설팅</h3>
+                            <div class="semester-info">
+                                <div class="semester-title" id="consultingSemesterTitle">2025학년도 1학기 통계</div>
+                                <div class="stats-summary">
+                                    <div class="stat-item">
+                                        <div class="stat-label">완료</div>
+                                        <div class="stat-value" id="consultingCompleted">22 건</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-label">예정</div>
+                                        <div class="stat-value" id="consultingScheduled">11 건</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="charts-container">
+                                <div class="chart-box">
+                                    <div class="chart-title">성별 통계</div>
+                                    <div class="chart-content">
+                                        <canvas class="chart-canvas" id="consultingGenderChart"></canvas>
+                                        <div class="chart-legend">
+                                            <div class="legend-item">
+                                                <div class="legend-color" style="background-color: #ff6b6b;"></div>
+                                                <span>여자</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <div class="legend-color" style="background-color: #4ecdc4;"></div>
+                                                <span>남자</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="chart-box">
+                                    <div class="chart-title">학년별 통계</div>
+                                    <div class="chart-content">
+                                        <canvas class="chart-canvas" id="consultingGradeChart"></canvas>
+                                        <div class="chart-legend">
+                                            <div class="legend-item">
+                                                <div class="legend-color" style="background-color: #3498db;"></div>
+                                                <span>1학년</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <div class="legend-color" style="background-color: #e74c3c;"></div>
+                                                <span>2학년</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <div class="legend-color" style="background-color: #f39c12;"></div>
+                                                <span>3학년</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <div class="legend-color" style="background-color: #27ae60;"></div>
+                                                <span>4학년</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    <script th:src="@{/js/admin/admin_counselingType_stats.js}"></script>
+    </body>
+</html>

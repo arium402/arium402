@@ -1,0 +1,273 @@
+<div th:fragment="view">
+
+<!-- Main Content -->
+<main class="col-md-9 col-lg-10 p-0" style="margin-left: 16.66667%; min-height: calc(100vh - 60px); width: 83.33333%;">
+	<div class="main-content">
+		<!-- 취업/진로 사전 검사 페이지 -->
+		<div class="pretest-content">
+			<!-- 페이지 제목 -->
+			<h1 class="page-title">진로/취업 상담 사전 검사</h1>
+			<div class="page-title-divider"></div>
+			<p class="page-subtitle">진로/취업 상담 전 사전 검사를 통해 보다 효과적인 상담을 진행할 수 있습니다.</p>
+
+			<div class="form-container">
+				<form id="careerForm">
+					<!-- 1. 현재 학년 -->
+					<div class="question-group">
+						<div class="question-title">
+							<span class="question-number">1</span>
+							현재 몇 학년에 재학 중이십니까?
+						</div>
+						<div class="options-grid">
+							<div class="option-item" onclick="toggleRadio(this, 'grade')">
+								<input type="radio" id="grade1" name="grade" value="1학년">
+								<label for="grade1">1학년</label>
+							</div>
+							<div class="option-item" onclick="toggleRadio(this, 'grade')">
+								<input type="radio" id="grade2" name="grade" value="2학년">
+								<label for="grade2">2학년</label>
+							</div>
+							<div class="option-item" onclick="toggleRadio(this, 'grade')">
+								<input type="radio" id="grade3" name="grade" value="3학년">
+								<label for="grade3">3학년</label>
+							</div>
+							<div class="option-item" onclick="toggleRadio(this, 'grade')">
+								<input type="radio" id="grade4" name="grade" value="4학년">
+								<label for="grade4">4학년</label>
+							</div>
+						</div>
+					</div>
+
+					<!-- 2. 진로 설정 여부 -->
+					<div class="question-group">
+						<div class="question-title">
+							<span class="question-number">2</span>
+							진로 설정 여부
+						</div>
+						<div class="options-grid">
+							<div class="option-item" onclick="toggleRadio(this, 'career_status')">
+								<input type="radio" id="career1" name="career_status" value="진로 정하지 못함">
+								<label for="career1">진로 정하지 못함</label>
+							</div>
+							<div class="option-item" onclick="toggleRadio(this, 'career_status')">
+								<input type="radio" id="career2" name="career_status" value="대략적인 진로 정함">
+								<label for="career2">대략적인 진로 정함</label>
+							</div>
+							<div class="option-item" onclick="toggleRadio(this, 'career_status')">
+								<input type="radio" id="career3" name="career_status" value="진로 구체적으로 정함">
+								<label for="career3">진로 구체적으로 정함</label>
+							</div>
+						</div>
+					</div>
+
+					<!-- 3. 희망 직무 분야 -->
+					<div class="question-group">
+						<div class="question-title">
+							<span class="question-number">3</span>
+							희망 직무 분야
+							<span class="multiple-choice">(복수 선택 가능)</span>
+						</div>
+						<div class="options-grid">
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="job1" name="job_field" value="문화/예술/스포츠">
+								<label for="job1">문화/예술/스포츠</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="job2" name="job_field" value="보건/사회복지 및 종교">
+								<label for="job2">보건/사회복지 및 종교</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="job3" name="job_field" value="교육 전문가">
+								<label for="job3">교육 전문가</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="job4" name="job_field" value="법률/행정">
+								<label for="job4">법률/행정</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="job5" name="job_field" value="조리/음식 서비스">
+								<label for="job5">조리/음식 서비스</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="job6" name="job_field" value="과학">
+								<label for="job6">과학</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="job7" name="job_field" value="정보 통신">
+								<label for="job7">정보 통신</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="job8" name="job_field" value="공공/기업/고위직">
+								<label for="job8">공공/기업/고위직</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="job9" name="job_field" value="미용/숙박/여행/오락">
+								<label for="job9">미용/숙박/여행/오락</label>
+							</div>
+						</div>
+					</div>
+
+					<!-- 4. 희망기업 -->
+					<div class="question-group">
+						<div class="question-title">
+							<span class="question-number">4</span>
+							희망기업
+							<span class="multiple-choice">(복수 선택 가능)</span>
+						</div>
+						<div class="options-grid">
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="region1" name="region" value="전국">
+								<label for="region1">전국</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="region2" name="region" value="강원">
+								<label for="region2">강원</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="region3" name="region" value="경기">
+								<label for="region3">경기</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="region4" name="region" value="경남">
+								<label for="region4">경남</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="region5" name="region" value="경북">
+								<label for="region5">경북</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="region6" name="region" value="광주">
+								<label for="region6">광주</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="region7" name="region" value="대구">
+								<label for="region7">대구</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="region8" name="region" value="대전">
+								<label for="region8">대전</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="region9" name="region" value="부산">
+								<label for="region9">부산</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="region10" name="region" value="서울">
+								<label for="region10">서울</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="region11" name="region" value="세종">
+								<label for="region11">세종</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="region12" name="region" value="울산">
+								<label for="region12">울산</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="region13" name="region" value="인천">
+								<label for="region13">인천</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="region14" name="region" value="전남">
+								<label for="region14">전남</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="region15" name="region" value="전북">
+								<label for="region15">전북</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="region16" name="region" value="제주">
+								<label for="region16">제주</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="region17" name="region" value="충남">
+								<label for="region17">충남</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="region18" name="region" value="충북">
+								<label for="region18">충북</label>
+							</div>
+						</div>
+					</div>
+				
+					<!-- 5. 근무 형태 -->
+					<div class="question-group">
+						<div class="question-title">
+							<span class="question-number">5</span>
+							근무 형태
+						</div>
+						<div class="options-grid">
+							<div class="option-item" onclick="toggleRadio(this, 'work_type')">
+								<input type="radio" id="work1" name="work_type" value="비정규직">
+								<label for="work1">비정규직</label>
+							</div>
+							<div class="option-item" onclick="toggleRadio(this, 'work_type')">
+								<input type="radio" id="work2" name="work_type" value="정규직">
+								<label for="work2">정규직</label>
+							</div>
+							<div class="option-item" onclick="toggleRadio(this, 'work_type')">
+								<input type="radio" id="work3" name="work_type" value="프리랜서">
+								<label for="work3">프리랜서</label>
+							</div>
+							<div class="option-item" onclick="toggleRadio(this, 'work_type')">
+								<input type="radio" id="work4" name="work_type" value="기타">
+								<label for="work4">기타</label>
+							</div>
+						</div>
+					</div>
+				
+					<!-- 6. 희망 연봉 -->
+					<div class="question-group">
+						<div class="question-title">
+							<span class="question-number">6</span>
+							희망 연봉 (만원)
+						</div>
+						<div class="options-grid">
+							<div class="option-item" onclick="toggleRadio(this, 'salary')">
+								<input type="radio" id="salary1" name="salary" value="2800 ~ 2900">
+								<label for="salary1">2800 ~ 2900</label>
+							</div>
+							<div class="option-item" onclick="toggleRadio(this, 'salary')">
+								<input type="radio" id="salary2" name="salary" value="2900 ~ 3000">
+								<label for="salary2">2900 ~ 3000</label>
+							</div>
+							<div class="option-item" onclick="toggleRadio(this, 'salary')">
+								<input type="radio" id="salary3" name="salary" value="3000 ~ 3100">
+								<label for="salary3">3000 ~ 3100</label>
+							</div>
+							<div class="option-item" onclick="toggleRadio(this, 'salary')">
+								<input type="radio" id="salary4" name="salary" value="3100 ~ 3200">
+								<label for="salary4">3100 ~ 3200</label>
+							</div>
+							<div class="option-item" onclick="toggleRadio(this, 'salary')">
+								<input type="radio" id="salary5" name="salary" value="3200 이상">
+								<label for="salary5">3200 이상</label>
+							</div>
+						</div>
+					</div>
+
+					<!-- 7. 신청 사유 -->
+					<div class="question-group">
+						<div class="question-title">
+							<span class="question-number">7</span>
+							신청 사유
+						</div>
+						<div class="textarea-container">
+							<textarea id="applicationReason" name="applicationReason" placeholder="취업/진로 상담을 신청하는 사유를 자세히 설명해 주세요." oninput="updateCharCount(this)"></textarea>
+							<div class="char-count">
+								<span id="charCount">0</span> / 1000자
+							</div>
+						</div>
+					</div>
+
+					<!-- 하단 버튼 -->
+					<div class="form-footer">
+						<button type="button" class="counselor-select-btn" onclick="selectCounselor()">상담사 선택</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</main>
+
+</div>

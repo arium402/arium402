@@ -1,0 +1,295 @@
+<div th:fragment="view">
+
+<!-- Main Content -->
+<main class="col-md-9 col-lg-10 p-0" style="margin-left: 16.66667%; min-height: calc(100vh - 60px); width: 83.33333%;">
+	<div class="main-content">
+		<!-- 취업/진로 사전 검사 페이지 -->
+		<div class="pretest-content">
+			<!-- 페이지 제목 -->
+			<h1 class="page-title">학습 컨설팅 사전 검사</h1>
+			<div class="page-title-divider"></div>
+			<p class="page-subtitle">학습 컨설팅 전 사전 검사를 통해 보다 효과적인 상담을 진행할 수 있습니다.</p>
+
+			<div class="form-container">
+				<form id="careerForm">
+					<!-- 1. 현재 학년 -->
+					<div class="question-group">
+						<div class="question-title">
+							<span class="question-number">1</span>
+							현재 몇 학년에 재학 중이십니까?
+						</div>
+						<div class="options-grid">
+							<div class="option-item" onclick="toggleRadio(this, 'grade')">
+								<input type="radio" id="grade1" name="grade" value="1학년">
+								<label for="grade1">1학년</label>
+							</div>
+							<div class="option-item" onclick="toggleRadio(this, 'grade')">
+								<input type="radio" id="grade2" name="grade" value="2학년">
+								<label for="grade2">2학년</label>
+							</div>
+							<div class="option-item" onclick="toggleRadio(this, 'grade')">
+								<input type="radio" id="grade3" name="grade" value="3학년">
+								<label for="grade3">3학년</label>
+							</div>
+							<div class="option-item" onclick="toggleRadio(this, 'grade')">
+								<input type="radio" id="grade4" name="grade" value="4학년">
+								<label for="grade4">4학년</label>
+							</div>
+						</div>
+					</div>
+
+					<!-- 2. 신청 목적 -->
+					<div class="question-group">
+						<div class="question-title">
+							<span class="question-number">2</span>
+							신청 목적
+							<span class="multiple-choice">(복수 선택 가능)</span>
+						</div>
+						<div class="options-grid">
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="purpose1" name="purpose" value="대학 공부 전략 (노트 필기, 예복습, 과제 등)">
+								<label for="purpose1">대학 공부 전략 (노트 필기, 예복습, 과제 등)</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="purpose2" name="purpose" value="시험 및 성적 관리">
+								<label for="purpose2">시험 및 성적 관리</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="purpose3" name="purpose" value="시간 관리">
+								<label for="purpose3">시간 관리</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="purpose4" name="purpose" value="자격증 공부">
+								<label for="purpose4">자격증 공부</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="purpose5" name="purpose" value="전공 학습">
+								<label for="purpose5">전공 학습</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="purpose6" name="purpose" value="진학">
+								<label for="purpose6">진학</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="purpose7" name="purpose" value="학습 습관 형성">
+								<label for="purpose7">학습 습관 형성</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="purpose8" name="purpose" value="학업 강/약점 파악">
+								<label for="purpose8">학업 강/약점 파악</label>
+							</div>
+						</div>
+					</div>
+
+					<!-- 3. 현재 수강하고 있는 과목 수 -->
+					<div class="question-group">
+						<div class="question-title">
+							<span class="question-number">3</span>
+							현재 수강하고 있는 과목 수
+						</div>
+						<div class="options-grid">
+							<div class="option-item" onclick="toggleRadio(this, 'subject_count')">
+								<input type="radio" id="subject1" name="subject_count" value="0개">
+								<label for="subject1">0개</label>
+							</div>
+							<div class="option-item" onclick="toggleRadio(this, 'subject_count')">
+								<input type="radio" id="subject2" name="subject_count" value="1 ~ 2개">
+								<label for="subject2">1 ~ 2개</label>
+							</div>
+							<div class="option-item" onclick="toggleRadio(this, 'subject_count')">
+								<input type="radio" id="subject3" name="subject_count" value="3 ~ 4개">
+								<label for="subject3">3 ~ 4개</label>
+							</div>
+							<div class="option-item" onclick="toggleRadio(this, 'subject_count')">
+								<input type="radio" id="subject4" name="subject_count" value="5 ~ 6개">
+								<label for="subject4">5 ~ 6개</label>
+							</div>
+							<div class="option-item" onclick="toggleRadio(this, 'subject_count')">
+								<input type="radio" id="subject5" name="subject_count" value="7개 이상">
+								<label for="subject5">7개 이상</label>
+							</div>
+						</div>
+					</div>
+
+					<!-- 4. 평균 학습 시간 -->
+					<div class="question-group">
+						<div class="question-title">
+							<span class="question-number">4</span>
+							평균 학습 시간
+						</div>
+						<div class="options-grid">
+							<div class="option-item" onclick="toggleRadio(this, 'study_time')">
+								<input type="radio" id="time1" name="study_time" value="1시간 미만">
+								<label for="time1">1시간 미만</label>
+							</div>
+							<div class="option-item" onclick="toggleRadio(this, 'study_time')">
+								<input type="radio" id="time2" name="study_time" value="1 ~ 3시간">
+								<label for="time2">1 ~ 3시간</label>
+							</div>
+							<div class="option-item" onclick="toggleRadio(this, 'study_time')">
+								<input type="radio" id="time3" name="study_time" value="3 ~ 6시간">
+								<label for="time3">3 ~ 6시간</label>
+							</div>
+							<div class="option-item" onclick="toggleRadio(this, 'study_time')">
+								<input type="radio" id="time4" name="study_time" value="6 ~ 9시간">
+								<label for="time4">6 ~ 9시간</label>
+							</div>
+							<div class="option-item" onclick="toggleRadio(this, 'study_time')">
+								<input type="radio" id="time5" name="study_time" value="9시간 이상">
+								<label for="time5">9시간 이상</label>
+							</div>
+						</div>
+					</div>
+
+					<!-- 5. 학업 성취도 -->
+					<div class="question-group">
+						<div class="question-title">
+							<span class="question-number">5</span>
+							학업 성취도
+							</div>
+							<div class="options-grid">
+							<div class="option-item" onclick="toggleRadio(this, 'achievement')">
+								<input type="radio" id="achieve1" name="achievement" value="0 ~ 20%">
+								<label for="achieve1">0 ~ 20%</label>
+							</div>
+							<div class="option-item" onclick="toggleRadio(this, 'achievement')">
+								<input type="radio" id="achieve2" name="achievement" value="20 ~ 40%">
+								<label for="achieve2">20 ~ 40%</label>
+							</div>
+							<div class="option-item" onclick="toggleRadio(this, 'achievement')">
+								<input type="radio" id="achieve3" name="achievement" value="40 ~ 60%">
+								<label for="achieve3">40 ~ 60%</label>
+							</div>
+							<div class="option-item" onclick="toggleRadio(this, 'achievement')">
+								<input type="radio" id="achieve4" name="achievement" value="60 ~ 80%">
+								<label for="achieve4">60 ~ 80%</label>
+							</div>
+							<div class="option-item" onclick="toggleRadio(this, 'achievement')">
+								<input type="radio" id="achieve5" name="achievement" value="80 ~ 100%">
+								<label for="achieve5">80 ~ 100%</label>
+							</div>
+						</div>
+					</div>
+
+					<!-- 6. 학습 방법 -->
+					<div class="question-group">
+						<div class="question-title">
+							<span class="question-number">6</span>
+							학습 방법
+							<span class="multiple-choice">(복수 선택 가능)</span>
+						</div>
+						<div class="options-grid">
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="method1" name="method" value="문제 풀이">
+								<label for="method1">문제 풀이</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="method2" name="method" value="암기">
+								<label for="method2">암기</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="method3" name="method" value="요약 정리">
+								<label for="method3">요약 정리</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="method4" name="method" value="스터디">
+								<label for="method4">스터디</label>
+							</div>
+						</div>
+					</div>
+
+					<!-- 7. 학습 방해 요소 -->
+					<div class="question-group">
+						<div class="question-title">
+							<span class="question-number">6</span>
+							학습 방해 요소
+							<span class="multiple-choice">(복수 선택 가능)</span>
+						</div>
+						<div class="options-grid">
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="distraction1" name="distraction" value="텔레비전">
+								<label for="distraction1">텔레비전</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="distraction2" name="distraction" value="컴퓨터">
+								<label for="distraction2">컴퓨터</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="distraction3" name="distraction" value="라디오">
+								<label for="distraction3">라디오</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="distraction4" name="distraction" value="스마트폰">
+								<label for="distraction4">스마트폰</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="distraction5" name="distraction" value="만화책">
+								<label for="distraction5">만화책</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="distraction6" name="distraction" value="친구">
+								<label for="distraction6">친구</label>
+							</div>
+						</div>
+					</div>
+
+					<!-- 8. 공부 장소 -->
+					<div class="question-group">
+						<div class="question-title">
+							<span class="question-number">6</span>
+							공부 장소
+							<span class="multiple-choice">(복수 선택 가능)</span>
+						</div>
+						<div class="options-grid">
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="place1" name="place" value="기숙사">
+								<label for="place1">기숙사</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="place2" name="place" value="도서관">
+								<label for="place2">도서관</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="place3" name="place" value="스터디 카페">
+								<label for="place3">스터디 카페</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="place4" name="place" value="집">
+								<label for="place4">집</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="place5" name="place" value="카페">
+								<label for="place5">카페</label>
+							</div>
+							<div class="option-item" onclick="toggleOption(this)">
+								<input type="checkbox" id="place6" name="place" value="학교">
+								<label for="place6">학교</label>
+							</div>
+						</div>
+					</div>
+
+					<!-- 9. 신청 사유 -->
+					<div class="question-group">
+						<div class="question-title">
+							<span class="question-number">7</span>
+							신청 사유
+						</div>
+						<div class="textarea-container">
+							<textarea id="applicationReason" name="applicationReason" placeholder="학습 컨설팅을 신청하는 사유를 자세히 설명해 주세요." oninput="updateCharCount(this)"></textarea>
+							<div class="char-count">
+								<span id="charCount">0</span> / 1000자
+							</div>
+						</div>
+					</div>
+
+					<!-- 하단 버튼 -->
+					<div class="form-footer">
+						<button type="button" class="counselor-select-btn" onclick="selectCounselor()">상담사 선택</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</main>
+
+</div>

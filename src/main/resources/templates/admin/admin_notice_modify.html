@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="https://www.thymeleaf.org/">
+    <head th:replace="~{/admin_config.html :: admin_config}"></head>
+    <title>공지사항 수정 - 관리자 페이지</title>
+    <link rel="stylesheet" th:href="@{/css/admin/admin_notice_modify.css?v=1}">
+    
+    <body class="sb-nav-fixed">
+        <!-- 상단 네비게이션 바 -->
+        <nav th:replace="~{/admin_top.html :: admin_top}"></nav>
+     
+     
+        <div id="layoutSidenav">
+            <!-- 사이드바 -->
+            <div th:replace="~{/admin_sidebar.html :: admin_sidebar}"> </div>
+            
+            <!-- 메인 컨텐츠 -->
+            <div id="layoutSidenav_content">
+                <div class="main-content">
+                    <!-- 페이지 제목 -->
+                    <h1 class="page-title">수정 페이지</h1>
+                    <div class="title-divider"></div>
+                    
+                    <!-- 공지사항 수정 폼 -->
+                    <form id="noticeEditForm">
+                        <div class="notice-edit">
+                            <div class="notice-header">
+                                <div class="notice-title">
+                                    <span class="notice-badge">공지</span>
+                                    공지사항 수정
+                                </div>
+                                <div class="notice-meta">
+                                    <div class="meta-item">
+                                        <span class="meta-label">작성자:</span>
+                                        <span>관리자</span>
+                                    </div>
+                                    <div class="meta-item">
+                                        <span class="meta-label">등록일:</span>
+                                        <span>2025-06-15</span>
+                                    </div>
+                                    <div class="meta-item">
+                                        <span class="meta-label">조회수:</span>
+                                        <span>156</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="notice-content">
+                                <!-- 제목 -->
+                                <div class="field-group">
+                                    <div class="field-label">제목</div>
+                                    <input type="text" class="field-input" id="noticeTitle" value="2025년 상담 프로그램 운영 안내" required>
+                                </div>
+                                
+                                <!-- 분류 -->
+                                <div class="field-group">
+                                    <div class="field-label">분류</div>
+                                    <select class="field-select" id="noticeCategory" required>
+                                        <option value="extracurricular">비교과</option>
+                                        <option value="counseling" selected>상담</option>
+                                        <option value="other">기타</option>
+                                    </select>
+                                </div>
+                                
+                                <!-- 공개여부 & 고정여부 -->
+                                <div class="field-group">
+                                    <div class="field-row">
+                                        <div>
+                                            <div class="field-label">공개여부</div>
+                                            <select class="field-select" id="isPublic" required>
+                                                <option value="Y" selected>Y</option>
+                                                <option value="N">N</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <div class="field-label">고정여부</div>
+                                            <select class="field-select" id="isFixed" required>
+                                                <option value="Y" selected>Y</option>
+                                                <option value="N">N</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- 내용 -->
+                                <div class="field-group">
+                                    <div class="field-label">내용</div>
+                                    <textarea class="content-editor" id="noticeContent" required>안녕하세요. 2025년 상담 프로그램 운영에 대해 안내드립니다.
+
+1. 상담 프로그램 개편 사항
+2025년부터 학습자들의 다양한 요구에 부응하기 위해 상담 프로그램을 다음과 같이 개편하여 운영합니다.
+
+주요 변경사항
+• 개별 상담 시간 기존 30분에서 45분으로 연장
+• 집단 상담 프로그램 신설 (주제별 그룹 상담)
+• 온라인 화상 상담 시스템 도입
+• 24시간 익명 상담 게시판 운영
+
+2. 상담 신청 방법
+상담 신청은 다음과 같은 방법으로 가능합니다:
+• 온라인 학습관리시스템(LMS) 내 상담 신청 메뉴
+• 전화 상담 신청: 1588-1234 (평일 09:00~18:00)
+• 이메일 상담 신청: counseling@knou.ac.kr
+• 방문 상담: 사전 예약 필수
+
+3. 운영 시간
+평일: 09:00 ~ 18:00
+토요일: 09:00 ~ 15:00
+일요일 및 공휴일: 휴무 (긴급상담만 가능)
+
+문의사항
+기타 문의사항은 학습자지원센터(1588-1234)로 연락주시기 바랍니다.
+여러분의 성공적인 학습을 위해 최선을 다하겠습니다.</textarea>
+                                </div>
+                                
+                                <!-- 첨부파일 -->
+                                <div class="field-group">
+                                    <div class="field-label">첨부파일</div>
+                                    <div class="attachment-section">
+                                        <!-- 기존 파일 목록 -->
+                                        <div class="current-files" id="currentFiles">
+                                            <div class="file-item">
+                                                <span class="file-name">상담프로그램안내서.pdf</span>
+                                                <button type="button" class="file-delete" onclick="deleteFile(this)">삭제</button>
+                                            </div>
+                                            <div class="file-item">
+                                                <span class="file-name">운영시간표.xlsx</span>
+                                                <button type="button" class="file-delete" onclick="deleteFile(this)">삭제</button>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- 새 파일 업로드 -->
+                                        <div class="file-upload" onclick="document.getElementById('fileInput').click()">
+                                            <input type="file" id="fileInput" multiple accept=".pdf,.doc,.docx,.xlsx,.xls,.ppt,.pptx,.jpg,.jpeg,.png,.gif">
+                                            <div class="upload-text">클릭하여 파일 추가</div>
+                                            <div class="upload-hint">여러 파일을 동시에 선택할 수 있습니다</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="action-buttons">
+                                <button type="submit" class="btn btn-save">
+                                    <i class="fas fa-save icon"></i>
+                                    수정
+                                </button>
+                                <button type="button" class="btn btn-cancel" onclick="cancelEdit()">
+                                    <i class="fas fa-times icon"></i>
+                                    취소
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+       <script th:src="@{/js/admin/admin_notice_modifyl.js}"></script>
+    </body>
+</html>

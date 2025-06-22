@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="https://www.thymeleaf.org/">
+    <head th:replace="~{/admin_config.html :: admin_config}"></head>
+    <title>F&Q 수정 - 관리자 페이지</title>
+    <link rel="stylesheet" th:href="@{/css/admin/admin_F&Q_modify.css?v=1}">
+    
+    <body class="sb-nav-fixed">
+        <!-- 상단 네비게이션 바 -->
+        <nav th:replace="~{/admin_top.html :: admin_top}"></nav>
+     
+        <div id="layoutSidenav">
+             <!-- 사이드바 -->
+            <div th:replace="~{/admin_sidebar.html :: admin_sidebar}"> </div>
+            
+            <!-- 메인 컨텐츠 -->
+            <div id="layoutSidenav_content">
+                <div class="main-content">
+                    <!-- 페이지 제목 -->
+                    <h1 class="page-title">F&Q 수정</h1>
+                    <div class="title-divider"></div>
+                    
+                    <!-- 등록 폼 -->
+                    <div class="register-container">
+                        <div class="section-header">
+                            <span class="material-symbols-outlined">edit</span>
+                            F&Q 정보 수정
+                        </div>
+                        
+                        <div class="form-content">
+                            <!-- 대분류 -->
+                            <div class="form-row">
+                                <label class="form-label">대분류</label>
+                                <select class="form-select" id="mainCategory" onchange="updateSubCategory()">
+                                    <option value="">분류를 선택하세요</option>
+                                    <option value="extracurricular" selected>비교과</option>
+                                    <option value="counseling">상담</option>
+                                    <option value="etc">기타</option>
+                                </select>
+                            </div>
+
+                            <!-- 소분류 -->
+                            <div class="form-row">
+                                <label class="form-label">소분류</label>
+                                <select class="form-select" id="subCategory">
+                                    <option value="program" selected>프로그램 안내</option>
+                                </select>
+                            </div>
+
+                            <!-- 공개여부 -->
+                            <div class="form-row">
+                                <label class="form-label">공개여부</label>
+                                <div class="form-radio-group">
+                                    <div class="radio-option">
+                                        <input type="radio" id="public" name="visibility" value="public" checked>
+                                        <label for="public">공개</label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="private" name="visibility" value="private">
+                                        <label for="private">비공개</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Q&A 섹션 -->
+                            <div class="qa-section">
+                                <!-- 질문 -->
+                                <div class="qa-row">
+                                    <div class="qa-label">Q.</div>
+                                    <textarea class="qa-input question" id="questionInput" placeholder="질문을 입력하세요..." maxlength="500">비교과 프로그램은 어떻게 신청하나요?</textarea>
+                                </div>
+
+                                <!-- 답변 -->
+                                <div class="qa-row">
+                                    <div class="qa-label">A.</div>
+                                    <textarea class="qa-input answer" id="answerInput" placeholder="답변을 입력하세요..." maxlength="2000">비교과 프로그램 신청은 학교 홈페이지에 로그인 후 '비교과' 메뉴에서 신청하실 수 있습니다.
+
+신청 절차는 다음과 같습니다:
+1. 홈페이지 로그인
+2. 비교과 메뉴 클릭
+3. 원하는 프로그램 선택
+4. 신청서 작성 및 제출
+5. 승인 확인
+
+신청 기간은 각 프로그램별로 상이하므로 공지사항을 정기적으로 확인해주세요.
+문의사항이 있으시면 학생지원센터(02-0000-0000)로 연락주시기 바랍니다.</textarea>
+                                </div>
+                            </div>
+
+                            <!-- 등록일 -->
+                            <div class="registration-date">
+                                <div class="date-label">등록일</div>
+                                <div class="date-value" id="registrationDate"></div>
+                            </div>
+
+                            <!-- 수정일 -->
+                            <div class="registration-date">
+                                <div class="date-label">수정일</div>
+                                <div class="date-value" id="modificationDate"></div>
+                            </div>
+                        </div>
+
+                        <!-- 버튼 영역 -->
+                        <div class="button-area">
+                            <button class="btn-cancel" onclick="cancelModification()">
+                                <i class="fas fa-times"></i>
+                                취소
+                            </button>
+                            <button class="btn-register" onclick="updateFAQ()">
+                                <i class="fas fa-check"></i>
+                                수정
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <script th:src="@{/js/admin/admin_F&Q_modify.js}"></script>
+    </body>
+</html>

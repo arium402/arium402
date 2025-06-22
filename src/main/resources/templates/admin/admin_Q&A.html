@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="https://www.thymeleaf.org/">
+    <head th:replace="~{/admin_config.html :: admin_config}"></head>
+    <title>문의게시판 관리 - 관리자 페이지</title>
+    <link rel="stylesheet" th:href="@{/css/admin/admin_Q&A.css?v=1}">
+    
+    
+    <body class="sb-nav-fixed">
+        <!-- 상단 네비게이션 바 -->
+         <nav th:replace="~{/admin_top.html :: admin_top}"></nav>
+     
+        <div id="layoutSidenav">
+            <!-- 사이드바 -->
+           <div th:replace="~{/admin_sidebar.html :: admin_sidebar}"> </div>
+            
+            <!-- 메인 컨텐츠 -->
+            <div id="layoutSidenav_content">
+                <div class="main-content">
+                    <!-- 페이지 헤더 -->
+                    <div class="page-header">
+                        <h1 class="page-title">문의게시판 관리</h1>
+                    </div>
+                    <div class="title-divider"></div>
+                    
+                    <!-- 섹션 제목 -->
+                    <h2 class="section-title">게시판 목록</h2>
+                    
+                    <!-- 필터 섹션 -->
+                    <div class="filter-section d-flex justify-content-between gap-2">
+                        <!-- 상단 필터 (카테고리 탭) -->
+<!--                         <div class="filter-top"> -->
+                            <div class="category-tabs">
+                                <button class="tab-btn active" data-category="all">전체</button>
+                                <button class="tab-btn" data-category="extracurricular">비교과</button>
+                                <button class="tab-btn" data-category="counseling">상담</button>
+                                <button class="tab-btn" data-category="other">기타</button>
+                            </div>
+<!--                         </div> -->
+                        
+                        <!-- 하단 필터 (공개상태) -->
+<!--                         <div class="filter-bottom"> -->
+                            <select class="visibility-filter" id="visibilityFilter">
+                                <option value="all">전체</option>
+                                <option value="public">공개</option>
+                                <option value="private">비공개</option>
+                            </select>
+<!--                         </div> -->
+                    </div>
+
+                    <!-- 문의게시판 목록 섹션 -->
+                    <div class="inquiry-section">
+                        <div class="inquiry-header">
+                            문의게시판 목록
+                        </div>
+
+                        <!-- 문의게시판 테이블 -->
+                        <table class="inquiry-table" id="inquiryTable">
+                            <thead>
+                                <tr>
+                                    <th style="width: 8%;">NO</th>
+                                    <th style="width: 35%;">제목</th>
+                                    <th style="width: 12%;">분류</th>
+                                    <th style="width: 12%;">글쓴이</th>
+                                    <th style="width: 10%;">공개여부</th>
+                                    <th style="width: 10%;">답변여부</th>
+                                    <th style="width: 13%;">등록일</th>
+                                </tr>
+                            </thead>
+                            <tbody id="inquiryTableBody">
+                                <!-- 데이터는 JavaScript로 동적 생성 -->
+                            </tbody>
+                        </table>
+
+                        <!-- 페이지네이션 -->
+                        <div class="pagination-container">
+                            <div class="pagination" id="pagination">
+                                <!-- 페이지네이션 버튼이 여기에 동적으로 추가됩니다 -->
+                            </div>
+                            <div class="pagination-info" id="paginationInfo">
+                                <!-- 페이지 정보가 여기에 표시됩니다 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script th:src="@{/js/admin/admin_F&Q.js}"></script>
+       
+    </body>
+</html>

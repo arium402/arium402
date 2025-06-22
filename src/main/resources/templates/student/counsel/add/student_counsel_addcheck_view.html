@@ -1,0 +1,134 @@
+<div th:fragment="view">
+
+<!-- Main Content -->
+<main class="col-md-9 col-lg-10 p-0" style="position: fixed; left: 16.66667%; right: 0; top: 70px; height: calc(100vh - 70px);">
+	<div class="main-content">
+		<div class="content-wrapper">
+			<!-- 상담 신청 내역 테이블 -->
+			<div class="counseling-table-container">
+				<div class="table-header">
+					<h2>상담 신청 내역</h2>
+				</div>
+
+				<div style="margin-top: 30px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+					<h3 class="table-title">
+						<i class="fas fa-file-alt me-2"></i>나의 상담 신청 내역
+					</h3>
+					<span class="table-info">총 <strong>5건</strong>의 상담 신청 내역이 있습니다.</span>
+				</div>
+
+				<table class="counseling-table">
+					<thead>
+						<tr>
+							<th width="8%">No</th>
+							<th width="20%">상담 분류</th>
+							<th width="20%">상담사</th>
+							<th width="20%">신청일자</th>
+							<th width="15%">상담 현황</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>5</td>
+							<td>
+								<span class="category-badge category-psychology">심리상담</span>
+							</td>
+							<td>김상담</td>
+							<td>2024.12.15</td>
+							<td>
+								<span class="status-badge status-ongoing">진행</span>
+							</td>
+						</tr>
+						<tr>
+							<td>4</td>
+							<td>
+								<span class="category-badge category-career">진로/취업</span>
+							</td>
+							<td>이상담</td>
+							<td>2024.12.10</td>
+							<td>
+								<span class="status-badge status-completed">종료</span>
+							</td>
+						</tr>
+						<tr>
+							<td>3</td>
+							<td>
+								<span class="category-badge category-learning">학습컨설팅</span>
+							</td>
+							<td>박상담</td>
+							<td>2024.11.28</td>
+							<td>
+								<span class="status-badge status-completed">종료</span>
+							</td>
+						</tr>
+						<tr>
+							<td>2</td>
+							<td>
+								<span class="category-badge category-anonymous">익명상담</span>
+							</td>
+							<td>최상담</td>
+							<td>2024.11.20</td>
+							<td>
+								<span class="status-badge status-completed">종료</span>
+							</td>
+						</tr>
+						<tr>
+							<td>1</td>
+							<td>
+								<span class="category-badge category-psychology">심리상담</span>
+							</td>
+							<td>정상담</td>
+							<td>2024.11.15</td>
+							<td>
+								<span class="status-badge status-completed">종료</span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<!-- 페이징 네비게이션 -->
+				<nav aria-label="상담 신청 내역 페이징" class="mt-4">
+					<ul class="pagination justify-content-center">
+						<li class="page-item disabled">
+							<a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+								<i class="fas fa-angle-double-left"></i>
+							</a>
+						</li>
+						<li class="page-item disabled">
+							<a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+								<i class="fas fa-angle-left"></i>
+							</a>
+						</li>
+						<li class="page-item active">
+							<a class="page-link" href="#">1</a>
+						</li>
+						<li class="page-item">
+							<a class="page-link" href="#">2</a>
+						</li>
+						<li class="page-item">
+							<a class="page-link" href="#">3</a>
+						</li>
+						<li class="page-item">
+							<a class="page-link" href="#">4</a>
+						</li>
+						<li class="page-item">
+							<a class="page-link" href="#">5</a>
+						</li>
+						<li class="page-item">
+							<a class="page-link" href="#">
+						<i class="fas fa-angle-right"></i>
+							</a>
+						</li>
+						<li class="page-item">
+							<a class="page-link" href="#">
+								<i class="fas fa-angle-double-double-right"></i>
+							</a>
+						</li>
+					</ul>
+				</nav>
+			</div>
+		</div>
+	</div>
+</main>
+
+</div>

@@ -1,0 +1,82 @@
+@charset "UTF-8";
+/* 공통 스타일 */
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+/* 드롭다운 스타일 */
+#monthSelect {
+    width: 200px;
+    padding: 10px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    color: #333;
+    outline: none;
+    transition: background-color 0.3s ease;
+}
+
+#monthSelect:hover {
+    background-color: #f0f0f0;
+}
+
+#monthSelect:focus {
+    border-color: #009688;
+    box-shadow: 0 0 5px rgba(0, 150, 136, 0.5);
+}
+
+/* 테이블 스타일 */
+#dailyStatsTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 16px;
+    background-color: #fff;
+}
+
+#dailyStatsTable th, #dailyStatsTable td {
+    padding: 12px 15px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+#dailyStatsTable th {
+    background-color: #009688;
+    color: #fff;
+}
+
+#dailyStatsTable td {
+    background-color: #f9f9f9;
+}
+
+#dailyStatsTable tr:nth-child(even) td {
+    background-color: #f2f2f2;
+}
+
+#dailyStatsTable tr:hover td {
+    background-color: #e0f7fa;
+}
+
+#dailyStatsTable tr:last-child td {
+    font-weight: bold;
+    background-color: #ffe0b2;
+}
+
+/* 버튼 스타일 (예를 들어 적용할 수 있는 추가 버튼 스타일) */
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #009688;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #00796b;
+}

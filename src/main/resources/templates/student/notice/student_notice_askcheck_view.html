@@ -1,0 +1,66 @@
+<div th:fragment="view">
+
+<main class="col-md-9 col-lg-10 p-0" style="margin-left: 16.66667%; min-height: calc(100vh - 70px);">
+	<div class="main-content">
+		<div class="detail-container">
+			<!-- 상세보기 헤더 -->
+			<div class="detail-header">
+				<h1 class="detail-title">
+					<i class="fas fa-question-circle me-3"></i>문의게시판 상세보기
+				</h1>
+			</div>
+
+			<!-- 상세보기 컨텐츠 -->
+			<div class="detail-content">
+				<!-- 제목 및 목록 버튼 -->
+				<div class="title-list-area">
+					<h2 class="question-title" id="questionTitle">
+						<!-- JavaScript로 동적 생성 -->
+					</h2>
+					<button class="list-btn" onclick="goToList()">
+						<i class="fas fa-list"></i>
+						목록으로
+					</button>
+				</div>
+
+				<!-- 문의 정보 -->
+				<div class="inquiry-info">
+					<div class="info-item">
+						<span class="info-label">유형</span>
+						<span class="category-badge" id="categoryBadge">비교과</span>
+					</div>
+					<div class="info-item">
+						<span class="info-label">작성자</span>
+						<span class="info-value" id="authorName">홍길동</span>
+					</div>
+					<div class="info-item">
+						<span class="info-label">작성일</span>
+						<span class="info-value" id="createDate">2025.06.18</span>
+					</div>
+				</div>
+
+				<!-- 문의 내용 -->
+				<div class="inquiry-content" id="inquiryContent">
+					<!-- JavaScript로 동적 생성 -->
+				</div>
+
+				<!-- 구분선 -->
+				<hr class="divider">
+
+				<!-- 답변 영역 -->
+				<div class="answer-section">
+					<h3 class="answer-title">
+						<i class="fas fa-check-circle"></i>
+						<span id="answerTitleText">관리자 답변</span>
+					</h3>
+
+					<div id="answerArea">
+						<!-- JavaScript로 동적 생성 -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
+    
+</div>

@@ -1,0 +1,238 @@
+.content-wrapper {
+	padding: 32px;
+	background: white;
+	width: 100%;
+	max-width: none;
+	margin: 0;
+}
+
+/* 상담 신청 내역 페이지 스타일 */
+.counseling-table-container {
+	background: white;
+	padding: 0;
+}
+
+.table-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	margin-bottom: 25px;
+	padding-bottom: 15px;
+	border-bottom: 2px solid #e9ecef;
+}
+
+.table-title {
+	font-size: 1.2rem;
+	font-weight: 700;
+	color: var(--main-color);
+	margin: 0;
+}
+
+.table-header h2 {
+	color: var(--main-color);
+	margin: 0 0 10px 0;
+	font-size: 1.5rem;
+	font-weight: 700;
+	padding-left: 15px;
+	border-left: 5px solid var(--primary-color);
+}
+
+.table-header .breadcrumb {
+	background: none;
+	padding: 0;
+	margin: 0;
+	font-size: 0.9rem;
+}
+
+.table-info {
+	color: #6c757d;
+	font-size: 0.9rem;
+	margin-top: 10px;
+}
+
+.counseling-table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 20px;
+}
+
+.counseling-table th {
+	background: linear-gradient(135deg, var(--light-bg), #e6f3ff);
+	color: var(--main-color);
+	font-weight: 600;
+	padding: 15px 12px;
+	text-align: center;
+	border: 1px solid #dee2e6;
+	font-size: 0.95rem;
+}
+
+.counseling-table td {
+	padding: 15px 12px;
+	text-align: center;
+	border: 1px solid #dee2e6;
+	background: white;
+	font-size: 0.9rem;
+}
+
+.counseling-table tbody tr:hover {
+	background: #f8f9ff;
+}
+
+.status-badge {
+	padding: 6px 12px;
+	border-radius: 20px;
+	font-size: 0.8rem;
+	font-weight: 600;
+	display: inline-block;
+	min-width: 60px;
+}
+
+.status-ongoing {
+	background: #e3f2fd;
+	color: #1976d2;
+	border: 1px solid #bbdefb;
+}
+
+.status-completed {
+	background: #e8f5e8;
+	color: #2e7d32;
+	border: 1px solid #c8e6c9;
+}
+
+.category-badge {
+	padding: 4px 8px;
+	border-radius: 12px;
+	font-size: 0.75rem;
+	font-weight: 500;
+	display: inline-block;
+}
+
+.category-psychology {
+	background: #fff3e0;
+	color: #f57c00;
+	border: 1px solid #ffcc02;
+}
+
+.category-anonymous {
+	background: #f3e5f5;
+	color: #7b1fa2;
+	border: 1px solid #ce93d8;
+}
+
+.category-crisis {
+	background: #ffebee;
+	color: #c62828;
+	border: 1px solid #ef9a9a;
+}
+
+.category-career {
+	background: #e8f5e8;
+	color: #2e7d32;
+	border: 1px solid #a5d6a7;
+}
+
+.category-learning {
+	background: #e3f2fd;
+	color: #1976d2;
+	border: 1px solid #90caf9;
+}
+
+.no-data {
+	text-align: center;
+	padding: 60px 20px;
+	color: #6c757d;
+}
+
+.no-data i {
+	font-size: 3rem;
+	margin-bottom: 20px;
+	color: #dee2e6;
+}
+
+/* 페이징 스타일 */
+.pagination .page-link {
+	border: 1px solid #dee2e6;
+	color: var(--main-color);
+	padding: 8px 12px;
+	margin: 0 2px;
+	border-radius: 6px;
+	font-weight: 500;
+	transition: all 0.2s ease;
+}
+
+.pagination .page-link:hover {
+	background: var(--light-bg);
+	border-color: var(--primary-color);
+	color: var(--primary-color);
+}
+
+.pagination .page-item.active .page-link {
+	background: var(--primary-color);
+	border-color: var(--primary-color);
+	color: white;
+}
+
+.pagination .page-item.disabled .page-link {
+	color: #6c757d;
+	background: #f8f9fa;
+	border-color: #dee2e6;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+	.sidebar {
+		position: static;
+		width: 100%;
+		height: auto;
+		top: 0;
+	}
+	
+	.custom-header {
+		position: static;
+	}
+	
+	body {
+		padding-top: 0;
+	}
+	
+	.main-content {
+		margin-left: 0;
+		height: auto;
+		min-height: auto;
+	}
+	
+	.counseling-table {
+		font-size: 0.8rem;
+	}
+	
+	.counseling-table th,
+	.counseling-table td {
+		padding: 10px 8px;
+	}
+	
+	.table-header {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 10px;
+	}
+}
+
+/* 플로팅 버튼 */
+.floating-btn {
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	width: 60px;
+	height: 60px;
+	background: var(--secondary-color);
+	border-radius: 50%;
+	box-shadow: 0 4px 15px rgba(91, 163, 240, 0.4);
+	transition: all 0.3s ease;
+	z-index: 1000;
+}
+
+.floating-btn:hover {
+	background: #4a90e2;
+	transform: translateY(-3px);
+	box-shadow: 0 6px 20px rgba(91, 163, 240, 0.6);
+}

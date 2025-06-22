@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="https://www.thymeleaf.org/">
+    <head th:replace="~{/admin_config.html :: admin_config}"></head>
+    <title>F&Q 등록 - 관리자 페이지</title>
+    <link rel="stylesheet" th:href="@{/css/admin/admin_F&Q_add.css?v=1}">
+    
+    <body class="sb-nav-fixed">
+       <!-- 상단 네비게이션 바 -->
+        <nav th:replace="~{/admin_top.html :: admin_top}"></nav>
+     
+     
+        <div id="layoutSidenav">
+            <!-- 사이드바 -->
+            <div th:replace="~{/admin_sidebar.html :: admin_sidebar}"> </div>
+                
+            
+            <!-- 메인 컨텐츠 -->
+            <div id="layoutSidenav_content">
+                <div class="main-content">
+                    <!-- 페이지 제목 -->
+                    <h1 class="page-title">F&Q 등록</h1>
+                    <div class="title-divider"></div>
+                    
+                    <!-- 등록 폼 -->
+                    <div class="register-container">
+                        <div class="section-header">
+                            <span class="material-symbols-outlined">add_circle</span>
+                            F&Q 정보 입력
+                        </div>
+                        
+                        <div class="form-content">
+                            <!-- 대분류 -->
+                            <div class="form-row">
+                                <label class="form-label">대분류</label>
+                                <select class="form-select" id="mainCategory" onchange="updateSubCategory()">
+                                    <option value="">분류를 선택하세요</option>
+                                    <option value="extracurricular">비교과</option>
+                                    <option value="counseling">상담</option>
+                                    <option value="etc">기타</option>
+                                </select>
+                            </div>
+
+                            <!-- 소분류 -->
+                            <div class="form-row">
+                                <label class="form-label">소분류</label>
+                                <select class="form-select" id="subCategory">
+                                    <option value="">대분류를 먼저 선택하세요</option>
+                                </select>
+                            </div>
+
+                            <!-- 공개여부 -->
+                            <div class="form-row">
+                                <label class="form-label">공개여부</label>
+                                <div class="form-radio-group">
+                                    <div class="radio-option">
+                                        <input type="radio" id="public" name="visibility" value="public" checked>
+                                        <label for="public">공개</label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="private" name="visibility" value="private">
+                                        <label for="private">비공개</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Q&A 섹션 -->
+                            <div class="qa-section">
+                                <!-- 질문 -->
+                                <div class="qa-row">
+                                    <div class="qa-label">Q.</div>
+                                    <textarea class="qa-input question" id="questionInput" placeholder="질문을 입력하세요..." maxlength="500"></textarea>
+                                </div>
+
+                                <!-- 답변 -->
+                                <div class="qa-row">
+                                    <div class="qa-label">A.</div>
+                                    <textarea class="qa-input answer" id="answerInput" placeholder="답변을 입력하세요..." maxlength="2000"></textarea>
+                                </div>
+                            </div>
+
+                            <!-- 등록일 -->
+                            <div class="registration-date">
+                                <div class="date-label">등록일</div>
+                                <div class="date-value" id="registrationDate"></div>
+                            </div>
+                        </div>
+
+                        <!-- 버튼 영역 -->
+                        <div class="button-area">
+                            <button class="btn-cancel" onclick="cancelRegistration()">
+                                <i class="fas fa-times"></i>
+                                취소
+                            </button>
+                            <button class="btn-register" onclick="registerFAQ()">
+                                <i class="fas fa-check"></i>
+                                등록
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+       <script th:src="@{/js/admin/admin_F&Q_add.js}"></script>   
+    </body>
+</html>

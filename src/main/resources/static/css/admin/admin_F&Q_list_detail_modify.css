@@ -1,0 +1,705 @@
+
+/* 메인 컨텐츠 스타일 */
+.main-content {
+    padding: 30px;
+    background-color: #f8f9fa;
+    min-height: calc(100vh - 70px);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.page-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.title-divider {
+    height: 4px;
+    background: linear-gradient(90deg, #3498db, #2980b9);
+    margin-bottom: 30px;
+    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
+}
+
+/* 등록 폼 컨테이너 */
+.register-container {
+    background: white;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    padding: 30px;
+    margin-bottom: 30px;
+    max-width: 100%;
+}
+
+/* 폼 그룹 */
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-label {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 10px;
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.form-select {
+    width: 300px;
+    padding: 12px 15px;
+    border: 2px solid #e9ecef;
+    font-size: 1rem;
+    color: #495057;
+    background-color: white;
+    transition: all 0.3s ease;
+}
+
+.form-select:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 10px rgba(52, 152, 219, 0.3);
+}
+
+/* F&Q 검색 섹션 */
+.faq-search-section {
+    margin-top: 40px;
+    min-height: 500px;
+}
+
+.section-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.section-divider {
+    height: 2px;
+    background: linear-gradient(90deg, #3498db, #2980b9);
+    margin-bottom: 40px;
+    box-shadow: 0 1px 4px rgba(52, 152, 219, 0.2);
+}
+
+.btn-add {
+    background: #34495e;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-add:hover {
+    background: #2c3e50;
+    box-shadow: 0 4px 15px rgba(52, 73, 94, 0.4);
+}
+
+/* Q&A 리스트 컨테이너 */
+.qa-list-container {
+    max-height: 600px;
+    overflow-y: auto;
+    padding: 0;
+    background: transparent;
+}
+
+.qa-list-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.qa-list-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.qa-list-container::-webkit-scrollbar-thumb {
+    background: #3498db;
+    border-radius: 3px;
+}
+
+.qa-list-container::-webkit-scrollbar-thumb:hover {
+    background: #2980b9;
+}
+
+/* Q&A 아이템 */
+.qa-item {
+    margin-bottom: 35px;
+    padding: 20px;
+    background: white;
+    border: 1px solid #e9ecef;
+    border-left: 4px solid #3498db;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+    cursor: grab;
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+.qa-item:hover {
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.qa-item.empty {
+    background: #f8f9fa;
+    border-left-color: #e9ecef;
+    cursor: default;
+}
+
+.qa-item.dragging {
+    opacity: 0.7;
+    z-index: 1000;
+    cursor: grabbing;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+}
+
+/* 순서 번호 */
+.qa-order-number {
+    background: #3498db;
+    color: white;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 5px;
+}
+
+.qa-item.empty .qa-order-number {
+    background: #adb5bd;
+}
+
+/* Q&A 컨텐츠 영역 */
+.qa-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.qa-question {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.qa-label {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #2c3e50;
+    min-width: 25px;
+    margin-top: 2px;
+}
+
+.qa-question-content {
+    flex: 1;
+    font-size: 1.1rem;
+    color: #2c3e50;
+    font-weight: 600;
+    line-height: 1.5;
+    min-height: 24px;
+    word-wrap: break-word;
+}
+
+.qa-question-content.empty {
+    color: #adb5bd;
+    font-style: italic;
+    font-weight: 400;
+}
+
+.qa-controls {
+    display: flex;
+    gap: 10px;
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+.qa-answer {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-left: 15px;
+    padding-left: 20px;
+    border-left: 2px solid #e9ecef;
+}
+
+.qa-answer-label {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #3498db;
+    min-width: 25px;
+    margin-top: 2px;
+}
+
+.qa-answer-content {
+    flex: 1;
+    font-size: 1rem;
+    color: #495057;
+    line-height: 1.6;
+    min-height: 20px;
+    word-wrap: break-word;
+}
+
+.qa-answer-content.empty {
+    color: #adb5bd;
+    font-style: italic;
+}
+
+/* 드래그 핸들 */
+.drag-handle {
+    position: absolute;
+    left: 5px;
+    top: 20px;
+    width: 15px;
+    height: 40px;
+    cursor: grab;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+}
+
+.drag-handle:hover {
+    opacity: 1;
+}
+
+.drag-handle::before,
+.drag-handle::after {
+    content: '';
+    width: 3px;
+    height: 3px;
+    background: #95a5a6;
+    border-radius: 50%;
+}
+
+.drag-handle .drag-dot {
+    width: 3px;
+    height: 3px;
+    background: #95a5a6;
+    border-radius: 50%;
+    margin: 1px 0;
+}
+
+.btn-load {
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 0;
+}
+
+.btn-load:hover {
+    background: #2980b9;
+    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.4);
+}
+
+.btn-remove {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 0;
+    margin-left: 10px;
+}
+
+.btn-remove:hover {
+    background: #c0392b;
+    box-shadow: 0 2px 8px rgba(231, 76, 60, 0.4);
+}
+
+/* 버튼 그룹 */
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 2px solid #e9ecef;
+}
+
+.btn-preview {
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-preview:hover {
+    background: #2980b9;
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+}
+
+.action-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.btn-update {
+    background: #34495e;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-update:hover {
+    background: #2c3e50;
+    box-shadow: 0 4px 15px rgba(52, 73, 94, 0.4);
+}
+
+.btn-cancel {
+    background: #7f8c8d;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-cancel:hover {
+    background: #6c757d;
+    box-shadow: 0 4px 15px rgba(127, 140, 141, 0.4);
+}
+
+/* 모달 스타일 */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 3% auto;
+    padding: 0;
+    border: none;
+    width: 80%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+
+.modal-header {
+    background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
+    color: white;
+    padding: 20px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid #3498db;
+}
+
+.modal-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.close {
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.close:hover {
+    color: #e74c3c;
+}
+
+.modal-body {
+    padding: 30px;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.modal-search-container {
+    margin-bottom: 25px;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.modal-search-input {
+    flex: 1;
+    padding: 12px 15px;
+    border: 2px solid #e9ecef;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.modal-search-input:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+.btn-search {
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-search:hover {
+    background: #2980b9;
+}
+
+.faq-list {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.faq-item {
+    padding: 15px;
+    border: 1px solid #e9ecef;
+    margin-bottom: 10px;
+    background: #f8f9fa;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.faq-item:hover {
+    background: #e3f2fd;
+    border-color: #3498db;
+}
+
+.faq-question-text {
+    font-weight: 600;
+    color: #2c3e50;
+    flex: 1;
+}
+
+.btn-select {
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-select:hover {
+    background: #2980b9;
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+}
+
+/* 미리보기 모달 */
+.preview-modal .modal-content {
+    width: 90%;
+    max-width: 1000px;
+}
+
+.preview-content {
+    padding: 30px;
+    font-family: 'Malgun Gothic', sans-serif;
+}
+
+.preview-page-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 3px solid #3498db;
+}
+
+.preview-qa-item {
+    margin-bottom: 15px;
+    border: 1px solid #e9ecef;
+    background: white;
+    transition: all 0.3s ease;
+}
+
+.preview-qa-item:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.preview-question {
+    background: #f8f9fa;
+    color: #2c3e50;
+    padding: 20px 25px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    border-bottom: 1px solid #e9ecef;
+    transition: all 0.3s ease;
+}
+
+.preview-question:hover {
+    background: #e3f2fd;
+}
+
+.preview-question.active {
+    background: #3498db;
+    color: white;
+}
+
+.preview-question i {
+    margin-right: 10px;
+    color: #3498db;
+    transition: all 0.3s ease;
+}
+
+.preview-question.active i {
+    color: white;
+}
+
+.preview-toggle-icon {
+    font-size: 1rem;
+    transition: transform 0.3s ease;
+}
+
+.preview-question.active .preview-toggle-icon {
+    transform: rotate(180deg);
+}
+
+.preview-answer {
+    padding: 0;
+    background: #fff;
+    line-height: 1.6;
+    color: #495057;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.preview-answer.active {
+    max-height: 500px;
+    padding: 25px;
+    border-top: 1px solid #e9ecef;
+}
+
+.preview-answer-content {
+    font-size: 1rem;
+    line-height: 1.7;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+    #layoutSidenav_nav {
+        width: 100%;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+    }
+    
+    #layoutSidenav_nav.show {
+        transform: translateX(0);
+    }
+    
+    #layoutSidenav_content {
+        margin-left: 0;
+        width: 100%;
+    }
+    
+    .main-content {
+        padding: 15px;
+    }
+    
+    .form-select {
+        width: 100%;
+    }
+    
+    .qa-item {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+    
+    .qa-order-number {
+        align-self: flex-start;
+    }
+    
+    .qa-question {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+    
+    .qa-label {
+        font-size: 1.2rem;
+    }
+    
+    .qa-answer {
+        margin-left: 0;
+        padding-left: 0;
+        border-left: none;
+        border-top: 1px solid #e9ecef;
+        padding-top: 15px;
+        margin-top: 15px;
+    }
+    
+    .button-group {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .action-buttons {
+        justify-content: center;
+    }
+    
+    .modal-content {
+        width: 95%;
+        margin: 5% auto;
+    }
+    
+    .modal-search-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}

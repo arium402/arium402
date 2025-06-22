@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>근무 일정 관리</title>
+    <link href="./css/bootstrap/bootstrap.css" rel="stylesheet" crossorigin="anonymous">
+    <link href="./css/home.css" rel="stylesheet">
+    <link href="./css/board.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', Arial, sans-serif;
+            background-color: #fef7f0;
+            margin: 0;
+            padding: 0;
+            font-size: 15px;
+        }
+
+        .header-bar {
+            background: white;
+            padding: 15px 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 40px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 15px;
+        }
+
+        .profile-icon {
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+            position: relative;
+            color: #2c3e50;
+        }
+
+        .profile-icon:hover {
+            opacity: 0.7;
+        }
+
+        .profile-tooltip {
+            position: absolute;
+            bottom: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2c3e50;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 13px;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+        }
+
+        .profile-tooltip::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-bottom: 5px solid #2c3e50;
+        }
+
+        .profile-icon:hover .profile-tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .logout-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .logout-btn:hover {
+            background: #5a6268;
+        }
+
+        .main-container {
+            display: flex;
+            min-height: calc(100vh - 80px);
+        }
+
+        .sidebar {
+            width: 250px;
+            background: #3498db;
+            min-height: 100%;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-menu li {
+            border-bottom: 1px solid #5dade2;
+        }
+
+        .sidebar-menu a {
+            display: block;
+            color: white;
+            padding: 15px 20px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 15px;
+        }
+
+        .sidebar-menu a:hover {
+            background: #2980b9;
+            color: white;
+            text-decoration: none;
+        }
+
+        .sidebar-menu a.active {
+            background: #e6a456;
+            color: white;
+            text-decoration: none;
+        }
+
+        .sidebar-menu .main-category {
+            font-weight: 600;
+            background: #2980b9;
+        }
+
+        .sidebar-menu .sub-category {
+            padding-left: 35px;
+            font-size: 14px;
+        }
+
+        .contents {
+            flex: 1;
+            padding: 30px;
+            background: white;
+            margin: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .board_title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            text-align: left;
+            padding-bottom: 10px;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .add-schedule-btn {
+            background: #e6a456;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background-color 0.2s ease;
+        }
+
+        .add-schedule-btn:hover {
+            background: #d49543;
+        }
+
+        .calendar-navigation {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+            gap: 20px;
+        }
+
+        .nav-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s ease;
+        }
+
+        .nav-btn:hover {
+            background: #2980b9;
+        }
+
+        .current-month {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2c3e50;
+            min-width: 150px;
+            text-align: center;
+        }
+
+        .calendar-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            width: 100%;
+        }
+
+        .calendar-header-cell {
+            background: #f8f9fa;
+            padding: 12px 8px;
+            text-align: center;
+            font-weight: 600;
+            color: #495057;
+            border-bottom: 2px solid #e9ecef;
+            border-right: 1px solid #e9ecef;
+            font-size: 14px;
+        }
+
+        .calendar-header-cell:last-child {
+            border-right: none;
+        }
+
+        .calendar-header-cell.weekend {
+            color: #e74c3c;
+        }
+
+        .calendar-cell {
+            min-height: 100px;
+            border-bottom: 1px solid #e9ecef;
+            border-right: 1px solid #e9ecef;
+            padding: 8px;
+            position: relative;
+            background: white;
+            transition: background-color 0.2s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .calendar-cell:hover {
+            background: #f8f9fa;
+        }
+
+        .calendar-cell:nth-child(7n) {
+            border-right: none;
+        }
+
+        .calendar-cell.other-month {
+            background: #f8f9fa;
+            color: #adb5bd;
+        }
+
+        .calendar-cell.today {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+        }
+
+        .calendar-cell.holiday {
+            background: #ffe6e6;
+        }
+
+        .calendar-cell.vacation {
+            background: #e8f4f8;
+        }
+
+        .date-number {
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 5px;
+            text-align: left;
+        }
+
+        .schedule-info {
+            font-size: 11px;
+            line-height: 1.3;
+            flex: 1;
+        }
+
+        .counseling-count {
+            background: #3498db;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 500;
+            margin-bottom: 2px;
+            display: inline-block;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .counseling-count:hover {
+            background: #2980b9;
+            transform: scale(1.05);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .vacation-mark {
+            background: #17a2b8;
+            color: white;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 9px;
+            font-weight: 500;
+            margin-bottom: 2px;
+            display: inline-block;
+            max-width: fit-content;
+        }
+
+        .holiday-mark {
+            background: #dc3545;
+            color: white;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 9px;
+            font-weight: 500;
+            margin-bottom: 2px;
+            display: inline-block;
+            max-width: fit-content;
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 6px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #495057;
+        }
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+        }
+
+        @media (max-width: 1200px) {
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                min-height: auto;
+            }
+
+            .contents {
+                margin: 10px;
+                padding: 20px;
+            }
+            
+            .calendar-cell {
+                min-height: 110px;
+                padding: 10px;
+            }
+            
+            .date-number {
+                font-size: 16px;
+            }
+            
+            .schedule-info {
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .contents {
+                padding: 15px;
+            }
+            
+            .calendar-cell {
+                min-height: 90px;
+                padding: 8px;
+            }
+            
+            .calendar-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            
+            .legend {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+            
+            .date-number {
+                font-size: 14px;
+            }
+            
+            .schedule-info {
+                font-size: 11px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header-bar">
+        <div class="logo">
+            <img src="./images/logo-header.png" alt="로고">
+        </div>
+        <div class="user-info">
+            <span class="user-name">김상담 상담사</span>
+            <div class="profile-icon" onclick="goToMyPage()">
+                <svg fill="currentColor" viewBox="0 0 20 20" width="32" height="32">
+                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+                </svg>
+                <div class="profile-tooltip">마이페이지</div>
+            </div>
+            <button class="logout-btn">로그아웃</button>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <nav class="sidebar">
+            <ul class="sidebar-menu">
+                <li><a href="#" class="main-category">상담관리</a></li>
+                <li><a href="#" class="sub-category">신청자 관리</a></li>
+                <li><a href="#" class="sub-category">내담자 관리</a></li>
+                <li><a href="#" class="sub-category">상담 일정 확인</a></li>
+                <li><a href="#" class="sub-category active">근무 일정 관리</a></li>
+                <li><a href="#" class="main-category">게시판 관리</a></li>
+                <li><a href="#" class="sub-category">공지사항</a></li>
+                <li><a href="#" class="sub-category">F&Q</a></li>
+                <li><a href="#" class="sub-category">문의 게시판</a></li>
+            </ul>
+        </nav>
+
+        <section class="contents">
+            <div class="calendar-header">
+                <h4 class="board_title">근무 일정 관리</h4>
+                <button class="add-schedule-btn" onclick="openScheduleRegistration()">내 일정 등록</button>
+            </div>
+
+            <div class="calendar-navigation">
+                <button class="nav-btn" onclick="previousMonth()">
+                    <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                    </svg>
+                </button>
+                <div class="current-month" id="currentMonth">2025년 6월</div>
+                <button class="nav-btn" onclick="nextMonth()">
+                    <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="calendar-container">
+                <div class="calendar-grid" id="calendarGrid">
+                    <div class="calendar-header-cell">일</div>
+                    <div class="calendar-header-cell">월</div>
+                    <div class="calendar-header-cell">화</div>
+                    <div class="calendar-header-cell">수</div>
+                    <div class="calendar-header-cell">목</div>
+                    <div class="calendar-header-cell">금</div>
+                    <div class="calendar-header-cell weekend">토</div>
+                </div>
+            </div>
+
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #ffc107;"></div>
+                    <span>오늘</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #3498db;"></div>
+                    <span>상담 일정</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #dc3545;"></div>
+                    <span>공휴일</span>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // 현재 날짜 정보
+        let currentDate = new Date();
+        let currentYear = currentDate.getFullYear();
+        let currentMonth = currentDate.getMonth();
+        let today = new Date();
+
+        // 샘플 데이터 (현충일을 6월 6일로 올바르게 설정)
+        const scheduleData = {
+            '2025-06-02': { counseling: 3},
+            '2025-06-03': { counseling: 5},
+            '2025-06-04': { counseling: 2},
+            '2025-06-05': { counseling: 4},
+            '2025-06-06': { counseling: 0, holiday: '현충일' },
+            '2025-06-09': { counseling: 6},
+            '2025-06-10': { counseling: 3},
+            '2025-06-11': { counseling: 4},
+            '2025-06-12': { counseling: 2},
+            '2025-06-13': { counseling: 5},
+            '2025-06-16': { counseling: 7},
+            '2025-06-17': { counseling: 3},
+            '2025-06-18': { counseling: 4},
+            '2025-06-19': { counseling: 2},
+            '2025-06-20': { counseling: 6},
+            '2025-06-23': { counseling: 0},
+            '2025-06-24': { counseling: 0},
+            '2025-06-25': { counseling: 4},
+            '2025-06-26': { counseling: 3},
+            '2025-06-27': { counseling: 5},
+            '2025-06-30': { counseling: 4}
+        };
+
+        // 달력 생성 (5주로 제한)
+        function generateCalendar(year, month) {
+            const calendarGrid = document.getElementById('calendarGrid');
+            
+            // 기존 달력 셀들 제거 (헤더는 유지)
+            const existingCells = calendarGrid.querySelectorAll('.calendar-cell');
+            existingCells.forEach(cell => cell.remove());
+
+            // 해당 월의 첫 번째 날과 마지막 날
+            const firstDayOfMonth = new Date(year, month, 1);
+            const lastDayOfMonth = new Date(year, month + 1, 0);
+            
+            // 첫 번째 주의 시작 날짜 (일요일부터 시작)
+            const startDate = new Date(firstDayOfMonth);
+            const dayOfWeek = firstDayOfMonth.getDay(); // 0=일요일, 1=월요일, ..., 6=토요일
+            startDate.setDate(startDate.getDate() - dayOfWeek);
+            
+            // 5주간 표시 (35일)
+            for (let i = 0; i < 35; i++) {
+                const currentDate = new Date(startDate);
+                currentDate.setDate(startDate.getDate() + i);
+                
+                const dayElement = createDayElement(currentDate, year, month);
+                calendarGrid.appendChild(dayElement);
+            }
+
+            // 월 표시 업데이트
+            document.getElementById('currentMonth').textContent = `${year}년 ${month + 1}월`;
+        }
+
+        // 일자 요소 생성
+        function createDayElement(date, currentYear, currentMonth) {
+            const dayElement = document.createElement('div');
+            dayElement.className = 'calendar-cell';
+            
+            const isCurrentMonth = date.getMonth() === currentMonth;
+            const isToday = date.toDateString() === today.toDateString();
+            
+            // 날짜를 YYYY-MM-DD 형식으로 변환 (시간대 문제 방지)
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const dateString = `${year}-${month}-${day}`;
+            
+            if (!isCurrentMonth) {
+                dayElement.classList.add('other-month');
+            }
+            
+            if (isToday) {
+                dayElement.classList.add('today');
+            }
+
+            // 날짜 번호
+            const dateNumber = document.createElement('div');
+            dateNumber.className = 'date-number';
+            dateNumber.textContent = date.getDate();
+            dayElement.appendChild(dateNumber);
+
+            // 스케줄 정보
+            const scheduleInfo = document.createElement('div');
+            scheduleInfo.className = 'schedule-info';
+            
+            const schedule = scheduleData[dateString];
+            if (schedule && isCurrentMonth) {
+                if (schedule.holiday) {
+                    dayElement.classList.add('holiday');
+                    const holidayMark = document.createElement('div');
+                    holidayMark.className = 'holiday-mark';
+                    holidayMark.textContent = schedule.holiday;
+                    scheduleInfo.appendChild(holidayMark);
+                } else if (schedule.counseling > 0) {
+                    const counselingCount = document.createElement('div');
+                    counselingCount.className = 'counseling-count';
+                    counselingCount.textContent = `상담 ${schedule.counseling}건`;
+                    counselingCount.addEventListener('click', function() {
+                        // 상담 일정 확인 페이지로 이동 (해당 날짜 정보와 함께)
+                        window.open(`counseling_schedule.html?date=${dateString}`, '_blank');
+                    });
+                    scheduleInfo.appendChild(counselingCount);
+                }
+            }
+            
+            dayElement.appendChild(scheduleInfo);
+            return dayElement;
+        }
+
+        // 이전 달
+        function previousMonth() {
+            currentMonth--;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            generateCalendar(currentYear, currentMonth);
+        }
+
+        // 다음 달
+        function nextMonth() {
+            currentMonth++;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            generateCalendar(currentYear, currentMonth);
+        }
+
+        // 일정 등록 페이지 열기
+        function openScheduleRegistration() {
+            // 새 창에서 일정 등록 페이지 열기
+            window.open('schedule_registration.html', '_blank', 'width=800,height=600');
+        }
+
+        // 마이페이지로 이동
+        function goToMyPage() {
+            window.open('mypage.html', '_blank');
+        }
+
+        // 페이지 로드 시 달력 생성
+        window.onload = function() {
+            generateCalendar(currentYear, currentMonth);
+        };
+
+        // 사이드바 메뉴 클릭 핸들링
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuLinks = document.querySelectorAll('.sidebar-menu a:not(.main-category)');
+            
+            menuLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // 모든 메뉴에서 active 클래스 제거
+                    menuLinks.forEach(l => l.classList.remove('active'));
+                    
+                    // 클릭된 메뉴에 active 클래스 추가
+                    this.classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
