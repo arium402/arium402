@@ -11,7 +11,8 @@ import lombok.*;
 @Table(name = "NCS_CCL_REL")
 @IdClass(Ncs_CclRelId.class)
 public class Ncs_CclRel {
-    
+//비교과 - 핵심역량 연결
+	
     @Id
     @Column(name = "PRG_ID")
     private Long prgId;

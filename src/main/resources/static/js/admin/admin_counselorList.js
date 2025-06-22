@@ -1,7 +1,3 @@
-
-
-
-
 // 상담분류 필터 기능
 document.getElementById('categoryFilter').addEventListener('change', function() {
     const selectedCategory = this.value;
@@ -69,9 +65,9 @@ document.querySelector('.search-btn').addEventListener('click', function() {
     alert(`${searchType}에서 "${searchText}" 검색`);
 });
 
-// 등록 버튼 기능
+// 등록 버튼 클릭시 상담사등록페이지로 이동 
 document.querySelector('.register-btn').addEventListener('click', function() {
-    alert('상담사 등록 페이지로 이동합니다.');
+    location.href="./admin_counselorList_add";
 });
 
 // 상세 페이지로 이동하는 함수

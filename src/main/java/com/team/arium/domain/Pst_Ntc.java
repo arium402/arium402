@@ -10,7 +10,8 @@ import lombok.*;
 @Entity
 @Table(name = "PST_NTC")
 public class Pst_Ntc {
-    
+//게시판 
+	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "NTC_ID")

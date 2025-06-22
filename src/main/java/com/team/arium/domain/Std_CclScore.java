@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "STD_CCL_SCORE")
 public class Std_CclScore {
-    
+//학생 핵심 역량 점수    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CCL_SCORE_ID")

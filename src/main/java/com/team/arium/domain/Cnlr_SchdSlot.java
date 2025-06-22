@@ -15,7 +15,8 @@ import java.time.LocalTime;
 @Table(name = "CNLR_SCHD_SLOT",
        uniqueConstraints = @UniqueConstraint(columnNames = {"SCHD_ID", "CNSL_TIME"}))
 public class Cnlr_SchdSlot {
-    
+//상담 가능시간
+	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "SLOT_ID")

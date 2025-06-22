@@ -14,7 +14,8 @@ import java.time.LocalDateTime;
 @Table(name = "DGSTFN_QST",
        uniqueConstraints = @UniqueConstraint(columnNames = {"SURVEY_ID", "SUR_ORD"}))
 public class Dgstfn_Qst {
-    
+//만족도 조사 문항 
+	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "SUR_ID")

@@ -14,7 +14,8 @@ import java.time.LocalDateTime;
 @Table(name = "CNSL_PRE_EVAL")
 @IdClass(Cnsl_PreEvalId.class)
 public class Cnsl_PreEval {
-    
+// 상담 사전검사 실시 
+	
     @Id
     @Column(name = "PRE_EVAL_ID", length = 10)
     private String preEvalId;

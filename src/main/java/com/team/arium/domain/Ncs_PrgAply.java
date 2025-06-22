@@ -14,7 +14,8 @@ import java.time.LocalDateTime;
 @Table(name = "NCS_PRG_APLY",
        uniqueConstraints = @UniqueConstraint(columnNames = {"STD_ID", "PRG_ID"}))
 public class Ncs_PrgAply {
-    
+//비교과 신청 
+	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "APLY_ID")
