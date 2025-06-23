@@ -1,6 +1,10 @@
 package com.team.arium.competence;
 
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -8,8 +12,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/student/competence")
 public class StudentCompetenceController {
 	
+	@Autowired
+	private StudentCompetenceService scs;
+	
 	@GetMapping("/info")
-	public String infoPage() {
+	public String infoPage(Model m) {
+		Map<String, Object> data = this.scs.getcompetence();
+		
+		m.addAttribute("data", data);
 		
 		return "/student/competence/student_competence_info.html";	// 핵심 역량 소개
 	}
