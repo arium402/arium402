@@ -19,7 +19,7 @@ public class Ncs_PrgAply {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "aply_id")
-    private Long aplyId;
+    private Integer aplyId;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "prg_id", nullable = false)

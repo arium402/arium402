@@ -8,5 +8,5 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class Cnsl_PreEvalId implements Serializable {
     private String preEvalId; 
-    private Long preQstId;
+    private Integer preQstId;
 }

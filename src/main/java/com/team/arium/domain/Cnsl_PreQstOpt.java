@@ -19,7 +19,7 @@ public class Cnsl_PreQstOpt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "pre_opt_id")
-    private Long preOptId;
+    private Integer preOptId;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pre_qst_id", nullable = false)

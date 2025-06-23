@@ -20,7 +20,7 @@ public class Pst_Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id")
-    private Long postId;
+    private Integer postId;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ntc_id", nullable = false)

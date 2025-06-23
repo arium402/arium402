@@ -18,7 +18,7 @@ public class Core_CptQst {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "qst_id")
-    private Long qstId;
+    private Integer qstId;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ccl_id", nullable = false)
