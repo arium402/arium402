@@ -22,7 +22,7 @@ public class Cnsl_PreEval {
     
     @Id
     @Column(name = "pre_qst_id")
-    private Long preQstId;
+    private Integer preQstId;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pre_eval_id", insertable = false, updatable = false)

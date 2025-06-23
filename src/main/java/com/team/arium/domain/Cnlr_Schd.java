@@ -21,7 +21,7 @@ public class Cnlr_Schd {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "schd_id")
-    private Long schdId;
+    private Integer schdId;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "empl_id", nullable = false)

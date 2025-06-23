@@ -18,7 +18,7 @@ public class Pst_Ans {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ans_id")
-    private Long ansId;
+    private Integer ansId;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", nullable = false)

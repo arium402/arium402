@@ -16,7 +16,7 @@ public class Std_CclScore {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ccl_score_id")
-    private Long cclScoreId;
+    private Integer cclScoreId;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "std_id", nullable = false)
