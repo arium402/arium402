@@ -1,29 +1,3 @@
-// 사이드바 토글 기능
-document.getElementById('sidebarToggle').addEventListener('click', function() {
-    const sidebar = document.getElementById('layoutSidenav_nav');
-    const content = document.getElementById('layoutSidenav_content');
-    
-    if (window.innerWidth <= 768) {
-        sidebar.classList.toggle('show');
-    } else {
-        sidebar.classList.toggle('collapsed');
-        content.classList.toggle('expanded');
-    }
-});
-
-// 윈도우 리사이즈 시 클래스 정리
-window.addEventListener('resize', function() {
-    const sidebar = document.getElementById('layoutSidenav_nav');
-    const content = document.getElementById('layoutSidenav_content');
-    
-    if (window.innerWidth > 768) {
-        sidebar.classList.remove('show');
-    } else {
-        sidebar.classList.remove('collapsed');
-        content.classList.remove('expanded');
-    }
-});
-
 // 전화번호 자동 포맷팅
 document.getElementById('counselorPhone').addEventListener('input', function(e) {
     let value = e.target.value.replace(/[^0-9]/g, '');
@@ -40,11 +14,12 @@ document.getElementById('counselorPhone').addEventListener('input', function(e) 
 // 메시지 표시 함수
 function showMessage(type, message) {
     // 모든 메시지 숨기기
-    document.getElementById('successMessage').style.display = 'none';
-    document.getElementById('errorMessage').style.display = 'none';
+    document.querySelector("#successMessage").style.display = 'none';
+    document.querySelector("#errorMessage").style.display = 'none';
     
     // 해당 메시지 표시
     const messageElement = document.getElementById(type + 'Message');
+	console.log("messageElement : " + messageElement)
     if (message) {
         messageElement.innerHTML = messageElement.innerHTML.replace(/>.+<\//, '>' + message + '</');
     }
@@ -60,35 +35,30 @@ function showMessage(type, message) {
 }
 
 // 폼 제출 처리
-document.getElementById('counselorForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    // 폼 데이터 수집
+document.querySelector("#counselorAddBtn").addEventListener('click', function(e) {
+   	const cns_name = document.querySelector("#counselorName");
+	const cns_field = document.querySelector("#counselorField");
+	const cns_phone = document.querySelector("#counselorPhone");
+	const cns_mail = document.querySelector("#counselorEmail");
+	
+	 // 폼 데이터 수집
     const formData = {
-        name: document.getElementById('counselorName').value.trim(),
-        empNo: document.getElementById('counselorEmpNo').value.trim(),
-        field: document.getElementById('counselorField').value,
-        phone: document.getElementById('counselorPhone').value.trim(),
-        email: document.getElementById('counselorEmail').value.trim(),
+        name: cns_name.value.trim(),
+        field: cns_field.value,
+        phone: cns_phone.value.trim(),
+        email:cns_mail.value.trim(),
         status: '재직',
-        regDate: new Date().toISOString().split('T')[0]
     };
     
     // 유효성 검사
     if (!formData.name) {
-        showMessage('error', '이름을 입력해주세요.');
+        showMessage('error', '상담사의 이름을 입력해주세요.');
         document.getElementById('counselorName').focus();
         return;
     }
     
-    if (!formData.empNo) {
-        showMessage('error', '사번을 입력해주세요.');
-        document.getElementById('counselorEmpNo').focus();
-        return;
-    }
-    
     if (!formData.field) {
-        showMessage('error', '분야를 선택해주세요.');
+        showMessage('error', '상담분야를 선택해주세요.');
         document.getElementById('counselorField').focus();
         return;
     }
@@ -152,7 +122,7 @@ function cancelRegister() {
             window.location.href = 'counselor_list.html';
         }
     } else {
-        window.location.href = 'counselor_list.html';
+       location.href = 'counselor_list.html';
     }
 }
 
