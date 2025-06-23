@@ -20,7 +20,7 @@ public class Std_MileageHist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "mlg_id")
-    private Long mlgId;
+    private Integer mlgId;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "std_id", nullable = false)

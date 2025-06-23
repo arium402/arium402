@@ -21,7 +21,7 @@ public class Ncs_PrgInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "prg_id")
-    private Long prgId;
+    private Integer prgId;
     
     @Column(name = "prg_cd", length = 10, nullable = false, unique = true)
     private String prgCd;

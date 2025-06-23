@@ -17,7 +17,7 @@ public class Faq_Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "faq_id")
-    private Long faqId;
+    private Integer faqId;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ntc_id", nullable = false)

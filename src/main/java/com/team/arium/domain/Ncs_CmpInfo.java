@@ -15,7 +15,7 @@ public class Ncs_CmpInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cmp_id")
-    private Long cmpId;
+    private Integer cmpId;
     
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "aply_id", nullable = false, unique = true)

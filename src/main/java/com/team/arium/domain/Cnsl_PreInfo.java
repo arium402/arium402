@@ -19,8 +19,8 @@ public class Cnsl_PreInfo {
   
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "pre_servey_id")
-    private Long preSurveyId;
+    @Column(name = "pre_survey_id")
+    private Integer preSurveyId;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pre_type_cd", nullable = false, unique = true)

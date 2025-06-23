@@ -19,7 +19,7 @@ public class Core_CptInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CCL_ID")
-    private Long cclId;
+    private Integer cclId;
     
     @Column(name = "CCL_CD", length = 10, nullable = false, unique = true)
     private String cclCd;

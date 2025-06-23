@@ -15,7 +15,7 @@ public class Pst_Ntc {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ntc_id")
-    private Long ntcId;
+    private Integer ntcId;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ntc_type", nullable = false)
