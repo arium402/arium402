@@ -14,7 +14,8 @@ import java.time.LocalDateTime;
 @Table(name = "cnsl_pre_qst_opt",
        uniqueConstraints = @UniqueConstraint(columnNames = {"ore_qst_id", "opt_ord"}))
 public class Cnsl_PreQstOpt {
-    
+//상담 사전 검사 보기 
+	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "pre_opt_id")

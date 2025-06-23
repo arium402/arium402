@@ -17,7 +17,7 @@ import java.util.List;
 @Table(name = "cnlr_schd",
        uniqueConstraints = @UniqueConstraint(columnNames = {"empl_id", "work_year", "work_month", "work_day"}))
 public class Cnlr_Schd {
-    
+//상담사 근무 시간표 테이블    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "schd_id")

@@ -143,7 +143,7 @@ function deleteFAQPage() {
 function editFAQPage() {
     alert('F&Q 페이지 수정 화면으로 이동합니다.');
     // 실제로는 수정 페이지로 이동
-    // window.location.href = `faq-page-edit.html?category=${encodeURIComponent(currentCategory)}&subCategory=${encodeURIComponent(currentSubCategory)}`;
+    window.location.href = `/admin/faq_list_modify?category=${encodeURIComponent(currentCategory)}&subCategory=${encodeURIComponent(currentSubCategory)}`;
 }
 
 // 목록으로 돌아가기

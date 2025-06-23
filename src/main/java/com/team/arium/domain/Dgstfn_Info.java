@@ -15,7 +15,8 @@ import java.util.List;
 @Entity
 @Table(name = "dgstfn_info")
 public class Dgstfn_Info {
-    
+//만족도 조사 정보 
+	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "survey_id")

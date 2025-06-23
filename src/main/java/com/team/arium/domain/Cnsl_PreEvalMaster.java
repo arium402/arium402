@@ -14,7 +14,8 @@ import java.util.List;
 @Entity
 @Table(name = "cnsl_pre_eval_master")
 public class Cnsl_PreEvalMaster {
-    
+//상담 사전 검사 실시 정보 
+	
     @Id
     @Column(name = "pre_eval_id", length = 10)
     private String preEvalId;

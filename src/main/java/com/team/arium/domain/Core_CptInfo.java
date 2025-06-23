@@ -8,40 +8,41 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "core_cpt_info")
+@Data
+@Table(name = "CORE_CPT_INFO")
 public class Core_CptInfo {
-    
+// 핵심 역량 정보     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ccl_id")
+    @Column(name = "CCL_ID")
     private Long cclId;
     
-    @Column(name = "ccl_cd", length = 10, nullable = false, unique = true)
+    @Column(name = "CCL_CD", length = 10, nullable = false, unique = true)
     private String cclCd;
     
-    @Column(name = "up_ccl_id")
+    @Column(name = "UP_CCL_ID")
     private Integer upCclId;
     
-    @Column(name = "ccl_nm", length = 100, nullable = false)
+    @Column(name = "CCL_NM", length = 100, nullable = false)
     private String cclNm;
     
-    @Column(name = "ccl_desc", length = 500)
+    @Column(name = "CCL_DESC", length = 500)
     private String cclDesc;
     
     @CreationTimestamp
-    @Column(name = "reg_dt", nullable = false, updatable = false)
+    @Column(name = "REG_DT", nullable = false, updatable = false)
     private LocalDateTime regDt;
     
     @UpdateTimestamp
-    @Column(name = "upd_dt", insertable = false)
+    @Column(name = "UPD_DT", insertable = false)
     private LocalDateTime updDt;
-    
+ 
     @Builder.Default
     @OneToMany(mappedBy = "coreCptInfo", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Core_CptQst> questions = new ArrayList<>();
+ 
 }

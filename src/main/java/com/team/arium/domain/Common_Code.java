@@ -10,7 +10,8 @@ import lombok.*;
 @Entity
 @Table(name = "common_code")
 public class Common_Code {
-    
+//공통 코드 
+	
     @Id
     @Column(name = "code_id")
     private Integer codeId;

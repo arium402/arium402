@@ -11,30 +11,31 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "PST_ANS")
+@Table(name = "pst_ans")
 public class Pst_Ans {
-    
+//답변게시판 
+	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ANS_ID")
+    @Column(name = "ans_id")
     private Long ansId;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "POST_ID", nullable = false)
+    @JoinColumn(name = "post_id", nullable = false)
     private Pst_Post pstPost;
     
-    @Column(name = "WRITER", length = 50, nullable = false)
+    @Column(name = "writer", length = 50, nullable = false)
     private String writer;
     
     @Lob
-    @Column(name = "ANS_CONT", nullable = false)
+    @Column(name = "ans_cont", nullable = false)
     private String ansCont;
     
     @CreationTimestamp
-    @Column(name = "REG_DT", nullable = false, updatable = false)
+    @Column(name = "reg_dt", nullable = false, updatable = false)
     private LocalDateTime regDt;
     
     @UpdateTimestamp
-    @Column(name = "UPD_DT", insertable = false)
+    @Column(name = "upd_dt", insertable = false)
     private LocalDateTime updDt;
 }

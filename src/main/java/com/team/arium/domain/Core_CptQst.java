@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Table(name = "core_cpt_qst",
        uniqueConstraints = @UniqueConstraint(columnNames = {"ccl_id", "qst_ord"}))
 public class Core_CptQst {
-    
+//핵심 역량 진단 문항   
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "qst_id")

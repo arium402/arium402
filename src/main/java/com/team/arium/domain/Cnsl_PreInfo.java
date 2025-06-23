@@ -15,8 +15,9 @@ import java.util.List;
 @Entity
 @Table(name = "cnsl_pre_info")
 public class Cnsl_PreInfo {
-    
-    @Id
+//상담 사전 검사 정보  
+  
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "pre_servey_id")
     private Long preSurveyId;

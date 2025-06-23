@@ -12,40 +12,41 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "STD_MILEAGE_USE",
-       uniqueConstraints = @UniqueConstraint(columnNames = {"STD_ID", "APLY_DT"}))
+@Table(name = "std_mileage_use",
+       uniqueConstraints = @UniqueConstraint(columnNames = {"std_id", "aply_dt"}))
 public class Std_MileageUse {
-    
+// 학생 마일리지 사용 신청 
+	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "MLG_USE_ID")
+    @Column(name = "mlg_use_id")
     private Long mlgUseId;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "STD_ID", nullable = false)
+    @JoinColumn(name = "std_id", nullable = false)
     private Std_Info stdInfo;
     
-    @Column(name = "APLY_DT", nullable = false)
+    @Column(name = "aply_dt", nullable = false)
     private LocalDateTime aplyDt;
     
-    @Column(name = "APLY_MLG_SCORE", nullable = false)
+    @Column(name = "aply_mlg_score", nullable = false)
     private Integer aplyMlgScore;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "MLG_USE_CD", nullable = false)
+    @JoinColumn(name = "mlg_use_cd", nullable = false)
     private Common_Code mlgUseCd;
     
-    @Column(name = "PAY_DT")
+    @Column(name = "pay_dt")
     private LocalDate payDt;
     
-    @Column(name = "PAY_MONEY")
+    @Column(name = "pay_money")
     private Integer payMoney;
     
     @CreationTimestamp
-    @Column(name = "REG_DT", nullable = false, updatable = false)
+    @Column(name = "reg_dt", nullable = false, updatable = false)
     private LocalDateTime regDt;
     
     @UpdateTimestamp
-    @Column(name = "UPD_DT", insertable = false)
+    @Column(name = "upd_dt", insertable = false)
     private LocalDateTime updDt;
 }

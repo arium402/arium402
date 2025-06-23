@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="https://www.thymeleaf.org/">
+
+<body>
+    <!-- 비교과 등록 페이지 뷰 -->
+    <div th:fragment="noncurr_add_view" class="main-container">
+        <!-- 페이지 제목 -->
+        <div class="page-header">
+            <h1 class="page-title">비교과 등록</h1>
+            <button class="btn-list" onclick="goToList()">
+                <span class="material-symbols-outlined">list</span>
+                목록으로
+            </button>
+        </div>
+        <div class="title-divider"></div>
+
+        <!-- 등록 폼 섹션 -->
+        <div class="register-form-section">
+            <!-- 대표 사진 영역 -->
+            <div class="program-image-section">
+                <label class="form-label required">프로그램 대표 사진</label>
+                <div class="image-upload-area">
+                    <input type="file" id="programImageInput" name="programImage" accept="image/*" onchange="handleImageSelect(this)">
+                    <div class="image-upload-content">
+                        <i class="fas fa-camera"></i>
+                        <div>대표 사진 업로드</div>
+                        <small>클릭하여 선택</small>
+                    </div>
+                </div>
+                <div class="image-info">
+                    • 권장 크기: 400×300px<br>
+                    • 파일 형식: JPG, PNG<br>
+                    • 최대 크기: 5MB
+                </div>
+            </div>
+
+            <!-- 폼 컨텐츠 영역 -->
+            <div class="form-content-section">
+                <form id="programForm" th:action="@{/admin/noncurr_add}" method="post" enctype="multipart/form-data">
+                    <div class="form-grid">
+                        <!-- 비교과명 -->
+                        <div class="form-item full-width">
+                            <label class="form-label required">비교과명</label>
+                            <input type="text" class="form-input" id="programName" name="programName" placeholder="비교과 프로그램명을 입력하세요" required>
+                        </div>
+
+                        <!-- 모집기간 -->
+                        <div class="form-item">
+                            <label class="form-label required">모집 시작일</label>
+                            <input type="date" class="form-input" id="recruitStart" name="recruitStart" required>
+                        </div>
+
+                        <div class="form-item">
+                            <label class="form-label required">모집 마감일</label>
+                            <input type="date" class="form-input" id="recruitEnd" name="recruitEnd" required>
+                        </div>
+
+                        <!-- 모집인원 -->
+                        <div class="form-item">
+                            <label class="form-label required">모집인원</label>
+                            <input type="number" class="form-input" id="capacity" name="capacity" placeholder="30" min="1" required>
+                        </div>
+
+                        <!-- 운영부서 -->
+                        <div class="form-item">
+                            <label class="form-label required">운영부서</label>
+                            <select class="form-input" id="department" name="department" required>
+                                <option value="">선택하세요</option>
+                                <option value="교양학부">교양학부</option>
+                                <option value="취업지원처">취업지원처</option>
+                                <option value="정보과학과">정보과학과</option>
+                                <option value="학생처">학생처</option>
+                                <option value="창업지원센터">창업지원센터</option>
+                                <option value="학습지원센터">학습지원센터</option>
+                                <option value="사회봉사센터">사회봉사센터</option>
+                                <option value="연구처">연구처</option>
+                                <option value="컴퓨터과학과">컴퓨터과학과</option>
+                            </select>
+                        </div>
+
+                        <!-- 운영기간 -->
+                        <div class="form-item">
+                            <label class="form-label required">운영 시작일</label>
+                            <input type="date" class="form-input" id="operationStart" name="operationStart" required>
+                        </div>
+
+                        <div class="form-item">
+                            <label class="form-label required">운영 종료일</label>
+                            <input type="date" class="form-input" id="operationEnd" name="operationEnd" required>
+                        </div>
+
+                        <!-- 문의 전화번호 -->
+                        <div class="form-item">
+                            <label class="form-label required">문의 전화번호</label>
+                            <input type="tel" class="form-input" id="contact" name="contact" placeholder="02-3668-4321" required>
+                        </div>
+
+                        <!-- 만족도조사 마감일 -->
+                        <div class="form-item">
+                            <label class="form-label required">만족도조사 마감일</label>
+                            <input type="date" class="form-input" id="surveyDeadline" name="surveyDeadline" required>
+                        </div>
+
+                        <!-- 마일리지 점수 -->
+                        <div class="form-item">
+                            <label class="form-label required">마일리지 점수</label>
+                            <input type="number" class="form-input" id="mileagePoints" name="mileagePoints" placeholder="10000" min="0" required>
+                        </div>
+
+                        <!-- 핵심역량 체크 -->
+                        <div class="form-item full-width">
+                            <label class="form-label required">핵심역량</label>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="competency1" name="competencies" value="창의적 혁신역량" checked>
+                                    <label for="competency1">창의적 혁신역량</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="competency2" name="competencies" value="융합적 탐구역량" checked>
+                                    <label for="competency2">융합적 탐구역량</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="competency3" name="competencies" value="협력적 소통역량">
+                                    <label for="competency3">협력적 소통역량</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="competency4" name="competencies" value="글로벌 리더역량">
+                                    <label for="competency4">글로벌 리더역량</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 학생용 첨부파일 -->
+                        <div class="form-item full-width">
+                            <label class="form-label">학생용 첨부파일 (안내서, 신청서 등)</label>
+                            <div class="file-input">
+                                <input type="file" id="fileInput" name="attachmentFile" accept=".pdf,.doc,.docx,.hwp,.jpg,.jpeg,.png" onchange="handleFileSelect(this)">
+                                <p><i class="fas fa-cloud-upload-alt"></i> 클릭하여 파일을 선택하세요</p>
+                                <small>PDF, DOC, HWP, 이미지 파일 업로드 가능 (학생이 다운로드할 수 있는 자료)</small>
+                            </div>
+                            <div id="filePreview" class="file-preview" style="display: none;"></div>
+                        </div>
+
+                        <!-- 설명(세부사항) -->
+                        <div class="form-item full-width">
+                            <label class="form-label required">설명 (세부사항)</label>
+                            <textarea class="form-textarea" id="description" name="description" placeholder="프로그램에 대한 상세한 설명을 입력하세요..." required></textarea>
+                        </div>
+                    </div>
+
+                    <!-- 액션 버튼 -->
+                    <div class="action-buttons">
+                        <button type="button" class="btn-action btn-preview" onclick="showPreview()">
+                            <span class="material-symbols-outlined">visibility</span>
+                            미리보기
+                        </button>
+                        <button type="button" class="btn-action btn-reset" onclick="resetForm()">
+                            <span class="material-symbols-outlined">refresh</span>
+                            초기화
+                        </button>
+                        <button type="button" class="btn-action btn-cancel" onclick="cancelForm()">
+                            <span class="material-symbols-outlined">close</span>
+                            취소
+                        </button>
+                        <button type="submit" class="btn-action btn-register">
+                            <span class="material-symbols-outlined">save</span>
+                            등록
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- 미리보기 모달 -->
+        <div id="previewModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title">프로그램 미리보기</h2>
+                    <button class="close" onclick="closePreview()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="preview-container">
+                        <div id="previewImage" class="preview-image">
+                            대표 사진 미리보기
+                        </div>
+                        <h3 id="previewTitle" class="preview-title">프로그램명</h3>
+                        <div class="preview-info">
+                            <div class="preview-item">
+                                <span class="preview-label">모집기간</span>
+                                <span id="previewRecruitPeriod" class="preview-value">-</span>
+                            </div>
+                            <div class="preview-item">
+                                <span class="preview-label">학년/학점</span>
+                                <span class="preview-value">제한없음</span>
+                            </div>
+                            <div class="preview-item">
+                                <span class="preview-label">캠퍼스</span>
+                                <span class="preview-value">온라인/전국캠퍼스</span>
+                            </div>
+                            <div class="preview-item">
+                                <span class="preview-label">학과</span>
+                                <span class="preview-value">전체 학과</span>
+                            </div>
+                            <div class="preview-item">
+                                <span class="preview-label">운영부서</span>
+                                <span id="previewDepartment" class="preview-value">-</span>
+                            </div>
+                            <div class="preview-item">
+                                <span class="preview-label">문의</span>
+                                <span id="previewContact" class="preview-value">-</span>
+                            </div>
+                            <div class="preview-item">
+                                <span class="preview-label">마일리지</span>
+                                <span id="previewMileage" class="preview-value">0 포인트</span>
+                            </div>
+                        </div>
+                        <div class="preview-description">
+                            <h4>세부내용</h4>
+                            <div id="previewDescription">프로그램 설명이 여기에 표시됩니다.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

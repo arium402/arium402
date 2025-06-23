@@ -55,7 +55,7 @@ function editFAQ() {
     if (confirm('F&Q를 수정하시겠습니까?')) {
         alert('F&Q 수정 페이지로 이동합니다.');
         // 실제로는 수정 페이지로 이동
-        // window.location.href = 'faq-edit.html?id=1';
+        window.location.href = '/admin/faq_modify?id=1';
     }
 }
 

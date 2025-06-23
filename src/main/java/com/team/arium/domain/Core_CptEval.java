@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "core_cpt_eval")
 public class Core_CptEval {
-    
+//핵심 역량 진단 실시    
     @Id
     @Column(name = "eval_id", length = 10)
     private String evalId;

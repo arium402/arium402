@@ -14,7 +14,8 @@ import java.time.LocalDateTime;
 @Table(name = "dgstfn_eval;",
        uniqueConstraints = @UniqueConstraint(columnNames = {"std_id", "sur_id"}))
 public class Dgstfn_Eval {
-    
+//만족도 조사 실시 
+	
     @Id
     @Column(name = "sur_eval_id", length = 10)
     private String surEvalId;

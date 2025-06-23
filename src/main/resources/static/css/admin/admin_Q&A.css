@@ -1,4 +1,52 @@
+/* 전체 기본 설정 */
+* {
+    border-radius: 0 !important;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+}
+
+/* 레이아웃 */
+#layoutSidenav {
+    display: flex;
+    margin-top: 70px;
+}
+
+#layoutSidenav_nav {
+    width: 250px;
+    position: fixed;
+    top: 70px;
+    left: 0;
+    bottom: 0;
+    overflow-y: auto;
+    overflow-x: visible;
+    z-index: 900;
+    transition: transform 0.3s ease;
+}
+
+#layoutSidenav_nav.collapsed {
+    transform: translateX(-100%);
+}
+
+#layoutSidenav_content {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+    min-height: calc(100vh - 70px);
+    background-color: #f8f9fa;
+    transition: margin-left 0.3s ease, width 0.3s ease;
+}
+
+#layoutSidenav_content.expanded {
+    margin-left: 0;
+    width: 100%;
+}
 
 /* 메인 컨텐츠 스타일 */
 .main-content {
@@ -377,4 +425,3 @@
         max-width: 150px;
     }
 }
-
