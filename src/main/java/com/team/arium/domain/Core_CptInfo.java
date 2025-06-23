@@ -13,32 +13,32 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "CORE_CPT_INFO")
+@Table(name = "core_cpt_info")
 public class Core_CptInfo {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "CCL_ID")
+    @Column(name = "ccl_id")
     private Long cclId;
     
-    @Column(name = "CCL_CD", length = 10, nullable = false, unique = true)
+    @Column(name = "ccl_cd", length = 10, nullable = false, unique = true)
     private String cclCd;
     
-    @Column(name = "UP_CCL_ID")
+    @Column(name = "up_ccl_id")
     private Integer upCclId;
     
-    @Column(name = "CCL_NM", length = 100, nullable = false)
+    @Column(name = "ccl_nm", length = 100, nullable = false)
     private String cclNm;
     
-    @Column(name = "CCL_DESC", length = 500)
+    @Column(name = "ccl_desc", length = 500)
     private String cclDesc;
     
     @CreationTimestamp
-    @Column(name = "REG_DT", nullable = false, updatable = false)
+    @Column(name = "reg_dt", nullable = false, updatable = false)
     private LocalDateTime regDt;
     
     @UpdateTimestamp
-    @Column(name = "UPD_DT", insertable = false)
+    @Column(name = "upd_dt", insertable = false)
     private LocalDateTime updDt;
     
     @Builder.Default

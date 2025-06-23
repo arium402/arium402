@@ -13,24 +13,24 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "CNSL_PRE_INFO")
+@Table(name = "cnsl_pre_info")
 public class Cnsl_PreInfo {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "PRE_SURVEY_ID")
+    @Column(name = "pre_servey_id")
     private Long preSurveyId;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PRE_TYPE_CD", nullable = false, unique = true)
+    @JoinColumn(name = "pre_type_cd", nullable = false, unique = true)
     private Common_Code preTypeCd;
     
     @CreationTimestamp
-    @Column(name = "REG_DT", nullable = false, updatable = false)
+    @Column(name = "reg_dt", nullable = false, updatable = false)
     private LocalDateTime regDt;
     
     @UpdateTimestamp
-    @Column(name = "UPD_DT", insertable = false)
+    @Column(name = "upd_Dt", insertable = false)
     private LocalDateTime updDt;
     
     @Builder.Default

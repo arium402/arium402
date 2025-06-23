@@ -8,19 +8,19 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "COMMON_CODE")
+@Table(name = "common_code")
 public class Common_Code {
     
     @Id
-    @Column(name = "CODE_ID")
+    @Column(name = "code_id")
     private Integer codeId;
     
-    @Column(name = "CODE_TYPE", length = 30, nullable = false)
+    @Column(name = "code_type", length = 30, nullable = false)
     private String codeType;
     
-    @Column(name = "CODE", length = 60, nullable = false)
+    @Column(name = "code", length = 60, nullable = false)
     private String code;
     
-    @Column(name = "CODE_DESC", length = 100)
+    @Column(name = "code_desc", length = 100)
     private String codeDesc;
 }

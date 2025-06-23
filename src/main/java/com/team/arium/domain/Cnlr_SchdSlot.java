@@ -12,39 +12,39 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "CNLR_SCHD_SLOT",
-       uniqueConstraints = @UniqueConstraint(columnNames = {"SCHD_ID", "CNSL_TIME"}))
+@Table(name = "cnlr_schd_slot",
+       uniqueConstraints = @UniqueConstraint(columnNames = {"schd_id", "cnsl_time"}))
 public class Cnlr_SchdSlot {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "SLOT_ID")
+    @Column(name = "slot_id")
     private Long slotId;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "SCHD_ID", nullable = false)
+    @JoinColumn(name = "schd_id", nullable = false)
     private Cnlr_Schd cnlrSchd;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "SLOT_TYPE_ID", nullable = false)
+    @JoinColumn(name = "slot_type_id", nullable = false)
     private Cnlr_SlotType cnlrSlotType;
     
-    @Column(name = "CNSL_TIME")
+    @Column(name = "cnsl_time")
     private LocalTime cnslTime;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "STD_ID")
+    @JoinColumn(name = "std_id")
     private Std_Info stdInfo;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CNSL_APLY_ID")
+    @JoinColumn(name = "cnsl_aply_id")
     private Cnsl_Aply cnslAply;
     
     @CreationTimestamp
-    @Column(name = "REG_DT", nullable = false, updatable = false)
+    @Column(name = "reg_dt", nullable = false, updatable = false)
     private LocalDateTime regDt;
     
     @UpdateTimestamp
-    @Column(name = "UPD_DT", insertable = false)
+    @Column(name = "upd_dt", insertable = false)
     private LocalDateTime updDt;
 }
