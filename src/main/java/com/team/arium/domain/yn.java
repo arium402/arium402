@@ -5,5 +5,5 @@ package com.team.arium.domain;
  * 자바에서 타입-세이프하게 관리하기 위한 Enum 클래스입니다.
  */
 public enum yn {
-    y, n
+    Y,N
 }
