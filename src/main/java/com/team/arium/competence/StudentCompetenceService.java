@@ -34,7 +34,7 @@ public class StudentCompetenceService {
 				}
 			}
 		}
-		
+
 		Map<String, Object> data = new HashMap<>();
 		data.put("result", result);
 		data.put("upcom", upcom);

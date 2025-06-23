@@ -30,9 +30,9 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:each="com : ${data.result}" th:if="${com.categoryName == up.cclNm}">
-								<td class="competency-name" th:text="${com.cclNm}"></td>
-								<td class="competency-description" th:text="${com.cclDesc}"></td>
+							<tr th:each="com : ${data.result}">
+								<td th:if="${#strings.equals(com.categoryName, up.cclNm)}" class="competency-name" th:text="${com.cclNm}"></td>
+								<td th:if="${#strings.equals(com.categoryName, up.cclNm)}" class="competency-description" th:text="${com.cclDesc}"></td>
 							</tr>
 						</tbody>
 					</table>

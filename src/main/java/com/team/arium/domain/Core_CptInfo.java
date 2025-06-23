@@ -8,11 +8,11 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Data
 @Table(name = "CORE_CPT_INFO")
 public class Core_CptInfo {
     
@@ -40,8 +40,9 @@ public class Core_CptInfo {
     @UpdateTimestamp
     @Column(name = "UPD_DT", insertable = false)
     private LocalDateTime updDt;
-    
+ 
     @Builder.Default
     @OneToMany(mappedBy = "coreCptInfo", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Core_CptQst> questions = new ArrayList<>();
+ 
 }
