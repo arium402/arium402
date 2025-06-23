@@ -9,19 +9,20 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "CNLR_SLOT_TYPE")
+@Table(name = "cnlr_slot_type")
 public class Cnlr_SlotType {
-    
+//상담시간 유형 
+	
     @Id
-    @Column(name = "SLOT_TYPE_ID")
+    @Column(name = "slot_type_id")
     private Integer slotTypeId;
     
-    @Column(name = "SLOT_NAME", length = 20, nullable = false)
+    @Column(name = "slot_name", length = 20, nullable = false)
     private String slotName;
     
-    @Column(name = "START_TIME", nullable = false)
+    @Column(name = "start_time", nullable = false)
     private LocalTime startTime;
     
-    @Column(name = "END_TIME", nullable = false)
+    @Column(name = "end_time", nullable = false)
     private LocalTime endTime;
 }

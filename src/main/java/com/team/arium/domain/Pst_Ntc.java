@@ -8,15 +8,16 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "PST_NTC")
+@Table(name = "pst_ntc")
 public class Pst_Ntc {
-    
+//게시판 
+	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "NTC_ID")
+    @Column(name = "ntc_id")
     private Long ntcId;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "NTC_TYPE", nullable = false)
+    @JoinColumn(name = "ntc_type", nullable = false)
     private Common_Code ntcType;
 }

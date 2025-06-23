@@ -13,45 +13,46 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "CNSL_APLY")
+@Table(name = "cnsl_aply")
 public class Cnsl_Aply {
-    
+//상담 신청 
+	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "CNSL_APLY_ID")
+    @Column(name = "cnsl_aply_id")
     private Long cnslAplyId;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "STD_ID", nullable = false)
+    @JoinColumn(name = "std_id", nullable = false)
     private Std_Info stdInfo;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "EMPL_ID", nullable = false)
+    @JoinColumn(name = "empl_id", nullable = false)
     private Empl_Info emplInfo;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PRE_EVAL_ID", nullable = false)
+    @JoinColumn(name = "pre_eval_id", nullable = false)
     private Cnsl_PreEvalMaster cnslPreEvalMaster;
     
-    @Column(name = "CNCL_DT", nullable = false)
+    @Column(name = "cncl_dt", nullable = false)
     private LocalDate cnclDt;
     
-    @Column(name = "CNCL_TIME", nullable = false)
+    @Column(name = "cncl_time", nullable = false)
     private LocalTime cnclTime;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CNSL_STAT_CD", nullable = false)
+    @JoinColumn(name = "cnsl_stat_cd", nullable = false)
     private Common_Code cnslStatCd;
     
     @Lob
-    @Column(name = "CNSL_NOTE")
+    @Column(name = "cnsl_note")
     private String cnslNote;
     
     @CreationTimestamp
-    @Column(name = "REG_DT", nullable = false, updatable = false)
+    @Column(name = "reg_dt", nullable = false, updatable = false)
     private LocalDateTime regDt;
     
     @UpdateTimestamp
-    @Column(name = "UPD_DT", insertable = false)
+    @Column(name = "upd_dt", insertable = false)
     private LocalDateTime updDt;
 }

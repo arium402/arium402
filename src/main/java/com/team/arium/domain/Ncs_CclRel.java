@@ -8,26 +8,30 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "NCS_CCL_REL")
+@Table(name = "ncs_ccl_rel")
 @IdClass(Ncs_CclRelId.class)
 public class Ncs_CclRel {
-    
+//비교과 프로그램 - 핵심역량 연결
+	
+	//'프로그램ID', '핵심 역량ID', '핵심역량 점수'
+	
+	
     @Id
-    @Column(name = "PRG_ID")
+    @Column(name = "prg_id")
     private Long prgId;
     
     @Id
-    @Column(name = "CCL_ID")
+    @Column(name = "ccl_id")
     private Long cclId;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PRG_ID", insertable = false, updatable = false)
+    @JoinColumn(name = "prg_id", insertable = false, updatable = false)
     private Ncs_PrgInfo ncsPrgInfo;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CCL_ID", insertable = false, updatable = false)
+    @JoinColumn(name = "ccl_id", insertable = false, updatable = false)
     private Core_CptInfo coreCptInfo;
     
-    @Column(name = "CCL_SCORE", nullable = false)
+    @Column(name = "ccl_score", nullable = false)
     private Integer cclScore;
 }

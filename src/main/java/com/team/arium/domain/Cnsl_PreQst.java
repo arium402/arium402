@@ -13,35 +13,36 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "CNSL_PRE_QST",
-       uniqueConstraints = @UniqueConstraint(columnNames = {"PRE_SURVEY_ID", "PRE_QST_ORD"}))
+@Table(name = "cnsl_pre_qst",
+       uniqueConstraints = @UniqueConstraint(columnNames = {"pre_survey_id", "pre_qst_ord"}))
 public class Cnsl_PreQst {
-    
+//상담 사전 검사 문항 
+	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "PRE_QST_ID")
+    @Column(name = "pre_qst_id")
     private Long preQstId;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PRE_SURVEY_ID", nullable = false)
+    @JoinColumn(name = "pre_survey_id", nullable = false)
     private Cnsl_PreInfo cnslPreInfo;
     
-    @Column(name = "PRE_QST_CONTENT", length = 500, nullable = false)
+    @Column(name = "pre_qst_content", length = 500, nullable = false)
     private String preQstContent;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PRE_QST_TYPE", nullable = false)
+    @JoinColumn(name = "pre_qst_type", nullable = false)
     private Common_Code preQstType;
     
-    @Column(name = "PRE_QST_ORD", nullable = false)
+    @Column(name = "pre_qst_ord", nullable = false)
     private Integer preQstOrd;
     
     @CreationTimestamp
-    @Column(name = "REG_DT", nullable = false, updatable = false)
+    @Column(name = "reg_dt", nullable = false, updatable = false)
     private LocalDateTime regDt;
     
     @UpdateTimestamp
-    @Column(name = "UPD_DT", insertable = false)
+    @Column(name = "upd_Dt", insertable = false)
     private LocalDateTime updDt;
     
     @Builder.Default

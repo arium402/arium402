@@ -13,24 +13,25 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "DGSTFN_INFO")
+@Table(name = "dgstfn_info")
 public class Dgstfn_Info {
-    
+//만족도 조사 정보 
+	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "SURVEY_ID")
+    @Column(name = "survey_id")
     private Long surveyId;
     
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PRG_ID", nullable = false, unique = true)
+    @JoinColumn(name = "prg_id", nullable = false, unique = true)
     private Ncs_PrgInfo ncsPrgInfo;
     
     @CreationTimestamp
-    @Column(name = "REG_DT", nullable = false, updatable = false)
+    @Column(name = "reg_dt", nullable = false, updatable = false)
     private LocalDateTime regDt;
     
     @UpdateTimestamp
-    @Column(name = "UPD_DT", insertable = false)
+    @Column(name = "upd_dt", insertable = false)
     private LocalDateTime updDt;
     
     @Builder.Default

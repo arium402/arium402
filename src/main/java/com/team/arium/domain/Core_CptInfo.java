@@ -15,7 +15,7 @@ import java.util.List;
 @Data
 @Table(name = "CORE_CPT_INFO")
 public class Core_CptInfo {
-    
+// 핵심 역량 정보     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CCL_ID")

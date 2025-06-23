@@ -242,14 +242,14 @@ function searchFAQ() {
 
 // 페이지 등록 기능 - 페이지 등록 화면으로 이동
 function registerPage() {
-    window.location.href = 'faq-page-register.html';
+    window.location.href = '/admin/faq_list_add';
 }
 
 // F&Q 등록 기능
 function registerFAQ() {
     alert('개별 F&Q 등록 화면으로 이동합니다.');
     // 실제로는 F&Q 개별 등록 페이지로 이동
-    // window.location.href = 'faq-item-register.html';
+    window.location.href = '/admin/faq_add';
 }
 
 // 공개/비공개 필터 이벤트

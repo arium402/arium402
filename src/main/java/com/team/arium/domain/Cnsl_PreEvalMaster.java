@@ -12,23 +12,24 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "CNSL_PRE_EVAL_MASTER")
+@Table(name = "cnsl_pre_eval_master")
 public class Cnsl_PreEvalMaster {
-    
+//상담 사전 검사 실시 정보 
+	
     @Id
-    @Column(name = "PRE_EVAL_ID", length = 10)
+    @Column(name = "pre_eval_id", length = 10)
     private String preEvalId;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "STD_ID", nullable = false)
+    @JoinColumn(name = "std_id", nullable = false)
     private Std_Info stdInfo;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PRE_SURVEY_ID", nullable = false)
+    @JoinColumn(name = "pre_survey_id", nullable = false)
     private Cnsl_PreInfo cnslPreInfo;
     
     @CreationTimestamp
-    @Column(name = "REG_DT", nullable = false, updatable = false)
+    @Column(name = "reg_dt", nullable = false, updatable = false)
     private LocalDateTime regDt;
     
     @Builder.Default

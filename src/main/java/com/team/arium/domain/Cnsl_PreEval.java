@@ -11,39 +11,40 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "CNSL_PRE_EVAL")
+@Table(name = "cnsl_pre_eval")
 @IdClass(Cnsl_PreEvalId.class)
 public class Cnsl_PreEval {
-    
+// 상담 사전검사 실시 
+	
     @Id
-    @Column(name = "PRE_EVAL_ID", length = 10)
+    @Column(name = "pre_eval_id", length = 10)
     private String preEvalId;
     
     @Id
-    @Column(name = "PRE_QST_ID")
+    @Column(name = "pre_qst_id")
     private Long preQstId;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PRE_EVAL_ID", insertable = false, updatable = false)
+    @JoinColumn(name = "pre_eval_id", insertable = false, updatable = false)
     private Cnsl_PreEvalMaster cnslPreEvalMaster;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PRE_QST_ID", insertable = false, updatable = false)
+    @JoinColumn(name = "pre_qst_id", insertable = false, updatable = false)
     private Cnsl_PreQst cnslPreQst;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PRE_OPT_ID")
+    @JoinColumn(name = "pre_opt_id")
     private Cnsl_PreQstOpt cnslPreQstOpt;
     
     @Lob
-    @Column(name = "ANS_TEXT")
+    @Column(name = "ans_text")
     private String ansText;
     
     @CreationTimestamp
-    @Column(name = "REG_DT", nullable = false, updatable = false)
+    @Column(name = "reg_dt", nullable = false, updatable = false)
     private LocalDateTime regDt;
     
     @UpdateTimestamp
-    @Column(name = "UPD_DT", insertable = false)
+    @Column(name = "upd_dt", insertable = false)
     private LocalDateTime updDt;
 }
