@@ -1,3 +1,36 @@
+// 페이지 로드 시 사이드바 상태 초기화
+document.addEventListener('DOMContentLoaded', function() {
+    // 약간의 지연을 두고 실행 (DOM 완전 로드 후)
+    setTimeout(function() {
+        // 모든 메뉴 비활성화
+        document.querySelectorAll('.nav-link.main-menu').forEach(menu => {
+            menu.classList.remove('active');
+        });
+        document.querySelectorAll('.sub-menu .nav-link').forEach(submenu => {
+            submenu.classList.remove('active');
+        });
+        
+        // 상담사 관리 대메뉴 찾기 및 활성화
+        const mainMenus = document.querySelectorAll('.nav-link.main-menu');
+        mainMenus.forEach(menu => {
+            const icon = menu.querySelector('.material-symbols-outlined');
+            if (icon && icon.textContent.trim() === 'account_circle') {
+                menu.classList.add('active');
+                console.log('상담사 관리 메뉴 활성화됨');
+            }
+        });
+        
+        // 상담사 목록 소메뉴 활성화
+        const subMenuLinks = document.querySelectorAll('.sub-menu .nav-link');
+        subMenuLinks.forEach(link => {
+            if (link.textContent.trim() === '상담사 목록' || link.href.includes('admin_counselorList')) {
+                link.classList.add('active');
+                console.log('상담사 목록 메뉴 활성화됨');
+            }
+        });
+    }, 100);
+});
+
 // 상담분류 필터 기능
 document.getElementById('categoryFilter').addEventListener('change', function() {
     const selectedCategory = this.value;
@@ -92,9 +125,29 @@ document.querySelector('.search-btn').addEventListener('click', function() {
     searchCounselors(searchType, searchText);
 });
 
+// 검색 함수
+function searchCounselors(searchType, searchText) {
+    const rows = document.querySelectorAll('.counselor-table tbody tr');
+    
+    rows.forEach(row => {
+        let cellIndex = 0;
+        switch(searchType) {
+            case 'name': cellIndex = 1; break;
+            case 'empno': cellIndex = 2; break;
+            case 'field': cellIndex = 3; break;
+            case 'phone': cellIndex = 4; break;
+        }
+        
+        const cellText = row.cells[cellIndex].textContent.trim().toLowerCase();
+        const searchLower = searchText.toLowerCase();
+        
+        row.style.display = cellText.includes(searchLower) ? '' : 'none';
+    });
+}
+
 // 등록 버튼 클릭시 상담사등록페이지로 이동 
 document.querySelector('.register-btn').addEventListener('click', function() {
-    location.href="./admin_counselorList_add";
+    location.href = "./admin_counselorList_add";
 });
 
 // 상세 페이지로 이동하는 함수
