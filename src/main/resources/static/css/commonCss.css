@@ -78,7 +78,7 @@ body {
 .sb-topnav .btn-link {
     color: white !important;
     padding: 0 15px;
-    height: 100px;
+    height: 70px;
     display: flex;
     align-items: center;
     transition: all 0.3s ease;
@@ -90,7 +90,7 @@ body {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* 레이아웃 */
+/* 레이아웃 - 사이드바 토글 가능하도록 수정 */
 #layoutSidenav {
     display: flex;
     margin-top: 70px;
@@ -106,8 +106,11 @@ body {
     overflow-x: visible;
     z-index: 900;
     transition: transform 0.3s ease;
+    /* 기본적으로 펼쳐진 상태 */
+    transform: translateX(0);
 }
 
+/* 축소 상태 클래스 - 데스크톱에서 사이드바 숨김 */
 #layoutSidenav_nav.collapsed {
     transform: translateX(-100%);
 }
@@ -120,6 +123,7 @@ body {
     transition: margin-left 0.3s ease, width 0.3s ease;
 }
 
+/* 확장 상태 클래스 - 콘텐츠 전체 폭 사용 */
 #layoutSidenav_content.expanded {
     margin-left: 0;
     width: 100%;
@@ -184,7 +188,7 @@ body {
     font-size: 1.3rem;
 }
 
-/* 하위 메뉴 스타일 */
+/* 하위 메뉴 스타일 - 강화된 버전 */
 .sub-menu {
     position: static;
     background: linear-gradient(135deg, #2c3e50 0%, #1a252f 100%);
@@ -194,14 +198,22 @@ body {
     transition: all 0.3s ease;
     border-left: 4px solid #3498db;
     margin-left: 20px;
+    opacity: 0;
+    visibility: hidden;
 }
 
+/* active 클래스가 있는 메인 메뉴의 하위 메뉴는 항상 열려있도록 - 최우선 적용 */
 .nav-item .main-menu.active + .sub-menu {
-    max-height: 200px;
+    max-height: 300px !important;
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 
+/* 호버 시에도 하위 메뉴 열기 */
 .nav-item:hover .sub-menu {
-    max-height: 200px;
+    max-height: 300px;
+    opacity: 1;
+    visibility: visible;
 }
 
 .sub-menu .nav-link {
@@ -312,19 +324,27 @@ body {
     opacity: 0.6;
 }
 
-/* 반응형 */
+/* 반응형 - 모바일에서 사이드바 토글 */
 @media (max-width: 768px) {
+    /* 모바일에서는 기본적으로 숨김 */
     #layoutSidenav_nav {
         width: 100%;
         transform: translateX(-100%);
         transition: transform 0.3s ease;
     }
     
+    /* 모바일에서 show 클래스가 있을 때만 표시 */
     #layoutSidenav_nav.show {
         transform: translateX(0);
     }
     
+    /* 모바일에서는 컨텐츠가 전체 폭 사용 */
     #layoutSidenav_content {
+        margin-left: 0;
+        width: 100%;
+    }
+    
+    #layoutSidenav_content.expanded {
         margin-left: 0;
         width: 100%;
     }
@@ -366,6 +386,32 @@ body {
     }
 }
 
+/* 데스크톱에서 사이드바 토글 가능 */
+@media (min-width: 769px) {
+    /* 기본 상태 - 펼쳐진 상태 */
+    #layoutSidenav_nav {
+        transform: translateX(0);
+        width: 250px;
+    }
+    
+    /* collapsed 클래스가 있을 때 숨김 */
+    #layoutSidenav_nav.collapsed {
+        transform: translateX(-100%);
+    }
+    
+    /* 기본 콘텐츠 위치 */
+    #layoutSidenav_content {
+        margin-left: 250px;
+        width: calc(100% - 250px);
+    }
+    
+    /* expanded 클래스가 있을 때 전체 폭 사용 */
+    #layoutSidenav_content.expanded {
+        margin-left: 0;
+        width: 100%;
+    }
+}
+
 /* 스크롤바 스타일 */
 .sb-sidenav::-webkit-scrollbar {
     width: 6px;
@@ -381,4 +427,17 @@ body {
 
 .sb-sidenav::-webkit-scrollbar-thumb:hover {
     background: #2980b9;
+}
+
+/* 디버깅용 스타일 (문제 해결 후 제거 가능) */
+.debug-sidebar {
+    position: fixed;
+    top: 100px;
+    right: 10px;
+    background: rgba(0,0,0,0.8);
+    color: white;
+    padding: 10px;
+    font-size: 12px;
+    z-index: 9999;
+    display: none; /* 디버깅 시에만 block으로 변경 */
 }

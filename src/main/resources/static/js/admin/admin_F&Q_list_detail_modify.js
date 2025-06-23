@@ -454,7 +454,7 @@
        if (confirm('페이지를 수정하시겠습니까?')) {
            alert('페이지가 성공적으로 수정되었습니다.');
            // 여기서 실제 수정 로직 구현
-           window.location.href = 'faq-detail.html'; // 상세 페이지로 돌아가기
+           window.location.href = '/admin/faq_list_detail'; // 상세 페이지로 돌아가기
        }
    }
 

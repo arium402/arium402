@@ -10,28 +10,28 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "CORE_CPT_EVAL")
+@Table(name = "core_cpt_eval")
 public class Core_CptEval {
 //핵심 역량 진단 실시    
     @Id
-    @Column(name = "EVAL_ID", length = 10)
+    @Column(name = "eval_id", length = 10)
     private String evalId;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "QST_ID", nullable = false)
+    @JoinColumn(name = "qst_id", nullable = false)
     private Core_CptQst coreCptQst;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "STD_ID", nullable = false)
+    @JoinColumn(name = "std_id", nullable = false)
     private Std_Info stdInfo;
     
-    @Column(name = "ANS_SCORE", nullable = false)
+    @Column(name = "ans_score", nullable = false)
     private Integer ansScore;
     
-    @Column(name = "ANS_DT", nullable = false)
+    @Column(name = "ans_dt", nullable = false)
     private LocalDateTime ansDt;
     
     @CreationTimestamp
-    @Column(name = "REG_DT", nullable = false, updatable = false)
+    @Column(name = "reg_dt", nullable = false, updatable = false)
     private LocalDateTime regDt;
 }

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="https://www.thymeleaf.org/">
+<body>
+<!-- FAQ 추가 뷰 영역 -->
+<div th:fragment="faq_add_view">
+    <div class="main-content">
+        <!-- 페이지 제목 -->
+        <h1 class="page-title">페이지 등록</h1>
+        <div class="title-divider"></div>
+        
+        <!-- 등록 폼 -->
+        <div class="register-container">
+            <!-- 대분류 선택 -->
+            <div class="form-group">
+                <label class="form-label">대분류</label>
+                <select class="form-select" id="mainCategory">
+                    <option value="">선택하세요</option>
+                    <option value="extracurricular">비교과</option>
+                    <option value="counseling">상담</option>
+                    <option value="etc">기타</option>
+                </select>
+            </div>
+
+            <!-- 소분류 선택 -->
+            <div class="form-group">
+                <label class="form-label">소분류</label>
+                <select class="form-select" id="subCategory">
+                    <option value="">먼저 대분류를 선택하세요</option>
+                </select>
+            </div>
+
+            <!-- F&Q 검색 섹션 -->
+            <div class="faq-search-section">
+                <div class="section-title">
+                    <span>F&Q 검색</span>
+                    <button class="btn-add" onclick="addQAItem()">
+                        <i class="fas fa-plus"></i>
+                        추가
+                    </button>
+                </div>
+                <div class="section-divider"></div>
+
+                <!-- Q&A 리스트 컨테이너 -->
+                <div class="qa-list-container" id="qaListContainer">
+                    <!-- 첫 번째 Q&A 아이템 -->
+                    <div class="qa-item empty" data-index="0" draggable="true">
+                        <div class="drag-handle">
+                            <div class="drag-dot"></div>
+                            <div class="drag-dot"></div>
+                            <div class="drag-dot"></div>
+                            <div class="drag-dot"></div>
+                            <div class="drag-dot"></div>
+                        </div>
+                        <div class="qa-order-number">1</div>
+                        <div class="qa-content">
+                            <div class="qa-question">
+                                <span class="qa-label">Q:</span>
+                                <div class="qa-question-content empty">불러오기 버튼을 클릭하여 질문을 선택하세요</div>
+                                <div class="qa-controls">
+                                    <button class="btn-load" onclick="openFAQSearchModal(0)">불러오기</button>
+                                </div>
+                            </div>
+                            <div class="qa-answer">
+                                <span class="qa-answer-label">ㄴ A:</span>
+                                <div class="qa-answer-content empty">질문을 선택하면 답변이 자동으로 입력됩니다</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 버튼 그룹 -->
+            <div class="button-group">
+                <button class="btn-preview" onclick="openPreviewModal()">
+                    <i class="fas fa-eye"></i>
+                    미리보기
+                </button>
+                <div class="action-buttons">
+                    <button class="btn-register" onclick="registerPage()">
+                        <i class="fas fa-save"></i>
+                        등록
+                    </button>
+                    <button class="btn-cancel" onclick="cancelRegister()">
+                        <i class="fas fa-times"></i>
+                        취소
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- F&Q 검색 모달 -->
+    <div id="faqSearchModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">F&Q 검색</h3>
+                <span class="close" onclick="closeFAQSearchModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="modal-search-container">
+                    <input type="text" class="modal-search-input" id="faqSearchInput" placeholder="검색어를 입력하세요">
+                    <button class="btn-search" onclick="searchFAQData()">
+                        <i class="fas fa-search"></i>
+                        검색
+                    </button>
+                </div>
+                <div class="faq-list" id="faqSearchResults">
+                    <!-- 검색 결과가 여기에 동적으로 추가됩니다 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 미리보기 모달 -->
+    <div id="previewModal" class="modal preview-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">F&Q 페이지 미리보기</h3>
+                <span class="close" onclick="closePreviewModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="preview-content" id="previewContent">
+                    <!-- 미리보기 내용이 여기에 동적으로 생성됩니다 -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

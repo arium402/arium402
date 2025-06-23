@@ -11,31 +11,31 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "DGSTFN_EVAL",
-       uniqueConstraints = @UniqueConstraint(columnNames = {"STD_ID", "SUR_ID"}))
+@Table(name = "dgstfn_eval;",
+       uniqueConstraints = @UniqueConstraint(columnNames = {"std_id", "sur_id"}))
 public class Dgstfn_Eval {
 //만족도 조사 실시 
 	
     @Id
-    @Column(name = "SUR_EVAL_ID", length = 10)
+    @Column(name = "sur_eval_id", length = 10)
     private String surEvalId;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "STD_ID", nullable = false)
+    @JoinColumn(name = "std_id", nullable = false)
     private Std_Info stdInfo;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "SUR_ID", nullable = false)
+    @JoinColumn(name = "sur_id", nullable = false)
     private Dgstfn_Qst dgstfnQst;
     
-    @Column(name = "ANS_SCORE", nullable = false)
+    @Column(name = "ans_score", nullable = false)
     private Integer ansScore;
     
     @CreationTimestamp
-    @Column(name = "REG_DT", nullable = false, updatable = false)
+    @Column(name = "reg_dt", nullable = false, updatable = false)
     private LocalDateTime regDt;
     
     @UpdateTimestamp
-    @Column(name = "UPD_DT", insertable = false)
+    @Column(name = "upd_dt", insertable = false)
     private LocalDateTime updDt;
 }

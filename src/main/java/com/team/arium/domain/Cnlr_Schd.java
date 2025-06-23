@@ -14,44 +14,44 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "CNLR_SCHD",
-       uniqueConstraints = @UniqueConstraint(columnNames = {"EMPL_ID", "WORK_YEAR", "WORK_MONTH", "WORK_DAY"}))
+@Table(name = "cnlr_schd",
+       uniqueConstraints = @UniqueConstraint(columnNames = {"empl_id", "work_year", "work_month", "work_day"}))
 public class Cnlr_Schd {
 //상담사 근무 시간표 테이블    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "SCHD_ID")
+    @Column(name = "schd_id")
     private Long schdId;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "EMPL_ID", nullable = false)
+    @JoinColumn(name = "empl_id", nullable = false)
     private Empl_Info emplInfo;
     
-    @Column(name = "WORK_YEAR", length = 4, nullable = false)
+    @Column(name = "work_year", length = 4, nullable = false)
     private String workYear;
     
-    @Column(name = "WORK_MONTH", length = 2, nullable = false)
+    @Column(name = "work_month", length = 2, nullable = false)
     private String workMonth;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "WORK_DAY", nullable = false)
+    @JoinColumn(name = "work_day", nullable = false)
     private Common_Code workDay;
     
-    @Column(name = "START_TIME", nullable = false)
+    @Column(name = "start_time", nullable = false)
     private LocalTime startTime;
     
-    @Column(name = "END_TIME", nullable = false)
+    @Column(name = "end_time", nullable = false)
     private LocalTime endTime;
     
     @CreationTimestamp
-    @Column(name = "REG_DT", nullable = false, updatable = false)
+    @Column(name = "reg_dt", nullable = false, updatable = false)
     private LocalDateTime regDt;
     
     @UpdateTimestamp
-    @Column(name = "UPD_DT", insertable = false)
+    @Column(name = "upd_dt", insertable = false)
     private LocalDateTime updDt;
     
     @Builder.Default
-    @OneToMany(mappedBy = "cnlrSchd", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "cnlrschd", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Cnlr_SchdSlot> slots = new ArrayList<>();
 }

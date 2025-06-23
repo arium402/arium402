@@ -50,19 +50,46 @@ document.querySelectorAll('.tab-item').forEach(tab => {
         this.classList.add('active');
         
         const status = this.getAttribute('data-status');
+        filterByEmploymentStatus(status);
         console.log('선택된 상태:', status);
     });
 });
 
+// 재직 상태별 필터링 함수
+function filterByEmploymentStatus(status) {
+    const rows = document.querySelectorAll('.counselor-table tbody tr');
+    
+    rows.forEach(row => {
+        const statusCell = row.cells[6]; // 재직현황 컬럼
+        const statusText = statusCell.textContent.trim();
+        
+        if (status === 'all') {
+            row.style.display = '';
+        } else if (status === 'active') {
+            row.style.display = statusText.includes('재직') ? '' : 'none';
+        } else if (status === 'inactive') {
+            row.style.display = statusText.includes('퇴사') ? '' : 'none';
+        }
+    });
+}
+
 // 검색 기능
 document.querySelector('.search-btn').addEventListener('click', function() {
     const searchType = document.querySelector('.search-select').value;
-    const searchText = document.querySelector('.search-input').value;
+    const searchText = document.querySelector('.search-input').value.trim();
+    
+    if (searchText === '') {
+        // 검색어가 없으면 모든 행 표시
+        document.querySelectorAll('.counselor-table tbody tr').forEach(row => {
+            row.style.display = '';
+        });
+        return;
+    }
     
     console.log('검색 유형:', searchType);
     console.log('검색어:', searchText);
     
-    alert(`${searchType}에서 "${searchText}" 검색`);
+    searchCounselors(searchType, searchText);
 });
 
 // 등록 버튼 클릭시 상담사등록페이지로 이동 
@@ -106,3 +133,20 @@ document.querySelector('.pagination-btn.next').addEventListener('click', functio
     }
 });
 
+// 디버깅용 - 나중에 제거
+setTimeout(function() {
+    console.log('=== 메뉴 상태 확인 ===');
+    const activeMainMenus = document.querySelectorAll('.nav-link.main-menu.active');
+    const activeSubMenus = document.querySelectorAll('.sub-menu .nav-link.active');
+    
+    console.log('활성화된 대메뉴 개수:', activeMainMenus.length);
+    console.log('활성화된 소메뉴 개수:', activeSubMenus.length);
+    
+    activeMainMenus.forEach(menu => {
+        console.log('활성화된 대메뉴:', menu.textContent.trim());
+    });
+    
+    activeSubMenus.forEach(menu => {
+        console.log('활성화된 소메뉴:', menu.textContent.trim());
+    });
+}, 500);

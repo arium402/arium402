@@ -148,6 +148,13 @@ function changePage(direction) {
     }
 }
 
+// 특정 페이지로 이동하는 함수
+function goToPage(pageNumber) {
+    currentPage = pageNumber;
+    updateTable();
+}
 
-
-
+// 페이지 로드 시 초기 테이블 렌더링
+document.addEventListener('DOMContentLoaded', function() {
+    updateTable();
+});
