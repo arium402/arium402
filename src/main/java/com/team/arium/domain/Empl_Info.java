@@ -11,54 +11,54 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "EMPL_INFO")
+@Table(name = "empl_info")
 public class Empl_Info {
 //상담사 정보 
 	
 	//상담사 아이디 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "EMPL_ID")
+    @Column(name = "empl_id")
     private Long emplId;
     
     //사번
-    @Column(name = "EMPL_NO", length = 20, nullable = false, unique = true)
+    @Column(name = "empl_no", length = 20, nullable = false, unique = true)
     private String emplNo;
     
     //상담사명
-    @Column(name = "EMPL_NAME", length = 100, nullable = false)
+    @Column(name = "empl_name", length = 100, nullable = false)
     private String emplName;
     
     //상담코드 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CNSL_CD", nullable = false)
+    @JoinColumn(name = "cnsl_cd", nullable = false)
     private Common_Code cnslCd;
     
     //상담사 상태코드 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "EMPL_STAT_CD", nullable = false)
+    @JoinColumn(name = "empl_stat_cd", nullable = false)
     private Common_Code emplStatCd;
     
     //상담사 연락처 
-    @Column(name = "EMPL_TELLNO", length = 20, nullable = false, unique = true)
+    @Column(name = "empl_tellno", length = 20, nullable = false, unique = true)
     private String emplTellno;
     
     //상담사 이메일 
-    @Column(name = "EMPL_EML_ADDR", length = 100, nullable = false, unique = true)
+    @Column(name = "empl_eml_addr", length = 100, nullable = false, unique = true)
     private String emplEmlAddr;
     
     //파일번호 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "FILE_ID")
+    @JoinColumn(name = "file_id")
     private Common_File comFile;
     
     //등록일 
     @CreationTimestamp
-    @Column(name = "REG_DT", nullable = false, updatable = false)
+    @Column(name = "reg_dt", nullable = false, updatable = false)
     private LocalDateTime regDt;
     
     //수정일 
     @UpdateTimestamp
-    @Column(name = "UPD_DT", insertable = false)
+    @Column(name = "upd_dt", insertable = false)
     private LocalDateTime updDt;
 }

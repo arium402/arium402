@@ -13,55 +13,55 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "PST_POST")
+@Table(name = "pst_post")
 public class Pst_Post {
 //게시글 
 	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "POST_ID")
+    @Column(name = "post_id")
     private Long postId;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "NTC_ID", nullable = false)
+    @JoinColumn(name = "ntc_id", nullable = false)
     private Pst_Ntc pstNtc;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "POST_TYPE", nullable = false)
+    @JoinColumn(name = "post_type", nullable = false)
     private Common_Code postType;
     
-    @Column(name = "TITLE", length = 200, nullable = false)
+    @Column(name = "title", length = 200, nullable = false)
     private String title;
     
     @Lob
-    @Column(name = "POST_CONT", nullable = false)
+    @Column(name = "post_cont", nullable = false)
     private String postCont;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "FILE_ID")
+    @JoinColumn(name = "file_id")
     private Common_File comFile;
     
-    @Column(name = "WRITER", length = 50, nullable = false)
+    @Column(name = "writer", length = 50, nullable = false)
     private String writer;
     
     @Enumerated(EnumType.STRING)
-    @Column(name = "FIXED_YN", nullable = false, length = 1)
-    private YN fixedYn;
+    @Column(name = "fixed_yn", nullable = false, length = 1)
+    private yn fixedYn;
     
     @Enumerated(EnumType.STRING)
-    @Column(name = "PUBLIC_YN", nullable = false, length = 1)
-    private YN publicYn;
+    @Column(name = "public_yn", nullable = false, length = 1)
+    private yn publicYn;
     
-    @Column(name = "INQ_CNT", nullable = false)
+    @Column(name = "inq_cnt", nullable = false)
     @Builder.Default
     private Integer inqCnt = 0;
     
     @CreationTimestamp
-    @Column(name = "REG_DT", nullable = false, updatable = false)
+    @Column(name = "reg_dt", nullable = false, updatable = false)
     private LocalDateTime regDt;
     
     @UpdateTimestamp
-    @Column(name = "UPD_DT", insertable = false)
+    @Column(name = "upd_dt", insertable = false)
     private LocalDateTime updDt;
     
     @Builder.Default

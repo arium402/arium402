@@ -1,6 +1,6 @@
-/* 메인 컨텐츠 */
+/* 메인 컨텐츠 - 패딩 줄이기 */
 .main-container {
-    padding: 20px;
+    padding: 15px; /* 20px에서 15px로 줄임 */
     background-color: #f8f9fa;
     height: calc(100vh - 70px);
     overflow-y: auto;
@@ -20,17 +20,20 @@
 .title-divider {
     height: 4px;
     background: linear-gradient(90deg, #3498db, #2980b9);
-    margin-bottom: 15px;
+    margin-bottom: 10px; /* 15px에서 10px로 줄임 */
     box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
 }
 
-/* 필터 및 검색 영역 */
+/* 필터 및 검색 영역 - 마진 줄이기 */
 .filter-section {
     background: white;
-    padding: 15px 20px;
-    margin-bottom: 15px;
+    padding: 15px 25px; /* 좌우 패딩 늘림 */
+    margin-bottom: 10px; /* 15px에서 10px로 줄임 */
     box-shadow: 0 4px 20px rgba(0,0,0,0.08);
     flex-shrink: 0;
+    width: calc(100% - 0px); /* 전체 너비 사용 */
+    margin-left: 0;
+    margin-right: 0;
 }
 
 .filter-row {
@@ -144,7 +147,7 @@
     box-shadow: 0 4px 12px rgba(52, 73, 94, 0.3);
 }
 
-/* 테이블 영역 */
+/* 테이블 영역 - 하얀색 영역 확대 */
 .table-container {
     background: white;
     box-shadow: 0 4px 20px rgba(0,0,0,0.08);
@@ -153,6 +156,10 @@
     display: flex;
     flex-direction: column;
     min-height: 0;
+    width: calc(100% - 0px); /* 전체 너비 사용 */
+    margin-left: 0;
+    margin-right: 0;
+    padding: 0; /* 기본 패딩 제거 */
 }
 
 .table-header h3 {
@@ -170,6 +177,8 @@
     flex: 1;
     display: flex;
     flex-direction: column;
+    background: white; /* 배경색 명시적 지정 */
+    width: 100%;
 }
 
 .data-table {
@@ -182,6 +191,7 @@
     flex: 1;
     table-layout: fixed !important;
     border-spacing: 0;
+    background: white; /* 테이블 배경색 명시적 지정 */
 }
 
 .data-table th {
@@ -222,6 +232,7 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    background: white; /* 셀 배경색 명시적 지정 */
 }
 
 /* 기간 컬럼들은 텍스트가 잘리지 않도록 설정 */
@@ -235,12 +246,14 @@
 
 .data-table tr {
     height: 55px !important;
+    background: white; /* 행 배경색 명시적 지정 */
 }
 
 /* 클릭 가능한 행 스타일 추가 */
 .data-table tbody tr {
     cursor: pointer;
     transition: all 0.3s ease;
+    background: white; /* 기본 배경색 */
 }
 
 .data-table tbody tr:hover {
@@ -266,21 +279,21 @@
     text-transform: uppercase;
     letter-spacing: 0.3px;
     text-align: center;
-    width: auto !important; /* 자동 너비로 변경 */
+    width: auto !important;
     min-width: 85px !important;
     max-width: 110px !important;
     display: inline-block !important;
     white-space: nowrap !important;
     box-sizing: border-box !important;
-    line-height: 1.3 !important; /* 라인 높이 조정 */
+    line-height: 1.3 !important;
     word-break: keep-all !important;
     overflow: visible !important;
     text-overflow: clip !important;
     margin: 0 auto;
     vertical-align: middle;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important; /* 폰트 명시 */
-    -webkit-font-smoothing: antialiased; /* 폰트 렌더링 개선 */
-    -moz-osx-font-smoothing: grayscale; /* 폰트 렌더링 개선 */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 /* 상태 컬럼 강제 설정 - 더 넉넉하게 */
@@ -302,6 +315,7 @@
     white-space: nowrap !important;
     text-align: center !important;
     padding: 10px 10px !important;
+    background: white !important; /* 배경색 보장 */
 }
 
 .status.open {
@@ -328,16 +342,18 @@
     border: 1px solid #f5c6cb;
 }
 
-/* 페이징 */
+/* 페이징 - 배경색 명시적 지정 */
 .pagination-container {
-    background: white;
-    padding: 15px 20px;
+    background: white !important; /* 강제 지정 */
+    padding: 15px 25px; /* 좌우 패딩 늘림 */
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
     border-top: 1px solid #e9ecef;
     flex-shrink: 0;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .pagination {
@@ -412,7 +428,7 @@
 /* 반응형 */
 @media (max-width: 768px) {
     .main-container {
-        padding: 10px;
+        padding: 8px; /* 모바일에서 더 줄임 */
         height: auto;
         min-height: calc(100vh - 70px);
         overflow-y: visible;
@@ -421,14 +437,12 @@
     
     .table-container {
         flex: none;
+        margin: 0; /* 마진 제거 */
     }
     
     .filter-section {
         padding: 10px 15px;
-    }
-    
-    .filter-section {
-        padding: 15px 20px;
+        margin-bottom: 8px;
     }
     
     .filter-row {
@@ -462,11 +476,13 @@
     .table-content {
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
+        background: white !important;
     }
     
     .data-table {
         min-width: 900px;
         table-layout: fixed !important;
+        background: white !important;
     }
     
     .data-table th:last-child {
@@ -481,6 +497,7 @@
         width: 120px !important;
         max-width: 120px !important;
         padding: 10px 8px !important;
+        background: white !important;
     }
     
     .status {
@@ -488,5 +505,9 @@
         padding: 5px 12px !important;
         min-width: 75px !important;
         max-width: 95px !important;
+    }
+    
+    .pagination-container {
+        padding: 15px 15px;
     }
 }

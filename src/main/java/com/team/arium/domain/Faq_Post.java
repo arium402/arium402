@@ -11,38 +11,38 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "FAQ_POST")
+@Table(name = "faq_post")
 public class Faq_Post {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "FAQ_ID")
+    @Column(name = "faq_id")
     private Long faqId;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "NTC_ID", nullable = false)
+    @JoinColumn(name = "ntc_id", nullable = false)
     private Pst_Ntc pstNtc;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "POST_TYPE", nullable = false)
+    @JoinColumn(name = "post_type", nullable = false)
     private Common_Code postType;
     
-    @Column(name = "SUB_CAT_NM", length = 100, nullable = false)
+    @Column(name = "sub_cat_nm", length = 100, nullable = false)
     private String subCatNm;
     
     @Lob
-    @Column(name = "QUESTION", nullable = false)
+    @Column(name = "question", nullable = false)
     private String question;
     
     @Lob
-    @Column(name = "ANSWER", nullable = false)
+    @Column(name = "answer", nullable = false)
     private String answer;
     
     @CreationTimestamp
-    @Column(name = "REG_DT", nullable = false, updatable = false)
+    @Column(name = "reg_dt", nullable = false, updatable = false)
     private LocalDateTime regDt;
     
     @UpdateTimestamp
-    @Column(name = "UPD_DT", insertable = false)
+    @Column(name = "upd_dt", insertable = false)
     private LocalDateTime updDt;
 }

@@ -10,39 +10,39 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "STD_CCL_SCORE")
+@Table(name = "std_ccl_score")
 public class Std_CclScore {
 //학생 핵심 역량 점수    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "CCL_SCORE_ID")
+    @Column(name = "ccl_score_id")
     private Long cclScoreId;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "STD_ID", nullable = false)
+    @JoinColumn(name = "std_id", nullable = false)
     private Std_Info stdInfo;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CCL_ID", nullable = false)
+    @JoinColumn(name = "ccl_id", nullable = false)
     private Core_CptInfo coreCptInfo;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "SCORE_TYPE", nullable = false)
+    @JoinColumn(name = "score_type", nullable = false)
     private Common_Code scoreType;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "EVAL_ID")
+    @JoinColumn(name = "eval_id")
     private Core_CptEval coreCptEval;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CMP_ID")
+    @JoinColumn(name = "cmp_id")
     private Ncs_CmpInfo ncsCmpInfo;
     
-    @Column(name = "SCORE", nullable = false)
+    @Column(name = "score", nullable = false)
     @Builder.Default
     private Integer score = 0;
     
     @CreationTimestamp
-    @Column(name = "REG_DT", nullable = false, updatable = false)
+    @Column(name = "reg_dt", nullable = false, updatable = false)
     private LocalDateTime regDt;
 }

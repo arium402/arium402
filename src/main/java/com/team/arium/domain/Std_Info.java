@@ -12,74 +12,74 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "STD_INFO")
+@Table(name = "std_info")
 public class Std_Info {
 //학생 정보 
 	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "STD_ID")
+    @Column(name = "std_id")
     private Long stdId;
     
-    @Column(name = "STD_NO", length = 20, nullable = false, unique = true)
+    @Column(name = "std_no", length = 20, nullable = false, unique = true)
     private String stdNo;
     
-    @Column(name = "STD_NM", length = 100, nullable = false)
+    @Column(name = "std_nm", length = 100, nullable = false)
     private String stdNm;
     
-    @Column(name = "BIRTH_DT", nullable = false)
+    @Column(name = "birth_dt", nullable = false)
     private LocalDate birthDt;
     
-    @Column(name = "STD_GENDER", length = 10, nullable = false)
+    @Column(name = "std_gender", length = 10, nullable = false)
     private String stdGender;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "DEPT_ID", nullable = false)
+    @JoinColumn(name = "dept_id", nullable = false)
     private Dept_Info deptInfo;
     
-    @Column(name = "SCH_YR", nullable = false)
+    @Column(name = "sch_yr", nullable = false)
     private Integer schYr;
     
-    @Column(name = "ENTR_DT", nullable = false)
+    @Column(name = "entr_dt", nullable = false)
     private LocalDateTime entrDt;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "STD_STAT_CD", nullable = false)
+    @JoinColumn(name = "std_stat_cd", nullable = false)
     private Common_Code stdStatCd;
     
-    @Column(name = "BANK_ACNT", length = 30, nullable = false)
+    @Column(name = "bank_acnt", length = 30, nullable = false)
     private String bankAcnt;
     
-    @Column(name = "BANK_NM", length = 50, nullable = false)
+    @Column(name = "bank_nm", length = 50, nullable = false)
     private String bankNm;
     
-    @Column(name = "DEPOSITOR", length = 50, nullable = false)
+    @Column(name = "depositor", length = 50, nullable = false)
     private String depositor;
     
-    @Column(name = "ZIP", length = 6, nullable = false)
+    @Column(name = "zip", length = 6, nullable = false)
     private String zip;
     
-    @Column(name = "ADDR", length = 200, nullable = false)
+    @Column(name = "addr", length = 200, nullable = false)
     private String addr;
     
-    @Column(name = "DADDR", length = 200, nullable = false)
+    @Column(name = "daddr", length = 200, nullable = false)
     private String daddr;
     
-    @Column(name = "STD_TELLNO", length = 20, nullable = false, unique = true)
+    @Column(name = "std_tellno", length = 20, nullable = false, unique = true)
     private String stdTellno;
     
-    @Column(name = "STD_EML_ADDR", length = 100, nullable = false, unique = true)
+    @Column(name = "std_eml_addr", length = 100, nullable = false, unique = true)
     private String stdEmlAddr;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "FILE_ID")
+    @JoinColumn(name = "file_id")
     private Common_File comFile;
     
     @CreationTimestamp
-    @Column(name = "REG_DT", nullable = false, updatable = false)
+    @Column(name = "reg_dt", nullable = false, updatable = false)
     private LocalDateTime regDt;
     
     @UpdateTimestamp
-    @Column(name = "UPD_DT", insertable = false)
+    @Column(name = "upd_dt", insertable = false)
     private LocalDateTime updDt;
 }

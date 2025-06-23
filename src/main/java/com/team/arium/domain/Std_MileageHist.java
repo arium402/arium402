@@ -12,43 +12,43 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "STD_MILEAGE_HIST",
-       uniqueConstraints = @UniqueConstraint(columnNames = {"STD_ID", "CMP_ID", "SUR_EVAL_ID"}))
+@Table(name = "std_mileage_hist",
+       uniqueConstraints = @UniqueConstraint(columnNames = {"std_id", "cmp_id", "sur_eval_id"}))
 public class Std_MileageHist {
 //학생 마일리지 점수 
 	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "MLG_ID")
+    @Column(name = "mlg_id")
     private Long mlgId;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "STD_ID", nullable = false)
+    @JoinColumn(name = "std_id", nullable = false)
     private Std_Info stdInfo;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CMP_ID", nullable = false)
+    @JoinColumn(name = "cmp_id", nullable = false)
     private Ncs_CmpInfo ncsCmpInfo;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "SUR_EVAL_ID", nullable = false)
+    @JoinColumn(name = "sur_eval_id", nullable = false)
     private Dgstfn_Eval dgstfnEval;
     
-    @Column(name = "MLG_SCORE", nullable = false)
+    @Column(name = "mlg_score", nullable = false)
     private Integer mlgScore;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "MLG_ADD_CD", nullable = false)
+    @JoinColumn(name = "mlg_add_cd", nullable = false)
     private Common_Code mlgAddCd;
     
-    @Column(name = "MLG_DT", nullable = false)
+    @Column(name = "mlg_dt", nullable = false)
     private LocalDate mlgDt;
     
     @CreationTimestamp
-    @Column(name = "REG_DT", nullable = false, updatable = false)
+    @Column(name = "reg_dt", nullable = false, updatable = false)
     private LocalDateTime regDt;
     
     @UpdateTimestamp
-    @Column(name = "UPD_DT", insertable = false)
+    @Column(name = "upd_dt", insertable = false)
     private LocalDateTime updDt;
 }
