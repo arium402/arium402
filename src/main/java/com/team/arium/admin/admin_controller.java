@@ -16,13 +16,6 @@ public class admin_controller {
 	@Autowired
 	public admin_repo admin_repo;
 
-	//관리자 메인화면 
-	@GetMapping("/admin_dashboard")
-	public String admin_dashboard(HttpServletResponse res) {
-		
-		
-		return "/admin/admin_dashboard.html";
-	}
 
 	
 //*******************************************************************************************//	
@@ -36,7 +29,7 @@ public class admin_controller {
 		
 		
 		
-		return "/admin/admin_counselorList.html";
+		return "/admin/admin_counselorList";
 	}
 	
 	
@@ -46,7 +39,7 @@ public class admin_controller {
 		Empl_Info emp_insert = new Empl_Info();
 		
 		
-		return "/admin/admin_counselorList_add.html";
+		return "/admin/admin_counselorList_add";
 	}
 		
 		
@@ -55,7 +48,7 @@ public class admin_controller {
 	public String admin_counselor_schedule(HttpServletResponse res){
 		
 		
-		return "/admin/admin_counselor_schedule.html";
+		return "/admin/admin_counselor_schedule";
 	}
 	
 	
@@ -64,7 +57,7 @@ public class admin_controller {
 	public String admin_counselor_statistics(HttpServletResponse res)  {
 		
 		
-		return "/admin/admin_counselor_statistics.html";
+		return "/admin/admin_counselor_statistics";
 	}
 	
 	
@@ -76,7 +69,7 @@ public class admin_controller {
 	public String admin_counselorList_detail(HttpServletResponse res)  {
 		
 		
-		return "/admin/admin_counselorList_detail.html";
+		return "/admin/admin_counselorList_detail";
 	}
 	
 		
@@ -89,7 +82,7 @@ public class admin_controller {
 	public String admin_counselor_studentApply(HttpServletResponse res)  {
 		
 		
-		return "/admin/admin_counselor_studentApply.html";
+		return "/admin/admin_counselor_studentApply";
 	}
 	
 	
@@ -98,7 +91,7 @@ public class admin_controller {
 	public String admin_counselor_scheduleDetail(HttpServletResponse res)  {
 		
 		
-		return "/admin/admin_counselor_scheduleDetail.html";
+		return "/admin/admin_counselor_scheduleDetail";
 	}
 	
 	
@@ -106,56 +99,10 @@ public class admin_controller {
 	@GetMapping("/admin_counselingType_stats")
 	public String admin_counselingType_stats(HttpServletResponse res)  {
 		
-		return "/admin/admin_counselingType_stats.html";
+		return "/admin/admin_counselingType_stats";
 	}
-	
-	
-	
-	//*******************************************************************************************//	
-	
-	
 	
 
-
-	
-
-	/*
-	//마일리지 지급 
-	@GetMapping("/admin_mileage_payment_add")
-	public String admin_mileage_payment_add(HttpServletResponse res)  {
-		
-		
-		return "/admin/admin_mileage_payment_add.html";
-	}
-	
-	
-	@GetMapping("/admin_mileage_payment")
-	public String admin_mileage_payment(HttpServletResponse res)  {
-		
-		
-		return "/admin/admin_mileage_payment.html";
-	}
-	
-	//마일리지 전환 
-	@GetMapping("/admin_mileage_to_money")
-	public String admin_mileage_to_money(HttpServletResponse res) {
-		
-		
-		return "/admin/admin_mileage_to_money.html";
-	}
-	*/
-	
-	
-	/*
-	//공지등록 
-	@GetMapping("/boardWrite")
-	public String boardWrite(HttpServletResponse res)  {
-		
-		
-		return "/admin/boardWrite.html";
-	}
-	*/
-	
 	
 
 }
