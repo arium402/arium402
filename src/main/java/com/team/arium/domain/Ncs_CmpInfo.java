@@ -10,7 +10,8 @@ import lombok.*;
 @Entity
 @Table(name = "NCS_CMP_INFO")
 public class Ncs_CmpInfo {
-    
+//비교과 이수정보 
+	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CMP_ID")

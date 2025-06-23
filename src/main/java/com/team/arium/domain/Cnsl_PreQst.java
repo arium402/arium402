@@ -16,7 +16,8 @@ import java.util.List;
 @Table(name = "CNSL_PRE_QST",
        uniqueConstraints = @UniqueConstraint(columnNames = {"PRE_SURVEY_ID", "PRE_QST_ORD"}))
 public class Cnsl_PreQst {
-    
+//상담 사전 검사 문항 
+	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "PRE_QST_ID")

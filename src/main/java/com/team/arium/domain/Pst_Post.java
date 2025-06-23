@@ -15,7 +15,8 @@ import java.util.List;
 @Entity
 @Table(name = "PST_POST")
 public class Pst_Post {
-    
+//게시글 
+	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "POST_ID")

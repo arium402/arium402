@@ -11,7 +11,8 @@ import java.time.LocalTime;
 @Entity
 @Table(name = "CNLR_SLOT_TYPE")
 public class Cnlr_SlotType {
-    
+//상담시간 유형 
+	
     @Id
     @Column(name = "SLOT_TYPE_ID")
     private Integer slotTypeId;

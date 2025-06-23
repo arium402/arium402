@@ -16,7 +16,8 @@ import java.util.List;
 @Entity
 @Table(name = "NCS_PRG_INFO")
 public class Ncs_PrgInfo {
-    
+//비교과 정보 
+	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "PRG_ID")

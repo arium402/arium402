@@ -15,7 +15,8 @@ import java.time.LocalTime;
 @Entity
 @Table(name = "CNSL_APLY")
 public class Cnsl_Aply {
-    
+//상담 신청 
+	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CNSL_APLY_ID")
