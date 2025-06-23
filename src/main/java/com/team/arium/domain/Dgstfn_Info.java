@@ -20,7 +20,7 @@ public class Dgstfn_Info {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "survey_id")
-    private Long surveyId;
+    private Integer surveyId;
     
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "prg_id", nullable = false, unique = true)

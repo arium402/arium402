@@ -19,7 +19,7 @@ public class Std_Info {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "std_id")
-    private Long stdId;
+    private Integer stdId;
     
     @Column(name = "std_no", length = 20, nullable = false, unique = true)
     private String stdNo;

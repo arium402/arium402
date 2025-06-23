@@ -18,11 +18,11 @@ public class Ncs_CclRel {
 	
     @Id
     @Column(name = "prg_id")
-    private Long prgId;
+    private Integer prgId;
     
     @Id
     @Column(name = "ccl_id")
-    private Long cclId;
+    private Integer cclId;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "prg_id", insertable = false, updatable = false)

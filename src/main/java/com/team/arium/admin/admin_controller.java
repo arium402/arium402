@@ -40,13 +40,13 @@ public class admin_controller {
 	String msg = "";
 	
 	
-	//관리자 메인화면 
-	@GetMapping("/admin_dashboard")
-	public String admin_dashboard(HttpServletResponse res) {
-		
-		
-		return "/admin/admin_dashboard.html";
-	}
+//	//관리자 메인화면 
+//	@GetMapping("/admin_dashboard")
+//	public String admin_dashboard(HttpServletResponse res) {
+//		
+//		
+//		return "/admin/admin_dashboard.html";
+//	}
 
 	
 //*******************************************************************************************//	

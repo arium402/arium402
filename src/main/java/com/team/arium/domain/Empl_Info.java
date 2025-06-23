@@ -19,7 +19,7 @@ public class Empl_Info {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "empl_id")
-    private Long emplId;
+    private Integer emplId;
     
     //사번
     @Column(name = "empl_no", length = 20, nullable = false, unique = true)

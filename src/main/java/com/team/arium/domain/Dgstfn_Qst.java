@@ -19,7 +19,7 @@ public class Dgstfn_Qst {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "sur_id")
-    private Long surId;
+    private Integer surId;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "survey_id", nullable = false)

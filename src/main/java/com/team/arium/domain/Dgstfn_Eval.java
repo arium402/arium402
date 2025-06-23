@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "dgstfn_eval;",
+@Table(name = "dgstfn_eval",
        uniqueConstraints = @UniqueConstraint(columnNames = {"std_id", "sur_id"}))
 public class Dgstfn_Eval {
 //만족도 조사 실시 

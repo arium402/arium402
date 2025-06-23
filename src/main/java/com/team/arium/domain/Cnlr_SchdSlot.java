@@ -20,11 +20,11 @@ public class Cnlr_SchdSlot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "slot_id")
-    private Long slotId;
+    private Integer slotId;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "schd_id", nullable = false)
-    private Cnlr_Schd cnlrSchd;
+    private Cnlr_Schd cnlrschd;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "slot_type_id", nullable = false)

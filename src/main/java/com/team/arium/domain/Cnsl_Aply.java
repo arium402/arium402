@@ -20,7 +20,7 @@ public class Cnsl_Aply {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cnsl_aply_id")
-    private Long cnslAplyId;
+    private Integer cnslAplyId;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "std_id", nullable = false)

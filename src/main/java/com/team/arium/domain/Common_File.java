@@ -17,7 +17,7 @@ public class Common_File {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "file_id")
-    private Long fileId;
+    private Integer fileId;
     
     @Column(name = "org_file_name", length = 100, nullable = false)
     private String orgFileName;
