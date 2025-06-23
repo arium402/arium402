@@ -30,6 +30,10 @@ public class admin_controller {
 	@Autowired
 	public admin_service admin_svc;
 	
+	@Resource(name="generateNo")
+	public generateNo gen_no;
+	
+	
 	List<String> list = null; 
 	Map<String, String> map = null;
 	String url = "";
@@ -69,9 +73,8 @@ public class admin_controller {
 		
 		Empl_Info data_info = this.admin_svc.insert_counselor(emp_data);
 		
-//		Empl_Info entity = new Empl_Info();
-		Empl_Info save_counselor = this.admin_cnsl_repo.save(data_info);
-		System.out.println(emp_data);
+		
+		System.out.println(data_info);
 		return null;
 	}
 	

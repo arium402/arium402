@@ -26,17 +26,19 @@ public class admin_serviceImpl implements admin_service{
 		Empl_Info entity = new Empl_Info();
 		
 		String newEmpNo = this.gen_no.generateEmpNo(); 
-		entity.setEmplNo(newEmpNo);
+		entity.setEmplNo("C"+newEmpNo);
 		
 		entity.setEmplName(emp_data.getEmplName());
 	    entity.setEmplTellno(emp_data.getEmplTellno());
 	    entity.setEmplEmlAddr(emp_data.getEmplEmlAddr());
 	    
-	    // Common_Code 외래키 매핑 (ID만 있으므로 객체 생성해서 넣음)
-//	    entity.setCnslCd(new Common_Code(Integer.parseInt(emp_data.getCnslCd())));
-//	    entity.setEmplStatCd(new Common_Code(Integer.parseInt(emp_data.getEmplStatCd())));
+	   
+//	    entity.setCnslCd(new Common_Code(Integer.parseInt(emp_data.getCnslCd()),null,null,null));
+//	    entity.setEmplStatCd(new Common_Code(Integer.parseInt(emp_data.getEmplStatCd()),null,null,null));
 	    
-		return entity;
+//		Empl_Info save_counselor = this.admin_cnsl_repo.save(entity);
+	    
+		return null;
 	}
 
 	
