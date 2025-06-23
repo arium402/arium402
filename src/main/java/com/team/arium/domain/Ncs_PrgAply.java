@@ -11,36 +11,36 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "NCS_PRG_APLY",
-       uniqueConstraints = @UniqueConstraint(columnNames = {"STD_ID", "PRG_ID"}))
+@Table(name = "ncs_prg_aply",
+       uniqueConstraints = @UniqueConstraint(columnNames = {"std_id", "prg_id"}))
 public class Ncs_PrgAply {
 //비교과 신청 
 	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "APLY_ID")
+    @Column(name = "aply_id")
     private Long aplyId;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PRG_ID", nullable = false)
+    @JoinColumn(name = "prg_id", nullable = false)
     private Ncs_PrgInfo ncsPrgInfo;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "STD_ID", nullable = false)
+    @JoinColumn(name = "std_id", nullable = false)
     private Std_Info stdInfo;
     
-    @Column(name = "APLY_DT", nullable = false)
+    @Column(name = "aply_dt", nullable = false)
     private LocalDateTime aplyDt;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "APLY_STAT_CD", nullable = false)
+    @JoinColumn(name = "aply_stat_cd", nullable = false)
     private Common_Code aplyStatCd;
     
     @CreationTimestamp
-    @Column(name = "REG_DT", nullable = false, updatable = false)
+    @Column(name = "reg_dt", nullable = false, updatable = false)
     private LocalDateTime regDt;
     
     @UpdateTimestamp
-    @Column(name = "UPD_DT", insertable = false)
+    @Column(name = "upd_dt", insertable = false)
     private LocalDateTime updDt;
 }

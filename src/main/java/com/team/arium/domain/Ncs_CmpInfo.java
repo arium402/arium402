@@ -8,32 +8,32 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "NCS_CMP_INFO")
+@Table(name = "ncs_cmp_info")
 public class Ncs_CmpInfo {
 //비교과 이수정보 
 	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "CMP_ID")
+    @Column(name = "cmp_id")
     private Long cmpId;
     
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "APLY_ID", nullable = false, unique = true)
+    @JoinColumn(name = "aply_id", nullable = false, unique = true)
     private Ncs_PrgAply ncsPrgAply;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PRG_ID", nullable = false)
+    @JoinColumn(name = "prg_id", nullable = false)
     private Ncs_PrgInfo ncsPrgInfo;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "STD_ID", nullable = false)
+    @JoinColumn(name = "std_id", nullable = false)
     private Std_Info stdInfo;
     
     @Enumerated(EnumType.STRING)
-    @Column(name = "CMP_YN", nullable = false, length = 1)
-    private YN cmpYn;
+    @Column(name = "cmp_yn", nullable = false, length = 1)
+    private yn cmpYn;
     
     @Enumerated(EnumType.STRING)
-    @Column(name = "SURVEY_YN", nullable = false, length = 1)
-    private YN surveyYn;
+    @Column(name = "survey_yn", nullable = false, length = 1)
+    private yn surveyYn;
 }
