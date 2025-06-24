@@ -3,7 +3,6 @@ package com.team.arium.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -14,7 +13,11 @@ import java.time.LocalDateTime;
 public class Core_CptEval {
 //핵심 역량 진단 실시    
     @Id
-    @Column(name = "eval_id", length = 10)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "eval_no")
+    private Integer evalNo;
+    
+    @Column(name = "eval_id", length = 10, nullable = false)
     private String evalId;
     
     @ManyToOne(fetch = FetchType.LAZY)
