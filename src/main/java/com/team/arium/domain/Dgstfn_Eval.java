@@ -12,13 +12,17 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 @Table(name = "dgstfn_eval",
-       uniqueConstraints = @UniqueConstraint(columnNames = {"std_id", "sur_id"}))
+       uniqueConstraints = @UniqueConstraint(columnNames = {"prg_id", "std_id", "sur_id"}))
 public class Dgstfn_Eval {
 //만족도 조사 실시 
 	
     @Id
     @Column(name = "sur_eval_id", length = 10)
     private String surEvalId;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "prg_id", nullable = false)
+    private Ncs_PrgInfo ncsPrgInfo;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "std_id", nullable = false)
@@ -33,9 +37,9 @@ public class Dgstfn_Eval {
     
     @CreationTimestamp
     @Column(name = "reg_dt", nullable = false, updatable = false)
-    private LocalDateTime regDt;
+    private String regDt;
     
     @UpdateTimestamp
     @Column(name = "upd_dt", insertable = false)
-    private LocalDateTime updDt;
+    private String updDt;
 }

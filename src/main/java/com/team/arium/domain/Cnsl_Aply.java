@@ -35,10 +35,10 @@ public class Cnsl_Aply {
     private Cnsl_PreEvalMaster cnslPreEvalMaster;
     
     @Column(name = "cncl_dt", nullable = false)
-    private LocalDate cnclDt;
+    private String cnclDt;
     
     @Column(name = "cncl_time", nullable = false)
-    private LocalTime cnclTime;
+    private String cnclTime;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cnsl_stat_cd", nullable = false)
@@ -50,9 +50,9 @@ public class Cnsl_Aply {
     
     @CreationTimestamp
     @Column(name = "reg_dt", nullable = false, updatable = false)
-    private LocalDateTime regDt;
+    private String regDt;
     
     @UpdateTimestamp
     @Column(name = "upd_dt", insertable = false)
-    private LocalDateTime updDt;
+    private String updDt;
 }

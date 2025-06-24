@@ -31,7 +31,7 @@ public class Cnlr_SchdSlot {
     private Cnlr_SlotType cnlrSlotType;
     
     @Column(name = "cnsl_time")
-    private LocalTime cnslTime;
+    private String cnslTime;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "std_id")
@@ -43,9 +43,9 @@ public class Cnlr_SchdSlot {
     
     @CreationTimestamp
     @Column(name = "reg_dt", nullable = false, updatable = false)
-    private LocalDateTime regDt;
+    private String regDt;
     
     @UpdateTimestamp
     @Column(name = "upd_dt", insertable = false)
-    private LocalDateTime updDt;
+    private String updDt;
 }

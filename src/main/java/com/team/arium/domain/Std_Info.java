@@ -28,7 +28,7 @@ public class Std_Info {
     private String stdNm;
     
     @Column(name = "birth_dt", nullable = false)
-    private LocalDate birthDt;
+    private String birthDt;
     
     @Column(name = "std_gender", length = 10, nullable = false)
     private String stdGender;
@@ -41,7 +41,7 @@ public class Std_Info {
     private Integer schYr;
     
     @Column(name = "entr_dt", nullable = false)
-    private LocalDateTime entrDt;
+    private String entrDt;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "std_stat_cd", nullable = false)
@@ -77,9 +77,9 @@ public class Std_Info {
     
     @CreationTimestamp
     @Column(name = "reg_dt", nullable = false, updatable = false)
-    private LocalDateTime regDt;
+    private String regDt;
     
     @UpdateTimestamp
     @Column(name = "upd_dt", insertable = false)
-    private LocalDateTime updDt;
+    private String updDt;
 }
