@@ -22,17 +22,13 @@ public class Dgstfn_Info {
     @Column(name = "survey_id")
     private Integer surveyId;
     
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "prg_id", nullable = false, unique = true)
-    private Ncs_PrgInfo ncsPrgInfo;
-    
     @CreationTimestamp
     @Column(name = "reg_dt", nullable = false, updatable = false)
-    private LocalDateTime regDt;
+    private String regDt;
     
     @UpdateTimestamp
     @Column(name = "upd_dt", insertable = false)
-    private LocalDateTime updDt;
+    private String updDt;
     
     @Builder.Default
     @OneToMany(mappedBy = "dgstfnInfo", cascade = CascadeType.ALL, orphanRemoval = true)

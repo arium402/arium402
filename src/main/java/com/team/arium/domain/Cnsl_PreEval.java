@@ -42,9 +42,9 @@ public class Cnsl_PreEval {
     
     @CreationTimestamp
     @Column(name = "reg_dt", nullable = false, updatable = false)
-    private LocalDateTime regDt;
+    private String regDt;
     
     @UpdateTimestamp
     @Column(name = "upd_dt", insertable = false)
-    private LocalDateTime updDt;
+    private String updDt;
 }

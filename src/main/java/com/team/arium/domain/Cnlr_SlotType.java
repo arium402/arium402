@@ -21,8 +21,8 @@ public class Cnlr_SlotType {
     private String slotName;
     
     @Column(name = "start_time", nullable = false)
-    private LocalTime startTime;
+    private String startTime;
     
     @Column(name = "end_time", nullable = false)
-    private LocalTime endTime;
+    private String endTime;
 }
