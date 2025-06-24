@@ -86,11 +86,12 @@ document.querySelector("#counselorAddBtn").addEventListener('click', function() 
 
 //상담사 등록 ajax
 function addCounselor(cns_info){
-	
+	console.log(JSON.stringify(cns_info))
 	fetch("/admin/admin_counselorList_addOk", {
 		method: "PUT",
 		headers: {'content-type': 'application/json'},
-		body : JSON.stringify(cns_info)
+		body : JSON.stringify(cns_info),
+		credentials: "include" 
 		
 	}).then(function(data) {
 		return data.text();

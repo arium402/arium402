@@ -33,5 +33,5 @@ public class Common_File {
     
     @CreationTimestamp
     @Column(name = "reg_dt", nullable = false, updatable = false)
-    private LocalDateTime regDt;
+    private String regDt;
 }

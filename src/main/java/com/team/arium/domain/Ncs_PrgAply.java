@@ -30,7 +30,7 @@ public class Ncs_PrgAply {
     private Std_Info stdInfo;
     
     @Column(name = "aply_dt", nullable = false)
-    private LocalDateTime aplyDt;
+    private String aplyDt;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "aply_stat_cd", nullable = false)
@@ -38,9 +38,9 @@ public class Ncs_PrgAply {
     
     @CreationTimestamp
     @Column(name = "reg_dt", nullable = false, updatable = false)
-    private LocalDateTime regDt;
+    private String regDt;
     
     @UpdateTimestamp
     @Column(name = "upd_dt", insertable = false)
-    private LocalDateTime updDt;
+    private String updDt;
 }

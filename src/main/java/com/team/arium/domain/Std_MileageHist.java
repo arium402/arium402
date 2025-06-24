@@ -42,13 +42,13 @@ public class Std_MileageHist {
     private Common_Code mlgAddCd;
     
     @Column(name = "mlg_dt", nullable = false)
-    private LocalDate mlgDt;
+    private String mlgDt;
     
     @CreationTimestamp
     @Column(name = "reg_dt", nullable = false, updatable = false)
-    private LocalDateTime regDt;
+    private String regDt;
     
     @UpdateTimestamp
     @Column(name = "upd_dt", insertable = false)
-    private LocalDateTime updDt;
+    private String updDt;
 }
