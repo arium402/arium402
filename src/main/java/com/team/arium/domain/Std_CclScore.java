@@ -3,7 +3,6 @@ package com.team.arium.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -30,9 +29,8 @@ public class Std_CclScore {
     @JoinColumn(name = "score_type", nullable = false)
     private Common_Code scoreType;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "eval_id")
-    private Core_CptEval coreCptEval;
+    @Column(name = "eval_id", length = 10)
+    private String evalId;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cmp_id")
