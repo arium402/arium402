@@ -20,7 +20,7 @@
             <div class="program-image-section">
                 <label class="form-label required">프로그램 대표 사진</label>
                 <div class="image-upload-area">
-                    <input type="file" id="programImageInput" name="programImage" accept="image/*" onchange="handleImageSelect(this)">
+                    <input type="file" id="programImage" name="programImage" accept="image/*" onchange="handleImageSelect(this)">
                     <div class="image-upload-content">
                         <i class="fas fa-camera"></i>
                         <div>대표 사진 업로드</div>
@@ -41,7 +41,7 @@
                         <!-- 비교과명 -->
                         <div class="form-item full-width">
                             <label class="form-label required">비교과명</label>
-                            <input type="text" class="form-input" id="programName" name="programName" placeholder="비교과 프로그램명을 입력하세요" required>
+                            <input type="text" class="form-input" id="prgNm" name="prgNm" placeholder="비교과 프로그램명을 입력하세요" required>
                         </div>
 
                         <!-- 모집기간 -->
@@ -58,7 +58,7 @@
                         <!-- 모집인원 -->
                         <div class="form-item">
                             <label class="form-label required">모집인원</label>
-                            <input type="number" class="form-input" id="capacity" name="capacity" placeholder="30" min="1" required>
+                            <input type="number" class="form-input" id="maxCnt" name="maxCnt" placeholder="30" min="1" required>
                         </div>
 
                         <!-- 운영부서 -->
@@ -81,12 +81,12 @@
                         <!-- 운영기간 -->
                         <div class="form-item">
                             <label class="form-label required">운영 시작일</label>
-                            <input type="date" class="form-input" id="operationStart" name="operationStart" required>
+                            <input type="date" class="form-input" id="prgStDt" name="prgStDt" required>
                         </div>
 
                         <div class="form-item">
                             <label class="form-label required">운영 종료일</label>
-                            <input type="date" class="form-input" id="operationEnd" name="operationEnd" required>
+                            <input type="date" class="form-input" id="prgEndDt" name="prgEndDt" required>
                         </div>
 
                         <!-- 문의 전화번호 -->
@@ -98,35 +98,23 @@
                         <!-- 만족도조사 마감일 -->
                         <div class="form-item">
                             <label class="form-label required">만족도조사 마감일</label>
-                            <input type="date" class="form-input" id="surveyDeadline" name="surveyDeadline" required>
+                            <input type="date" class="form-input" id="surveyDt" name="surveyDt" required>
                         </div>
 
                         <!-- 마일리지 점수 -->
                         <div class="form-item">
                             <label class="form-label required">마일리지 점수</label>
-                            <input type="number" class="form-input" id="mileagePoints" name="mileagePoints" placeholder="10000" min="0" required>
+                            <input type="number" class="form-input" id="mlgDefScore" name="mlgDefScore" placeholder="10000" min="0" required>
                         </div>
 
                         <!-- 핵심역량 체크 -->
                         <div class="form-item full-width">
                             <label class="form-label required">핵심역량</label>
-                            <div class="checkbox-group">
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="competency1" name="competencies" value="창의적 혁신역량" checked>
-                                    <label for="competency1">창의적 혁신역량</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="competency2" name="competencies" value="융합적 탐구역량" checked>
-                                    <label for="competency2">융합적 탐구역량</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="competency3" name="competencies" value="협력적 소통역량">
-                                    <label for="competency3">협력적 소통역량</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="competency4" name="competencies" value="글로벌 리더역량">
-                                    <label for="competency4">글로벌 리더역량</label>
-                                </div>
+                            <div id="competenciesContainer" class="checkbox-group">
+                                <!-- JavaScript로 동적 생성 -->
+                            </div>
+                            <div id="competencyScoresContainer" class="competency-scores">
+                                <!-- JavaScript로 동적 생성 -->
                             </div>
                         </div>
 
@@ -134,7 +122,7 @@
                         <div class="form-item full-width">
                             <label class="form-label">학생용 첨부파일 (안내서, 신청서 등)</label>
                             <div class="file-input">
-                                <input type="file" id="fileInput" name="attachmentFile" accept=".pdf,.doc,.docx,.hwp,.jpg,.jpeg,.png" onchange="handleFileSelect(this)">
+                                <input type="file" id="attachmentFile" name="attachmentFile" accept=".pdf,.doc,.docx,.hwp,.jpg,.jpeg,.png" onchange="handleFileSelect(this)">
                                 <p><i class="fas fa-cloud-upload-alt"></i> 클릭하여 파일을 선택하세요</p>
                                 <small>PDF, DOC, HWP, 이미지 파일 업로드 가능 (학생이 다운로드할 수 있는 자료)</small>
                             </div>
@@ -144,7 +132,7 @@
                         <!-- 설명(세부사항) -->
                         <div class="form-item full-width">
                             <label class="form-label required">설명 (세부사항)</label>
-                            <textarea class="form-textarea" id="description" name="description" placeholder="프로그램에 대한 상세한 설명을 입력하세요..." required></textarea>
+                            <textarea class="form-textarea" id="prgDesc" name="prgDesc" placeholder="프로그램에 대한 상세한 설명을 입력하세요..." required></textarea>
                         </div>
                     </div>
 
