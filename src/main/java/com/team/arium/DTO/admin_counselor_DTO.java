@@ -1,4 +1,4 @@
-package com.team.arium.admin;
+package com.team.arium.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,4 +16,6 @@ public class admin_counselor_DTO {
     private String emplStatCd;
     private String cnslCdDesc;
     private String emplStatCdDesc; 
+    private String regDt;
+    private String updDt;
 }

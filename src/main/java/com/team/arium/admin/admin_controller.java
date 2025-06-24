@@ -1,6 +1,5 @@
 package com.team.arium.admin;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
@@ -9,12 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.team.arium.domain.Empl_Info;
+import com.team.arium.DTO.admin_counselor_DTO;
 import com.team.arium.model.pageing;
 
 import jakarta.annotation.Resource;
@@ -49,17 +46,18 @@ public class admin_controller {
 									,@RequestParam(value = "keyword", required = false) String keyword
 									,@RequestParam(value="pageno", defaultValue="1", required=false) Integer pageno
 									)  {
-		List<Empl_Info> allCounselorList = this.admin_cnsl_repo.findAllByOrderByEmplId();
-		System.out.println("allCounselorList : " + allCounselorList);
+//		List<Empl_Info> allCounselorList = this.admin_cnsl_repo.findAllByOrderByEmplId();
+		List<admin_counselor_DTO> dtoList = this.admin_svc.getCounselorDtoList();
+		System.out.println("allCounselorList : " + dtoList);
 		
-		Integer counselorTotal = allCounselorList.size();
+		Integer counselorTotal = dtoList.size();
 		
 		//페이징 관련 
 		Map<String, Integer> pageinfo = this.m_pg.page_ea(pageno, counselorTotal);
 		int bno = this.m_pg.serial_no(pageno, counselorTotal); 
 				
 		
-		m.addAttribute("cslorList", allCounselorList);
+		m.addAttribute("cslorList", dtoList);
 		m.addAttribute("cslorTotal", counselorTotal);
 		
 		m.addAttribute("pageinfo", pageinfo);

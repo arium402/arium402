@@ -9,6 +9,8 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.team.arium.DTO.admin_counselor_DTO;
+import com.team.arium.cmncode.commonCode_service;
 import com.team.arium.domain.Common_Code;
 import com.team.arium.domain.Empl_Info;
 import com.team.arium.model.generateNo;
@@ -21,26 +23,32 @@ public class admin_serviceImpl implements admin_service{
 	@Autowired
 	public admin_counselor_repo admin_cnsl_repo;
 	
+	@Autowired
+	public commonCode_service cmn_svc;
+	
 	@Resource(name="generateNo")
 	public generateNo gen_no;
 	
 	
-	
-//	public List<admin_counselor_DTO> getCounselorDtoList() {
-//	    List<Empl_Info> entityList = admin_cnsl_repo.findAllByOrderByEmplId();
-//	    List<admin_counselor_DTO> dtoList = new ArrayList<>();
+	@Override
+	public List<admin_counselor_DTO> getCounselorDtoList() {
+	    List<Empl_Info> entityList = this.admin_cnsl_repo.findAllByOrderByEmplId();
+	    List<admin_counselor_DTO> dtoList = new ArrayList<>();
 
-//	    for (Empl_Info e : entityList) {
-//	    	admin_counselor_DTO dto = new admin_counselor_DTO();
-//	        dto.setEmplNo(e.getEmplNo());
-//	        dto.setEmplName(e.getEmplName());
-//	        dto.setCnslCdDesc(commonCodeService.getCodeDesc("cnsl_cd", e.getCnslCd()));
-//	        dto.setEmplStatCdDesc(commonCodeService.getCodeDesc("empl_stat_cd", e.getEmplStatCd()));
-//	        dto.setEmplTellno(e.getEmplTellno());
-//	        dto.setEmplEmlAddr(e.getEmplEmlAddr());
-//	        return dto;
-//	    }).collect(Collectors.toList());
-//	}
+	    for (Empl_Info e : entityList) {
+	    	admin_counselor_DTO dto = new admin_counselor_DTO();
+	        dto.setEmplNo(e.getEmplNo());
+	        dto.setEmplName(e.getEmplName());
+	        dto.setCnslCdDesc(this.cmn_svc.getCodeDesc("cnsl_cd", e.getCnslCd().getCodeId()));
+	        dto.setEmplStatCdDesc(this.cmn_svc.getCodeDesc("empl_stat_cd", e.getEmplStatCd().getCodeId()));
+	        dto.setEmplTellno(e.getEmplTellno());
+	        dto.setEmplEmlAddr(e.getEmplEmlAddr());
+	        dto.setRegDt(e.getRegDt());
+	        
+	        dtoList.add(dto); // 리스트에 추가
+	    }
+	    return dtoList;
+	}
 
 //	@Override
 //	public Empl_Info insert_counselor(String emp_data) {

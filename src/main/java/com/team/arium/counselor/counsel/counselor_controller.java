@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.team.arium.DTO.counselor_patient_DTO;
+import com.team.arium.admin.admin_service;
 import com.team.arium.domain.Empl_Info;
 import com.team.arium.domain.Std_Info;
 import com.team.arium.model.pageing;
@@ -27,6 +29,9 @@ public class counselor_controller {
 	@Autowired
 	public counselor_repo cns_repo;
 	
+	@Autowired
+	public counselor_service cns_svc;
+	
 	@Resource(name="pageing")
 	pageing m_pg;
 	
@@ -36,22 +41,22 @@ public class counselor_controller {
     						,@RequestParam(value = "keyword", required = false) String keyword
     						,@RequestParam(value="pageno", defaultValue="1", required=false) Integer pageno) {
         // 필요한 경우 신청자 데이터를 모델에 추가
-        // List<Applicant> applicants = applicantService.getAllApplicants();
+//         List<Applicant> applicants = applicantService.getAllApplicants();
         // model.addAttribute("applicants", applicants);
     	
-    	List<Std_Info> allStudentList = this.cns_repo.findAllByOrderByStdId();
+    	List<counselor_patient_DTO> allPatientList = this.cns_svc.allPatientList();
     	
-    	System.out.println("allCounselorList : " + allStudentList);
+    	System.out.println("allCounselorList : " + allPatientList);
 		
-		Integer studentTotal = allStudentList.size();
+		Integer studentTotal = allPatientList.size();
 		
 		//페이징 관련 
 		Map<String, Integer> pageinfo = this.m_pg.page_ea(pageno, studentTotal);
 		int bno = this.m_pg.serial_no(pageno, studentTotal); 
 				
 		
-		model.addAttribute("cslorList", allStudentList);
-		model.addAttribute("cslorTotal", studentTotal);
+		model.addAttribute("pttList", allPatientList);
+		model.addAttribute("pttTotal", studentTotal);
 		
 		model.addAttribute("pageinfo", pageinfo);
 		model.addAttribute("bno", bno);
