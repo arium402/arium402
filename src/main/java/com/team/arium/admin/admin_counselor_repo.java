@@ -16,6 +16,8 @@
 
 package com.team.arium.admin;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;  
 import org.springframework.data.repository.query.Param;  
@@ -26,8 +28,12 @@ public interface admin_counselor_repo extends JpaRepository<Empl_Info, Long>{
 	//사번 조회
 	@Query(value = "SELECT EMPL_NO FROM EMPL_INFO WHERE EMPL_NO LIKE CONCAT(:today, '%') ORDER BY EMPL_NO DESC LIMIT 1", 
 	       nativeQuery = true)  
-	String findLastEmpNoByDate(@Param("today") String today); 
+	String findLastEmpNoByToday(@Param("today") String today); 
 	
+	//오늘날짜 반환 
 	@Query("select now() as today")
 	String mysql_today();
+	
+	//=> select * from empl_info order by emplNo;
+	List<Empl_Info> findAllByOrderByEmplId(); 
 }

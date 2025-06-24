@@ -51,7 +51,7 @@ document.querySelector("#counselorAddBtn").addEventListener('click', function() 
 		emplStatCd:"31"
   	};
 	
-	
+	console.log(cns_info)
 	// 유효성 검사
     if (cns_name.value=="") {
         showMessage('error', '상담사의 이름을 입력해주세요.');
@@ -91,7 +91,7 @@ function addCounselor(cns_info){
 		method: "PUT",
 		headers: {'content-type': 'application/json'},
 		body : JSON.stringify(cns_info),
-		credentials: "include" 
+		//credentials: "include" 
 		
 	}).then(function(data) {
 		return data.text();

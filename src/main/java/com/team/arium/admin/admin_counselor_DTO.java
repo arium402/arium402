@@ -8,9 +8,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class admin_counselor_DTO {
+	private String emplNo;
 	private String emplName;
     private String cnslCd;
     private String emplTellno;
     private String emplEmlAddr;
     private String emplStatCd;
+    private String cnslCdDesc;
+    private String emplStatCdDesc; 
 }

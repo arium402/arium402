@@ -76,77 +76,52 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr onclick="goToDetail(1)">
-                                    <td>1</td>
-                                    <td>김상담</td>
-                                    <td>EMP001</td>
-                                    <td>심리상담</td>
-                                    <td>010-1234-5678</td>
-                                    <td>kim@example.com</td>
-                                    <td><span class="status active">재직</span></td>
-                                    <td>2024-01-15</td>
+                            	<tr th:if="${cslorTotal  == 0}">
+									<td colspan="8" calss="dontClick">등록된 상담원이 없습니다.</td>
+								</tr>
+                                <tr th:if="${cslorTotal  != 0}" th:each="cslor_list, idx : ${cslorList}" onclick="goToDetail(1)">
+                                    <td>[[${bno - idx.index}]]</td>
+                                    <td>[[${cslor_list.emplName}]]</td>
+                                    <td>[[${cslor_list.emplNo}]]</td>
+                                    <td>[[${cslor_list.cnslCd}]]</td>
+                                    <td>[[${cslor_list.emplTellno}]]</td>
+                                    <td>[[${cslor_list.emplEmlAddr}]]</td>
+                                    <td><span class="status active">[[${cslor_list.emplStatCd}]]</span></td>
+                                    <td>[[${cslor_list.regDt}]]</td>
                                 </tr>
-                                <tr onclick="goToDetail(2)">
-                                    <td>2</td>
-                                    <td>이상담</td>
-                                    <td>EMP002</td>
-                                    <td>진로상담</td>
-                                    <td>010-2345-6789</td>
-                                    <td>lee@example.com</td>
-                                    <td><span class="status active">재직</span></td>
-                                    <td>2024-02-20</td>
-                                </tr>
-                                <tr onclick="goToDetail(3)">
-                                    <td>3</td>
-                                    <td>박상담</td>
-                                    <td>EMP003</td>
-                                    <td>학습컨설팅</td>
-                                    <td>010-3456-7890</td>
-                                    <td>park@example.com</td>
-                                    <td><span class="status inactive">퇴사</span></td>
-                                    <td>2023-12-10</td>
-                                </tr>
-                                <tr onclick="goToDetail(4)">
-                                    <td>4</td>
-                                    <td>최상담</td>
-                                    <td>EMP004</td>
-                                    <td>위기상담</td>
-                                    <td>010-4567-8901</td>
-                                    <td>choi@example.com</td>
-                                    <td><span class="status active">재직</span></td>
-                                    <td>2024-03-05</td>
-                                </tr>
-                                <tr onclick="goToDetail(5)">
-                                    <td>5</td>
-                                    <td>정상담</td>
-                                    <td>EMP005</td>
-                                    <td>익명상담</td>
-                                    <td>010-5678-9012</td>
-                                    <td>jung@example.com</td>
-                                    <td><span class="status active">재직</span></td>
-                                    <td>2024-04-12</td>
-                                </tr>
-                            </tbody>
+                        	</tbody>
                         </table>
                     </div>
                     
                     <!-- 페이지네이션 -->
                     <div class="pagination-container">
                         <div class="pagination">
-                            <button class="pagination-btn prev" disabled>
+                            <button class="pagination-btn prev" th:classappend="${1 >= pageinfo.pageno} ? 'disabled' : ''"
+                            		th:onclick="">
                                 <i class="fas fa-chevron-left"></i>
                             </button>
-                            <button class="pagination-btn page-number active">1</button>
-                            <button class="pagination-btn page-number">2</button>
-                            <button class="pagination-btn page-number">3</button>
-                            <button class="pagination-btn page-number">4</button>
-                            <button class="pagination-btn page-number">5</button>
-                            <button class="pagination-btn next">
+                            
+                            <th:block th:each="pgn : ${#numbers.sequence(pageinfo.start_pg, pageinfo.end_pg)}">
+                            <button class="pagination-btn page-number " th:classappend ="${pageinfo.pageno == pgn} ? 'active' : ''"
+                            		th:onclick="">
+                            		1
+                            </button>
+                            </th:block>
+                           
+                            <button class="pagination-btn next" th:classappend="${pageinfo.pageno >= pageinfo.page_ea_total} ? 'disabled' : ''" 
+                            		th:onclick="">
                                 <i class="fas fa-chevron-right"></i>
                             </button>
                         </div>
                         <div class="pagination-info">
-                            <span>총 <strong>25</strong>건 중 <strong>1-5</strong>건 표시</span>
+                            <span>총 <strong>[[${pageinfo.page_ea_total}]]</strong>건 중 
+                            	<strong>[[${pageinfo.start_pg}]] 
+                            	
+                            	<th:block th:if="${pageinfo.start_pg != pageinfo.end_pg}">
+                            	- [[${pageinfo.end_pg}]]
+                            	</th:block>
+                            	
+                            	</strong>건 표시</span>
                         </div>
                     </div>
                 </div>
