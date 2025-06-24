@@ -12,7 +12,8 @@ import com.team.arium.domain.Ncs_PrgInfo;
 
 @Repository
 public interface NcsPrgInfoRepository extends JpaRepository<Ncs_PrgInfo, Integer> {
-    
+  /*
+     
     // 프로그램 코드로 중복 체크
     boolean existsByPrgCd(String prgCd);
     
@@ -34,4 +35,5 @@ public interface NcsPrgInfoRepository extends JpaRepository<Ncs_PrgInfo, Integer
            "WHERE a.aplyStatCd.code = 'APPROVED' OR a.aplyStatCd.code IS NULL " +
            "GROUP BY p.prgId")
     List<Object[]> findProgramsWithApplyCount();
+   */
 }
