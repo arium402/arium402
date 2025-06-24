@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -17,7 +16,11 @@ public class Dgstfn_Eval {
 //만족도 조사 실시 
 	
     @Id
-    @Column(name = "sur_eval_id", length = 10)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "sur_eval_no")
+    private Integer surEvalNo;
+    
+    @Column(name = "sur_eval_id", length = 10, nullable = false)
     private String surEvalId;
     
     @ManyToOne(fetch = FetchType.LAZY)

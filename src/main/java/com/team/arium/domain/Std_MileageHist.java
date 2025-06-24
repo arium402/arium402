@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -30,9 +28,8 @@ public class Std_MileageHist {
     @JoinColumn(name = "cmp_id", nullable = false)
     private Ncs_CmpInfo ncsCmpInfo;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sur_eval_id", nullable = false)
-    private Dgstfn_Eval dgstfnEval;
+    @Column(name = "sur_eval_id", length = 10, nullable = false)
+    private String surEvalId;
     
     @Column(name = "mlg_score", nullable = false)
     private Integer mlgScore;
