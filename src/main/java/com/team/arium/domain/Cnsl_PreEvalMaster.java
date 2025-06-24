@@ -30,7 +30,7 @@ public class Cnsl_PreEvalMaster {
     
     @CreationTimestamp
     @Column(name = "reg_dt", nullable = false, updatable = false)
-    private LocalDateTime regDt;
+    private String regDt;
     
     @Builder.Default
     @OneToMany(mappedBy = "cnslPreEvalMaster", cascade = CascadeType.ALL, orphanRemoval = true)

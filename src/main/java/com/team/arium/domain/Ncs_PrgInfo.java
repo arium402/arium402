@@ -33,10 +33,10 @@ public class Ncs_PrgInfo {
     private String prgDesc;
     
     @Column(name = "prg_st_dt", nullable = false)
-    private LocalDate prgStDt;
+    private String prgStDt;
     
     @Column(name = "prg_end_dt", nullable = false)
-    private LocalDate prgEndDt;
+    private String prgEndDt;
     
     @Column(name = "max_cnt", nullable = false)
     private Integer maxCnt;
@@ -45,7 +45,7 @@ public class Ncs_PrgInfo {
     private Integer mlgDefScore;
     
     @Column(name = "survey_dt", nullable = false)
-    private LocalDate surveyDt;
+    private String surveyDt;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "file_id")
@@ -57,11 +57,11 @@ public class Ncs_PrgInfo {
     
     @CreationTimestamp
     @Column(name = "reg_dt", nullable = false, updatable = false)
-    private LocalDateTime regDt;
+    private String regDt;
     
     @UpdateTimestamp
     @Column(name = "upd_dt", insertable = false)
-    private LocalDateTime updDt;
+    private String updDt;
     
     @Builder.Default
     @OneToMany(mappedBy = "ncsPrgInfo", cascade = CascadeType.ALL, orphanRemoval = true)

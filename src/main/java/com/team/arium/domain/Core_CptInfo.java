@@ -35,11 +35,11 @@ public class Core_CptInfo {
     
     @CreationTimestamp
     @Column(name = "REG_DT", nullable = false, updatable = false)
-    private LocalDateTime regDt;
+    private String regDt;
     
     @UpdateTimestamp
     @Column(name = "UPD_DT", insertable = false)
-    private LocalDateTime updDt;
+    private String updDt;
  
     @Builder.Default
     @OneToMany(mappedBy = "coreCptInfo", cascade = CascadeType.ALL, orphanRemoval = true)

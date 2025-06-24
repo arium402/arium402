@@ -7,6 +7,9 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -38,20 +41,7 @@ public class admin_controller {
 	Map<String, String> map = null;
 	String url = "";
 	String msg = "";
-	
-	
-//	//관리자 메인화면 
-//	@GetMapping("/admin_dashboard")
-//	public String admin_dashboard(HttpServletResponse res) {
-//		
-//		
-//		return "/admin/admin_dashboard.html";
-//	}
 
-	
-//*******************************************************************************************//	
-	
-	
 	
 	//상담사 목록 
 	@GetMapping("/admin_counselorList")
@@ -67,14 +57,27 @@ public class admin_controller {
 		return "/admin/admin_counselorList_add.html";
 	}
 		
+	@GetMapping("/check-role")
+	public ResponseEntity<?> checkRole() {
+	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    System.out.println("현재 사용자: " + auth.getName());
+	    System.out.println("권한: " + auth.getAuthorities());
+
+	    return ResponseEntity.ok("확인 완료");
+	}
+	
 	//상담사 등록
+	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/admin_counselorList_addOk")
-	public ResponseEntity<String> admin_counselorList_addOk(@RequestBody admin_counselor_DTO emp_data, HttpServletResponse res) throws IOException {
-		
+	public String admin_counselorList_addOk(@RequestBody String emp_data, HttpServletResponse res) throws IOException {
+		System.out.println(emp_data);
+		try {
 		Empl_Info data_info = this.admin_svc.insert_counselor(emp_data);
-		
-		
 		System.out.println(data_info);
+		
+		}catch(Exception e) {
+			
+		}
 		return null;
 	}
 	
