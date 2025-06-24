@@ -39,11 +39,11 @@ public class Cnsl_PreQst {
     
     @CreationTimestamp
     @Column(name = "reg_dt", nullable = false, updatable = false)
-    private LocalDateTime regDt;
+    private String regDt;
     
     @UpdateTimestamp
     @Column(name = "upd_Dt", insertable = false)
-    private LocalDateTime updDt;
+    private String updDt;
     
     @Builder.Default
     @OneToMany(mappedBy = "cnslPreQst", cascade = CascadeType.ALL, orphanRemoval = true)

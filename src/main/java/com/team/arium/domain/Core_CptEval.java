@@ -29,9 +29,9 @@ public class Core_CptEval {
     private Integer ansScore;
     
     @Column(name = "ans_dt", nullable = false)
-    private LocalDateTime ansDt;
+    private String ansDt;
     
     @CreationTimestamp
     @Column(name = "reg_dt", nullable = false, updatable = false)
-    private LocalDateTime regDt;
+    private String regDt;
 }

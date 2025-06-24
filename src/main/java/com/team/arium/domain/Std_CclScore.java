@@ -44,5 +44,5 @@ public class Std_CclScore {
     
     @CreationTimestamp
     @Column(name = "reg_dt", nullable = false, updatable = false)
-    private LocalDateTime regDt;
+    private String regDt;
 }

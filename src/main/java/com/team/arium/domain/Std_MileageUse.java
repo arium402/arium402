@@ -27,7 +27,7 @@ public class Std_MileageUse {
     private Std_Info stdInfo;
     
     @Column(name = "aply_dt", nullable = false)
-    private LocalDateTime aplyDt;
+    private String aplyDt;
     
     @Column(name = "aply_mlg_score", nullable = false)
     private Integer aplyMlgScore;
@@ -37,16 +37,16 @@ public class Std_MileageUse {
     private Common_Code mlgUseCd;
     
     @Column(name = "pay_dt")
-    private LocalDate payDt;
+    private String payDt;
     
     @Column(name = "pay_money")
     private Integer payMoney;
     
     @CreationTimestamp
     @Column(name = "reg_dt", nullable = false, updatable = false)
-    private LocalDateTime regDt;
+    private String regDt;
     
     @UpdateTimestamp
     @Column(name = "upd_dt", insertable = false)
-    private LocalDateTime updDt;
+    private String updDt;
 }

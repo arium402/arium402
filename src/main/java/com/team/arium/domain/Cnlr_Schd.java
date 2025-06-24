@@ -38,18 +38,18 @@ public class Cnlr_Schd {
     private Common_Code workDay;
     
     @Column(name = "start_time", nullable = false)
-    private LocalTime startTime;
+    private String startTime;
     
     @Column(name = "end_time", nullable = false)
-    private LocalTime endTime;
+    private String endTime;
     
     @CreationTimestamp
     @Column(name = "reg_dt", nullable = false, updatable = false)
-    private LocalDateTime regDt;
+    private String regDt;
     
     @UpdateTimestamp
     @Column(name = "upd_dt", insertable = false)
-    private LocalDateTime updDt;
+    private String updDt;
     
     @Builder.Default
     @OneToMany(mappedBy = "cnlrschd", cascade = CascadeType.ALL, orphanRemoval = true)
