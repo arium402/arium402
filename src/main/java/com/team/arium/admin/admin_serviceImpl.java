@@ -1,5 +1,7 @@
 package com.team.arium.admin;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,23 +24,31 @@ public class admin_serviceImpl implements admin_service{
 	
 
 	@Override
-	public Empl_Info insert_counselor(admin_counselor_DTO emp_data) {
+	public Empl_Info insert_counselor(String emp_data) {
 		Empl_Info entity = new Empl_Info();
+		
+		JSONArray ja = new JSONArray(emp_data);
+		JSONObject jo = ja.getJSONObject(0);
 		
 		String newEmpNo = this.gen_no.generateEmpNo(); 
 		entity.setEmplNo("C"+newEmpNo);
 		
-		entity.setEmplName(emp_data.getEmplName());
-	    entity.setEmplTellno(emp_data.getEmplTellno());
-	    entity.setEmplEmlAddr(emp_data.getEmplEmlAddr());
-	    
+		entity.setEmplName(jo.getString("emplName"));
+	    entity.setEmplTellno(jo.getString("emplTellno"));
+	    entity.setEmplEmlAddr(jo.getString("emplEmlAddr"));
 	   
-//	    entity.setCnslCd(new Common_Code(Integer.parseInt(emp_data.getCnslCd()),null,null,null));
-//	    entity.setEmplStatCd(new Common_Code(Integer.parseInt(emp_data.getEmplStatCd()),null,null,null));
+	    entity.setCnslCd(new Common_Code(jo.getInt("cnslCd"),null,null,null));
+	    entity.setEmplStatCd(new Common_Code(jo.getInt("emplStatCd"),null,null,null));
 	    
-//		Empl_Info save_counselor = this.admin_cnsl_repo.save(entity);
+	    String today = this.admin_cnsl_repo.mysql_today();
 	    
-		return null;
+	    entity.setEmplStatCd(new Common_Code(jo.getInt("emplStatCd"),null,null,null));
+	    
+	 
+	    
+		Empl_Info save_counselor = this.admin_cnsl_repo.save(entity);
+	    
+		return save_counselor;
 	}
 
 	
