@@ -19,17 +19,17 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity 
 public class securityconfig {
 
-	//FilterChain: 인가(사용자 필터), Spring Security의 필터 역할로 해당 환경조건 및 접속 URL에 대한 권한을 설정
-	@Bean
-	public SecurityFilterChain filterch(HttpSecurity http) throws Exception {
-		http.csrf(csrf -> csrf.disable())
-	    .authorizeHttpRequests(auth -> auth
-	        .requestMatchers("/admin/**").permitAll()
-	        .requestMatchers("/css/**").permitAll()
-	        .requestMatchers("/js/**").permitAll()
-	        .anyRequest().authenticated()
-	    )
-		.formLogin(login -> login
+   //FilterChain: 인가(사용자 필터), Spring Security의 필터 역할로 해당 환경조건 및 접속 URL에 대한 권한을 설정
+   @Bean
+   public SecurityFilterChain filterch(HttpSecurity http) throws Exception {
+      http.csrf(csrf -> csrf.disable())
+       .authorizeHttpRequests(auth -> auth
+           .requestMatchers("/admin/**").permitAll()
+           .requestMatchers("/css/**").permitAll()
+           .requestMatchers("/js/**").permitAll()
+           .anyRequest().authenticated()
+       )
+      .formLogin(login -> login
             .loginPage("/admin/admin_dashboard")      // 커스텀 로그인 페이지
             .permitAll()
         )
@@ -40,27 +40,27 @@ public class securityconfig {
             .deleteCookies("JSESSIONID")
             .permitAll()
         );
-		return http.build();
-	}
-	
-	
+      return http.build();
+   }
+   
+   
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
     
-	@Bean
-	public UserDetailsService userDetailsService() {
-	    UserDetails admin = User.builder()
-	        .username("admin")
-	        .password(passwordEncoder().encode("1234"))
-	        .roles("ADMIN")  
-	        .build();
-	    UserDetails user = User.builder()
-	        .username("user")
-	        .password(passwordEncoder().encode("1234"))
-	        .roles("USER")  
-	        .build();
-	    return new InMemoryUserDetailsManager(admin, user);
-	}
+   @Bean
+   public UserDetailsService userDetailsService() {
+       UserDetails admin = User.builder()
+           .username("admin")
+           .password(passwordEncoder().encode("1234"))
+           .roles("ADMIN")  
+           .build();
+       UserDetails user = User.builder()
+           .username("user")
+           .password(passwordEncoder().encode("1234"))
+           .roles("USER")  
+           .build();
+       return new InMemoryUserDetailsManager(admin, user);
+   }
 }
