@@ -7,6 +7,6 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Ncs_CclRelId implements Serializable {
-    private Long prgId;
-    private Long cclId;
+    private Integer prgId;
+    private Integer cclId;
 }

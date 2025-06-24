@@ -7,6 +7,6 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Cnsl_PreEvalId implements Serializable {
-    private String preEvalId;
-    private Long preQstId;
+    private String preEvalId; 
+    private Integer preQstId;
 }

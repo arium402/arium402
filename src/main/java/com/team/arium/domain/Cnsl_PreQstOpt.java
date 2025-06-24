@@ -11,31 +11,31 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "CNSL_PRE_QST_OPT",
-       uniqueConstraints = @UniqueConstraint(columnNames = {"PRE_QST_ID", "OPT_ORD"}))
+@Table(name = "cnsl_pre_qst_opt",
+       uniqueConstraints = @UniqueConstraint(columnNames = {"ore_qst_id", "opt_ord"}))
 public class Cnsl_PreQstOpt {
 //상담 사전 검사 보기 
 	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "PRE_OPT_ID")
-    private Long preOptId;
+    @Column(name = "pre_opt_id")
+    private Integer preOptId;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PRE_QST_ID", nullable = false)
+    @JoinColumn(name = "pre_qst_id", nullable = false)
     private Cnsl_PreQst cnslPreQst;
     
-    @Column(name = "OPT_CONTENT", length = 200, nullable = false)
+    @Column(name = "opt_content", length = 200, nullable = false)
     private String optContent;
     
-    @Column(name = "OPT_ORD", nullable = false)
+    @Column(name = "opt_ord", nullable = false)
     private Integer optOrd;
     
     @CreationTimestamp
-    @Column(name = "REG_DT", nullable = false, updatable = false)
+    @Column(name = "reg_dt", nullable = false, updatable = false)
     private LocalDateTime regDt;
     
     @UpdateTimestamp
-    @Column(name = "UPD_DT", insertable = false)
+    @Column(name = "upd_dt", insertable = false)
     private LocalDateTime updDt;
 }

@@ -10,28 +10,28 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "COM_FILE")
+@Table(name = "com_file")
 public class Common_File {
 //공통 파일 
 	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "FILE_ID")
-    private Long fileId;
+    @Column(name = "file_id")
+    private Integer fileId;
     
-    @Column(name = "ORG_FILE_NAME", length = 100, nullable = false)
+    @Column(name = "org_file_name", length = 100, nullable = false)
     private String orgFileName;
     
-    @Column(name = "SAVE_FILE_NAME", length = 100, nullable = false, unique = true)
+    @Column(name = "save_file_name", length = 100, nullable = false, unique = true)
     private String saveFileName;
     
-    @Column(name = "FILE_NAME", length = 100, nullable = false)
+    @Column(name = "file_name", length = 100, nullable = false)
     private String fileName;
     
-    @Column(name = "FILE_PATH", length = 500, nullable = false)
+    @Column(name = "file_path", length = 500, nullable = false)
     private String filePath;
     
     @CreationTimestamp
-    @Column(name = "REG_DT", nullable = false, updatable = false)
+    @Column(name = "reg_dt", nullable = false, updatable = false)
     private LocalDateTime regDt;
 }
