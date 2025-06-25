@@ -1,14 +1,10 @@
 package com.team.arium.admin.noncurr.controller;
 
-import com.team.arium.admin.noncurr.dto.*;
-import com.team.arium.admin.noncurr.service.NoncurrService;
-import com.team.arium.competence.StudentCompetenceDTO;
+import com.team.arium.admin.noncurr.dto.NoncurrProgramDTO;
+import com.team.arium.admin.noncurr.service.NoncurrProgramService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,12 +20,12 @@ import java.util.stream.Collectors;
 @Slf4j
 public class AdminNoncurrApiController {
     
-    private final NoncurrService noncurrService;
+    private final NoncurrProgramService noncurrProgramService; // 기존 서비스 사용
     
     /**
      * 비교과 프로그램 등록 (등록 페이지용)
      */
-    @PostMapping("/add")
+    @PostMapping(value = "/add", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Map<String, Object>> addProgram(
             @RequestParam(value = "prgNm") String prgNm,
             @RequestParam(value = "prgDesc") String prgDesc,
@@ -55,43 +51,32 @@ public class AdminNoncurrApiController {
                 .map(Integer::parseInt)
                 .collect(Collectors.toList());
             
-            // 핵심역량 점수 파싱
-            List<Integer> scores = null;
-            if (competencyScores != null && !competencyScores.trim().isEmpty()) {
-                scores = Arrays.stream(competencyScores.split(","))
-                    .map(String::trim)
-                    .filter(s -> !s.isEmpty())
-                    .map(Integer::parseInt)
-                    .collect(Collectors.toList());
-            }
+            // 프로그램 코드 생성
+            String prgCd = noncurrProgramService.generateProgramCode();
             
-            // DTO 생성 (DB 컬럼명 기준)
-            NoncurrAddRequestDto requestDto = NoncurrAddRequestDto.builder()
+            // DTO 생성 (기존 NoncurrProgramDTO 사용)
+            NoncurrProgramDTO programDTO = NoncurrProgramDTO.builder()
+                .prgCd(prgCd)
                 .prgNm(prgNm)
                 .prgDesc(prgDesc)
-                .recruitStart(recruitStart)
-                .recruitEnd(recruitEnd)
+                .recruitStartDt(recruitStart)
+                .recruitEndDt(recruitEnd)
                 .prgStDt(prgStDt)
                 .prgEndDt(prgEndDt)
                 .maxCnt(maxCnt)
-                .department(department)
-                .contact(contact)
+                .deptCd(department)
+                .contactTel(contact)
                 .surveyDt(surveyDt)
                 .mlgDefScore(mlgDefScore)
-                .selectedCompetencyIds(competencyIds)
-                .competencyScores(scores)
-                .programImage(programImage)
+                .competencyIds(competencyIds)
+                .imageFile(programImage)
                 .attachmentFile(attachmentFile)
+                .prgStatCd(1) // 기본 상태: 오픈
                 .build();
             
-            Integer programId = noncurrService.addProgram(requestDto);
+            Map<String, Object> result = noncurrProgramService.registerProgram(programDTO);
             
-            Map<String, Object> response = new HashMap<>();
-            response.put("success", true);
-            response.put("message", "비교과 프로그램이 성공적으로 등록되었습니다.");
-            response.put("programId", programId);
-            
-            return ResponseEntity.ok(response);
+            return ResponseEntity.ok(result);
             
         } catch (Exception e) {
             log.error("비교과 프로그램 등록 실패", e);
@@ -111,28 +96,23 @@ public class AdminNoncurrApiController {
     public ResponseEntity<Map<String, Object>> getProgramList(
             @RequestParam(value = "searchKeyword", required = false) String searchKeyword,
             @RequestParam(value = "department", required = false) String department,
-            @RequestParam(value = "statusCode", required = false) Integer statusCode,
+            @RequestParam(value = "statusCode", required = false) String statusFilter,
+            @RequestParam(value = "periodFilter", required = false) String periodFilter,
             @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "size", defaultValue = "10") int size,
-            @RequestParam(value = "sortBy", defaultValue = "regDt") String sortBy,
-            @RequestParam(value = "sortDir", defaultValue = "desc") String sortDir) {
+            @RequestParam(value = "size", defaultValue = "10") int size) {
         
         try {
-            Sort sort = Sort.by(Sort.Direction.fromString(sortDir), sortBy);
-            Pageable pageable = PageRequest.of(page, size, sort);
+            NoncurrProgramDTO searchDTO = NoncurrProgramDTO.builder()
+                .searchKeyword(searchKeyword)
+                .statusFilter(statusFilter)
+                .periodFilter(periodFilter)
+                .page(page)
+                .size(size)
+                .build();
             
-            Page<NoncurrListResponseDto> programs = noncurrService.getProgramList(
-                searchKeyword, department, statusCode, pageable);
+            Map<String, Object> result = noncurrProgramService.getProgramList(searchDTO);
             
-            Map<String, Object> response = new HashMap<>();
-            response.put("success", true);
-            response.put("content", programs.getContent());
-            response.put("currentPage", programs.getNumber());
-            response.put("totalPages", programs.getTotalPages());
-            response.put("totalElements", programs.getTotalElements());
-            response.put("size", programs.getSize());
-            
-            return ResponseEntity.ok(response);
+            return ResponseEntity.ok(result);
             
         } catch (Exception e) {
             log.error("비교과 프로그램 목록 조회 실패", e);
@@ -146,12 +126,12 @@ public class AdminNoncurrApiController {
     }
     
     /**
-     * 핵심역량 목록 조회 (등록 페이지용 - 기존 StudentCompetenceDTO 사용)
+     * 핵심역량 목록 조회 (등록 페이지용 - 간단한 형태)
      */
     @GetMapping("/competencies")
     public ResponseEntity<Map<String, Object>> getCompetencies() {
         try {
-            List<StudentCompetenceDTO> competencies = noncurrService.getActiveCompetencies();
+            List<Map<String, Object>> competencies = noncurrProgramService.getCompetencyList();
             
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);
@@ -165,6 +145,91 @@ public class AdminNoncurrApiController {
             Map<String, Object> response = new HashMap<>();
             response.put("success", false);
             response.put("message", "핵심역량 목록 조회 중 오류가 발생했습니다: " + e.getMessage());
+            
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+    
+    /**
+     * 프로그램 상세 조회
+     */
+    @GetMapping("/{prgId}")
+    public ResponseEntity<Map<String, Object>> getProgramDetail(@PathVariable Integer prgId) {
+        try {
+            Map<String, Object> result = noncurrProgramService.getProgramDetail(prgId);
+            return ResponseEntity.ok(result);
+            
+        } catch (Exception e) {
+            log.error("프로그램 상세 조회 실패", e);
+            
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("message", "상세 조회 중 오류가 발생했습니다: " + e.getMessage());
+            
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+    
+    /**
+     * 프로그램 삭제
+     */
+    @DeleteMapping("/{prgId}")
+    public ResponseEntity<Map<String, Object>> deleteProgram(@PathVariable Integer prgId) {
+        try {
+            Map<String, Object> result = noncurrProgramService.deleteProgram(prgId);
+            return ResponseEntity.ok(result);
+            
+        } catch (Exception e) {
+            log.error("프로그램 삭제 실패", e);
+            
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("message", "삭제 중 오류가 발생했습니다: " + e.getMessage());
+            
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+    
+    /**
+     * 프로그램 코드 생성
+     */
+    @GetMapping("/generate-code")
+    public ResponseEntity<Map<String, Object>> generateProgramCode() {
+        try {
+            String programCode = noncurrProgramService.generateProgramCode();
+            
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("code", programCode);
+            
+            return ResponseEntity.ok(response);
+            
+        } catch (Exception e) {
+            log.error("프로그램 코드 생성 실패", e);
+            
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("message", "코드 생성 중 오류가 발생했습니다: " + e.getMessage());
+            
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+    
+    /**
+     * 프로그램 통계 조회
+     */
+    @GetMapping("/statistics")
+    public ResponseEntity<Map<String, Object>> getProgramStatistics() {
+        try {
+            Map<String, Object> result = noncurrProgramService.getProgramStatistics();
+            return ResponseEntity.ok(result);
+            
+        } catch (Exception e) {
+            log.error("프로그램 통계 조회 실패", e);
+            
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("message", "통계 조회 중 오류가 발생했습니다: " + e.getMessage());
             
             return ResponseEntity.badRequest().body(response);
         }

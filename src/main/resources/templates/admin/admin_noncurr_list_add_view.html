@@ -20,7 +20,7 @@
             <div class="program-image-section">
                 <label class="form-label required">프로그램 대표 사진</label>
                 <div class="image-upload-area">
-                    <input type="file" id="programImage" name="programImage" accept="image/*" onchange="handleImageSelect(this)">
+                    <input type="file" id="fileId" name="fileId" accept="image/*" onchange="handleImageSelect(this)">
                     <div class="image-upload-content">
                         <i class="fas fa-camera"></i>
                         <div>대표 사진 업로드</div>
@@ -36,7 +36,7 @@
 
             <!-- 폼 컨텐츠 영역 -->
             <div class="form-content-section">
-                <form id="programForm" th:action="@{/admin/noncurr_add}" method="post" enctype="multipart/form-data">
+                <form id="programForm" th:action="@{/api/admin/noncurr}" method="post" enctype="multipart/form-data">
                     <div class="form-grid">
                         <!-- 비교과명 -->
                         <div class="form-item full-width">
@@ -92,7 +92,7 @@
                         <!-- 문의 전화번호 -->
                         <div class="form-item">
                             <label class="form-label required">문의 전화번호</label>
-                            <input type="tel" class="form-input" id="contact" name="contact" placeholder="02-3668-4321" required>
+                            <input type="tel" class="form-input" id="contact" name="contact" placeholder="02-0000-0000" required>
                         </div>
 
                         <!-- 만족도조사 마감일 -->
@@ -104,17 +104,29 @@
                         <!-- 마일리지 점수 -->
                         <div class="form-item">
                             <label class="form-label required">마일리지 점수</label>
-                            <input type="number" class="form-input" id="mlgDefScore" name="mlgDefScore" placeholder="10000" min="0" required>
+                            <input type="number" class="form-input" id="mlgDefScore" name="mlgDefScore" placeholder="예시:10000" min="0" required>
                         </div>
 
                         <!-- 핵심역량 체크 -->
                         <div class="form-item full-width">
                             <label class="form-label required">핵심역량</label>
-                            <div id="competenciesContainer" class="checkbox-group">
-                                <!-- JavaScript로 동적 생성 -->
-                            </div>
-                            <div id="competencyScoresContainer" class="competency-scores">
-                                <!-- JavaScript로 동적 생성 -->
+                            <div class="checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="competency1" name="competencies" value="창의적 혁신역량">
+                                    <label for="competency1">창의적 혁신역량</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="competency2" name="competencies" value="융합적 탐구역량">
+                                    <label for="competency2">융합적 탐구역량</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="competency3" name="competencies" value="협력적 소통역량">
+                                    <label for="competency3">협력적 소통역량</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="competency4" name="competencies" value="글로벌 리더역량">
+                                    <label for="competency4">글로벌 리더역량</label>
+                                </div>
                             </div>
                         </div>
 

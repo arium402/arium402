@@ -4,7 +4,6 @@ package com.team.arium.admin.noncurr.dto;
 import lombok.*;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class NoncurrListResponseDto {
