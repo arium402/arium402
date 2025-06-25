@@ -24,6 +24,13 @@ public class FileUploadConfig {
     @Value("${app.upload.max-attachment-size:10485760}") // 10MB  
     private long maxAttachmentSize;
     
+    // 새로운 설정들 추가
+    @Value("${app.upload.max-files-per-request:2}")
+    private int maxFilesPerRequest;
+    
+    @Value("${app.upload.connection-timeout:60000}")
+    private long connectionTimeout;
+    
     // 실제 사용될 경로들
     private String uploadBasePath;
     private String programImagePath;
@@ -35,7 +42,7 @@ public class FileUploadConfig {
     
     @PostConstruct
     public void init() {
-        System.out.println("=== 온프레미스 서버 파일 업로드 설정 ===");
+        System.out.println("=== 개선된 파일 업로드 설정 ===");
         
         // 온프레미스 서버용 경로 설정
         if (configuredBasePath == null || configuredBasePath.trim().isEmpty()) {
@@ -54,22 +61,24 @@ public class FileUploadConfig {
         System.out.println("이미지 저장 경로: " + programImagePath);
         System.out.println("첨부파일 저장 경로: " + attachmentPath);
         System.out.println("웹 URL 접두사: " + urlPrefix);
+        System.out.println("최대 파일 개수: " + maxFilesPerRequest);
+        System.out.println("연결 타임아웃: " + connectionTimeout + "ms");
         
         // 업로드 디렉토리 생성 및 권한 확인
         boolean success = createAndSetupDirectories();
         
         if (success) {
-            System.out.println("✅ 파일 업로드 설정 완료");
+            System.out.println("✅ 개선된 파일 업로드 설정 완료");
         } else {
             System.err.println("❌ 파일 업로드 설정 실패");
             printTroubleshootingGuide();
         }
         
-        System.out.println("=========================================");
+        System.out.println("===================================");
     }
     
     /**
-     * 온프레미스 서버에서 안전한 업로드 경로 찾기
+     * 온프레미스 서버에서 안전한 업로드 경로 찾기 (개선된 버전)
      */
     private String findSafeUploadPath() {
         String[] candidatePaths = {
@@ -174,15 +183,22 @@ public class FileUploadConfig {
         System.out.println("  쓰기: " + baseDir.canWrite());
         System.out.println("  실행: " + baseDir.canExecute());
         
-        // Linux/Unix 권한 정보 (가능한 경우)
-        try {
-            if (!System.getProperty("os.name").toLowerCase().contains("windows")) {
-                Process process = Runtime.getRuntime().exec("ls -la " + baseDir.getAbsolutePath());
-                // 권한 정보는 로그에만 기록하고 실패해도 무시
-            }
-        } catch (Exception e) {
-            // 무시
-        }
+        // 디스크 공간 확인 추가
+        long freeSpace = baseDir.getFreeSpace();
+        long totalSpace = baseDir.getTotalSpace();
+        System.out.println("디스크 공간:");
+        System.out.println("  사용 가능: " + formatBytes(freeSpace));
+        System.out.println("  전체 용량: " + formatBytes(totalSpace));
+    }
+    
+    /**
+     * 바이트를 읽기 쉬운 형태로 변환
+     */
+    private String formatBytes(long bytes) {
+        if (bytes < 1024) return bytes + " B";
+        int exp = (int) (Math.log(bytes) / Math.log(1024));
+        String pre = "KMGTPE".charAt(exp - 1) + "";
+        return String.format("%.1f %sB", bytes / Math.pow(1024, exp), pre);
     }
     
     /**
@@ -202,6 +218,9 @@ public class FileUploadConfig {
         System.err.println("");
         System.err.println("3. 임시 해결책 (재시작시 파일 삭제됨):");
         System.err.println("   app.upload.base-path=/tmp/arium/uploads");
+        System.err.println("");
+        System.err.println("4. 메모리 부족시:");
+        System.err.println("   export JAVA_OPTS=\"-Xmx2g -Xms1g\"");
         System.err.println("");
     }
     
@@ -295,5 +314,16 @@ public class FileUploadConfig {
      */
     public String getAbsoluteUploadPath() {
         return new File(uploadBasePath).getAbsolutePath();
+    }
+    
+    /**
+     * 요청당 최대 파일 개수 검증
+     */
+    public boolean validateFileCount(int fileCount) {
+        if (fileCount > maxFilesPerRequest) {
+            System.err.println("❌ 파일 개수 초과: " + fileCount + " > " + maxFilesPerRequest);
+            return false;
+        }
+        return true;
     }
 }

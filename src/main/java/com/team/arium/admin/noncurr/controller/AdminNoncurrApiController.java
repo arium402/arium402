@@ -2,12 +2,15 @@ package com.team.arium.admin.noncurr.controller;
 
 import com.team.arium.admin.noncurr.dto.NoncurrProgramDTO;
 import com.team.arium.admin.noncurr.service.NoncurrProgramService;
+import com.team.arium.admin.noncurr.FileUploadConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -21,24 +24,73 @@ import java.util.stream.Collectors;
 public class AdminNoncurrApiController {
     
     private final NoncurrProgramService noncurrProgramService;
+    private final FileUploadConfig fileUploadConfig;
     
+    /**
+     * 비교과 프로그램 등록 (임시 버전 - 대표사진만)
+     */
     @PostMapping
     public ResponseEntity<?> registerProgram(
+        HttpServletRequest request,
         @ModelAttribute NoncurrProgramDTO dto,
-        @RequestParam(name = "imageFile", required = false) MultipartFile imageFile,
-        @RequestParam(name = "attachmentFile", required = false) MultipartFile attachmentFile
+        @RequestParam(name = "imageFile", required = false) MultipartFile imageFile
+        // attachmentFile 파라미터 제거 (임시)
+        // @RequestParam(name = "attachmentFile", required = false) MultipartFile attachmentFile
     ) {
-        log.info("DTO 프로그램명: {}", dto.getPrgNm());
-        log.info("대표사진: {}", imageFile != null ? imageFile.getOriginalFilename() : "없음");
-        log.info("첨부파일: {}", attachmentFile != null ? attachmentFile.getOriginalFilename() : "없음");
-
-        dto.setImageFile(imageFile);
-        dto.setAttachmentFile(attachmentFile);
-
-        // 이후 서비스 로직 호출 (예시)
-        Map<String, Object> result = noncurrProgramService.registerProgram(dto);
-
-        return ResponseEntity.ok(result);
+        
+        Map<String, Object> response = new HashMap<>();
+        
+        try {
+            // 요청 정보 로깅
+            log.info("=== 비교과 프로그램 등록 요청 (임시 - 대표사진만) ===");
+            log.info("프로그램명: {}", dto.getPrgNm());
+            log.info("요청 크기: {} bytes", request.getContentLengthLong());
+            log.info("Content-Type: {}", request.getContentType());
+            
+            // 파일 개수 검증 (대표사진만)
+            int fileCount = 0;
+            if (imageFile != null && !imageFile.isEmpty()) {
+                fileCount++;
+                log.info("대표사진: {} ({} bytes)", imageFile.getOriginalFilename(), imageFile.getSize());
+            }
+            
+            log.info("총 파일 개수: {} (대표사진만)", fileCount);
+            
+            // 파일 크기 검증 (대표사진만)
+            if (imageFile != null && !imageFile.isEmpty()) {
+                if (imageFile.getSize() > fileUploadConfig.getMaxImageSize()) {
+                    response.put("success", false);
+                    response.put("message", "대표사진 크기는 " + fileUploadConfig.formatFileSize(fileUploadConfig.getMaxImageSize()) + " 이하여야 합니다.");
+                    log.warn("이미지 파일 크기 초과: {} > {}", imageFile.getSize(), fileUploadConfig.getMaxImageSize());
+                    return ResponseEntity.badRequest().body(response);
+                }
+            }
+            
+            // DTO에 파일 설정 (대표사진만)
+            dto.setImageFile(imageFile);
+            // dto.setAttachmentFile(null); // 첨부파일은 null로 설정 (임시)
+            
+            // 서비스 호출
+            Map<String, Object> result = noncurrProgramService.registerProgram(dto);
+            
+            log.info("등록 결과: {}", result.get("success"));
+            if (Boolean.TRUE.equals(result.get("success"))) {
+                log.info("등록된 프로그램 ID: {}", result.get("prgId"));
+                log.info("⚠️ 임시 버전: 첨부파일 업로드 생략됨");
+            }
+            
+            return ResponseEntity.ok(result);
+            
+        } catch (Exception e) {
+            log.error("비교과 프로그램 등록 중 오류 발생", e);
+            
+            response.put("success", false);
+            response.put("message", "등록 중 오류가 발생했습니다: " + e.getMessage());
+            response.put("error", e.getClass().getSimpleName());
+            
+            // 500 에러 대신 200 OK로 반환 (프론트엔드에서 처리하기 쉽도록)
+            return ResponseEntity.ok(response);
+        }
     }
     
     /**
@@ -226,7 +278,7 @@ public class AdminNoncurrApiController {
     }
     
     /**
-     * 핵심역량 ID 파싱 (개선된 버전)
+     * 핵심역량 ID 파싱 (유지)
      */
     private List<Integer> parseCompetencyIds(String competencies) {
         try {
@@ -278,7 +330,7 @@ public class AdminNoncurrApiController {
     public ResponseEntity<Map<String, Object>> addProgramJson(@RequestBody Map<String, Object> requestData) {
         
         try {
-            log.info("JSON 등록 요청: {}", requestData.get("prgNm"));
+            log.info("JSON 등록 요청 (임시 - 파일 없음): {}", requestData.get("prgNm"));
             
             // JSON에서 데이터 추출
             String prgNm = (String) requestData.get("prgNm");

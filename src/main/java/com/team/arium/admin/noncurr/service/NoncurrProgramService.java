@@ -33,7 +33,7 @@ public class NoncurrProgramService {
     private final FileUploadServiceImpl fileUploadService;
     
     /**
-     * 비교과 프로그램 등록
+     * 비교과 프로그램 등록 (임시 버전 - 대표사진만)
      */
     @Transactional
     public Map<String, Object> registerProgram(NoncurrProgramDTO programDTO) {
@@ -45,30 +45,30 @@ public class NoncurrProgramService {
                 throw new IllegalArgumentException("이미 존재하는 프로그램 코드입니다.");
             }
             
-            // 2. 파일 업로드 처리
+            // 2. 대표사진 파일 업로드 처리
             Common_File imageFile = null;
             if (programDTO.getImageFile() != null && !programDTO.getImageFile().isEmpty()) {
                 try {
                     imageFile = fileUploadService.uploadProgramImage(programDTO.getImageFile());
-                    log.info("이미지 파일 업로드 성공: {}", imageFile.getOrgFileName());
+                    log.info("대표사진 업로드 성공: {}", imageFile.getOrgFileName());
                 } catch (Exception e) {
-                    log.error("이미지 파일 업로드 실패", e);
+                    log.error("대표사진 업로드 실패", e);
                     // 이미지 업로드 실패해도 프로그램 등록은 계속 진행
                 }
             }
             
-            Common_File attachmentFile = null;
-            if (programDTO.getAttachmentFile() != null && !programDTO.getAttachmentFile().isEmpty()) {
-                try {
-                    attachmentFile = fileUploadService.uploadAttachmentFile(programDTO.getAttachmentFile());
-                    log.info("첨부 파일 업로드 성공: {}", attachmentFile.getOrgFileName());
-                } catch (Exception e) {
-                    log.error("첨부 파일 업로드 실패", e);
-                    // 첨부파일 업로드 실패해도 프로그램 등록은 계속 진행
-                }
-            }
+            // 3. 첨부파일 처리 제거됨 (임시)
+            // Common_File attachmentFile = null;
+            // if (programDTO.getAttachmentFile() != null && !programDTO.getAttachmentFile().isEmpty()) {
+            //     try {
+            //         attachmentFile = fileUploadService.uploadAttachmentFile(programDTO.getAttachmentFile());
+            //         log.info("첨부 파일 업로드 성공: {}", attachmentFile.getOrgFileName());
+            //     } catch (Exception e) {
+            //         log.error("첨부 파일 업로드 실패", e);
+            //     }
+            // }
             
-            // 3. 프로그램 상태 코드 조회 (기본값: 51 - 오픈)
+            // 4. 프로그램 상태 코드 조회 (기본값: 51 - 오픈)
             Common_Code statusCode = commonCodeRepository.findById(51)
                     .orElse(Common_Code.builder()
                             .codeId(51)
@@ -77,7 +77,7 @@ public class NoncurrProgramService {
                             .codeDesc("프로그램 신청 오픈")
                             .build());
             
-            // 4. 비교과 프로그램 정보 저장
+            // 5. 비교과 프로그램 정보 저장 (기존 file_id 필드 사용)
             Ncs_PrgInfo ncsProgram = Ncs_PrgInfo.builder()
                     .prgCd(programDTO.getPrgCd())
                     .prgNm(programDTO.getPrgNm())
@@ -87,14 +87,14 @@ public class NoncurrProgramService {
                     .maxCnt(programDTO.getMaxCnt())
                     .mlgDefScore(programDTO.getMlgDefScore())
                     .surveyDt(programDTO.getSurveyDt())
-                    .comFile(imageFile)
+                    .comFile(imageFile)  // 기존 comFile 필드에 대표사진만 저장
                     .prgStatCd(statusCode)
                     .build();
             
             Ncs_PrgInfo savedProgram = ncsPrgInfoRepository.save(ncsProgram);
             log.info("프로그램 정보 저장 완료: {}", savedProgram.getPrgId());
             
-            // 5. 핵심역량 연결 저장
+            // 6. 핵심역량 연결 저장
             if (programDTO.getCompetencyIds() != null && !programDTO.getCompetencyIds().isEmpty()) {
                 try {
                     saveCompetencyRelations(savedProgram.getPrgId(), programDTO.getCompetencyIds());
@@ -106,18 +106,25 @@ public class NoncurrProgramService {
             }
             
             result.put("success", true);
-            result.put("message", "비교과 프로그램이 성공적으로 등록되었습니다.");
+            result.put("message", "비교과 프로그램이 성공적으로 등록되었습니다. (첨부파일은 추후 별도 추가 가능)");
             result.put("prgId", savedProgram.getPrgId());
             result.put("prgCd", savedProgram.getPrgCd());
             
             if (imageFile != null) {
                 result.put("imageUrl", fileUploadService.getImagePreviewUrl(imageFile.getFileId()));
-            }
-            if (attachmentFile != null) {
-                result.put("attachmentUrl", fileUploadService.getDownloadUrl(attachmentFile.getFileId()));
+                result.put("imageFileName", imageFile.getOrgFileName());
             }
             
+            // 첨부파일 관련 정보 제거
+            // if (attachmentFile != null) {
+            //     result.put("attachmentUrl", fileUploadService.getDownloadUrl(attachmentFile.getFileId()));
+            //     result.put("attachmentFileName", attachmentFile.getOrgFileName());
+            // }
+            
             log.info("비교과 프로그램 등록 완료: {} ({})", savedProgram.getPrgNm(), savedProgram.getPrgCd());
+            log.info("업로드된 파일: 대표사진={}", 
+                    imageFile != null ? imageFile.getOrgFileName() : "없음");
+            log.info("⚠️ 임시 버전: 첨부파일 업로드 생략됨");
             
         } catch (Exception e) {
             log.error("비교과 프로그램 등록 실패: {}", e.getMessage(), e);
