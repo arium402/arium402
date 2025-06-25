@@ -23,9 +23,9 @@
                     <div class="unified-controls">
                         <!-- 상태 탭 -->
                         <div class="status-tabs">
-                            <a href="#" class="tab-item active" data-status="all">전체</a>
-                            <a href="#" class="tab-item" data-status="active">재직</a>
-                            <a href="#" class="tab-item" data-status="inactive">퇴사</a>
+                            <a href="#" class="tab-item" th:classappend="${empl_stat_cd == ''} ? 'active' : ''" data-status="all">전체</a>
+                            <a href="#" class="tab-item" th:classappend="${empl_stat_cd == 'active'} ? 'active' : ''" data-status="active">재직</a>
+                            <a href="#" class="tab-item" th:classappend="${empl_stat_cd == 'inactive'} ? 'active' : ''" data-status="inactive">퇴사</a>
                         </div>
                         
                         <!-- 상담분류 필터 -->

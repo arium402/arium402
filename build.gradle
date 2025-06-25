@@ -38,17 +38,13 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 
 	//Mysql
-	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
-	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
-	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.4'
 	runtimeOnly 'com.mysql:mysql-connector-j'
-	testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.4'
+
 
 	//PostgreSQL
 	implementation 'org.postgresql:postgresql:42.7.3'
 	
-	//Mybatis
-	 implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.4'
+
 	//test : debug로 임시 데이터 베이스를 연결
 	testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.4'
 	

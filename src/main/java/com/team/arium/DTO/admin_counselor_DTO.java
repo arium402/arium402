@@ -1,21 +1,21 @@
 package com.team.arium.DTO;
 
-import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Repository;
+
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Repository("admin_counselor_DTO")
 public class admin_counselor_DTO {
-	private String emplNo;
-	private String emplName;
-    private String cnslCd;
-    private String emplTellno;
-    private String emplEmlAddr;
-    private String emplStatCd;
-    private String cnslCdDesc;
-    private String emplStatCdDesc; 
-    private String regDt;
-    private String updDt;
+	public Integer emplId;
+	public String emplNo;
+	public String emplName;
+	public String cnslCd;
+	public String emplTellno;
+	public String emplEmlAddr;
+	public String emplStatCd;
+	public String cnslCdDesc;
+	public String emplStatCdDesc; 
+	public String regDt;
+	public String updDt;
 }
