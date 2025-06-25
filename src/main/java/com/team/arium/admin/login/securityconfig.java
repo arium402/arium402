@@ -148,13 +148,13 @@ public class securityconfig {
    //FilterChain: 인가(사용자 필터), Spring Security의 필터 역할로 해당 환경조건 및 접속 URL에 대한 권한을 설정
    @Bean
    public SecurityFilterChain filterch(HttpSecurity http) throws Exception{
-      http.csrf((auth)->auth.disable());
-      
-      //ajax로 인하여 보안을 풀어놓은 상황
-      http.authorizeHttpRequests((auth)->auth
-            .requestMatchers("/**").permitAll()
-      );
-            
-      return http.build();
+	   http.csrf((auth)->auth.disable());
+	   
+	   //ajax로 인하여 보안을 풀어놓은 상황
+	   http.authorizeHttpRequests((auth)->auth
+				.requestMatchers("/**").permitAll()
+		);
+			   
+	   return http.build();
    }
 }
