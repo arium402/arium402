@@ -8,7 +8,5 @@ import com.team.arium.domain.Empl_Info;
 public interface admin_service {
 
 	List<admin_counselor_DTO> getCounselorDtoList();
-//	Empl_Info insert_counselor(String emp_dto);
-
-
+	//Empl_Info insert_counselor(admin_counselor_DTO admindto);
 }

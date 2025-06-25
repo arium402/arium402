@@ -88,33 +88,27 @@ document.querySelector("#counselorAddBtn").addEventListener('click', function() 
 function addCounselor(cns_info){
 	console.log(JSON.stringify(cns_info))
 	fetch("/admin/admin_counselorList_addOk", {
-		method: "PUT",
-		headers: {'content-type': 'application/json'},
-		body : JSON.stringify(cns_info),
-		//credentials: "include" 
-		
+		method : "POST",
+		headers : {"Content-type":"application/json"},
+		body : JSON.stringify(cns_info)
 	}).then(function(data) {
 		return data.text();
-
 	}).then(function(result) {
-		console.log("result : " + result)
-		if(result=="ok"){
-			
+		//console.log("result : " + result)
+		if(result=="1"){
 			// 성공 메시지 표시
 		   showMessage('success');
-		   
 		   // 폼 초기화
 		   document.querySelector("#counselorForm").reset();
-		   
 		   // 5초 후 목록 페이지로 이동 확인
 		   setTimeout(() => {
 		       if (confirm('상담사 목록 페이지로 이동하시겠습니까?')) {
-		       		location.href = "./admin/admin_counselorList";
+		       		location.href = "./admin_counselorList";
 		       }
 		   }, 2000);
 		   
-		}else if(result=="fail"){
-			alert("BOM 등록에 실패했습니다.");
+		}else if(result=="0"){
+			alert("상담사 등록에 실패했습니다.");
 		}
 
 	}).catch(function(error) {
@@ -124,21 +118,10 @@ function addCounselor(cns_info){
 }
 
 // 취소 버튼 처리
-function cancelRegister() {
-    // 입력된 내용이 있는지 확인
-    const hasContent = document.getElementById('counselorName').value ||
-                     document.getElementById('counselorEmpNo').value ||
-                     document.getElementById('counselorField').value ||
-                     document.getElementById('counselorPhone').value ||
-                     document.getElementById('counselorEmail').value;
-    
-    if (hasContent) {
-        if (confirm('작성 중인 내용이 사라집니다. 정말 취소하시겠습니까?')) {
-            window.location.href = 'counselor_list.html';
-        }
-    } else {
-       location.href = 'counselor_list.html';
-    }
+function cancelRegister() {   
+    if (confirm('작성 중인 내용이 사라집니다. 정말 취소하시겠습니까?')) {
+          window.location.href = './admin_counselorList?continue';
+     }
 }
 
 // 입력 필드 실시간 검증
