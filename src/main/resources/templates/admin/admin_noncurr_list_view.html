@@ -13,10 +13,10 @@
         <div class="filter-row">
             <div class="search-area">
                 <select class="search-type-select" id="searchType">
-                    <option value="name">이름</option>
-                    <option value="department">부서</option>
+                    <option value="prgNm">프로그램명</option>
+                    <option value="department">운영부서</option>
                 </select>
-                <input type="text" class="search-input" id="searchInput" placeholder="검색어를 입력하세요">
+                <input type="text" class="search-input" id="searchKeyword" placeholder="검색어를 입력하세요">
                 <button class="search-btn" onclick="searchPrograms()">
                     <i class="fas fa-search"></i> 검색
                 </button>
@@ -64,7 +64,7 @@
                     </tr>
                 </thead>
                 <tbody id="programTableBody">
-                    <!-- JavaScript로 동적 생성 -->
+                    <!-- 데이터가 동적으로 삽입됩니다 -->
                 </tbody>
             </table>
         </div>
@@ -73,11 +73,11 @@
         <div class="pagination-container">
             <nav aria-label="Page navigation">
                 <ul class="pagination" id="pagination">
-                    <!-- JavaScript로 동적 생성 -->
+                    <!-- 페이징 버튼이 동적으로 생성됩니다 -->
                 </ul>
             </nav>
             <div class="pagination-info" id="paginationInfo">
-                <!-- JavaScript로 동적 생성 -->
+                <!-- 페이징 정보가 동적으로 표시됩니다 -->
             </div>
         </div>
     </div>
