@@ -95,12 +95,6 @@ function showResults() {
 
 // 페이지 로드 시 실행
 document.addEventListener('DOMContentLoaded', function() {
-	// 핵심역량 메뉴 열기
-	const competencyMenu = document.querySelector('.sidebar ul li:nth-child(3)');
-	if (competencyMenu) {
-		competencyMenu.classList.add('active');
-	}
-  
 	// 라디오 버튼 변경 시 진행률 업데이트
 	const form = document.getElementById('diagnosisForm');
 	form.addEventListener('change', updateProgress);

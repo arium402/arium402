@@ -25,7 +25,10 @@ public class StudentCompetenceController {
 	}
 	
 	@GetMapping("/test")
-	public String testPage() {
+	public String testPage(Model m) {
+		Map<String, Object> data = this.scs.getQuestions();
+		
+		m.addAttribute("data", data);
 		
 		return "/student/competence/student_competence_test.html";	// 핵심 역량 진단
 	}
