@@ -18,16 +18,33 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // 프로그램 데이터 로드 (API 호출)
 function loadProgramData() {
-    fetch('/api/admin/noncurr')
+    fetch('/api/admin/noncurr/list')
         .then(response => response.json())
         .then(data => {
             if (data.success && data.programs) {
                 updateTableWithData(data.programs);
                 updatePaginationWithData(data);
+            } else {
+                // 데이터가 없는 경우 빈 테이블 표시
+                updateTableWithData([]);
+                updatePaginationWithData({
+                    totalElements: 0,
+                    totalPages: 1,
+                    currentPage: 0,
+                    size: 10
+                });
             }
         })
         .catch(error => {
             console.error('데이터 로딩 실패:', error);
+            // 에러 발생시에도 빈 테이블 표시
+            updateTableWithData([]);
+            updatePaginationWithData({
+                totalElements: 0,
+                totalPages: 1,
+                currentPage: 0,
+                size: 10
+            });
         });
 }
 
@@ -36,14 +53,19 @@ function updateTableWithData(programs) {
     const tbody = document.getElementById('programTableBody');
     tbody.innerHTML = '';
     
+    if (!programs || programs.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px; color: #666;">등록된 비교과 프로그램이 없습니다.</td></tr>';
+        return;
+    }
+    
     programs.forEach((program, index) => {
         const row = document.createElement('tr');
         row.setAttribute('data-program-id', program.prgId);
         row.innerHTML = `
             <td>${index + 1}</td>
-            <td class="text-left">${program.prgNm}</td>
+            <td class="text-left">${program.prgNm || '-'}</td>
             <td>${program.deptNm || '-'}</td>
-            <td>${formatDateRange(program.recruitStart, program.recruitEnd)}</td>
+            <td>${formatDateRange(program.recruitStartDt, program.recruitEndDt)}</td>
             <td>${program.currentCnt || 0}/${program.maxCnt}</td>
             <td>${formatDateRange(program.prgStDt, program.prgEndDt)}</td>
             <td><span class="status ${getStatusClass(program.prgStatNm)}">${program.prgStatNm}</span></td>
@@ -78,11 +100,11 @@ function initializeTableRowClicks() {
             const programId = this.getAttribute('data-program-id');
             const programName = this.cells[1].textContent.trim();
             
-            // 상세 페이지로 이동
-            console.log(`프로그램 ID: ${programId}, 이름: ${programName} 상세 페이지로 이동`);
-            
-            // 실제 구현
-            window.location.href = `/admin/noncurr_detail?id=${programId}`;
+            if (programId && programId !== 'null') {
+                // 상세 페이지로 이동
+                console.log(`프로그램 ID: ${programId}, 이름: ${programName} 상세 페이지로 이동`);
+                window.location.href = `/admin/noncurr_detail?id=${programId}`;
+            }
         });
     });
 }
@@ -164,12 +186,11 @@ function searchPrograms() {
     
     // API 호출
     const params = new URLSearchParams();
-    params.append('searchType', searchType);
     params.append('searchKeyword', searchKeyword);
     if (periodFilter) params.append('periodFilter', periodFilter);
     if (statusFilter) params.append('statusFilter', statusFilter);
     
-    fetch(`/api/admin/noncurr?${params.toString()}`)
+    fetch(`/api/admin/noncurr/list?${params.toString()}`)
         .then(response => response.json())
         .then(data => {
             if (data.success) {
@@ -197,7 +218,7 @@ function filterPrograms() {
     if (periodFilter) params.append('periodFilter', periodFilter);
     if (statusFilter) params.append('statusFilter', statusFilter);
     
-    fetch(`/api/admin/noncurr?${params.toString()}`)
+    fetch(`/api/admin/noncurr/list?${params.toString()}`)
         .then(response => response.json())
         .then(data => {
             if (data.success) {
@@ -223,7 +244,7 @@ function loadPage(pageNumber) {
     params.append('page', pageNumber - 1); // 0부터 시작
     params.append('size', 10);
     
-    fetch(`/api/admin/noncurr?${params.toString()}`)
+    fetch(`/api/admin/noncurr/list?${params.toString()}`)
         .then(response => response.json())
         .then(data => {
             if (data.success) {
@@ -263,14 +284,19 @@ function goToPrevPage() {
 // 페이징 정보 업데이트
 function updatePaginationWithData(data) {
     const paginationInfo = document.getElementById('paginationInfo');
-    const startItem = data.currentPage * data.size + 1;
-    const endItem = Math.min((data.currentPage + 1) * data.size, data.totalElements);
+    const totalElements = data.totalElements || 0;
+    const currentPage = data.currentPage || 0;
+    const size = data.size || 10;
+    
+    const startItem = totalElements > 0 ? (currentPage * size + 1) : 0;
+    const endItem = Math.min((currentPage + 1) * size, totalElements);
     
     paginationInfo.textContent = 
-        `총 ${data.totalElements}건 중 ${startItem}-${endItem}건 표시`;
+        `총 ${totalElements}건 중 ${startItem}-${endItem}건 표시`;
     
     // 페이지 버튼 업데이트
-    updatePaginationButtons(data.currentPage + 1, data.totalPages);
+    const totalPages = Math.max(1, data.totalPages || 1);
+    updatePaginationButtons(currentPage + 1, totalPages);
 }
 
 // 페이지 버튼 업데이트

@@ -38,7 +38,27 @@ public class FileUploadServiceImpl implements FileUploadService {
     }
     
     /**
-     * 파일 업로드 공통 로직
+     * 이미지 미리보기 URL 생성
+     */
+    public String getImagePreviewUrl(Integer fileId) {
+        if (fileId == null) {
+            return null;
+        }
+        return "/api/admin/noncurr/files/" + fileId + "/preview";
+    }
+    
+    /**
+     * 파일 다운로드 URL 생성
+     */
+    public String getDownloadUrl(Integer fileId) {
+        if (fileId == null) {
+            return null;
+        }
+        return "/api/admin/noncurr/files/" + fileId + "/download";
+    }
+    
+    /**
+     * 파일 업로드 공통 로직 (수정된 부분)
      */
     private Common_File uploadFile(MultipartFile file, String basePath, String fileType, boolean isImage) {
         try {
@@ -59,7 +79,7 @@ public class FileUploadServiceImpl implements FileUploadService {
             Path filePath = uploadDir.resolve(uniqueFilename);
             Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
             
-            // 웹 접근용 상대 경로 생성
+            // 웹 접근용 상대 경로 생성 (수정된 부분)
             String relativePath = basePath.substring(fileUploadConfig.getUploadBasePath().length()) + "/" + dateDir + "/" + uniqueFilename;
             relativePath = relativePath.replace("\\", "/");
             if (relativePath.startsWith("/")) {
@@ -151,14 +171,13 @@ public class FileUploadServiceImpl implements FileUploadService {
     }
     
     /**
-     * 파일 삭제 (물리적 파일 삭제)
+     * 파일 삭제 (물리적 파일 삭제) - 수정된 부분
      */
     public boolean deleteFile(Common_File file) {
         try {
             if (file != null && file.getFilePath() != null) {
                 // 웹 URL을 실제 파일 경로로 변환
                 String webPath = file.getFilePath();
-                // ✅ 수정: static 호출이 아닌 인스턴스 메서드 호출
                 if (webPath.startsWith(fileUploadConfig.getUrlPrefix())) {
                     String relativePath = webPath.substring(fileUploadConfig.getUrlPrefix().length());
                     Path filePath = Paths.get(fileUploadConfig.getUploadBasePath(), relativePath);
@@ -184,7 +203,6 @@ public class FileUploadServiceImpl implements FileUploadService {
         try {
             if (file != null && file.getFilePath() != null) {
                 String webPath = file.getFilePath();
-                // ✅ 수정: static 호출이 아닌 인스턴스 메서드 호출
                 if (webPath.startsWith(fileUploadConfig.getUrlPrefix())) {
                     String relativePath = webPath.substring(fileUploadConfig.getUrlPrefix().length());
                     Path filePath = Paths.get(fileUploadConfig.getUploadBasePath(), relativePath);

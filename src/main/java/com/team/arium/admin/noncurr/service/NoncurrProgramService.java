@@ -1,19 +1,18 @@
 package com.team.arium.admin.noncurr.service;
 
 import com.team.arium.admin.noncurr.dto.NoncurrProgramDTO;
-import com.team.arium.admin.noncurr.model.FileUploadModel;
 import com.team.arium.admin.noncurr.repository.*;
-import com.team.arium.competence.StudentCompetenceRepository;
 import com.team.arium.domain.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -25,16 +24,16 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class NoncurrProgramService {
-    
+	
     private final NcsPrgInfoRepository ncsPrgInfoRepository;
     private final NcsCclRelRepository ncsCclRelRepository;
-    private final StudentCompetenceRepository studentCompetenceRepository;
+    private final CoreCptInfoRepository coreCptInfoRepository;
     private final CommonCodeRepository commonCodeRepository;
     private final CommonFileRepository commonFileRepository;
-    private final FileUploadModel fileUploadModel;
+    private final FileUploadServiceImpl fileUploadService;
     
     /**
-     * 비교과 프로그램 등록
+     * 비교과 프로그램 등록 (임시 버전 - 대표사진만)
      */
     @Transactional
     public Map<String, Object> registerProgram(NoncurrProgramDTO programDTO) {
@@ -46,22 +45,39 @@ public class NoncurrProgramService {
                 throw new IllegalArgumentException("이미 존재하는 프로그램 코드입니다.");
             }
             
-            // 2. 파일 업로드 처리
+            // 2. 대표사진 파일 업로드 처리
             Common_File imageFile = null;
             if (programDTO.getImageFile() != null && !programDTO.getImageFile().isEmpty()) {
-                imageFile = fileUploadModel.uploadImageFile(programDTO.getImageFile());
+                try {
+                    imageFile = fileUploadService.uploadProgramImage(programDTO.getImageFile());
+                    log.info("대표사진 업로드 성공: {}", imageFile.getOrgFileName());
+                } catch (Exception e) {
+                    log.error("대표사진 업로드 실패", e);
+                    // 이미지 업로드 실패해도 프로그램 등록은 계속 진행
+                }
             }
             
-            Common_File attachmentFile = null;
-            if (programDTO.getAttachmentFile() != null && !programDTO.getAttachmentFile().isEmpty()) {
-                attachmentFile = fileUploadModel.uploadAttachmentFile(programDTO.getAttachmentFile());
-            }
+            // 3. 첨부파일 처리 제거됨 (임시)
+            // Common_File attachmentFile = null;
+            // if (programDTO.getAttachmentFile() != null && !programDTO.getAttachmentFile().isEmpty()) {
+            //     try {
+            //         attachmentFile = fileUploadService.uploadAttachmentFile(programDTO.getAttachmentFile());
+            //         log.info("첨부 파일 업로드 성공: {}", attachmentFile.getOrgFileName());
+            //     } catch (Exception e) {
+            //         log.error("첨부 파일 업로드 실패", e);
+            //     }
+            // }
             
-            // 3. 공통코드 조회
-            Common_Code statusCode = commonCodeRepository.findById(programDTO.getPrgStatCd())
-                    .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 프로그램 상태 코드입니다."));
+            // 4. 프로그램 상태 코드 조회 (기본값: 51 - 오픈)
+            Common_Code statusCode = commonCodeRepository.findById(51)
+                    .orElse(Common_Code.builder()
+                            .codeId(51)
+                            .codeType("prg_stat_cd")
+                            .code("오픈")
+                            .codeDesc("프로그램 신청 오픈")
+                            .build());
             
-            // 4. 비교과 프로그램 정보 저장
+            // 5. 비교과 프로그램 정보 저장 (기존 file_id 필드 사용)
             Ncs_PrgInfo ncsProgram = Ncs_PrgInfo.builder()
                     .prgCd(programDTO.getPrgCd())
                     .prgNm(programDTO.getPrgNm())
@@ -71,30 +87,44 @@ public class NoncurrProgramService {
                     .maxCnt(programDTO.getMaxCnt())
                     .mlgDefScore(programDTO.getMlgDefScore())
                     .surveyDt(programDTO.getSurveyDt())
-                    .comFile(imageFile)
+                    .comFile(imageFile)  // 기존 comFile 필드에 대표사진만 저장
                     .prgStatCd(statusCode)
                     .build();
             
             Ncs_PrgInfo savedProgram = ncsPrgInfoRepository.save(ncsProgram);
+            log.info("프로그램 정보 저장 완료: {}", savedProgram.getPrgId());
             
-            // 5. 핵심역량 연결 저장
+            // 6. 핵심역량 연결 저장
             if (programDTO.getCompetencyIds() != null && !programDTO.getCompetencyIds().isEmpty()) {
-                saveCompetencyRelations(savedProgram.getPrgId(), programDTO.getCompetencyIds());
+                try {
+                    saveCompetencyRelations(savedProgram.getPrgId(), programDTO.getCompetencyIds());
+                    log.info("핵심역량 연결 완료: {} 개", programDTO.getCompetencyIds().size());
+                } catch (Exception e) {
+                    log.error("핵심역량 연결 실패", e);
+                    // 핵심역량 연결 실패해도 프로그램 등록은 완료로 처리
+                }
             }
             
             result.put("success", true);
-            result.put("message", "비교과 프로그램이 성공적으로 등록되었습니다.");
+            result.put("message", "비교과 프로그램이 성공적으로 등록되었습니다. (첨부파일은 추후 별도 추가 가능)");
             result.put("prgId", savedProgram.getPrgId());
             result.put("prgCd", savedProgram.getPrgCd());
             
             if (imageFile != null) {
-                result.put("imageUrl", fileUploadModel.getImagePreviewUrl(imageFile.getFileId()));
-            }
-            if (attachmentFile != null) {
-                result.put("attachmentUrl", fileUploadModel.getDownloadUrl(attachmentFile.getFileId()));
+                result.put("imageUrl", fileUploadService.getImagePreviewUrl(imageFile.getFileId()));
+                result.put("imageFileName", imageFile.getOrgFileName());
             }
             
+            // 첨부파일 관련 정보 제거
+            // if (attachmentFile != null) {
+            //     result.put("attachmentUrl", fileUploadService.getDownloadUrl(attachmentFile.getFileId()));
+            //     result.put("attachmentFileName", attachmentFile.getOrgFileName());
+            // }
+            
             log.info("비교과 프로그램 등록 완료: {} ({})", savedProgram.getPrgNm(), savedProgram.getPrgCd());
+            log.info("업로드된 파일: 대표사진={}", 
+                    imageFile != null ? imageFile.getOrgFileName() : "없음");
+            log.info("⚠️ 임시 버전: 첨부파일 업로드 생략됨");
             
         } catch (Exception e) {
             log.error("비교과 프로그램 등록 실패: {}", e.getMessage(), e);
@@ -151,7 +181,7 @@ public class NoncurrProgramService {
      */
     public List<Map<String, Object>> getCompetencyList() {
         try {
-            List<Core_CptInfo> competencies = studentCompetenceRepository.findByUpCclIdIsNotNullOrderByUpCclIdAscCclCdAsc();
+            List<Core_CptInfo> competencies = coreCptInfoRepository.findActiveCompetencies();
             
             return competencies.stream()
                     .map(competency -> {
@@ -210,8 +240,7 @@ public class NoncurrProgramService {
             description.append("\n\n### 추가 정보 ###\n");
             
             if (dto.getDeptCd() != null) {
-                String deptName = getDepartmentName(dto.getDeptCd());
-                description.append("운영부서: ").append(deptName).append("\n");
+                description.append("운영부서: ").append(dto.getDeptCd()).append("\n");
             }
             
             if (dto.getContactTel() != null) {
@@ -231,12 +260,24 @@ public class NoncurrProgramService {
      * 부서코드로 부서명 조회
      */
     private String getDepartmentName(String deptCd) {
-        try {
-            Optional<Common_Code> deptCode = commonCodeRepository.findByCodeTypeAndCode("DEPT", deptCd);
-            return deptCode.map(Common_Code::getCodeDesc).orElse(deptCd);
-        } catch (Exception e) {
-            return deptCd;
+        if (deptCd == null || deptCd.trim().isEmpty()) {
+            return "미지정";
         }
+        
+        // 하드코딩된 부서명 매핑
+        Map<String, String> deptMap = Map.of(
+            "교양학부", "교양학부",
+            "취업지원처", "취업지원처", 
+            "정보과학과", "정보과학과",
+            "학생처", "학생처",
+            "창업지원센터", "창업지원센터",
+            "학습지원센터", "학습지원센터",
+            "사회봉사센터", "사회봉사센터",
+            "연구처", "연구처",
+            "컴퓨터과학과", "컴퓨터과학과"
+        );
+        
+        return deptMap.getOrDefault(deptCd, deptCd);
     }
     
     /**
@@ -245,18 +286,23 @@ public class NoncurrProgramService {
     @Transactional
     public void saveCompetencyRelations(Integer prgId, List<Integer> competencyIds) {
         try {
+            // 기존 연결 정보 삭제
             ncsCclRelRepository.deleteByPrgId(prgId);
             
+            // 새로운 연결 정보 저장
             for (Integer cclId : competencyIds) {
-                Core_CptInfo competency = studentCompetenceRepository.findByCclId(cclId);
+                Core_CptInfo competency = coreCptInfoRepository.findByCclId(cclId);
                 if (competency != null) {
                     Ncs_CclRel relation = Ncs_CclRel.builder()
                             .prgId(prgId)
                             .cclId(cclId)
-                            .cclScore(100)
+                            .cclScore(100) // 기본 점수
                             .build();
                     
                     ncsCclRelRepository.save(relation);
+                    log.debug("핵심역량 연결 저장: prgId={}, cclId={}", prgId, cclId);
+                } else {
+                    log.warn("존재하지 않는 핵심역량 ID: {}", cclId);
                 }
             }
             
@@ -269,24 +315,23 @@ public class NoncurrProgramService {
     }
     
     /**
-     * 검색 조건에 따른 프로그램 조회 (수정)
+     * 검색 조건에 따른 프로그램 조회
      */
     private Page<Ncs_PrgInfo> searchPrograms(NoncurrProgramDTO searchDTO, Pageable pageable) {
         String searchKeyword = searchDTO.getSearchKeyword();
         Integer statusFilter = null;
-        String yearFilter = null; // Integer에서 String으로 변경
+        String yearFilter = null;
         
         // 상태 필터 처리
         if (searchDTO.getStatusFilter() != null && !searchDTO.getStatusFilter().isEmpty()) {
             statusFilter = getStatusCodeId(searchDTO.getStatusFilter());
         }
         
-        // 연도 필터 처리 (String으로 처리)
+        // 연도 필터 처리
         if (searchDTO.getPeriodFilter() != null && !searchDTO.getPeriodFilter().isEmpty()) {
             try {
-                // 연도 유효성 검증
                 Integer.parseInt(searchDTO.getPeriodFilter());
-                yearFilter = searchDTO.getPeriodFilter(); // String으로 그대로 사용
+                yearFilter = searchDTO.getPeriodFilter();
             } catch (NumberFormatException e) {
                 log.warn("잘못된 연도 필터 값: {}", searchDTO.getPeriodFilter());
             }
@@ -303,28 +348,28 @@ public class NoncurrProgramService {
     }
     
     /**
-     * 상태 문자열을 코드ID로 변환
+     * 상태 문자열을 코드ID로 변환 (수정된 매핑)
      */
     private Integer getStatusCodeId(String statusString) {
-        Map<String, String> statusMap = Map.of(
-            "open", "STAT01",
-            "pro", "STAT02", 
-            "completed", "STAT03",
-            "full", "STAT04"
+        // 공통코드 테이블 이미지 기준으로 수정
+        Map<String, Integer> statusMap = Map.of(
+            "open", 51,      // 오픈
+            "pro", 52,       // 진행  
+            "completed", 53, // 종료
+            "full", 51       // 임시로 오픈으로 설정
         );
         
-        String statusCode = statusMap.get(statusString);
-        if (statusCode != null) {
-            Optional<Common_Code> code = commonCodeRepository.findByCodeTypeAndCode("PRG_STAT", statusCode);
-            return code.map(Common_Code::getCodeId).orElse(null);
-        }
-        return null;
+        return statusMap.get(statusString);
     }
     
     /**
      * Entity를 목록용 DTO로 변환
      */
     private NoncurrProgramDTO convertToListDTO(Ncs_PrgInfo program) {
+        // 부서명 추출 (프로그램 설명에서 추출)
+        String deptNm = extractDepartmentFromDescription(program.getPrgDesc());
+        String recruitPeriod = extractRecruitPeriodFromDescription(program.getPrgDesc());
+        
         return NoncurrProgramDTO.builder()
                 .prgId(program.getPrgId())
                 .prgCd(program.getPrgCd())
@@ -336,12 +381,62 @@ public class NoncurrProgramService {
                 .currentCnt(0) // 신청자 수는 0으로 설정
                 .mlgDefScore(program.getMlgDefScore())
                 .surveyDt(program.getSurveyDt())
-                .prgStatNm(program.getPrgStatCd().getCodeDesc())
+                .deptNm(deptNm) // 추출된 부서명
+                .recruitStartDt(extractStartDateFromPeriod(recruitPeriod))
+                .recruitEndDt(extractEndDateFromPeriod(recruitPeriod))
+                .prgStatNm(program.getPrgStatCd() != null ? program.getPrgStatCd().getCodeDesc() : "알 수 없음")
                 .regDt(program.getRegDt())
                 .updDt(program.getUpdDt())
                 .imageUrl(program.getComFile() != null ? 
-                    fileUploadModel.getImagePreviewUrl(program.getComFile().getFileId()) : null)
+                    fileUploadService.getImagePreviewUrl(program.getComFile().getFileId()) : null)
                 .build();
+    }
+    
+    /**
+     * 프로그램 설명에서 부서명 추출
+     */
+    private String extractDepartmentFromDescription(String description) {
+        if (description == null) return "미지정";
+        
+        String[] lines = description.split("\n");
+        for (String line : lines) {
+            if (line.startsWith("운영부서:")) {
+                return line.replace("운영부서:", "").trim();
+            }
+        }
+        return "미지정";
+    }
+    
+    /**
+     * 프로그램 설명에서 모집기간 추출
+     */
+    private String extractRecruitPeriodFromDescription(String description) {
+        if (description == null) return "";
+        
+        String[] lines = description.split("\n");
+        for (String line : lines) {
+            if (line.startsWith("모집기간:")) {
+                return line.replace("모집기간:", "").trim();
+            }
+        }
+        return "";
+    }
+    
+    /**
+     * 모집기간에서 시작일 추출
+     */
+    private String extractStartDateFromPeriod(String period) {
+        if (period == null || !period.contains(" ~ ")) return "";
+        return period.split(" ~ ")[0].trim();
+    }
+    
+    /**
+     * 모집기간에서 종료일 추출
+     */
+    private String extractEndDateFromPeriod(String period) {
+        if (period == null || !period.contains(" ~ ")) return "";
+        String[] parts = period.split(" ~ ");
+        return parts.length > 1 ? parts[1].trim() : "";
     }
     
     /**
@@ -360,7 +455,6 @@ public class NoncurrProgramService {
             
             Ncs_PrgInfo program = programOpt.get();
             
-            // 신청자 수는 0으로 설정
             Integer currentCnt = 0;
             
             List<Object[]> competencyRels = ncsCclRelRepository.findCompetenciesWithDetailsByPrgId(prgId);
@@ -390,7 +484,7 @@ public class NoncurrProgramService {
                     .currentCnt(currentCnt)
                     .mlgDefScore(program.getMlgDefScore())
                     .surveyDt(program.getSurveyDt())
-                    .prgStatNm(program.getPrgStatCd().getCodeDesc())
+                    .prgStatNm(program.getPrgStatCd() != null ? program.getPrgStatCd().getCodeDesc() : "알 수 없음")
                     .regDt(program.getRegDt())
                     .updDt(program.getUpdDt())
                     .competencies(competencies)
@@ -398,7 +492,7 @@ public class NoncurrProgramService {
             
             if (program.getComFile() != null) {
                 programDTO.setFileId(program.getComFile().getFileId());
-                programDTO.setImageUrl(fileUploadModel.getImagePreviewUrl(program.getComFile().getFileId()));
+                programDTO.setImageUrl(fileUploadService.getImagePreviewUrl(program.getComFile().getFileId()));
                 programDTO.setOrgFileName(program.getComFile().getOrgFileName());
             }
             
@@ -433,12 +527,10 @@ public class NoncurrProgramService {
             
             Ncs_PrgInfo program = programOpt.get();
             
-            // 신청자 수 체크 생략 (Ncs_Apply 엔티티가 없으므로)
-            
             ncsCclRelRepository.deleteByPrgId(prgId);
             
             if (program.getComFile() != null) {
-                fileUploadModel.deleteFile(program.getComFile().getFileId());
+                fileUploadService.deleteFile(program.getComFile());
             }
             
             ncsPrgInfoRepository.delete(program);
@@ -469,11 +561,12 @@ public class NoncurrProgramService {
             
             Map<String, Long> statusCounts = new HashMap<>();
             
+            // 실제 공통코드 ID 매핑
             Map<String, Integer> statusCodeMap = Map.of(
-                "open", 1,
-                "progress", 2,
-                "completed", 3,
-                "full", 4
+                "open", 51,      // 오픈
+                "progress", 52,  // 진행
+                "completed", 53, // 종료
+                "full", 51       // 임시로 오픈으로 설정
             );
             
             for (Map.Entry<String, Integer> entry : statusCodeMap.entrySet()) {
