@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/counselor")
 public class CounselorDashboard_controller {
 
+	//상담원 대쉬보드
     @GetMapping("/dashboard")
     public String dashboard() {
         return "/counselor/counselor_dashboard_main";

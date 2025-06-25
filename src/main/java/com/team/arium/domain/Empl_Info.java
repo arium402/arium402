@@ -29,12 +29,12 @@ public class Empl_Info {
     @Column(name = "empl_name", length = 100, nullable = false)
     private String emplName;
     
-    //상담코드 
+    //상담코드 (상담분야)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cnsl_cd", nullable = false)
     private Common_Code cnslCd;
     
-    //상담사 상태코드 
+    //상담사 상태코드 (재직여부)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "empl_stat_cd", nullable = false)
     private Common_Code emplStatCd;

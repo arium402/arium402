@@ -47,41 +47,17 @@
             </thead>
             <tbody id="applicantTableBody">
                 <!-- 샘플 데이터 (하드코딩) -->
-                <tr>
-                    <td>1</td>
-                    <td>김학생</td>
-                    <td>20230001</td>
-                    <td>컴퓨터공학과</td>
-                    <td>2025-06-20</td>
+                <tr th:if="${pttTotal  == 0}">
+					<td colspan="8" calss="dontClick">등록된 내담자가 없습니다.</td>
+				</tr>
+                <tr th:if="${pttTotal  != 0}" th:each="patient_list, idx : ${pttList}" >
+                    <td>[[${idx.count}]]</td>
+                    <td>[[${patient_list.StdNm}]]</td>
+                    <td>[[${patient_list.stdNo}]]</td>
+                    <td>[[${patient_list.deptName}]]</td>
+                    <td>[[${patient_list.cns_regDt.substring(0,10)}]]</td>
                 </tr>
-                <tr>
-                    <td>2</td>
-                    <td>이학생</td>
-                    <td>20230002</td>
-                    <td>경영학과</td>
-                    <td>2025-06-19</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>박학생</td>
-                    <td>20230003</td>
-                    <td>심리학과</td>
-                    <td>2025-06-18</td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>최학생</td>
-                    <td>20230004</td>
-                    <td>교육학과</td>
-                    <td>2025-06-17</td>
-                </tr>
-                <tr>
-                    <td>5</td>
-                    <td>정학생</td>
-                    <td>20230005</td>
-                    <td>사회복지학과</td>
-                    <td>2025-06-16</td>
-                </tr>
+               
             </tbody>
         </table>
 

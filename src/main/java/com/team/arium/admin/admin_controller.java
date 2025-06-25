@@ -1,23 +1,18 @@
 package com.team.arium.admin;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import com.team.arium.domain.Empl_Info;
-import com.team.arium.model.generateNo;
+import com.team.arium.DTO.admin_counselor_DTO;
+import com.team.arium.model.pageing;
 
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
@@ -33,8 +28,10 @@ public class admin_controller {
 	@Autowired
 	public admin_service admin_svc;
 	
-	@Resource(name="generateNo")
-	public generateNo gen_no;
+	@Resource(name="pageing")
+	pageing m_pg;
+	
+	
 	
 	
 	List<String> list = null; 
@@ -43,10 +40,29 @@ public class admin_controller {
 	String msg = "";
 
 	
-	//상담사 목록 
+	//상담사 리스트 
 	@GetMapping("/admin_counselorList")
-	public String admin_counselorList(HttpServletResponse res)  {
-
+	public String admin_counselorList(Model m
+									,@RequestParam(value = "keyword", required = false) String keyword
+									,@RequestParam(value="pageno", defaultValue="1", required=false) Integer pageno
+									)  {
+//		List<Empl_Info> allCounselorList = this.admin_cnsl_repo.findAllByOrderByEmplId();
+		List<admin_counselor_DTO> dtoList = this.admin_svc.getCounselorDtoList();
+		System.out.println("allCounselorList : " + dtoList);
+		
+		Integer counselorTotal = dtoList.size();
+		
+		//페이징 관련 
+		Map<String, Integer> pageinfo = this.m_pg.page_ea(pageno, counselorTotal);
+		int bno = this.m_pg.serial_no(pageno, counselorTotal); 
+				
+		
+		m.addAttribute("cslorList", dtoList);
+		m.addAttribute("cslorTotal", counselorTotal);
+		
+		m.addAttribute("pageinfo", pageinfo);
+		m.addAttribute("bno", bno);
+		
 		return "/admin/admin_counselorList.html";
 	}
 	
@@ -57,29 +73,31 @@ public class admin_controller {
 		return "/admin/admin_counselorList_add.html";
 	}
 		
-	@GetMapping("/check-role")
-	public ResponseEntity<?> checkRole() {
-	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-	    System.out.println("현재 사용자: " + auth.getName());
-	    System.out.println("권한: " + auth.getAuthorities());
-
-	    return ResponseEntity.ok("확인 완료");
-	}
+//	@GetMapping("/check-role")
+//	public ResponseEntity<?> checkRole() {
+//	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//	    System.out.println("현재 사용자: " + auth.getName());
+//	    System.out.println("권한: " + auth.getAuthorities());
+//
+//	    return ResponseEntity.ok("확인 완료");
+//	}
 	
 	//상담사 등록
-	@PreAuthorize("hasRole('ADMIN')")
-	@PutMapping("/admin_counselorList_addOk")
-	public String admin_counselorList_addOk(@RequestBody String emp_data, HttpServletResponse res) throws IOException {
-		System.out.println(emp_data);
-		try {
-		Empl_Info data_info = this.admin_svc.insert_counselor(emp_data);
-		System.out.println(data_info);
-		
-		}catch(Exception e) {
-			
-		}
-		return null;
-	}
+//	@PreAuthorize("hasRole('ADMIN')")
+//	@PutMapping("/admin_counselorList_addOk")
+//	public String admin_counselorList_addOk(@RequestBody String emp_data, HttpServletResponse res) throws IOException {
+//		System.out.println(emp_data);
+//		try {
+//		Empl_Info data_info = this.admin_svc.insert_counselor(emp_data);
+//		System.out.println(data_info);
+//		
+//		}catch(Exception e) {
+//			
+//		}
+//		return null;
+//	}
+	
+	
 	
 		
 	//상담사관리 > 상담사 일정관리 

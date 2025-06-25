@@ -22,12 +22,12 @@ public class generateNo {
 		String today = sf.format(date);
 		
 		// 2. 오늘 생성된 마지막 사번 조회
-	    String lastEmpNo = this.admin_cnsl_repo.findLastEmpNoByDate(today);  
+	    String lastEmpNo = this.admin_cnsl_repo.findLastEmpNoByToday(today);  //C2025003
 
 	    int nextSeq = 1;
-	    if (lastEmpNo != null && lastEmpNo.length() == 7) {
+	    if (lastEmpNo != null && lastEmpNo.length() == 8) {
 	        // 마지막 3자리만 추출해서 숫자로 변환
-	        String seqStr = lastEmpNo.substring(4);  // "003"
+	        String seqStr = lastEmpNo.substring(5);  // "003"
 	        nextSeq = Integer.parseInt(seqStr) + 1;
 	    }
 
