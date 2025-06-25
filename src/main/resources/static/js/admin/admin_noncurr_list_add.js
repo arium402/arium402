@@ -1,4 +1,4 @@
-// 비교과 등록 페이지 JavaScript
+// 비교과 등록 페이지 JavaScript (DB 컬럼명 맞춤)
 
 // 대표 사진 선택 처리
 function handleImageSelect(input) {
@@ -52,32 +52,32 @@ function handleFileSelect(input) {
 
 // 미리보기 표시
 function showPreview() {
-    const programName = document.getElementById('programName').value || '프로그램명';
+    const prgNm = document.getElementById('prgNm').value || '프로그램명';
     const recruitStart = document.getElementById('recruitStart').value;
     const recruitEnd = document.getElementById('recruitEnd').value;
     const department = document.getElementById('department').value || '-';
     const contact = document.getElementById('contact').value || '-';
-    const mileagePoints = document.getElementById('mileagePoints').value || '0';
-    const description = document.getElementById('description').value || '프로그램 설명이 없습니다.';
-    const programImageInput = document.getElementById('programImageInput');
+    const mlgDefScore = document.getElementById('mlgDefScore').value || '0';
+    const prgDesc = document.getElementById('prgDesc').value || '프로그램 설명이 없습니다.';
+    const fileIdInput = document.getElementById('fileId');
 
     // 미리보기 데이터 설정
-    document.getElementById('previewTitle').textContent = programName;
+    document.getElementById('previewTitle').textContent = prgNm;
     document.getElementById('previewRecruitPeriod').textContent = 
         recruitStart && recruitEnd ? `${recruitStart} ~ ${recruitEnd}` : '-';
     document.getElementById('previewDepartment').textContent = department;
     document.getElementById('previewContact').textContent = contact;
-    document.getElementById('previewMileage').textContent = `${parseInt(mileagePoints).toLocaleString()} 포인트`;
-    document.getElementById('previewDescription').textContent = description;
+    document.getElementById('previewMileage').textContent = `${parseInt(mlgDefScore).toLocaleString()} 포인트`;
+    document.getElementById('previewDescription').textContent = prgDesc;
 
     // 대표 사진 미리보기
     const previewImage = document.getElementById('previewImage');
-    if (programImageInput.files && programImageInput.files[0]) {
+    if (fileIdInput.files && fileIdInput.files[0]) {
         const reader = new FileReader();
         reader.onload = function(e) {
             previewImage.innerHTML = `<img src="${e.target.result}" alt="프로그램 대표 사진" style="width: 100%; height: 100%; object-fit: cover;">`;
         };
-        reader.readAsDataURL(programImageInput.files[0]);
+        reader.readAsDataURL(fileIdInput.files[0]);
     } else {
         previewImage.innerHTML = '대표 사진 미리보기';
     }
@@ -144,20 +144,20 @@ function validateForm() {
     // 날짜 유효성 검사
     const recruitStart = new Date(document.getElementById('recruitStart').value);
     const recruitEnd = new Date(document.getElementById('recruitEnd').value);
-    const operationStart = new Date(document.getElementById('operationStart').value);
-    const operationEnd = new Date(document.getElementById('operationEnd').value);
+    const prgStDt = new Date(document.getElementById('prgStDt').value);
+    const prgEndDt = new Date(document.getElementById('prgEndDt').value);
 
     if (recruitStart >= recruitEnd) {
         alert('모집 시작일은 모집 마감일보다 이전이어야 합니다.');
         return false;
     }
 
-    if (operationStart >= operationEnd) {
+    if (prgStDt >= prgEndDt) {
         alert('운영 시작일은 운영 종료일보다 이전이어야 합니다.');
         return false;
     }
 
-    if (recruitEnd > operationStart) {
+    if (recruitEnd > prgStDt) {
         alert('모집 마감일은 운영 시작일 이전이어야 합니다.');
         return false;
     }
@@ -180,16 +180,62 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // 등록 확인
             if (confirm('비교과 프로그램을 등록하시겠습니까?')) {
-                // 실제로는 폼을 서버로 전송
-                this.submit();
+                // FormData 생성 및 제출
+                const formData = new FormData();
+                
+                // 기본 정보 추가
+                formData.append('prgNm', document.getElementById('prgNm').value);
+                formData.append('prgDesc', document.getElementById('prgDesc').value);
+                formData.append('prgStDt', document.getElementById('prgStDt').value);
+                formData.append('prgEndDt', document.getElementById('prgEndDt').value);
+                formData.append('maxCnt', document.getElementById('maxCnt').value);
+                formData.append('mlgDefScore', document.getElementById('mlgDefScore').value);
+                formData.append('surveyDt', document.getElementById('surveyDt').value);
+                
+                // 파일 추가
+                const imageFile = document.getElementById('fileId').files[0];
+                if (imageFile) {
+                    formData.append('imageFile', imageFile);
+                }
+                
+                const attachmentFile = document.getElementById('attachmentFile').files[0];
+                if (attachmentFile) {
+                    formData.append('attachmentFile', attachmentFile);
+                }
+                
+                // 핵심역량 추가
+                const selectedCompetencies = [];
+                document.querySelectorAll('input[name="competencies"]:checked').forEach(checkbox => {
+                    selectedCompetencies.push(checkbox.value);
+                });
+                formData.append('competencies', JSON.stringify(selectedCompetencies));
+                
+                // 서버로 전송
+                fetch('/api/admin/noncurr', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('비교과 프로그램이 성공적으로 등록되었습니다.');
+                        goToList();
+                    } else {
+                        alert('등록 실패: ' + (data.message || '알 수 없는 오류'));
+                    }
+                })
+                .catch(error => {
+                    console.error('등록 오류:', error);
+                    alert('등록 중 오류가 발생했습니다.');
+                });
             }
         });
     }
 
     // 모집인원 최소값 설정
-    const capacityInput = document.getElementById('capacity');
-    if (capacityInput) {
-        capacityInput.addEventListener('input', function() {
+    const maxCntInput = document.getElementById('maxCnt');
+    if (maxCntInput) {
+        maxCntInput.addEventListener('input', function() {
             if (this.value < 1) {
                 this.value = 1;
             }
@@ -197,9 +243,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // 마일리지 점수 최소값 설정
-    const mileageInput = document.getElementById('mileagePoints');
-    if (mileageInput) {
-        mileageInput.addEventListener('input', function() {
+    const mlgDefScoreInput = document.getElementById('mlgDefScore');
+    if (mlgDefScoreInput) {
+        mlgDefScoreInput.addEventListener('input', function() {
             if (this.value < 0) {
                 this.value = 0;
             }
@@ -208,7 +254,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 오늘 날짜보다 이전 날짜 선택 방지
     const today = new Date().toISOString().split('T')[0];
-    const dateInputs = ['recruitStart', 'recruitEnd', 'operationStart', 'operationEnd', 'surveyDeadline'];
+    const dateInputs = ['recruitStart', 'recruitEnd', 'prgStDt', 'prgEndDt', 'surveyDt'];
     
     dateInputs.forEach(inputId => {
         const input = document.getElementById(inputId);

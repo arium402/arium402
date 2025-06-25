@@ -29,7 +29,14 @@ public class admin_serviceImpl implements admin_service{
 	@Resource(name="generateNo")
 	public generateNo gen_no;
 	
-	
+	/*
+	@Override
+	public Empl_Info insert_counselor(admin_counselor_DTO admindto) {
+		System.out.println(admindto.getEmplTellno());
+		//Empl_Info result = this.admin_cnsl_repo.save(admindto);
+		return result;
+	}
+	*/
 	@Override
 	public List<admin_counselor_DTO> getCounselorDtoList() {
 	    List<Empl_Info> entityList = this.admin_cnsl_repo.findAllByOrderByEmplId();

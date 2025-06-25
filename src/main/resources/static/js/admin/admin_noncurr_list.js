@@ -11,7 +11,65 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 페이지네이션 이벤트
     initializePaginationEvents();
+    
+    // 실제 데이터 로드
+    loadProgramData();
 });
+
+// 프로그램 데이터 로드 (API 호출)
+function loadProgramData() {
+    fetch('/api/admin/noncurr')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && data.programs) {
+                updateTableWithData(data.programs);
+                updatePaginationWithData(data);
+            }
+        })
+        .catch(error => {
+            console.error('데이터 로딩 실패:', error);
+        });
+}
+
+// 테이블 데이터 업데이트
+function updateTableWithData(programs) {
+    const tbody = document.getElementById('programTableBody');
+    tbody.innerHTML = '';
+    
+    programs.forEach((program, index) => {
+        const row = document.createElement('tr');
+        row.setAttribute('data-program-id', program.prgId);
+        row.innerHTML = `
+            <td>${index + 1}</td>
+            <td class="text-left">${program.prgNm}</td>
+            <td>${program.deptNm || '-'}</td>
+            <td>${formatDateRange(program.recruitStart, program.recruitEnd)}</td>
+            <td>${program.currentCnt || 0}/${program.maxCnt}</td>
+            <td>${formatDateRange(program.prgStDt, program.prgEndDt)}</td>
+            <td><span class="status ${getStatusClass(program.prgStatNm)}">${program.prgStatNm}</span></td>
+        `;
+        tbody.appendChild(row);
+    });
+    
+    // 클릭 이벤트 재바인딩
+    initializeTableRowClicks();
+}
+
+// 날짜 범위 포맷팅
+function formatDateRange(startDate, endDate) {
+    if (!startDate || !endDate) return '-';
+    return `${startDate}~${endDate}`;
+}
+
+// 상태 클래스 반환
+function getStatusClass(status) {
+    switch(status) {
+        case '진행': case '진행중': return 'pro';
+        case '완료': return 'completed';
+        case '인원 마감': case '마감': return 'full';
+        default: return 'open';
+    }
+}
 
 // 테이블 행 클릭 이벤트 초기화
 function initializeTableRowClicks() {
@@ -20,14 +78,11 @@ function initializeTableRowClicks() {
             const programId = this.getAttribute('data-program-id');
             const programName = this.cells[1].textContent.trim();
             
-            // 상세 페이지로 이동 (실제로는 적절한 URL로 수정)
+            // 상세 페이지로 이동
             console.log(`프로그램 ID: ${programId}, 이름: ${programName} 상세 페이지로 이동`);
             
-            // 실제 구현시에는 이렇게 사용:
-            // window.location.href = `/admin/admin_noncurr_detail?id=${programId}`;
-            
-            // 데모용으로 알림창 표시
-            alert(`"${programName}" 상세 페이지로 이동합니다.\n(실제로는 상세 페이지가 열립니다)`);
+            // 실제 구현
+            window.location.href = `/admin/noncurr_detail?id=${programId}`;
         });
     });
 }
@@ -35,7 +90,7 @@ function initializeTableRowClicks() {
 // 검색 이벤트 초기화
 function initializeSearchEvents() {
     // 엔터키로 검색
-    document.getElementById('searchInput').addEventListener('keypress', function(e) {
+    document.getElementById('searchKeyword').addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
             searchPrograms();
         }
@@ -47,13 +102,11 @@ function initializeFilterEvents() {
     // 필터 변경 시 자동 검색
     document.getElementById('periodFilter').addEventListener('change', function() {
         console.log('기간 필터 변경:', this.value);
-        // 자동 필터링 로직 구현
         filterPrograms();
     });
     
     document.getElementById('statusFilter').addEventListener('change', function() {
         console.log('상태 필터 변경:', this.value);
-        // 자동 필터링 로직 구현
         filterPrograms();
     });
 }
@@ -98,39 +151,38 @@ function initializePaginationEvents() {
 // 검색 함수
 function searchPrograms() {
     const searchType = document.getElementById('searchType').value;
-    const searchInput = document.getElementById('searchInput').value;
+    const searchKeyword = document.getElementById('searchKeyword').value;
     const periodFilter = document.getElementById('periodFilter').value;
     const statusFilter = document.getElementById('statusFilter').value;
     
-    if (searchInput.trim() === '') {
+    if (searchKeyword.trim() === '') {
         alert('검색어를 입력해주세요.');
         return;
     }
     
-    console.log(`검색 유형: ${searchType}, 검색어: ${searchInput}, 기간: ${periodFilter}, 상태: ${statusFilter}`);
+    console.log(`검색 유형: ${searchType}, 검색어: ${searchKeyword}, 기간: ${periodFilter}, 상태: ${statusFilter}`);
     
-    // 실제 검색 로직 구현
-    // 예: Ajax 요청으로 서버에서 데이터 가져오기
-    /*
-    $.ajax({
-        url: '/admin/searchNoncurriculars',
-        method: 'GET',
-        data: {
-            searchType: searchType,
-            searchKeyword: searchInput,
-            period: periodFilter,
-            status: statusFilter
-        },
-        success: function(data) {
-            updateTable(data);
-        },
-        error: function() {
+    // API 호출
+    const params = new URLSearchParams();
+    params.append('searchType', searchType);
+    params.append('searchKeyword', searchKeyword);
+    if (periodFilter) params.append('periodFilter', periodFilter);
+    if (statusFilter) params.append('statusFilter', statusFilter);
+    
+    fetch(`/api/admin/noncurr?${params.toString()}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                updateTableWithData(data.programs);
+                updatePaginationWithData(data);
+            } else {
+                alert('검색 중 오류가 발생했습니다.');
+            }
+        })
+        .catch(error => {
+            console.error('검색 오류:', error);
             alert('검색 중 오류가 발생했습니다.');
-        }
-    });
-    */
-    
-    alert(`${searchType}으로 "${searchInput}" 검색 중...`);
+        });
 }
 
 // 필터링 함수
@@ -140,48 +192,48 @@ function filterPrograms() {
     
     console.log(`필터 적용 - 기간: ${periodFilter}, 상태: ${statusFilter}`);
     
-    // 실제 필터링 로직 구현
-    // 예: Ajax 요청으로 필터된 데이터 가져오기
-    /*
-    $.ajax({
-        url: '/admin/filterNoncurriculars',
-        method: 'GET',
-        data: {
-            period: periodFilter,
-            status: statusFilter
-        },
-        success: function(data) {
-            updateTable(data);
-        }
-    });
-    */
+    // API 호출
+    const params = new URLSearchParams();
+    if (periodFilter) params.append('periodFilter', periodFilter);
+    if (statusFilter) params.append('statusFilter', statusFilter);
+    
+    fetch(`/api/admin/noncurr?${params.toString()}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                updateTableWithData(data.programs);
+                updatePaginationWithData(data);
+            }
+        })
+        .catch(error => {
+            console.error('필터링 오류:', error);
+        });
 }
 
 // 비교과 등록 함수
 function registerProgram() {
-    // 실제 등록 페이지로 이동
-    window.location.href = '/admin/noncurr_add';  // ← 경로 수정
+    window.location.href = '/admin/noncurr_add';
 }
 
 // 페이지 로드 함수
 function loadPage(pageNumber) {
     console.log(`페이지 ${pageNumber} 로딩 중...`);
     
-    // 실제 페이지 로딩 로직 구현
-    /*
-    $.ajax({
-        url: '/admin/getNoncurriculars',
-        method: 'GET',
-        data: {
-            page: pageNumber,
-            size: 10
-        },
-        success: function(data) {
-            updateTable(data.content);
-            updatePagination(data.totalPages, pageNumber);
-        }
-    });
-    */
+    const params = new URLSearchParams();
+    params.append('page', pageNumber - 1); // 0부터 시작
+    params.append('size', 10);
+    
+    fetch(`/api/admin/noncurr?${params.toString()}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                updateTableWithData(data.programs);
+                updatePaginationWithData(data);
+            }
+        })
+        .catch(error => {
+            console.error('페이지 로딩 오류:', error);
+        });
 }
 
 // 다음 페이지로 이동
@@ -191,11 +243,7 @@ function goToNextPage() {
         const currentPageNum = parseInt(currentPage.textContent);
         const nextPageNum = currentPageNum + 1;
         
-        // 다음 페이지 버튼이 있는지 확인
-        const nextPageLink = document.querySelector(`.pagination .page-link[href="#"]:not(.page-arrow)`);
-        if (nextPageLink && parseInt(nextPageLink.textContent) === nextPageNum) {
-            loadPage(nextPageNum);
-        }
+        loadPage(nextPageNum);
     }
 }
 
@@ -212,48 +260,21 @@ function goToPrevPage() {
     }
 }
 
-// 테이블 업데이트 함수
-function updateTable(data) {
-    const tbody = document.getElementById('programTableBody');
-    tbody.innerHTML = '';
+// 페이징 정보 업데이트
+function updatePaginationWithData(data) {
+    const paginationInfo = document.getElementById('paginationInfo');
+    const startItem = data.currentPage * data.size + 1;
+    const endItem = Math.min((data.currentPage + 1) * data.size, data.totalElements);
     
-    if (!data || data.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px;">검색 결과가 없습니다.</td></tr>';
-        return;
-    }
+    paginationInfo.textContent = 
+        `총 ${data.totalElements}건 중 ${startItem}-${endItem}건 표시`;
     
-    data.forEach((program, index) => {
-        const row = document.createElement('tr');
-        row.setAttribute('data-program-id', program.id);
-        
-        // 상태에 따른 CSS 클래스 결정
-        let statusClass = 'open';
-        switch(program.status) {
-            case '진행': statusClass = 'pro'; break;
-            case '완료': statusClass = 'completed'; break;
-            case '인원 마감': statusClass = 'full'; break;
-            default: statusClass = 'open';
-        }
-        
-        row.innerHTML = `
-            <td>${index + 1}</td>
-            <td class="text-left">${program.name}</td>
-            <td>${program.department}</td>
-            <td>${program.recruitmentPeriod}</td>
-            <td>${program.currentCapacity}/${program.maxCapacity}</td>
-            <td>${program.operationPeriod}</td>
-            <td><span class="status ${statusClass}">${program.status}</span></td>
-        `;
-        
-        tbody.appendChild(row);
-    });
-    
-    // 새로운 행에 클릭 이벤트 다시 바인딩
-    initializeTableRowClicks();
+    // 페이지 버튼 업데이트
+    updatePaginationButtons(data.currentPage + 1, data.totalPages);
 }
 
-// 페이지네이션 업데이트 함수
-function updatePagination(totalPages, currentPage) {
+// 페이지 버튼 업데이트
+function updatePaginationButtons(currentPage, totalPages) {
     const pagination = document.getElementById('pagination');
     pagination.innerHTML = '';
     
@@ -288,14 +309,6 @@ function updatePagination(totalPages, currentPage) {
     `;
     pagination.appendChild(nextButton);
     
-    // 페이지네이션 이벤트 다시 바인딩
+    // 이벤트 재바인딩
     initializePaginationEvents();
-    
-    // 페이지 정보 업데이트
-    const startItem = (currentPage - 1) * 10 + 1;
-    const endItem = Math.min(currentPage * 10, totalPages * 10);
-    const totalItems = totalPages * 10;
-    
-    document.getElementById('paginationInfo').textContent = 
-        `총 ${totalItems}건 중 ${startItem}-${endItem}건 표시`;
 }

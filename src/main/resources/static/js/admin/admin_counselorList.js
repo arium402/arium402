@@ -91,19 +91,29 @@ document.querySelectorAll('.tab-item').forEach(tab => {
 // 재직 상태별 필터링 함수
 function filterByEmploymentStatus(status) {
     const rows = document.querySelectorAll('.counselor-table tbody tr');
-    
+	var page_part = "";
+		  if (status === 'all') {
+			page_part = "./admin_counselorList";
+	      } else if (status === 'active') {
+	        page_part = "./admin_counselorList?empl_stat_cd=active";
+	      } else if (status === 'inactive') {
+			page_part = "./admin_counselorList?empl_stat_cd=inactive";
+	  	  }
+	/*
     rows.forEach(row => {
         const statusCell = row.cells[6]; // 재직현황 컬럼
         const statusText = statusCell.textContent.trim();
-        
+		var page_part = "";
         if (status === 'all') {
-            row.style.display = '';
+			//row.style.display = '';
         } else if (status === 'active') {
-            row.style.display = statusText.includes('재직') ? '' : 'none';
+            //row.style.display = statusText.includes('재직') ? '' : 'none';
         } else if (status === 'inactive') {
-            row.style.display = statusText.includes('퇴사') ? '' : 'none';
+            //row.style.display = statusText.includes('퇴사') ? '' : 'none';
         }
     });
+	*/
+	location.href = page_part;
 }
 
 // 검색 기능
