@@ -1,9 +1,19 @@
 package com.team.arium.counselor.counsel;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.team.arium.DTO.counselor_patient_DTO;
+import com.team.arium.admin.admin_service;
+import com.team.arium.domain.Empl_Info;
+import com.team.arium.domain.Std_Info;
+import com.team.arium.model.pageing;
+
+import jakarta.annotation.Resource;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -16,15 +26,45 @@ import java.util.Map;
 public class counselor_controller {
     
     
+	@Autowired
+	public counselor_repo cns_repo;
+	
+	@Autowired
+	public counselor_service cns_svc;
+	
+	@Resource(name="pageing")
+	pageing m_pg;
+	
+	//신청자 관리 
     @GetMapping("/applicants")
-    public String applicants(Model model) {
+    public String applicants(Model model
+    						,@RequestParam(value = "keyword", required = false) String keyword
+    						,@RequestParam(value="pageno", defaultValue="1", required=false) Integer pageno) {
         // 필요한 경우 신청자 데이터를 모델에 추가
-        // List<Applicant> applicants = applicantService.getAllApplicants();
+//         List<Applicant> applicants = applicantService.getAllApplicants();
         // model.addAttribute("applicants", applicants);
+    	
+    	List<counselor_patient_DTO> allPatientList = this.cns_svc.allPatientList();
+    	
+    	System.out.println("allCounselorList : " + allPatientList);
+		
+		Integer studentTotal = allPatientList.size();
+		
+		//페이징 관련 
+		Map<String, Integer> pageinfo = this.m_pg.page_ea(pageno, studentTotal);
+		int bno = this.m_pg.serial_no(pageno, studentTotal); 
+				
+		
+		model.addAttribute("pttList", allPatientList);
+		model.addAttribute("pttTotal", studentTotal);
+		
+		model.addAttribute("pageinfo", pageinfo);
+		model.addAttribute("bno", bno);
         
         return "/counselor/counselor_applicants";
     }
     
+    //내담자 관리 
     @GetMapping("/clients")
     public String clients(Model model) {
         // 필요한 경우 내담자 데이터를 모델에 추가

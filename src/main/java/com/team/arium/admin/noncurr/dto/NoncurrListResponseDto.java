@@ -1,13 +1,15 @@
-package com.team.arium.admin.noncurr;
+// 2. 목록 응답 DTO  
+package com.team.arium.admin.noncurr.dto;
 
 import lombok.*;
 
-@Builder
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Builder
 public class NoncurrListResponseDto {
     private Integer prgId;
+    private String prgCd;
     private String prgNm;
     private String department;
     private String recruitmentPeriod;
@@ -16,4 +18,6 @@ public class NoncurrListResponseDto {
     private Integer maxCapacity;
     private String status;
     private String prgStatCd;
+    private Integer mlgDefScore;
+    private String regDt;
 }
