@@ -18,7 +18,20 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // 업로드된 파일을 웹에서 접근할 수 있도록 설정
-        registry.addResourceHandler(fileUploadConfig.getUrlPrefix() + "/**")
-                .addResourceLocations("file:" + fileUploadConfig.getUploadBasePath() + "/");
+        String uploadPath = "file:" + fileUploadConfig.getAbsoluteUploadPath() + "/";
+        
+        System.out.println("=== 정적 리소스 설정 ===");
+        System.out.println("URL 패턴: /uploads/**");
+        System.out.println("실제 경로: " + uploadPath);
+        System.out.println("======================");
+        
+        registry.addResourceHandler("/uploads/**")
+                .addResourceLocations(uploadPath)
+                .setCachePeriod(3600); // 1시간 캐시
+        
+        // 추가: favicon 등 기본 정적 리소스
+        registry.addResourceHandler("/static/**")
+                .addResourceLocations("classpath:/static/")
+                .setCachePeriod(3600);
     }
 }

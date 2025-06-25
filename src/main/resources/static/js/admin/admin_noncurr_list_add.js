@@ -1,4 +1,4 @@
-// 비교과 등록 페이지 JavaScript (DB 컬럼명 맞춤)
+// 비교과 등록 페이지 JavaScript (수정됨)
 
 // 대표 사진 선택 처리
 function handleImageSelect(input) {
@@ -165,13 +165,95 @@ function validateForm() {
     return true;
 }
 
+// 폼 제출 함수 (올바른 버전)
+function submitForm() {
+    const formData = new FormData();
+    
+    try {
+        // 기본 정보 추가
+        formData.append('prgNm', document.getElementById('prgNm').value);
+        formData.append('prgDesc', document.getElementById('prgDesc').value);
+        formData.append('recruitStart', document.getElementById('recruitStart').value);
+        formData.append('recruitEnd', document.getElementById('recruitEnd').value);
+        formData.append('prgStDt', document.getElementById('prgStDt').value);
+        formData.append('prgEndDt', document.getElementById('prgEndDt').value);
+        formData.append('maxCnt', document.getElementById('maxCnt').value);
+        formData.append('department', document.getElementById('department').value);
+        formData.append('contact', document.getElementById('contact').value);
+        formData.append('surveyDt', document.getElementById('surveyDt').value);
+        formData.append('mlgDefScore', document.getElementById('mlgDefScore').value);
+        
+        // 파일 추가
+        const imageFile = document.getElementById('fileId').files[0];
+        if (imageFile) {
+            formData.append('imageFile', imageFile);
+        }
+        
+        const attachmentFile = document.getElementById('attachmentFile').files[0];
+        if (attachmentFile) {
+            formData.append('attachmentFile', attachmentFile);
+        }
+        
+        // 핵심역량 추가
+        const selectedCompetencies = [];
+        document.querySelectorAll('input[name="competencies"]:checked').forEach(checkbox => {
+            selectedCompetencies.push(checkbox.value);
+        });
+        formData.append('competencies', JSON.stringify(selectedCompetencies));
+        
+        console.log('전송할 데이터:');
+        for (let [key, value] of formData.entries()) {
+            console.log(key, value);
+        }
+        
+        // 버튼 비활성화
+        const submitBtn = document.querySelector('.btn-register');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="material-symbols-outlined">hourglass_empty</span> 등록 중...';
+        
+        // 서버로 전송 (FormData로)
+        fetch('/api/admin/noncurr', {
+            method: 'POST',
+            body: formData // Content-Type 헤더는 브라우저가 자동으로 설정
+        })
+        .then(response => {
+            console.log('Response status:', response.status);
+            console.log('Response headers:', response.headers.get('content-type'));
+            return response.json();
+        })
+        .then(data => {
+            console.log('응답 데이터:', data);
+            if (data.success) {
+                alert('비교과 프로그램이 성공적으로 등록되었습니다.');
+                goToList();
+            } else {
+                alert('등록 실패: ' + (data.message || '알 수 없는 오류'));
+            }
+        })
+        .catch(error => {
+            console.error('등록 오류:', error);
+            alert('등록 중 오류가 발생했습니다: ' + error.message);
+        })
+        .finally(() => {
+            // 버튼 복원
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalText;
+        });
+        
+    } catch (error) {
+        console.error('폼 데이터 구성 오류:', error);
+        alert('폼 데이터 구성 중 오류가 발생했습니다: ' + error.message);
+    }
+}
+
 // 페이지 로드 시 이벤트 설정
 document.addEventListener('DOMContentLoaded', function() {
     // 폼 제출 처리
     const programForm = document.getElementById('programForm');
     if (programForm) {
         programForm.addEventListener('submit', function(e) {
-            e.preventDefault();
+            //e.preventDefault();
             
             // 유효성 검사
             if (!validateForm()) {
@@ -180,54 +262,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // 등록 확인
             if (confirm('비교과 프로그램을 등록하시겠습니까?')) {
-                // FormData 생성 및 제출
-                const formData = new FormData();
-                
-                // 기본 정보 추가
-                formData.append('prgNm', document.getElementById('prgNm').value);
-                formData.append('prgDesc', document.getElementById('prgDesc').value);
-                formData.append('prgStDt', document.getElementById('prgStDt').value);
-                formData.append('prgEndDt', document.getElementById('prgEndDt').value);
-                formData.append('maxCnt', document.getElementById('maxCnt').value);
-                formData.append('mlgDefScore', document.getElementById('mlgDefScore').value);
-                formData.append('surveyDt', document.getElementById('surveyDt').value);
-                
-                // 파일 추가
-                const imageFile = document.getElementById('fileId').files[0];
-                if (imageFile) {
-                    formData.append('imageFile', imageFile);
-                }
-                
-                const attachmentFile = document.getElementById('attachmentFile').files[0];
-                if (attachmentFile) {
-                    formData.append('attachmentFile', attachmentFile);
-                }
-                
-                // 핵심역량 추가
-                const selectedCompetencies = [];
-                document.querySelectorAll('input[name="competencies"]:checked').forEach(checkbox => {
-                    selectedCompetencies.push(checkbox.value);
-                });
-                formData.append('competencies', JSON.stringify(selectedCompetencies));
-                
-                // 서버로 전송
-                fetch('/api/admin/noncurr', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert('비교과 프로그램이 성공적으로 등록되었습니다.');
-                        goToList();
-                    } else {
-                        alert('등록 실패: ' + (data.message || '알 수 없는 오류'));
-                    }
-                })
-                .catch(error => {
-                    console.error('등록 오류:', error);
-                    alert('등록 중 오류가 발생했습니다.');
-                });
+                //submitForm();
             }
         });
     }
