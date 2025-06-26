@@ -10,7 +10,8 @@ public interface admin_service {
 	List<admin_counselor_DTO> getCounselorDtoList();
 	//재직,퇴사를 검토하는 메소드
 	List<admin_counselor_DTO> getCounselorDtoList(int statcode);
-	
+	//상담사 개인정보 확인 메소드
+	List<admin_counselor_DTO> my_counselor_info(int statcode);
 	
 	//Empl_Info insert_counselor(admin_counselor_DTO admindto);
 }

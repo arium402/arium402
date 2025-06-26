@@ -144,9 +144,8 @@ public class admin_controller {
 		
 	//상담사관리 > 상담사 일정관리 
 	@GetMapping("/admin_counselor_schedule")
-	public String admin_counselor_schedule(HttpServletResponse res){
-		
-		
+	public String admin_counselor_schedule(HttpServletResponse res, Model m){
+
 		return "/admin/admin_counselor_schedule";
 	}
 	
@@ -165,9 +164,22 @@ public class admin_controller {
 	
 	//상담사 정보 
 	@GetMapping("/admin_counselorList_detail")
-	public String admin_counselorList_detail(HttpServletResponse res)  {
-		
-		
+	public String admin_counselorList_detail(@RequestParam(name="id", defaultValue = "")String id, Model m) throws Exception  {
+		String msg = "error";
+		try {
+		Integer no = Integer.parseInt(id);
+		List<admin_counselor_DTO> dtoList = null;
+		dtoList = this.admin_svc.my_counselor_info(no);
+			if(dtoList.size() <= 0) {
+				m.addAttribute("msg", msg);
+			}
+			else {
+				m.addAttribute("msg", "ok");
+				m.addAttribute("cslorList", dtoList);
+			}
+		}catch (Exception e) {
+			m.addAttribute("msg", msg);
+		}
 		return "/admin/admin_counselorList_detail";
 	}
 	
