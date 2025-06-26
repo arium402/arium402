@@ -1,3 +1,4 @@
+// 3. 공통코드 Repository
 package com.team.arium.admin.noncurr.repository;
 
 import com.team.arium.domain.Common_Code;
@@ -12,25 +13,20 @@ import java.util.Optional;
 @Repository
 public interface CommonCodeRepository extends JpaRepository<Common_Code, Integer> {
     
+    // 코드값으로 조회
+    Optional<Common_Code> findByCode(String code);
+    
+    // 코드 설명으로 조회
+    List<Common_Code> findByCodeDesc(String codeDesc);
+    
     // 코드 타입별 조회
     List<Common_Code> findByCodeType(String codeType);
     
-    // 코드 타입과 코드로 조회
-    Optional<Common_Code> findByCodeTypeAndCode(String codeType, String code);
-    
-    // 코드 타입별 정렬된 조회
-    @Query("SELECT c FROM Common_Code c WHERE c.codeType = :codeType ORDER BY c.code")
-    List<Common_Code> findByCodeTypeOrderByCode(@Param("codeType") String codeType);
-    
-    // 프로그램 상태 코드 조회
-    @Query("SELECT c FROM Common_Code c WHERE c.codeType = 'PRG_STAT' ORDER BY c.code")
+    // 비교과 프로그램 상태 코드 조회 (코드 타입으로 조회)
+    @Query("SELECT c FROM Common_Code c WHERE c.codeType = 'PRG_STAT'")
     List<Common_Code> findProgramStatusCodes();
     
-    // 부서 코드 조회
-    @Query("SELECT c FROM Common_Code c WHERE c.codeType = 'DEPT' ORDER BY c.code")
-    List<Common_Code> findDepartmentCodes();
-    
-    // 마일리지 관련 코드 조회
-    @Query("SELECT c FROM Common_Code c WHERE c.codeType = 'MLG_ADD' ORDER BY c.code")
-    List<Common_Code> findMileageAddCodes();
+    // 기본 상태 코드 조회 (등록시 사용) - 실제 코드값에 맞게 수정
+    @Query("SELECT c FROM Common_Code c WHERE c.codeType = 'PRG_STAT' AND c.code = 'ACTIVE'")
+    Optional<Common_Code> findDefaultProgramStatus();
 }
