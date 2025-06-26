@@ -1,15 +1,12 @@
 package com.team.arium.admin;
 
 import java.io.PrintWriter;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.List;
 import java.util.Map;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,15 +14,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.team.arium.DTO.admin_counselor_DTO;
-import com.team.arium.domain.Empl_Info;
 import com.team.arium.model.pageing;
 
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
+
+
 @CrossOrigin(origins="*", allowedHeaders = "*")
 @Controller
 @RequestMapping("/admin")
@@ -60,10 +57,22 @@ public class admin_controller {
 									,@RequestParam(value = "keyword", required = false) String keyword
 									,@RequestParam(value="pageno", defaultValue="1", required=false) Integer pageno
 									)  {
-		System.out.println(empl_stat_cd);
+		List<admin_counselor_DTO> dtoList = null;
+		int code  = 0;
+		if(empl_stat_cd.equals("active") || empl_stat_cd.equals("inactive")) {
+			if(empl_stat_cd.equals("active")) {
+				code = 31;
+			}
+			else {
+				code = 33;
+			}
+			dtoList = this.admin_svc.getCounselorDtoList(code);
+		}
+		else {
+			dtoList = this.admin_svc.getCounselorDtoList();			
+		}
 		
 //		List<Empl_Info> allCounselorList = this.admin_cnsl_repo.findAllByOrderByEmplId();
-		List<admin_counselor_DTO> dtoList = this.admin_svc.getCounselorDtoList();
 		System.out.println("allCounselorList : " + dtoList);
 		
 		Integer counselorTotal = dtoList.size();
@@ -72,7 +81,6 @@ public class admin_controller {
 		Map<String, Integer> pageinfo = this.m_pg.page_ea(pageno, counselorTotal);
 		int bno = this.m_pg.serial_no(pageno, counselorTotal); 
 				
-		
 		m.addAttribute("cslorList", dtoList);
 		m.addAttribute("cslorTotal", counselorTotal);
 		
@@ -99,10 +107,15 @@ public class admin_controller {
 //	    return ResponseEntity.ok("확인 완료");
 //	}
 	
+	@Autowired
+	private BCryptPasswordEncoder bcrypt;
+	
 	//상담사 등록
 	@PostMapping("/admin_counselorList_addOk")
 	public String admin_counselorList_addOk(@RequestBody String emp_data, HttpServletResponse res) throws Exception {
 		try {
+			this.pw = res.getWriter();
+			
 			String today = this.admin_module.todays_module().replaceAll("-", "");
 			String treecode = this.admin_module.code_random();
 			String empl_no = "C"+today+treecode;
@@ -114,9 +127,12 @@ public class admin_controller {
 			this.admindto.setEmplTellno(String.valueOf(jo.get("emplTellno")));
 			this.admindto.setEmplEmlAddr(String.valueOf(jo.get("emplEmlAddr")));
 			this.admindto.setEmplStatCd(String.valueOf(jo.get("emplStatCd")));
+			String passwd = this.bcrypt.encode("1111");	//상담사 최초 가입시 1111로 지정함
+			String roles = "ROLE_COUNSELOR";
 			this.result = this.admin_cnsl_repo.mysql_insert(admindto);
-			this.pw = res.getWriter();
+			this.admin_cnsl_repo.user_insert(empl_no,passwd,roles);	//상담사 아이디, 패스워드, role 적용하는 repo			
 			this.pw.print(this.result);
+			
 		}catch(Exception e) {
 			System.out.println(e);
 		}finally {

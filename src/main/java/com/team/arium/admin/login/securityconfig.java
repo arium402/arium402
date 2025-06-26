@@ -138,6 +138,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 /*WEB Security 활성화 및 환경설정을 하기 위한 어노테이션*/
@@ -157,4 +158,9 @@ public class securityconfig {
 			   
 	   return http.build();
    }
+   
+   @Bean
+	public BCryptPasswordEncoder bcrypass() {
+		return new BCryptPasswordEncoder();
+	}
 }

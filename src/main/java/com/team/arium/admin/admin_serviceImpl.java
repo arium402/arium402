@@ -37,6 +37,28 @@ public class admin_serviceImpl implements admin_service{
 		return result;
 	}
 	*/
+	
+	@Override
+	public List<admin_counselor_DTO> getCounselorDtoList(int statcode) {
+		//List<Empl_Info> entityList = this.admin_cnsl_repo.findAllByOrderByEmplId();
+		List<Empl_Info> entityList = this.admin_cnsl_repo.findAllByemplStatCd(statcode);
+	    List<admin_counselor_DTO> dtoList = new ArrayList<>();
+
+	    for (Empl_Info e : entityList) {
+	    	admin_counselor_DTO dto = new admin_counselor_DTO();
+	        dto.setEmplNo(e.getEmplNo());
+	        dto.setEmplName(e.getEmplName());
+	        dto.setCnslCdDesc(this.cmn_svc.getCodeDesc("cnsl_cd", e.getCnslCd().getCodeId()));
+	        dto.setEmplStatCdDesc(this.cmn_svc.getCodeDesc("empl_stat_cd", e.getEmplStatCd().getCodeId()));
+	        dto.setEmplTellno(e.getEmplTellno());
+	        dto.setEmplEmlAddr(e.getEmplEmlAddr());
+	        dto.setRegDt(e.getRegDt());
+	        
+	        dtoList.add(dto); // 리스트에 추가
+	    }
+	    return dtoList;
+	}
+	
 	@Override
 	public List<admin_counselor_DTO> getCounselorDtoList() {
 	    List<Empl_Info> entityList = this.admin_cnsl_repo.findAllByOrderByEmplId();

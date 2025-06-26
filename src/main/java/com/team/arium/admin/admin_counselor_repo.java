@@ -27,7 +27,7 @@ import com.team.arium.DTO.admin_counselor_DTO;
 import com.team.arium.domain.Empl_Info;
 
 import jakarta.transaction.Transactional;
-
+@Transactional
 public interface admin_counselor_repo extends JpaRepository<Empl_Info, Long>{
 	
 	//사번 조회
@@ -48,4 +48,19 @@ public interface admin_counselor_repo extends JpaRepository<Empl_Info, Long>{
 	@Transactional	
 	@Modifying(clearAutomatically = true)
 	int mysql_insert(@Param("dkey") admin_counselor_DTO dto);
+	
+	
+	//상담사 로그인 가능하도록 처리
+	@Query(value = "insert into user_info values ('0', null, :id, :pw, :rols, now(), null)", nativeQuery = true)
+	@Modifying(clearAutomatically = true)
+	int user_insert(@Param("id")String id, @Param("pw")String pw, @Param("rols")String rols);
+	
+
+	@Query(value = "select * from empl_info where empl_stat_cd=:statcode", nativeQuery = true)
+	List<Empl_Info> findAllByemplStatCd(@Param("statcode") int statcode);
+	
+	
+	
+	
+	
 }
