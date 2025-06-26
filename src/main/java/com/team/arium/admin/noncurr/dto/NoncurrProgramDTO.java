@@ -7,7 +7,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @Builder
@@ -67,6 +70,23 @@ public class NoncurrProgramDTO {
     private int page = 0;               // 페이지 번호
     private int size = 10;              // 페이지 크기
 
+
+    // ✅ 문자열로 받을 새 필드 추가
+    private String competencyIdsStr;
+    
+    
+    // ✅ 문자열을 List로 변환하는 메서드 추가
+    public void setCompetencyIdsStr(String competencyIdsStr) {
+        this.competencyIdsStr = competencyIdsStr;
+        if (competencyIdsStr != null && !competencyIdsStr.trim().isEmpty()) {
+            this.competencyIds = Arrays.stream(competencyIdsStr.split(","))
+                .map(String::trim)
+                .filter(s -> !s.isEmpty())
+                .map(Integer::parseInt)
+                .collect(Collectors.toList());
+        }
+    }
+    
     @Data
     @Builder
     @NoArgsConstructor

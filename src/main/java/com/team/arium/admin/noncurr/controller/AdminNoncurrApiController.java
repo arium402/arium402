@@ -41,6 +41,9 @@ public class AdminNoncurrApiController {
             log.info("전체 파라미터 개수: {}", req.getParameterMap().size());
             log.info("이미지 파일 정보: {}", dto.getImageFile() != null ? dto.getImageFile().getOriginalFilename() : "null");
             
+         // ✅ 문자열을 List로 변환 (DTO에서 자동 처리됨)
+            log.info("선택된 핵심역량: {}", dto.getCompetencyIds());
+            
             Collection<Part> parts = req.getParts();
             log.info("총 파트 개수: {}", parts.size());
             for (Part part : parts) {
