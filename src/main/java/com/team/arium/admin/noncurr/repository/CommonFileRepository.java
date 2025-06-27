@@ -1,3 +1,4 @@
+// 4. 파일 Repository
 package com.team.arium.admin.noncurr.repository;
 
 import com.team.arium.domain.Common_File;
@@ -12,23 +13,28 @@ import java.util.Optional;
 @Repository
 public interface CommonFileRepository extends JpaRepository<Common_File, Integer> {
     
-    // 저장 파일명으로 조회
-    Optional<Common_File> findBySaveFileName(String saveFileName);
-    
     // 원본 파일명으로 조회
-    List<Common_File> findByOrgFileName(String orgFileName);
+    List<Common_File> findByOrgFileName(String orgFileNm);
     
-    // 파일명으로 검색
-    List<Common_File> findByFileNameContainingIgnoreCase(String fileName);
+    // 저장 파일명으로 조회
+    Optional<Common_File> findBySaveFileName(String saveFileNm);
+    
+    // 파일 타입별 조회
+    //List<Common_File> findByFileType(String fileType);
+    
+    /** 파일명 자체로 조회(필요하면 추가) → fileName 프로퍼티 */
+    List<Common_File> findByFileName(String fileName);
     
     // 파일 경로로 조회
-    List<Common_File> findByFilePathContaining(String filePath);
+    List<Common_File> findByFilePath(String filePath);
     
-    // 등록일자별 조회
-    @Query("SELECT f FROM Common_File f WHERE DATE(STR_TO_DATE(f.regDt, '%Y-%m-%d %H:%i:%s')) = :regDate")
-    List<Common_File> findByRegDate(@Param("regDate") String regDate);
     
-    // 최근 등록된 파일들 조회
-    @Query("SELECT f FROM Common_File f ORDER BY STR_TO_DATE(f.regDt, '%Y-%m-%d %H:%i:%s') DESC")
-    List<Common_File> findRecentFiles();
+    
+    // 이미지 파일만 조회
+    //@Query("SELECT f FROM Common_File f WHERE f.fileType LIKE 'image%'")
+    //List<Common_File> findImageFiles();
+    
+    // 특정 크기 이하 파일 조회
+   // @Query("SELECT f FROM Common_File f WHERE f.fileSize <= :maxSize")
+    //List<Common_File> findByFileSizeLessThanEqual(@Param("maxSize") Long maxSize);
 }

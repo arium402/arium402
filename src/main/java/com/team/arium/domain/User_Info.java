@@ -28,7 +28,7 @@ public class User_Info {
     @Column(name = "login_pw", length = 100, nullable = false)
     private String loginPw;
     
-    @Column(name = "user_role", length = 10, nullable = false)
+    @Column(name = "user_role", length = 30, nullable = false)
     private String userRole;
     
     @CreationTimestamp

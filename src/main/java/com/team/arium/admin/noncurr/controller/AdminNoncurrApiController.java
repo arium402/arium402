@@ -1,237 +1,294 @@
+// 2. 관리자 비교과 API 컨트롤러 (Admin API Controller)
 package com.team.arium.admin.noncurr.controller;
 
 import com.team.arium.admin.noncurr.dto.NoncurrProgramDTO;
-import com.team.arium.admin.noncurr.service.NoncurrProgramService;
+import com.team.arium.admin.noncurr.service.AdminNoncurrProgramService;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.Part;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
-@RestController
-@RequestMapping("/api/admin/noncurr")
-@RequiredArgsConstructor
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
 @Slf4j
+@RestController
+@RequestMapping("/api/admin")
+@RequiredArgsConstructor
 public class AdminNoncurrApiController {
-    
-    private final NoncurrProgramService noncurrProgramService; // 기존 서비스 사용
-    
+
+    private final AdminNoncurrProgramService adminNoncurrProgramService;
+
     /**
-     * 비교과 프로그램 등록 (등록 페이지용)
+     * 비교과 프로그램 등록
      */
-    @PostMapping(value = "/add", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Map<String, Object>> addProgram(
-            @RequestParam(value = "prgNm") String prgNm,
-            @RequestParam(value = "prgDesc") String prgDesc,
-            @RequestParam(value = "recruitStart") String recruitStart,
-            @RequestParam(value = "recruitEnd") String recruitEnd,
-            @RequestParam(value = "prgStDt") String prgStDt,
-            @RequestParam(value = "prgEndDt") String prgEndDt,
-            @RequestParam(value = "maxCnt") Integer maxCnt,
-            @RequestParam(value = "department") String department,
-            @RequestParam(value = "contact") String contact,
-            @RequestParam(value = "surveyDt") String surveyDt,
-            @RequestParam(value = "mlgDefScore") Integer mlgDefScore,
-            @RequestParam(value = "selectedCompetencies") String selectedCompetencies, // "1,2,3" 형태
-            @RequestParam(value = "competencyScores", required = false) String competencyScores, // "100,120,80" 형태
-            @RequestParam(value = "programImage", required = false) MultipartFile programImage,
-            @RequestParam(value = "attachmentFile", required = false) MultipartFile attachmentFile) {
+    @PostMapping("/noncurr_add")
+    public ResponseEntity<Map<String, Object>> noncurr_add(
+            @ModelAttribute NoncurrProgramDTO dto,
+            HttpServletRequest req
+    		) {
+    	
+        
+        log.info("비교과 프로그램 등록 API 요청: {}", dto.getPrgNm());
         
         try {
-            // 핵심역량 ID 파싱
-            List<Integer> competencyIds = Arrays.stream(selectedCompetencies.split(","))
-                .map(String::trim)
-                .filter(s -> !s.isEmpty())
-                .map(Integer::parseInt)
-                .collect(Collectors.toList());
+            log.info("=== 파일 업로드 디버깅 시작 (수정) ===");
+            log.info("전체 파라미터 개수: {}", req.getParameterMap().size());
+            log.info("이미지 파일 정보: {}", dto.getImageFile() != null ? dto.getImageFile().getOriginalFilename() : "null");
             
-            // 프로그램 코드 생성
-            String prgCd = noncurrProgramService.generateProgramCode();
+         // ✅ 문자열을 List로 변환 (DTO에서 자동 처리됨)
+            log.info("선택된 핵심역량: {}", dto.getCompetencyIds());
             
-            // DTO 생성 (기존 NoncurrProgramDTO 사용)
-            NoncurrProgramDTO programDTO = NoncurrProgramDTO.builder()
-                .prgCd(prgCd)
-                .prgNm(prgNm)
-                .prgDesc(prgDesc)
-                .recruitStartDt(recruitStart)
-                .recruitEndDt(recruitEnd)
-                .prgStDt(prgStDt)
-                .prgEndDt(prgEndDt)
-                .maxCnt(maxCnt)
-                .deptCd(department)
-                .contactTel(contact)
-                .surveyDt(surveyDt)
-                .mlgDefScore(mlgDefScore)
-                .competencyIds(competencyIds)
-                .imageFile(programImage)
-                .attachmentFile(attachmentFile)
-                .prgStatCd(1) // 기본 상태: 오픈
-                .build();
+            Collection<Part> parts = req.getParts();
+            log.info("총 파트 개수: {}", parts.size());
+            for (Part part : parts) {
+                log.info("파트명: {}, 타입: {}, 크기: {}", 
+                    part.getName(), 
+                    part.getContentType(), 
+                    part.getSize());
+            }
+            log.info("=== 파일 업로드 디버깅 끝 (수정) ===");
             
-            Map<String, Object> result = noncurrProgramService.registerProgram(programDTO);
-            
-            return ResponseEntity.ok(result);
-            
-        } catch (Exception e) {
-            log.error("비교과 프로그램 등록 실패", e);
-            
-            Map<String, Object> response = new HashMap<>();
-            response.put("success", false);
-            response.put("message", "프로그램 등록 중 오류가 발생했습니다: " + e.getMessage());
-            
-            return ResponseEntity.badRequest().body(response);
-        }
-    }
-    
-    /**
-     * 비교과 프로그램 목록 조회 (목록 페이지용)
-     */
-    @GetMapping("/list")
-    public ResponseEntity<Map<String, Object>> getProgramList(
-            @RequestParam(value = "searchKeyword", required = false) String searchKeyword,
-            @RequestParam(value = "department", required = false) String department,
-            @RequestParam(value = "statusCode", required = false) String statusFilter,
-            @RequestParam(value = "periodFilter", required = false) String periodFilter,
-            @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "size", defaultValue = "10") int size) {
+		} catch (Exception debugE) {
+			log.error("디버깅 로그 실패", debugE);
+		}
         
-        try {
-            NoncurrProgramDTO searchDTO = NoncurrProgramDTO.builder()
-                .searchKeyword(searchKeyword)
-                .statusFilter(statusFilter)
-                .periodFilter(periodFilter)
-                .page(page)
-                .size(size)
-                .build();
+        
+        
+        Map<String, Object> response = new HashMap<>();
+        
+        try { 
+
+            // 입력값 검증
+            String validationError = validateProgramDto(dto);
+            if (validationError != null) {
+                log.warn("프로그램 등록 검증 실패: {}", validationError);
+                response.put("success", false);
+                response.put("error", validationError);
+                return ResponseEntity.badRequest().body(response);
+            }
             
-            Map<String, Object> result = noncurrProgramService.getProgramList(searchDTO);
+            // 프로그램 등록
+            Integer prgId = adminNoncurrProgramService.createProgram(dto);
             
-            return ResponseEntity.ok(result);
-            
-        } catch (Exception e) {
-            log.error("비교과 프로그램 목록 조회 실패", e);
-            
-            Map<String, Object> response = new HashMap<>();
-            response.put("success", false);
-            response.put("message", "목록 조회 중 오류가 발생했습니다: " + e.getMessage());
-            
-            return ResponseEntity.badRequest().body(response);
-        }
-    }
-    
-    /**
-     * 핵심역량 목록 조회 (등록 페이지용 - 간단한 형태)
-     */
-    @GetMapping("/competencies")
-    public ResponseEntity<Map<String, Object>> getCompetencies() {
-        try {
-            List<Map<String, Object>> competencies = noncurrProgramService.getCompetencyList();
-            
-            Map<String, Object> response = new HashMap<>();
             response.put("success", true);
-            response.put("data", competencies);
+            response.put("message", "비교과 프로그램이 성공적으로 등록되었습니다.");
+            response.put("prgId", prgId);
+            response.put("redirectUrl", "/admin/noncurr_list");
+            
+            log.info("비교과 프로그램 등록 성공: ID={}, 이름={}", prgId, dto.getPrgNm());
+            return ResponseEntity.ok(response);
+            
+        } catch (Exception e) {
+            log.error("비교과 프로그램 등록 실패: 이름={}, 오류={}", dto.getPrgNm(), e.getMessage(), e);
+            response.put("success", false);
+            response.put("error", "프로그램 등록 중 오류가 발생했습니다: " + e.getMessage());
+            return ResponseEntity.internalServerError().body(response);
+        }
+    }
+
+    /**
+     * 비교과 프로그램 수정
+     */
+    @PostMapping("/noncurr_edit")
+    public ResponseEntity<Map<String, Object>> noncurr_edit(
+            @RequestParam Integer prgId,
+            @ModelAttribute NoncurrProgramDTO dto) {
+        
+        log.info("비교과 프로그램 수정 API 요청: ID={}, 이름={}", prgId, dto.getPrgNm());
+        Map<String, Object> response = new HashMap<>();
+        
+        try {
+            // 입력값 검증
+            String validationError = validateProgramDto(dto);
+            if (validationError != null) {
+                log.warn("프로그램 수정 검증 실패: ID={}, 오류={}", prgId, validationError);
+                response.put("success", false);
+                response.put("error", validationError);
+                return ResponseEntity.badRequest().body(response);
+            }
+            
+            // 프로그램 수정
+            adminNoncurrProgramService.updateProgram(prgId, dto);
+            
+            response.put("success", true);
+            response.put("message", "비교과 프로그램이 성공적으로 수정되었습니다.");
+            response.put("redirectUrl", "/admin/noncurr_list");
+            
+            log.info("비교과 프로그램 수정 성공: ID={}", prgId);
+            return ResponseEntity.ok(response);
+            
+        } catch (Exception e) {
+            log.error("비교과 프로그램 수정 실패: ID={}, 오류={}", prgId, e.getMessage(), e);
+            response.put("success", false);
+            response.put("error", "프로그램 수정 중 오류가 발생했습니다: " + e.getMessage());
+            return ResponseEntity.internalServerError().body(response);
+        }
+    }
+
+    /**
+     * 비교과 프로그램 삭제
+     */
+    @PostMapping("/noncurr_delete")
+    public ResponseEntity<Map<String, Object>> noncurr_delete(@RequestParam Integer prgId) {
+        log.info("비교과 프로그램 삭제 API 요청: ID={}", prgId);
+        Map<String, Object> response = new HashMap<>();
+        
+        try {
+            adminNoncurrProgramService.deleteProgram(prgId);
+            
+            response.put("success", true);
+            response.put("message", "비교과 프로그램이 성공적으로 삭제되었습니다.");
+            
+            log.info("비교과 프로그램 삭제 성공: ID={}", prgId);
+            return ResponseEntity.ok(response);
+            
+        } catch (Exception e) {
+            log.error("비교과 프로그램 삭제 실패: ID={}, 오류={}", prgId, e.getMessage(), e);
+            response.put("success", false);
+            response.put("error", "프로그램 삭제 중 오류가 발생했습니다: " + e.getMessage());
+            return ResponseEntity.internalServerError().body(response);
+        }
+    }
+
+    /**
+     * 프로그램 상세 정보 조회 (AJAX용)
+     */
+    @GetMapping("/noncurr_detail_ajax")
+    public ResponseEntity<Map<String, Object>> noncurr_detail_ajax(@RequestParam Integer prgId) {
+        log.info("비교과 프로그램 상세 조회 API 요청: ID={}", prgId);
+        Map<String, Object> response = new HashMap<>();
+        
+        try {
+            NoncurrProgramDTO programDto = adminNoncurrProgramService.getProgramDetail(prgId);
+            
+            response.put("success", true);
+            response.put("data", programDto);
             
             return ResponseEntity.ok(response);
             
         } catch (Exception e) {
-            log.error("핵심역량 목록 조회 실패", e);
-            
-            Map<String, Object> response = new HashMap<>();
+            log.error("비교과 프로그램 상세 조회 실패: ID={}, 오류={}", prgId, e.getMessage(), e);
             response.put("success", false);
-            response.put("message", "핵심역량 목록 조회 중 오류가 발생했습니다: " + e.getMessage());
-            
-            return ResponseEntity.badRequest().body(response);
+            response.put("error", "프로그램 정보 조회 중 오류가 발생했습니다: " + e.getMessage());
+            return ResponseEntity.internalServerError().body(response);
         }
     }
     
-    /**
-     * 프로그램 상세 조회
-     */
-    @GetMapping("/{prgId}")
-    public ResponseEntity<Map<String, Object>> getProgramDetail(@PathVariable Integer prgId) {
-        try {
-            Map<String, Object> result = noncurrProgramService.getProgramDetail(prgId);
-            return ResponseEntity.ok(result);
-            
-        } catch (Exception e) {
-            log.error("프로그램 상세 조회 실패", e);
-            
-            Map<String, Object> response = new HashMap<>();
-            response.put("success", false);
-            response.put("message", "상세 조회 중 오류가 발생했습니다: " + e.getMessage());
-            
-            return ResponseEntity.badRequest().body(response);
-        }
-    }
     
+
     /**
-     * 프로그램 삭제
+     * 이미지 파일 업로드 검증
      */
-    @DeleteMapping("/{prgId}")
-    public ResponseEntity<Map<String, Object>> deleteProgram(@PathVariable Integer prgId) {
+    @PostMapping("/noncurr_validate_image")
+    public ResponseEntity<Map<String, Object>> noncurr_validate_image(@RequestParam("file") MultipartFile file) {
+        Map<String, Object> response = new HashMap<>();
+        
         try {
-            Map<String, Object> result = noncurrProgramService.deleteProgram(prgId);
-            return ResponseEntity.ok(result);
+            if (file.isEmpty()) {
+                response.put("success", false);
+                response.put("error", "파일이 선택되지 않았습니다.");
+                return ResponseEntity.badRequest().body(response);
+            }
             
-        } catch (Exception e) {
-            log.error("프로그램 삭제 실패", e);
+            // 파일 크기 검증 (5MB)
+            if (file.getSize() > 5242880) {
+                response.put("success", false);
+                response.put("error", "파일 크기가 5MB를 초과합니다.");
+                return ResponseEntity.badRequest().body(response);
+            }
             
-            Map<String, Object> response = new HashMap<>();
-            response.put("success", false);
-            response.put("message", "삭제 중 오류가 발생했습니다: " + e.getMessage());
+            // 파일 타입 검증
+            String contentType = file.getContentType();
+            if (contentType == null || !contentType.startsWith("image/")) {
+                response.put("success", false);
+                response.put("error", "이미지 파일만 업로드 가능합니다.");
+                return ResponseEntity.badRequest().body(response);
+            }
             
-            return ResponseEntity.badRequest().body(response);
-        }
-    }
-    
-    /**
-     * 프로그램 코드 생성
-     */
-    @GetMapping("/generate-code")
-    public ResponseEntity<Map<String, Object>> generateProgramCode() {
-        try {
-            String programCode = noncurrProgramService.generateProgramCode();
-            
-            Map<String, Object> response = new HashMap<>();
             response.put("success", true);
-            response.put("code", programCode);
+            response.put("message", "파일 검증 완료");
+            response.put("fileName", file.getOriginalFilename());
+            response.put("fileSize", file.getSize());
+            response.put("fileType", contentType);
             
             return ResponseEntity.ok(response);
             
         } catch (Exception e) {
-            log.error("프로그램 코드 생성 실패", e);
-            
-            Map<String, Object> response = new HashMap<>();
+            log.error("이미지 파일 검증 실패: {}", e.getMessage(), e);
             response.put("success", false);
-            response.put("message", "코드 생성 중 오류가 발생했습니다: " + e.getMessage());
-            
-            return ResponseEntity.badRequest().body(response);
+            response.put("error", "파일 검증 중 오류가 발생했습니다.");
+            return ResponseEntity.internalServerError().body(response);
         }
     }
-    
+
     /**
-     * 프로그램 통계 조회
+     * 입력값 검증
      */
-    @GetMapping("/statistics")
-    public ResponseEntity<Map<String, Object>> getProgramStatistics() {
-        try {
-            Map<String, Object> result = noncurrProgramService.getProgramStatistics();
-            return ResponseEntity.ok(result);
-            
-        } catch (Exception e) {
-            log.error("프로그램 통계 조회 실패", e);
-            
-            Map<String, Object> response = new HashMap<>();
-            response.put("success", false);
-            response.put("message", "통계 조회 중 오류가 발생했습니다: " + e.getMessage());
-            
-            return ResponseEntity.badRequest().body(response);
+    private String validateProgramDto(NoncurrProgramDTO dto) {
+        if (dto.getPrgNm() == null || dto.getPrgNm().trim().isEmpty()) {
+            return "프로그램명은 필수입니다.";
         }
+        
+        if (dto.getRecruitStDt() == null || dto.getRecruitStDt().trim().isEmpty()) {
+            return "모집 시작일은 필수입니다.";
+        }
+        
+        if (dto.getRecruitEndDt() == null || dto.getRecruitEndDt().trim().isEmpty()) {
+            return "모집 마감일은 필수입니다.";
+        }
+        
+        if (dto.getPrgStDt() == null || dto.getPrgStDt().trim().isEmpty()) {
+            return "운영 시작일은 필수입니다.";
+        }
+        
+        if (dto.getPrgEndDt() == null || dto.getPrgEndDt().trim().isEmpty()) {
+            return "운영 종료일은 필수입니다.";
+        }
+        
+        if (dto.getMaxCnt() == null || dto.getMaxCnt() <= 0) {
+            return "모집인원은 1명 이상이어야 합니다.";
+        }
+        
+        if (dto.getPrgDept() == null || dto.getPrgDept().trim().isEmpty()) {
+            return "운영부서는 필수입니다.";
+        }
+        
+        if (dto.getPrgTel() == null || dto.getPrgTel().trim().isEmpty()) {
+            return "문의 전화번호는 필수입니다.";
+        }
+        
+        if (dto.getMlgDefScore() == null || dto.getMlgDefScore() < 0) {
+            return "마일리지 점수는 0 이상이어야 합니다.";
+        }
+        
+        if (dto.getSurveyDt() == null || dto.getSurveyDt().trim().isEmpty()) {
+            return "만족도조사 마감일은 필수입니다.";
+        }
+        
+        if (dto.getPrgDesc() == null || dto.getPrgDesc().trim().isEmpty()) {
+            return "프로그램 설명은 필수입니다.";
+        }
+        
+        if (dto.getCompetencyIds() == null || dto.getCompetencyIds().isEmpty()) {
+            return "핵심역량을 하나 이상 선택해주세요.";
+        }
+        
+        // 프로그램명 길이 검증
+        if (dto.getPrgNm().length() > 100) {
+            return "프로그램명은 100자를 초과할 수 없습니다.";
+        }
+        
+        // 설명 길이 검증  
+        if (dto.getPrgDesc().length() > 2000) {
+            return "프로그램 설명은 2000자를 초과할 수 없습니다.";
+        }
+        
+        return null; // 검증 통과
     }
 }

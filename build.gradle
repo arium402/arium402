@@ -38,17 +38,13 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 
 	//Mysql
-	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
-	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
-	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.4'
 	runtimeOnly 'com.mysql:mysql-connector-j'
-	testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.4'
+
 
 	//PostgreSQL
 	implementation 'org.postgresql:postgresql:42.7.3'
 	
-	//Mybatis
-	 implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.4'
+
 	//test : debug로 임시 데이터 베이스를 연결
 	testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.4'
 	
@@ -83,6 +79,8 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok' //코드 작성을 줄여 주는 Lombok 애너테이션(@Getter, @Setter 등)
 	//컴파일러가 Lombok 애너테이션을 처리하도록 해 주는 설정으로, compileOnly와 함께 사용해야 애너테이션 생성자가 동작
 	annotationProcessor 'org.projectlombok:lombok'
+	//custom property
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	

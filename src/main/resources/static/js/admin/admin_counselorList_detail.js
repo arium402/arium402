@@ -82,51 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // 상담사 데이터 로드 함수
 function loadCounselorData(id) {
-    // 샘플 데이터
-    const counselorData = {
-        1: {
-            name: '김상담',
-            empNo: 'EMP001',
-            field: '심리상담',
-            phone: '010-1234-5678',
-            email: 'kim@example.com',
-            status: '재직',
-            regDate: '2024-01-15',
-            modDate: '2024-06-10'
-        },
-        2: {
-            name: '이상담',
-            empNo: 'EMP002',
-            field: '진로상담',
-            phone: '010-2345-6789',
-            email: 'lee@example.com',
-            status: '재직',
-            regDate: '2024-02-20',
-            modDate: '2024-05-15'
-        },
-        3: {
-            name: '박상담',
-            empNo: 'EMP003',
-            field: '학습컨설팅',
-            phone: '010-3456-7890',
-            email: 'park@example.com',
-            status: '퇴사',
-            regDate: '2023-12-10',
-            modDate: '2024-03-20'
-        }
-    };
-
-    const data = counselorData[id] || counselorData[1];
-
-    // 데이터를 화면에 표시
-    document.getElementById('counselorName').textContent = data.name;
-    document.getElementById('counselorEmpNo').textContent = data.empNo;
-    document.getElementById('counselorField').textContent = data.field;
-    document.getElementById('counselorPhone').textContent = data.phone;
-    document.getElementById('counselorEmail').textContent = data.email;
-    document.getElementById('counselorRegDate').textContent = data.regDate;
-    document.getElementById('counselorModDate').textContent = data.modDate;
-
+ 
     // 상태 표시
     const statusElement = document.getElementById('counselorStatus');
     const statusBadge = statusElement.parentElement.querySelector('.status-badge');
