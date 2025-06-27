@@ -1,24 +1,26 @@
 package com.team.arium.admin.noncurr.config;
 
+import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.multipart.MultipartResolver;
-import org.springframework.web.multipart.support.StandardServletMultipartResolver;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.util.unit.DataSize;
+
+import jakarta.servlet.MultipartConfigElement;
 
 @Configuration
 public class MultipartConfig {
-    
-    private static final Logger log = LoggerFactory.getLogger(MultipartConfig.class);
 
     @Bean
-    public MultipartResolver multipartResolver() {
-        log.info("🔧 CustomMultipartResolver Bean이 생성됩니다!");
+    public MultipartConfigElement multipartConfigElement() {
+        MultipartConfigFactory factory = new MultipartConfigFactory();
         
-        StandardServletMultipartResolver resolver = new StandardServletMultipartResolver();
-        // 여기서는 StandardServletMultipartResolver가 기본적으로 서블릿 컨테이너 설정을 따름
+        // 파일 크기 제한 해제
+        factory.setMaxFileSize(DataSize.ofMegabytes(100));
+        factory.setMaxRequestSize(DataSize.ofMegabytes(100));
+        factory.setFileSizeThreshold(DataSize.ofMegabytes(10));
         
-        return resolver;
+        System.out.println("MultipartConfig 적용됨!");
+        
+        return factory.createMultipartConfig();
     }
 }

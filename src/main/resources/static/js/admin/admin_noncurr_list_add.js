@@ -1,5 +1,5 @@
 // 비교과 등록 JavaScript
-
+console.log("test");
 // 페이지 로드 시 초기화
 document.addEventListener('DOMContentLoaded', function() {
     initializePage();
@@ -320,10 +320,41 @@ function validateDates() {
     return true;
 }
 
-// Ajax 폼 전송
+// ✅ 수정된 코드 - admin_noncurr_list_add.js의 submitForm() 함수 교체
 function submitForm() {
-    const form = document.getElementById('programForm');
-    const formData = new FormData(form);
+    const formData = new FormData();
+    
+    // 텍스트/날짜/숫자 필드들
+    const fields = [
+        'prgNm', 'recruitStDt', 'recruitEndDt', 'maxCnt', 'prgDept',
+        'prgStDt', 'prgEndDt', 'prgTel', 'surveyDt', 'mlgDefScore', 'prgDesc'
+    ];
+    
+    fields.forEach(fieldName => {
+        const element = document.querySelector(`[name="${fieldName}"]`);
+        if (element && element.value.trim()) {
+            formData.append(fieldName, element.value.trim());
+        }
+    });
+    
+    // ✅ 핵심역량을 쉼표로 구분된 단일 문자열로 변환
+    const checkedBoxes = document.querySelectorAll('input[name="competencyIds"]:checked');
+    const competencyIds = Array.from(checkedBoxes).map(cb => cb.value);
+    if (competencyIds.length > 0) {
+        formData.append('competencyIdsStr', competencyIds.join(','));  // 단일 파트로 전송
+    }
+    
+    // 이미지 파일 (선택된 경우만)
+    const imageFile = document.getElementById('imageFile').files[0];
+    if (imageFile) {
+        formData.append('imageFile', imageFile);
+    }
+    
+    // 디버깅: 실제 전송되는 데이터 확인
+    console.log('전송할 FormData:');
+    for (let [key, value] of formData.entries()) {
+        console.log(key, value);
+    }
     
     // 로딩 표시
     const submitButton = document.querySelector('button[type="submit"]');

@@ -130,7 +130,7 @@
                                 <div class="checkbox-item" 
                                      th:each="competency : ${competencies}">
                                     <input type="checkbox" 
-                                           th:field="*{competencyIds}" 
+                                           name="competencyIds"
                                            th:value="${competency.cclId}"
                                            th:id="${'competency_' + competency.cclId}">
                                     <label th:for="${'competency_' + competency.cclId}" 
