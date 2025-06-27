@@ -30,7 +30,7 @@ public class securityconfig {
 	    * hasAnyRole(null): 여러 권한을 한번에 처리할 때 사용*/
 	   http.authorizeHttpRequests((auth)->auth
 				.requestMatchers("/**").permitAll()
-				.requestMatchers("/login/admin").hasRole("ROLE_ADMIN") //ADMIN권한 가진 사용자만 접근 가능
+				.requestMatchers("/login/admin").hasRole("ADMIN") //ADMIN권한 가진 사용자만 접근 가능
 				.anyRequest().authenticated() //그 외 요청은 인증된 사용자만 허용
 		);
 			   
