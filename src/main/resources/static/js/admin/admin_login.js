@@ -8,7 +8,7 @@ document.getElementById('adminLoginForm').addEventListener('submit', function(e)
     // 실제 로그인 로직은 여기에 구현
     setTimeout(() => {
         // 로그인 성공 시 관리자 페이지로 이동
-        window.location.href = './adminList.html';
+        window.location.href = '/admin/dashboard';
     }, 1500);
 });
 
