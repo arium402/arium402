@@ -79,6 +79,8 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok' //코드 작성을 줄여 주는 Lombok 애너테이션(@Getter, @Setter 등)
 	//컴파일러가 Lombok 애너테이션을 처리하도록 해 주는 설정으로, compileOnly와 함께 사용해야 애너테이션 생성자가 동작
 	annotationProcessor 'org.projectlombok:lombok'
+	//custom property
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	
