@@ -1,5 +1,6 @@
 package com.team.arium.admin.noncurr.service;
 
+import com.team.arium.admin.admin_module;
 import com.team.arium.admin.noncurr.dto.NoncurrProgramDTO;
 import com.team.arium.admin.noncurr.repository.*;
 import com.team.arium.domain.*;
@@ -55,6 +56,9 @@ public class AdminNoncurrProgramService {
 
     @Value("${app.upload.max-size:5242880}") // 5MB
     private long maxFileSize;
+    
+    private final admin_module adminModule;
+    
 
     /**
      * 비교과 프로그램 등록
@@ -344,7 +348,7 @@ public class AdminNoncurrProgramService {
         String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
         
         // 오늘 날짜 문자열 ("yyyyMMdd")
-        String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        String today = adminModule.todays_module().replaceAll("-", "");
         
         // 1000~9999 사이 랜덤 숫자 생성하여 고유한 파일명 만들기
         String savedFileName;
@@ -366,7 +370,19 @@ public class AdminNoncurrProgramService {
             // fileSize, fileType은 DB에 없으므로 제거
             .build();
         
-        return commonFileRepository.save(fileEntity);
+        // ✅ 저장 전 디버깅
+        log.info("=== Common_File 저장 전 ===");
+        log.info("fileEntity 빌드 완료: orgFileName={}, saveFileName={}", originalFilename, savedFileName);
+        
+        Common_File savedFile = commonFileRepository.save(fileEntity);
+        
+        // ✅ 저장 후 디버깅 (가장 중요!)
+        log.info("=== Common_File 저장 후 ===");
+        log.info("savedFile.getFileId(): {}", savedFile.getFileId());
+        log.info("savedFile.getOrgFileName(): {}", savedFile.getOrgFileName());
+        log.info("savedFile.getSaveFileName(): {}", savedFile.getSaveFileName());
+        
+        return savedFile;
     }
 
     /**

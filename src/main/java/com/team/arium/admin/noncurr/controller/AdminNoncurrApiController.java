@@ -2,13 +2,18 @@
 package com.team.arium.admin.noncurr.controller;
 
 import com.team.arium.admin.noncurr.dto.NoncurrProgramDTO;
+import com.team.arium.admin.noncurr.repository.CommonCodeRepository;
 import com.team.arium.admin.noncurr.service.AdminNoncurrProgramService;
+import com.team.arium.domain.Common_Code;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.Part;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,16 +29,27 @@ public class AdminNoncurrApiController {
 
     private final AdminNoncurrProgramService adminNoncurrProgramService;
 
-    /**
-     * 비교과 프로그램 등록
-     */
+    @Autowired
+    private CommonCodeRepository commonCodeRepository; // 추가 필요
+    
+    
     @PostMapping("/noncurr_add")
     public ResponseEntity<Map<String, Object>> noncurr_add(
             @ModelAttribute NoncurrProgramDTO dto,
             HttpServletRequest req
+            //@RequestParam(name="imageFile") MultipartFile file
     		) {
+    	System.out.println("총 파트 개수: " + req.getParameterMap().size());
     	
-        
+    	// ✅ Common_Code 객체 생성해서 상태 코드 설정
+    	Common_Code statusCode = new Common_Code();
+    	statusCode.setCodeId(51);
+    	statusCode.setCodeType("prg_stat_cd");
+    	statusCode.setCode("오픈");
+    	statusCode.setCodeDesc("프로그램 신청 오픈");
+    	dto.setPrgStatCd(statusCode);
+    	
+    	//System.out.println(file.getOriginalFilename());
         log.info("비교과 프로그램 등록 API 요청: {}", dto.getPrgNm());
         
         try {
@@ -54,9 +70,9 @@ public class AdminNoncurrApiController {
             }
             log.info("=== 파일 업로드 디버깅 끝 (수정) ===");
             
-		} catch (Exception debugE) {
-			log.error("디버깅 로그 실패", debugE);
-		}
+    	} catch (Exception debugE) {
+    		log.error("디버깅 로그 실패", debugE);
+    	}
         
         
         
@@ -91,6 +107,7 @@ public class AdminNoncurrApiController {
             return ResponseEntity.internalServerError().body(response);
         }
     }
+     
 
     /**
      * 비교과 프로그램 수정
@@ -186,9 +203,9 @@ public class AdminNoncurrApiController {
      * 이미지 파일 업로드 검증
      */
     @PostMapping("/noncurr_validate_image")
-    public ResponseEntity<Map<String, Object>> noncurr_validate_image(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<Map<String, Object>> noncurr_validate_image(@RequestParam(name="imageFile", required = false) MultipartFile file) {
         Map<String, Object> response = new HashMap<>();
-        
+        System.out.println(file.getOriginalFilename());
         try {
             if (file.isEmpty()) {
                 response.put("success", false);
