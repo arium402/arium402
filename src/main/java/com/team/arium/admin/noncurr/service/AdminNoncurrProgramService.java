@@ -5,6 +5,8 @@ import com.team.arium.admin.noncurr.repository.*;
 import com.team.arium.domain.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.net.ftp.FTP;
+import org.apache.commons.net.ftp.FTPClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,16 +15,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -36,10 +36,22 @@ public class AdminNoncurrProgramService {
     private final CommonCodeRepository commonCodeRepository;
     private final CommonFileRepository commonFileRepository;
     private final NcsCclRelRepository ncsCclRelRepository;
-    // ✅ JdbcTemplate 제거 - @CreationTimestamp, @UpdateTimestamp 사용으로 불필요
 
-    @Value("${app.upload.path:/uploads}")
-    private String uploadPath;
+    // FTP 서버 설정
+    @Value("${app.ftp.host}")
+    private String ftpHost;
+    
+    @Value("${app.ftp.port}")
+    private int ftpPort;
+    
+    @Value("${app.ftp.username}")
+    private String ftpUsername;
+    
+    @Value("${app.ftp.password}")
+    private String ftpPassword;
+    
+    @Value("${app.ftp.remote-dir:/uploads/noncurr/images}")
+    private String ftpRemoteDir;
 
     @Value("${app.upload.max-size:5242880}") // 5MB
     private long maxFileSize;
@@ -52,7 +64,7 @@ public class AdminNoncurrProgramService {
         log.info("비교과 프로그램 등록 시작: {}", dto.getPrgNm());
         
         try {
-            // 1. 파일 업로드 처리
+            // 1. 파일 업로드 처리 (FTP)
             Common_File uploadedFile = null;
             if (dto.getImageFile() != null && !dto.getImageFile().isEmpty()) {
                 uploadedFile = handleFileUpload(dto.getImageFile());
@@ -258,7 +270,7 @@ public class AdminNoncurrProgramService {
             .orElseThrow(() -> new RuntimeException("프로그램을 찾을 수 없습니다. ID: " + prgId));
         
         try {
-            // 1. 새 이미지 파일이 있으면 업로드 처리
+            // 1. 새 이미지 파일이 있으면 FTP 업로드 처리
             if (dto.getImageFile() != null && !dto.getImageFile().isEmpty()) {
                 Common_File newFile = handleFileUpload(dto.getImageFile());
                 program.setComFile(newFile);
@@ -327,32 +339,149 @@ public class AdminNoncurrProgramService {
         // 파일 검증
         validateFile(file);
         
-        // 업로드 디렉토리 생성
-        String uploadDir = uploadPath + "/noncurr/images";
-        Path uploadDirPath = Paths.get(uploadDir);
-        if (!Files.exists(uploadDirPath)) {
-            Files.createDirectories(uploadDirPath);
-        }
-        
-        // 고유한 파일명 생성
+        // 고유한 파일명 생성 (yyyyMMdd + 랜덤숫자 방식)
         String originalFilename = file.getOriginalFilename();
         String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
-        String savedFileName = UUID.randomUUID().toString() + extension;
         
-        // 파일 저장
-        Path filePath = uploadDirPath.resolve(savedFileName);
-        Files.copy(file.getInputStream(), filePath);
+        // 오늘 날짜 문자열 ("yyyyMMdd")
+        String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         
-        // 파일 정보 저장 (실제 DB 스키마에 맞게 수정)
+        // 1000~9999 사이 랜덤 숫자 생성하여 고유한 파일명 만들기
+        String savedFileName;
+        int rnd;
+        do {
+            rnd = ThreadLocalRandom.current().nextInt(1000, 10000);
+            savedFileName = today + "_" + rnd + extension; // e.g. "20250627_4832.jpg"
+        } while (checkFileExistsOnFTP(savedFileName)); // FTP에서 중복 파일명 체크
+        
+        // FTP 서버에 파일 업로드
+        uploadToFTPServer(file, savedFileName);
+        
+        // 파일 정보 DB에 저장 (실제 DB 스키마에 맞게 수정)
         Common_File fileEntity = Common_File.builder()
             .orgFileName(originalFilename)           // ORG_FILE_NAME
             .saveFileName(savedFileName)             // SAVE_FILE_NAME  
             .fileName(originalFilename)              // FILE_NAME
-            .filePath(uploadDir)                     // FILE_PATH
+            .filePath(ftpRemoteDir)                  // FILE_PATH (FTP 경로)
             // fileSize, fileType은 DB에 없으므로 제거
             .build();
         
         return commonFileRepository.save(fileEntity);
+    }
+
+    /**
+     * FTP 서버에 파일 업로드
+     */
+    private void uploadToFTPServer(MultipartFile file, String savedFileName) throws IOException {
+        FTPClient ftpClient = new FTPClient();
+        
+        try {
+            // FTP 서버 연결
+            log.info("FTP 서버 연결 시도: {}:{}", ftpHost, ftpPort);
+            ftpClient.connect(ftpHost, ftpPort);
+            
+            // FTP 로그인
+            boolean loginSuccess = ftpClient.login(ftpUsername, ftpPassword);
+            if (!loginSuccess) {
+                throw new IOException("FTP 로그인 실패: " + ftpClient.getReplyString());
+            }
+            
+            log.info("FTP 로그인 성공");
+            
+            // Passive 모드 설정 (방화벽 환경에서 안전)
+            ftpClient.enterLocalPassiveMode();
+            
+            // 바이너리 모드 설정 (이미지 파일 깨짐 방지)
+            ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+            
+            // 원격 디렉토리로 이동 (없으면 생성)
+            createRemoteDirectoryIfNotExists(ftpClient, ftpRemoteDir);
+            ftpClient.changeWorkingDirectory(ftpRemoteDir);
+            
+            // 파일 업로드
+            try (InputStream inputStream = file.getInputStream()) {
+                boolean uploadSuccess = ftpClient.storeFile(savedFileName, inputStream);
+                if (!uploadSuccess) {
+                    throw new IOException("FTP 파일 업로드 실패: " + ftpClient.getReplyString());
+                }
+            }
+            
+            log.info("FTP 파일 업로드 성공: {}", savedFileName);
+            
+        } finally {
+            // FTP 연결 종료
+            if (ftpClient.isConnected()) {
+                try {
+                    ftpClient.logout();
+                    ftpClient.disconnect();
+                } catch (IOException e) {
+                    log.warn("FTP 연결 종료 중 오류: {}", e.getMessage());
+                }
+            }
+        }
+    }
+
+    /**
+     * FTP 서버에서 파일 존재 여부 확인
+     */
+    private boolean checkFileExistsOnFTP(String fileName) {
+        FTPClient ftpClient = new FTPClient();
+        
+        try {
+            ftpClient.connect(ftpHost, ftpPort);
+            ftpClient.login(ftpUsername, ftpPassword);
+            ftpClient.enterLocalPassiveMode();
+            
+            ftpClient.changeWorkingDirectory(ftpRemoteDir);
+            
+            // 파일 목록에서 해당 파일명 찾기
+            String[] fileNames = ftpClient.listNames();
+            if (fileNames != null) {
+                for (String name : fileNames) {
+                    if (fileName.equals(name)) {
+                        return true;
+                    }
+                }
+            }
+            
+            return false;
+            
+        } catch (IOException e) {
+            log.warn("FTP 파일 존재 확인 중 오류 (계속 진행): {}", e.getMessage());
+            return false; // 오류 시 false 반환하여 계속 진행
+        } finally {
+            if (ftpClient.isConnected()) {
+                try {
+                    ftpClient.logout();
+                    ftpClient.disconnect();
+                } catch (IOException e) {
+                    // 무시
+                }
+            }
+        }
+    }
+
+    /**
+     * FTP 서버에 원격 디렉토리 생성
+     */
+    private void createRemoteDirectoryIfNotExists(FTPClient ftpClient, String remotePath) throws IOException {
+        String[] pathElements = remotePath.split("/");
+        String currentPath = "";
+        
+        for (String folder : pathElements) {
+            if (folder.isEmpty()) continue;
+            
+            currentPath += "/" + folder;
+            
+            // 디렉토리가 존재하지 않으면 생성
+            if (!ftpClient.changeWorkingDirectory(currentPath)) {
+                ftpClient.makeDirectory(currentPath);
+                log.info("FTP 디렉토리 생성: {}", currentPath);
+            }
+        }
+        
+        // 루트로 돌아가기
+        ftpClient.changeWorkingDirectory("/");
     }
 
     /**
