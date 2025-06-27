@@ -44,4 +44,5 @@ public class securityconfig {
    public BCryptPasswordEncoder bcrypass() {
       return new BCryptPasswordEncoder();
    }
+   
 }

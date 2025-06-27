@@ -50,20 +50,20 @@ function filterCounselorsByCategory(category) {
         } else {
             let shouldShow = false;
             switch(category) {
-                case '심리상담':
-                    shouldShow = fieldText === '심리상담';
+                case '심리 상담':
+                    shouldShow = fieldText === '심리 상담';
                     break;
-                case '위기상담':
-                    shouldShow = fieldText === '위기상담';
+                case '위기 상황 상담':
+                    shouldShow = fieldText === '위기 상황 상담';
                     break;
-                case '익명상담':
-                    shouldShow = fieldText === '익명상담';
+                case '익명 상담':
+                    shouldShow = fieldText === '익명 상담';
                     break;
-                case '진로상담':
-                    shouldShow = fieldText === '진로상담';
+                case '진로 및 취업 관련 상담':
+                    shouldShow = fieldText === '진로 및 취업 관련 상담';
                     break;
-                case '학습컨설팅':
-                    shouldShow = fieldText === '학습컨설팅';
+                case '학습 방법 관련 상담':
+                    shouldShow = fieldText === '학습 방법 관련 상담';
                     break;
             }
             
@@ -162,7 +162,7 @@ document.querySelector('.register-btn').addEventListener('click', function() {
 
 // 상세 페이지로 이동하는 함수
 function goToDetail(id) {
-    window.open('counselor_detail.html?id=' + id, '_blank');
+    window.open('admin_counselorList_detail?id=' + id, '_blank');
 }
 
 // 엔터키로 검색
