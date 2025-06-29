@@ -59,8 +59,21 @@ public class StudentCompetenceController {
 	}
 	
 	@GetMapping("/chart")
-	public String chartPage() {
-
+	public String chartPage(Model m) {
+		 String evalId = "E96000374";
+		
+		if (evalId != null) {
+			// 진단 결과 데이터 조회
+			Map<String, Object> competencyResult = this.scs.getCompetenceResult(evalId);
+			
+			if (competencyResult != null) {
+				m.addAttribute("competencyData", competencyResult);
+			}
+			else {
+				m.addAttribute("error", "진단 결과를 찾을 수 없습니다.");
+			}
+		}
+		
 		return "/student/competence/student_competence_chart.html";	// 핵심 역량 결과
 	}
 }

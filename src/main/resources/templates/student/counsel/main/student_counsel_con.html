@@ -33,7 +33,7 @@
 	// 사전 검사 버튼 클릭 함수
 	function goToPreTest() {
 		if (confirm('상담 사전 검사 페이지로 이동하시겠습니까?')) {
-			location.href = /*[[@{/student/counsel/before/con}]]*/ '/student/counsel/before/con';
+			location.href = /*[[@{/student/counsel/before/con(cnslCd=${cnslCd})}]]*/ '/student/counsel/before/con?cnslCd=25';
 		}
 	}
 

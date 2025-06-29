@@ -14,16 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.team.arium.domain.Core_CptEval;
 import com.team.arium.domain.Core_CptInfo;
 import com.team.arium.domain.Core_CptQst;
-import com.team.arium.domain.Std_Info;
 
 @Service
 public class StudentCompetenceService {
 
 	@Autowired
 	private StudentCompetenceRepository scr;
-	
-	@Autowired
-	private StudentCompetenceEvalRepository scer;
 	
 	// 핵심 역량 진단 소개 출력
 	public Map<String, Object> getcompetence(){
@@ -101,70 +97,133 @@ public class StudentCompetenceService {
 		String currentTime = sdf.format(new Date());
 		
 		for (StudentCompetenceDTO ans : answers) {
-			Core_CptEval eval = new Core_CptEval();
-			eval.setEvalId(evalId);
-			eval.setCoreCptQst(this.scr.findQuestionById(ans.getQstId()));
-			
-			Std_Info stdInfo = new Std_Info();
-			stdInfo.setStdId(stdId);
-			eval.setStdInfo(stdInfo);
-			
-			eval.setAnsScore(ans.getAnsScore());
-			eval.setAnsDt(currentTime);
-			
-			this.scer.save(eval);
+			this.scr.insertEvaluation(evalId, ans.getQstId(), stdId, ans.getAnsScore(), currentTime);
 		}
+		
+		// 상위 역량 점수 저장
+		saveMainCompetencyScores(stdId, evalId, answers);
 		
 		return evalId;
 	}
 	
-	private String getCompetencyKey(String competencyName) {
-		// 실제 역량명에 맞게 수정 필요
-		if (competencyName.contains("글로컬") || competencyName.contains("리더")) {
-			return "global";
-		}
-		else if (competencyName.contains("소통") || competencyName.contains("협력")) {
-			return "communication";
-		}
-		else if (competencyName.contains("창의") || competencyName.contains("혁신")) {
-			return "innovation";
-		}
-		else if (competencyName.contains("탐구") || competencyName.contains("융합")) {
-			return "inquiry";
+	// 상위 역량 4개만 std_ccl_score에 저장
+	private void saveMainCompetencyScores(Integer stdId, String evalId, List<StudentCompetenceDTO> answers) {
+		// 상위 역량별로 점수 수집
+		Map<String, List<Integer>> subCompetencyScores = new HashMap<>();
+		Map<String, Integer> subToMainIdMapping = new HashMap<>();
+		
+		for (StudentCompetenceDTO ans : answers) {
+			Core_CptQst question = this.scr.findQuestionById(ans.getQstId());
+			Core_CptInfo subCompetency = question.getCoreCptInfo();
+			
+			String subKey = subCompetency.getCclNm();	// 하위 역량명
+			Integer mainCclId = subCompetency.getUpCclId();	// 상위 역량 ID
+			
+			if (!subCompetencyScores.containsKey(subKey)) {
+				subCompetencyScores.put(subKey, new ArrayList<>());
+				subToMainIdMapping.put(subKey, mainCclId);
+			}
+			
+			int score = ans.getAnsScore() * 20;
+			subCompetencyScores.get(subKey).add(score);
 		}
 		
-		return "unknown";
+		// 상위 역량별로 하위 역량 평균들을 모으기
+		Map<Integer, List<Integer>> mainCompetencyScores = new HashMap<>();
+		
+		for (String subKey : subCompetencyScores.keySet()) {
+			Integer mainCclId = subToMainIdMapping.get(subKey);
+			
+			if (!mainCompetencyScores.containsKey(mainCclId)) {
+				mainCompetencyScores.put(mainCclId, new ArrayList<>());
+			}
+			
+			// 하위 역량의 평균 계산
+			List<Integer> scores = subCompetencyScores.get(subKey);
+			
+			int total = 0;
+			for (Integer score : scores) {
+				total += score;
+			}
+			
+			int subAvgScore = scores.size() > 0 ? total / scores.size() : 0;
+			
+			// 상위 역량에 하위 역량 평균 추가
+			mainCompetencyScores.get(mainCclId).add(subAvgScore);
+		}
+		
+		// 상위 역량별 평균 계산하고 저장
+		for (Integer mainCclId : mainCompetencyScores.keySet()) {
+			List<Integer> subAverages = mainCompetencyScores.get(mainCclId);
+			
+			// 하위 역량 평균들의 평균
+			int total = 0;
+			for (Integer avg : subAverages) {
+				total += avg;
+			}
+			
+			int finalAvgScore = subAverages.size() > 0 ? total / subAverages.size() : 0;
+			
+			this.scr.insertCompetencyScore(stdId, mainCclId, 41, evalId, finalAvgScore);
+		}
 	}
 	
 	// 진단 결과 조회
 	public Map<String, Object> getCompetenceResult(String evalId) {
-		List<Core_CptEval> evaluations = this.scer.findByEvalId(evalId);	// evalId로 해당 진단의 모든 답변 조회
+		List<Core_CptEval> evaluations = this.scr.findEvaluationsByEvalId(evalId);	// evalId로 해당 진단의 모든 답변 조회
 		
 		if (evaluations.isEmpty()) {
 			return null;
 		}
 		
 		// 역량별로 데이터 분류 및 점수 계산
-		Map<String, List<Integer>> competencyScores = new HashMap<>();
-		Map<String, String> competencyNames = new HashMap<>();
+		Map<String, List<Integer>> subCompetencyScores = new HashMap<>();
+		Map<String, String> subToMainMapping = new HashMap<>();
+		Map<String, String> mainCompetencyNames = new HashMap<>();
 		
 		for (Core_CptEval eval : evaluations) {
 			Core_CptQst question = eval.getCoreCptQst();
 			Core_CptInfo subCompetency = question.getCoreCptInfo();	// 세부 역량
 			Core_CptInfo mainCompetency = this.scr.findByCclId(subCompetency.getUpCclId());	// 상위 역량
 			
+			String subKey = subCompetency.getCclNm(); // 하위 역량명			
 			String mainKey = getCompetencyKey(mainCompetency.getCclNm());	// 역량명을 key로 변경
 			
-			if (!competencyScores.containsKey(mainKey)) {
-				competencyScores.put(mainKey, new ArrayList<>());
-				competencyNames.put(mainKey, mainCompetency.getCclNm());
+			// 하위 역량별로 점수 저장
+			if (!subCompetencyScores.containsKey(subKey)) {
+				subCompetencyScores.put(subKey, new ArrayList<>());
+				subToMainMapping.put(subKey, mainKey);
+				mainCompetencyNames.put(mainKey, mainCompetency.getCclNm());
 			}
 			
 			// 점수는 1-5를 20점씩 곱해서 100점 만점으로 변환
 			int score = eval.getAnsScore() * 20;
-			competencyScores.get(mainKey).add(score);
+			subCompetencyScores.get(subKey).add(score);
 		}
 
+		Map<String, List<Integer>> competencyScores = new HashMap<>();
+		
+		for (String subKey : subCompetencyScores.keySet()) {
+			String mainKey = subToMainMapping.get(subKey);
+			
+			if (!competencyScores.containsKey(mainKey)) {
+				competencyScores.put(mainKey, new ArrayList<>());
+			}
+			
+			// 하위 역량의 평균 점수 계산
+			List<Integer> scores = subCompetencyScores.get(subKey);
+			
+			int total = 0;
+			for (Integer score : scores) {
+				total += score;
+			}
+			
+			int avgScore = scores.size() > 0 ? total / scores.size() : 0;
+			
+			// 상위 역량에 하위 역량 평균 추가
+			competencyScores.get(mainKey).add(avgScore);
+		}
+		
 		Map<String, Object> result = new HashMap<>();
 		
 		String[] colors = {
@@ -182,7 +241,7 @@ public class StudentCompetenceService {
 			Map<String, Object> competencyData = new HashMap<>();
 			List<Integer> scores = competencyScores.get(key);
 			
-			competencyData.put("name", competencyNames.get(key));
+			competencyData.put("name", mainCompetencyNames.get(key));
 			competencyData.put("color", colors[colorIndex % colors.length]);
 			competencyData.put("borderColor", borderColors[colorIndex % borderColors.length]);				
 			competencyData.put("scores", scores);
@@ -202,5 +261,23 @@ public class StudentCompetenceService {
 		}
 		
 		return result;
+	}
+	
+	private String getCompetencyKey(String competencyName) {
+		// 실제 역량명에 맞게 수정 필요
+		if (competencyName.equals("글로컬 리더 역량")) {
+			return "global";
+		}
+		else if (competencyName.equals("협력적 소통 역량")) {
+			return "communication";
+		}
+		else if (competencyName.equals("창의적 혁신 역량")) {
+			return "innovation";
+		}
+		else if (competencyName.equals("융합적 탐구 역량")) {
+			return "inquiry";
+		}
+		
+		return "unknown";
 	}
 }
