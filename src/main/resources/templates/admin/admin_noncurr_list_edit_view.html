@@ -138,20 +138,6 @@
                         </div>
                     </div>
 
-                    <!-- 학생용 첨부파일 -->
-                    <div class="form-item full-width">
-                        <label class="form-label">학생용 첨부파일 (안내서, 신청서 등)</label>
-                        <div class="file-input" onclick="document.getElementById('fileInput').click()">
-                            <input type="file" id="fileInput" name="attachmentFile" 
-                                   accept=".pdf,.doc,.docx,.hwp,.jpg,.jpeg,.png" onchange="handleFileSelect(this)">
-                            <p><i class="fas fa-cloud-upload-alt"></i> 클릭하여 새 파일을 선택하세요</p>
-                            <small>PDF, DOC, HWP, 이미지 파일 업로드 가능 (학생이 다운로드할 수 있는 자료)</small>
-                        </div>
-                        <div id="filePreview" class="file-preview" th:if="${program?.attachmentFileName}">
-                            <i class="fas fa-file-pdf"></i> 현재 파일: <span th:text="${program.attachmentFileName}">파일명</span>
-                        </div>
-                    </div>
-
                     <!-- 설명(세부사항) -->
                     <div class="form-item full-width">
                         <label class="form-label required">설명 (세부사항)</label>

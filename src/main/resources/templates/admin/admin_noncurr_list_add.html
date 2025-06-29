@@ -18,7 +18,9 @@
             <div th:replace="~{admin/admin_noncurr_list_add_view :: noncurr_add_view}"> </div>
         </div>
     </div>
-
+    <script th:if="${errorMessage}">
+    alert('[[${errorMessage}]]');
+</script>
 <script th:src="@{/js/admin/admin_noncurr_list_add.js?v=5}"></script>
   <!--  --> 
 </body>
