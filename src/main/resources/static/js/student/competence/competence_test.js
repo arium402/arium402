@@ -87,10 +87,46 @@ function showResults() {
 		}
 		return;
 	}
-  
-	// 모든 문항이 답변되었으면 결과 페이지로 이동
-	alert('진단이 완료되었습니다. 결과 페이지로 이동합니다.');
-	location.href = /*[[@{/student/competence/chart}]]*/ '/student/competence/chart';
+	
+	const answers = [];
+	const checked = form.querySelectorAll('input[type="radio"]:checked');
+	
+	checked.forEach(radio => {
+		const value = radio.value;
+		const parts = value.split('_');
+		const qstId = parseInt(parts[0]);
+		const ansScore = parseInt(parts[1]);
+		
+		answers.push({
+			qstId: qstId,
+			ansScore: ansScore
+		});
+	});
+	
+	console.log('전송할 데이터:', answers); // 디버깅용
+	
+	// 서버로 데이터 전송
+	fetch('/student/competence/submit', {
+		method: 'POST',
+		headers : {"content-type" : "application/json"},
+		body: JSON.stringify(answers)
+	})
+	.then(response => response.text())
+	.then(data => {
+		console.log('서버 응답:', data);
+		
+		if (data.startsWith("ERROR:")){
+			alert('저장 중 오류가 발생했습니다: ' + data.message);
+		}
+		else {
+			// 모든 문항이 답변되었으면 결과 페이지로 이동
+			alert('진단이 완료되었습니다. 결과 페이지로 이동합니다.');
+			location.href = /*[[@{/student/competence/chart}]]*/ `/student/competence/chart?evalId=${data.evalId}`;
+		}
+	}).catch(error => {
+		console.error("Error : ", error);
+		alert('서버 오류가 발생했습니다.');
+	});
 }
 
 // 페이지 로드 시 실행

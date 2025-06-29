@@ -1,9 +1,16 @@
 <!DOCTYPE html>
+
 <html lang="ko" xmlns:th="https://www.thymeleaf.org/">
     <head th:replace="~{/admin_config.html :: admin_config}"></head>
     <title>상담사 정보 - 관리자 페이지</title>
     <link rel="stylesheet" th:href="@{/css/admin/admin_counselorList_detail.css?v=1}">
-    
+    <script th:inline="javascript">
+	var msg = /*[[${msg}]]*/ 'error';
+	if(msg == "error"){
+		alert("해당 접근이 잘못 되었습니다.");
+		history.go(-1);
+	}
+	</script>    
     <body class="sb-nav-fixed">
        <!-- 상단 네비게이션 바 -->
         <nav th:replace="~{/admin_top.html :: admin_top}"></nav>
@@ -18,35 +25,34 @@
                     <!-- 페이지 제목 -->
                     <h1 class="page-title">상담사 정보</h1>
                     <div class="title-divider"></div>
-                    
                     <!-- 상담사 정보 카드 -->
                     <div class="counselor-info-card">
                         <!-- 상단 정보 (이름, 사번) -->
                         <div class="info-header">
                             <div class="info-row">
                                 <div class="info-label">이름</div>
-                                <div class="info-value large" id="counselorName">김상담</div>
+                                <div class="info-value large" id="counselorName">[[${cslorList.get(0).emplName}]]</div>
                             </div>
                             <div class="info-row">
                                 <div class="info-label">사번</div>
-                                <div class="info-value large" id="counselorEmpNo">EMP001</div>
+                                <div class="info-value large" id="counselorEmpNo">[[${cslorList.get(0).emplNo}]]</div>
                             </div>
                         </div>
                         
                         <!-- 기본 정보 -->
                         <div class="info-row">
                             <div class="info-label">분야</div>
-                            <div class="info-value" id="counselorField">심리상담</div>
+                            <div class="info-value" id="counselorField">[[${cslorList.get(0).cnslCdDesc}]]</div>
                         </div>
                         
                         <div class="info-row">
                             <div class="info-label">전화번호</div>
-                            <div class="info-value" id="counselorPhone">010-1234-5678</div>
+                            <div class="info-value" id="counselorPhone">[[${cslorList.get(0).emplTellno}]]</div>
                         </div>
                         
                         <div class="info-row">
                             <div class="info-label">이메일</div>
-                            <div class="info-value" id="counselorEmail">kim@example.com</div>
+                            <div class="info-value" id="counselorEmail">[[${cslorList.get(0).emplEmlAddr}]]</div>
                         </div>
                         
                         <!-- 구분선 -->
@@ -56,18 +62,21 @@
                         <div class="info-row">
                             <div class="info-label">재직현황</div>
                             <div class="info-value">
-                                <span class="status-badge active" id="counselorStatus">재직</span>
+                                <span class="status-badge active" id="counselorStatus">[[${cslorList.get(0).emplStatCdDesc}]]</span>
                             </div>
                         </div>
                         
                         <div class="info-row">
                             <div class="info-label">등록일</div>
-                            <div class="info-value" id="counselorRegDate">2024-01-15</div>
+                            <div class="info-value" id="counselorRegDate">[[${#strings.substring(cslorList.get(0).regDt,0,10)}]]</div>
                         </div>
                         
                         <div class="info-row">
                             <div class="info-label">수정일</div>
-                            <div class="info-value" id="counselorModDate">2024-06-10</div>
+                            <div class="info-value" id="counselorModDate">
+                            <span th:if="${cslorList.get(0).updDt == null}">변경된 날짜가 없습니다.</span>
+                            <span th:if="${cslorList.get(0).updDt != null}">[[${#strings.substring(cslorList.get(0).updDt,0,10)}]]</span>
+                            </div>
                         </div>
                         
                         <!-- 수정 버튼 -->
