@@ -1,5 +1,22 @@
+// DOM이 준비되면 로그인 실패 여부 확인
+window.addEventListener('DOMContentLoaded', function () {
+    const params = new URLSearchParams(window.location.search);
+    
+    if (params.get('error') === 'bad') {
+        alert('아이디 또는 비밀번호가 틀렸습니다.');
+    } else if (params.get('error') === 'forbidden') {
+        alert('접근 권한이 없습니다.');
+	}
+	
+    // URL 파라미터 제거
+    const url = new URL(window.location);
+    url.search = '';
+    window.history.replaceState({}, document.title, url.toString());
+});
+
+
 document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
-    e.preventDefault();
+   // e.preventDefault();
     
     const button = document.getElementById('loginButton');
     button.classList.add('loading');
@@ -12,9 +29,9 @@ document.getElementById('adminLoginForm').addEventListener('submit', function(e)
     }, 1500);
 });
 
-// Enter 키 처리
+// Enter 키 처리: 버튼 대신 form 제출로
 document.addEventListener('keypress', function(e) {
     if (e.key === 'Enter') {
-        document.getElementById('adminLoginForm').dispatchEvent(new Event('submit'));
+        document.getElementById('adminLoginForm').submit(); // form 직접 submit
     }
 });

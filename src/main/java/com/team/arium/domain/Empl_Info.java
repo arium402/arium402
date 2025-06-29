@@ -61,4 +61,5 @@ public class Empl_Info {
     @UpdateTimestamp
     @Column(name = "upd_dt", insertable = false)
     private String updDt;
+    
 }

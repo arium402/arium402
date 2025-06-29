@@ -327,3 +327,22 @@ setTimeout(function() {
         console.log('활성화된 소메뉴:', menu.textContent.trim());
     });
 }, 1000);
+
+
+// 로그아웃 확인 후 진행
+function confirmLogout() {
+    const confirmed = confirm("로그아웃 하시겠습니까?");
+    if (confirmed) {
+        const form = document.getElementById("logoutForm");
+        if (form) form.submit();
+    }
+}
+
+// 로그아웃 완료 메시지
+document.addEventListener('DOMContentLoaded', function () {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('logout') !== null) {
+        alert('로그아웃 되었습니다.');
+    }
+});
+

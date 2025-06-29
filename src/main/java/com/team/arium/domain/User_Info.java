@@ -38,4 +38,8 @@ public class User_Info {
     @UpdateTimestamp
     @Column(name = "upd_dt", insertable = false)
     private String updDt;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "empl_no", referencedColumnName = "empl_no", insertable = false, updatable = false)
+    private Empl_Info emplInfo;
 }
