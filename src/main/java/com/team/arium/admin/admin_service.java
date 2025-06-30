@@ -13,5 +13,9 @@ public interface admin_service {
 	//상담사 개인정보 확인 메소드
 	List<admin_counselor_DTO> my_counselor_info(int statcode);
 	
+	//상담사 로그인 확인 메소드 부분
+	List<admin_counselor_DTO> my_counselor_info2(String sno);
+	
+	List<admin_counselor_DTO> conunselorlist_data();
 	//Empl_Info insert_counselor(admin_counselor_DTO admindto);
 }

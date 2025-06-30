@@ -24,27 +24,31 @@
                         <div class="filter-row">
                             <div class="filter-left">
                                 <label class="filter-label">상담분류</label>
-                                <select class="filter-select" id="counselingType">
-                                    <option value="">전체</option>
-                                    <option value="심리">심리</option>
-                                    <option value="위기">위기</option>
-                                    <option value="익명">익명</option>
-                                    <option value="진로/취업">진로/취업</option>
-                                    <option value="학습 컨설팅">학습 컨설팅</option>
-                                </select>
+                             <select class="filter-select" id="counselingType">
+                                <option value="all">전체</option>
+                                <option value="심리 상담">심리</option>
+                                <option value="위기 상황 상담">위기</option>
+                                <option value="익명 상담">익명</option>
+                                <option value="진로 및 취업 관련 상담">진로/취업</option>
+                                <option value="학습 방법 관련 상담">학업컨설팅</option>
+                            </select>
                             </div>
                             
                             <div class="search-area">
+                            
                                 <select class="search-type-select" id="searchType">
                                     <option value="name">이름</option>
                                     <option value="empno">사번</option>
+                                    <!-- 
                                     <option value="phone">전화번호</option>
                                     <option value="email">이메일</option>
+                                     -->
                                 </select>
-                                <input type="text" class="search-input" id="searchInput" placeholder="검색어를 입력하세요">
-                                <button class="search-btn" onclick="searchCounselors()">
-                                    <i class="fas fa-search"></i> 검색
-                                </button>
+                                
+                            <input type="text" class="search-input" placeholder="검색어를 입력하세요">
+                            <button class="search-btn">
+                                <i class="fas fa-search"></i> 검색
+                            </button>
                             </div>
                         </div>
                     </div>
@@ -61,35 +65,14 @@
                                 </tr>
                             </thead>
                             <tbody id="counselorTableBody">
-                                <tr onclick="goToScheduleDetail(1)">
-                                    <td class="col-no">1</td>
-                                    <td class="col-name">김상담</td>
-                                    <td class="col-empno">EMP001</td>
-                                    <td class="col-field">심리상담</td>
-                                </tr>
-                                <tr onclick="goToScheduleDetail(2)">
-                                    <td class="col-no">2</td>
-                                    <td class="col-name">이상담</td>
-                                    <td class="col-empno">EMP002</td>
-                                    <td class="col-field">진로상담</td>
-                                </tr>
-                                <tr onclick="goToScheduleDetail(3)">
-                                    <td class="col-no">3</td>
-                                    <td class="col-name">박상담</td>
-                                    <td class="col-empno">EMP003</td>
-                                    <td class="col-field">학습컨설팅</td>
-                                </tr>
-                                <tr onclick="goToScheduleDetail(4)">
-                                    <td class="col-no">4</td>
-                                    <td class="col-name">최상담</td>
-                                    <td class="col-empno">EMP004</td>
-                                    <td class="col-field">위기상담</td>
-                                </tr>
-                                <tr onclick="goToScheduleDetail(5)">
-                                    <td class="col-no">5</td>
-                                    <td class="col-name">정상담</td>
-                                    <td class="col-empno">EMP005</td>
-                                    <td class="col-field">익명상담</td>
+                            <tr th:if="${cslorTotal  == 0}">
+									<td colspan="8" class="dontClick">등록된 상담원이 없습니다.</td>
+								</tr>
+                                <tr th:if="${cslorTotal  != 0}" th:each="cslor_list, idx : ${cslorList}" th:onclick="goToScheduleDetail([[${cslor_list.emplId}]])">
+                                    <td>[[${bno - idx.index}]]</td>
+                                    <td>[[${cslor_list.emplName}]]</td>
+                                    <td>[[${cslor_list.emplNo}]]</td>
+                                    <td>[[${cslor_list.cnslCdDesc}]]</td>
                                 </tr>
                             </tbody>
                         </table>

@@ -1,6 +1,7 @@
 // 현재 년도와 월 변수
-   let currentYear = 2024;
-   let currentMonth = 6;
+const today = new Date();
+let currentYear = today.getFullYear(); 
+let currentMonth = today.getMonth() + 1;
 
    // 월 이름 배열
    const monthNames = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'];
@@ -8,44 +9,9 @@
    // 상담사 데이터 - 상담 시간 옵션 추가
    const counselorData = {
        1: {
-           name: '김상담',
-           empNo: 'EMP001',
-           field: '심리상담',
            workTime: '09:00 ~ 18:00',
            workDays: '월, 화, 수, 목, 금',
            consultationTime: '오전 / 오후'
-       },
-       2: {
-           name: '이상담',
-           empNo: 'EMP002',
-           field: '진로상담',
-           workTime: '10:00 ~ 19:00',
-           workDays: '월, 화, 목, 금',
-           consultationTime: '09:00 ~ 13:00 / 14:00 ~ 18:00'
-       },
-       3: {
-           name: '박상담',
-           empNo: 'EMP003',
-           field: '학습컨설팅',
-           workTime: '09:30 ~ 17:30',
-           workDays: '화, 수, 목, 금',
-           consultationTime: '전체'
-       },
-       4: {
-           name: '최상담',
-           empNo: 'EMP004',
-           field: '심리상담',
-           workTime: '13:00 ~ 22:00',
-           workDays: '월, 수, 목, 금, 토',
-           consultationTime: '오후'
-       },
-       5: {
-           name: '정상담',
-           empNo: 'EMP005',
-           field: '진로상담',
-           workTime: '08:00 ~ 17:00',
-           workDays: '월, 화, 수, 목, 금',
-           consultationTime: '오전'
        }
    };
 
@@ -173,9 +139,6 @@
        // 상담사 정보 로드
        const counselor = counselorData[counselorId] || counselorData['1'];
        
-       document.getElementById('counselorName').textContent = counselor.name;
-       document.getElementById('counselorEmpNo').textContent = counselor.empNo;
-       document.getElementById('counselorField').textContent = counselor.field;
        document.getElementById('workTime').textContent = counselor.workTime;
        document.getElementById('workDays').textContent = counselor.workDays;
        document.getElementById('consultationTime').textContent = counselor.consultationTime;

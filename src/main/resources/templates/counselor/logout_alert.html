@@ -1,0 +1,10 @@
+<meta charset="UTF-8">
+<script th:inline="javascript">
+var message = /*[[${message}]]*/ '기본 메시지';
+var redirectUrl = /*[[${redirectUrl}]]*/ '/';
+window.onload = function() {
+    alert(message);
+    location.href = redirectUrl;
+};
+/*]]>*/
+</script> 

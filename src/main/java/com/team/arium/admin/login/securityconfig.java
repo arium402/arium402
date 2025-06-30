@@ -1,48 +1,104 @@
-package com.team.arium.admin.login;
+package com.team.arium.admin.login; // 패키지명은 프로젝트에 맞게 변경하세요
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-/*WEB Security 활성화 및 환경설정을 하기 위한 어노테이션*/
+import com.team.arium.student.login.loginck;
+import com.team.arium.student.login.logins;
+
 @Configuration
 @EnableWebSecurity
 public class securityconfig {
 
-   //FilterChain: 인가(사용자 필터), Spring Security의 필터 역할로 해당 환경조건 및 접속 URL에 대한 권한을 설정
-   @Bean
-   public SecurityFilterChain filterch(HttpSecurity http) throws Exception{
-	   http.csrf((auth)->auth.disable()); //CSRF 보호 기능 비활성화
-	   
-	   //ajax로 인하여 보안을 풀어놓은 상황
-	   /*
-	    * authorizeHttpRequests: URL 보안 인증 및 인가를 구현
-	    * requestMatchers: 컨트롤에 사용되는 요청 타입에 따라 페이지 지정, 권한 레벨에 맞춰 접근 설정 가능
-	    * 
-	    * 접근권한
-	    * permitAll(): 모든 사용자가 로그인 없이 접근 가능
-	    * hasRole(null): 관리자 권한 또는 일반 권한 등, 각 파트에 맞게 접근 가능
-	    * denyAll(): 모든 사용자에게 접근 금지
-	    * authenticated(): 로그인한 사용자만 접근 가능. 관리자/일반 사용자는 가능, guest 제외
-	    * hasAnyRole(null): 여러 권한을 한번에 처리할 때 사용*/
-	   http.authorizeHttpRequests((auth)->auth
-				.requestMatchers("/**").permitAll()
-				.requestMatchers("/login/admin").hasRole("ADMIN") //ADMIN권한 가진 사용자만 접근 가능
-				.anyRequest().authenticated() //그 외 요청은 인증된 사용자만 허용
-		);
-			   
-	   return http.build(); //보안관련 설정값을 build로 생성하여 적용
-	  
-   }
-   
-   //spring security hash 암호화 기술
-   //BCryptPasswordEncoder: spring security에서 제공된 암호화 모듈로 비밀번호를 암호화 함
-   @Bean
-   public BCryptPasswordEncoder bcrypass() {
-      return new BCryptPasswordEncoder();
-   }
-   
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    @Order(1) // 이 필터 체인이 먼저 적용됩니다.
+    public SecurityFilterChain adminSecurityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .securityMatcher(new AntPathRequestMatcher("/admin/**")) // 이 필터 체인이 /admin/** 경로에만 적용되도록 설정
+            .csrf(csrf -> csrf.disable()) // 예시로 CSRF 비활성화, 실제 환경에서는 보안 고려
+            .authorizeHttpRequests(authorize -> authorize
+                .requestMatchers("/**").permitAll() // 관리자 로그인 페이지는 모두 접근 가능
+                .requestMatchers("/admin/**").hasRole("ADMIN") // /admin 경로 아래는 ADMIN 역할만 접근 가능
+                .anyRequest().authenticated() // 그 외 /admin 경로에 대한 모든 요청은 인증 필요
+            )
+            .formLogin(form -> form
+                .loginPage("/admin/login") // 관리자 로그인 페이지 경로 설정
+                .loginProcessingUrl("/admin/login") // 로그인 폼 제출 URL
+                .defaultSuccessUrl("/admin/admin_dashboard", true) // 로그인 성공 시 이동할 URL
+                .failureUrl("/admin/login?error=true") // 로그인 실패 시 이동할 URL
+                .usernameParameter("username") // 사용자명 파라미터명 (기본값 username)
+                .passwordParameter("password") // 비밀번호 파라미터명 (기본값 password)
+                .permitAll()
+            )
+            .logout(logout -> logout
+                .logoutUrl("/admin/logout") // 로그아웃 처리 URL
+                .logoutSuccessUrl("/admin/login?logout=true") // 로그아웃 성공 시 이동할 URL
+                .permitAll()
+            );
+        
+
+        return http.build();
+    }
+    
+    @Bean
+	public loginck idchecks(){
+	    return new loginck();
+	}
+    
+	@Bean
+	public logins sessionlogin() {
+		return new logins();
+	}
+	
+    @Bean
+    @Order(2) // 두 번째로 적용됩니다.
+    public SecurityFilterChain userSecurityFilterChain(HttpSecurity http) throws Exception {
+    	
+		final AuthenticationFailureHandler loginck;
+    	http
+            .csrf(csrf -> csrf.disable()) // 예시로 CSRF 비활성화
+            .authorizeHttpRequests(authorize -> authorize
+            	.requestMatchers("/**").permitAll()
+                .requestMatchers("/", "/user/login", "/css/**", "/js/**").permitAll() // 메인, 사용자 로그인, 정적 리소스는 모두 접근 가능
+                .requestMatchers("/counselor/**").hasRole("COUNSELOR") // /admin 경로 아래는 ADMIN 역할만 접근 가능
+                .anyRequest().authenticated() // 그 외 모든 요청은 인증 필요
+            )
+            .formLogin(form -> form
+                .loginPage("/student/login") // 사용자 로그인 페이지 경로 설정
+                .loginProcessingUrl("/student/loginok.do")
+                /*
+                .defaultSuccessUrl("/user/dashboard", true) // 로그인 성공 시 이동할 URL
+                .failureUrl("/user/login?error=true") // 로그인 실패 시 이동할 URL
+                */
+                .usernameParameter("username")
+                .passwordParameter("password")
+				.successHandler(sessionlogin())
+				.defaultSuccessUrl("/counselor/dashboard", true) // 로그인 성공 시 이동할 URL
+				.failureHandler(idchecks()).permitAll()
+                .permitAll()
+            )
+            .logout(logout -> logout
+                .logoutUrl("/student/logout") // 로그아웃 처리 URL
+                .logoutSuccessUrl("/student/logout?logout=true") // 로그아웃 성공 시 이동할 URL
+                .permitAll()
+            );
+    	http.sessionManagement((auth)->auth.maximumSessions(1)
+				.maxSessionsPreventsLogin(true));
+		
+		http.sessionManagement((auth) -> auth
+                .sessionFixation().changeSessionId());
+        return http.build();
+    }
 }

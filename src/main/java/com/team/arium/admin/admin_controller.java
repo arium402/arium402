@@ -27,6 +27,7 @@ import jakarta.servlet.http.HttpServletResponse;
 @Controller
 @RequestMapping("/admin")
 public class admin_controller {
+	
 	PrintWriter pw = null;
 	
 	@Autowired
@@ -144,11 +145,28 @@ public class admin_controller {
 		
 	//상담사관리 > 상담사 일정관리 
 	@GetMapping("/admin_counselor_schedule")
-	public String admin_counselor_schedule(HttpServletResponse res, Model m){
-
+	public String admin_counselor_schedule(Model m,
+			@RequestParam(value = "empl_stat_cd", required = false, defaultValue = "") String empl_stat_cd,
+			@RequestParam(value="pageno", defaultValue="1", required=false) Integer pageno){
+		List<admin_counselor_DTO> dtoList = null;
+		dtoList = this.admin_svc.conunselorlist_data();	
+		System.out.println("allCounselorList : " + dtoList);
+		
+		Integer counselorTotal = dtoList.size();
+		
+		//페이징 관련 
+		Map<String, Integer> pageinfo = this.m_pg.page_ea(pageno, counselorTotal);
+		int bno = this.m_pg.serial_no(pageno, counselorTotal); 
+				
+		m.addAttribute("cslorList", dtoList);
+		m.addAttribute("cslorTotal", counselorTotal);
+		
+		m.addAttribute("pageinfo", pageinfo);
+		m.addAttribute("bno", bno);
+		m.addAttribute("empl_stat_cd",empl_stat_cd);
+		
 		return "/admin/admin_counselor_schedule";
 	}
-	
 	
 	//상담사 관리 > 상담사별 통계 
 	@GetMapping("/admin_counselor_statistics")
@@ -199,9 +217,22 @@ public class admin_controller {
 	
 	//상담관리 > 상담 신청내역 
 	@GetMapping("/admin_counselor_scheduleDetail")
-	public String admin_counselor_scheduleDetail(HttpServletResponse res)  {
-		
-		
+	public String admin_counselor_scheduleDetail(Model m, @RequestParam(name="id", required = false, defaultValue = "")String id)  {
+		String msg = "error";
+		try {
+		Integer no = Integer.parseInt(id);
+		List<admin_counselor_DTO> dtoList = null;
+		dtoList = this.admin_svc.my_counselor_info(no);
+			if(dtoList.size() <= 0) {
+				m.addAttribute("msg", msg);
+			}
+			else {
+				m.addAttribute("msg", "ok");
+				m.addAttribute("cslorList", dtoList);
+			}
+		}catch (Exception e) {
+			m.addAttribute("msg", msg);
+		}
 		return "/admin/admin_counselor_scheduleDetail";
 	}
 	

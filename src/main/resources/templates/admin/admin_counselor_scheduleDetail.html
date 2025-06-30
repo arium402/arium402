@@ -1,9 +1,16 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="https://www.thymeleaf.org/">
+
      <head th:replace="~{/admin_config.html :: admin_config}"></head>
     <title>상담사 일정 상세 - 관리자 페이지</title>
     <link rel="stylesheet" th:href="@{/css/admin/admin_counselor_scheduleDetail.css?v=1}">
-
+    <script th:inline="javascript">
+	var msg = /*[[${msg}]]*/ 'error';
+	if(msg == "error"){
+		alert("해당 접근이 잘못 되었습니다.");
+		history.go(-1);
+	}
+	</script> 
     <body class="sb-nav-fixed">
         <!-- 상단 네비게이션 바 -->
         <nav th:replace="~{/admin_top.html :: admin_top}"> </nav>
@@ -11,7 +18,7 @@
         <div id="layoutSidenav">
             <!-- 사이드바 -->
             <div th:replace="~{/admin_sidebar.html :: admin_sidebar}"> </div>
-            
+           
             <!-- 메인 컨텐츠 -->
             <div id="layoutSidenav_content">
                 <div class="main-content">
@@ -21,15 +28,15 @@
                         <div class="info-grid">
                             <div class="info-item">
                                 <div class="info-label">이름</div>
-                                <div class="info-value" id="counselorName">김상담</div>
+                                <div class="info-value" id="counselorName">[[${cslorList.get(0).emplName}]]</div>
                             </div>
                             <div class="info-item">
                                 <div class="info-label">사번</div>
-                                <div class="info-value" id="counselorEmpNo">EMP001</div>
+                                <div class="info-value" id="counselorEmpNo">[[${cslorList.get(0).emplNo}]]</div>
                             </div>
                             <div class="info-item">
                                 <div class="info-label">분야</div>
-                                <div class="info-value" id="counselorField">심리상담</div>
+                                <div class="info-value" id="counselorField">[[${cslorList.get(0).cnslCdDesc}]]</div>
                             </div>
                         </div>
                     </div>

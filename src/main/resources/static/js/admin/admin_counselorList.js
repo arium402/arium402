@@ -162,7 +162,7 @@ document.querySelector('.register-btn').addEventListener('click', function() {
 
 // 상세 페이지로 이동하는 함수
 function goToDetail(id) {
-    window.open('admin_counselorList_detail?id=' + id, '_blank');
+    location.href='./admin_counselorList_detail?id=' + id;
 }
 
 // 엔터키로 검색

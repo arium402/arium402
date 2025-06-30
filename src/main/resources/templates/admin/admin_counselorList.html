@@ -77,7 +77,7 @@
                             </thead>
                             <tbody>
                             	<tr th:if="${cslorTotal  == 0}">
-									<td colspan="8" calss="dontClick">등록된 상담원이 없습니다.</td>
+									<td colspan="8" class="dontClick">등록된 상담원이 없습니다.</td>
 								</tr>
                                 <tr th:if="${cslorTotal  != 0}" th:each="cslor_list, idx : ${cslorList}" th:onclick="goToDetail([[${cslor_list.emplId}]])">
                                     <td>[[${bno - idx.index}]]</td>

@@ -1,42 +1,88 @@
-// 샘플 데이터
-const counselorData = [
-    { id: 1, name: '김상담', empNo: 'EMP001', field: '심리상담', phone: '010-1234-5678', email: 'kim@example.com' },
-    { id: 2, name: '이상담', empNo: 'EMP002', field: '진로상담', phone: '010-2345-6789', email: 'lee@example.com' },
-    { id: 3, name: '박상담', empNo: 'EMP003', field: '학습컨설팅', phone: '010-3456-7890', email: 'park@example.com' },
-    { id: 4, name: '최상담', empNo: 'EMP004', field: '위기상담', phone: '010-4567-8901', email: 'choi@example.com' },
-    { id: 5, name: '정상담', empNo: 'EMP005', field: '익명상담', phone: '010-5678-9012', email: 'jung@example.com' },
-    { id: 6, name: '강상담', empNo: 'EMP006', field: '심리상담', phone: '010-6789-0123', email: 'kang@example.com' },
-    { id: 7, name: '윤상담', empNo: 'EMP007', field: '진로상담', phone: '010-7890-1234', email: 'yoon@example.com' },
-    { id: 8, name: '임상담', empNo: 'EMP008', field: '학습컨설팅', phone: '010-8901-2345', email: 'lim@example.com' }
-];
-
 let currentPage = 1;
 let itemsPerPage = 5;
-let filteredData = [...counselorData];
 
-// 테이블 렌더링
-function renderTable() {
-    const tableBody = document.getElementById('counselorTableBody');
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    const pageData = filteredData.slice(startIndex, endIndex);
 
-    tableBody.innerHTML = '';
+// 상담분류 필터 기능
+document.getElementById('counselingType').addEventListener('change', function() {
+    const selectedCategory = this.value;
+    filterCounselorsByCategory(selectedCategory);
+});
+
+// 분야별 필터링 함수
+function filterCounselorsByCategory(category) {
+    const rows = document.querySelectorAll('.data-table tbody tr');
     
-    pageData.forEach((counselor, index) => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td class="col-no">${startIndex + index + 1}</td>
-            <td class="col-name">${counselor.name}</td>
-            <td class="col-empno">${counselor.empNo}</td>
-            <td class="col-field">${counselor.field}</td>
-        `;
-        row.onclick = function() { goToScheduleDetail(counselor.id); };
-        tableBody.appendChild(row);
+    rows.forEach(row => {
+        const fieldCell = row.cells[3];
+        const fieldText = fieldCell.textContent.trim();
+        
+        if (category === 'all') {
+            row.style.display = '';
+        } else {
+            let shouldShow = false;
+            switch(category) {
+                case '심리 상담':
+                    shouldShow = fieldText === '심리 상담';
+                    break;
+                case '위기 상황 상담':
+                    shouldShow = fieldText === '위기 상황 상담';
+                    break;
+                case '익명 상담':
+                    shouldShow = fieldText === '익명 상담';
+                    break;
+                case '진로 및 취업 관련 상담':
+                    shouldShow = fieldText === '진로 및 취업 관련 상담';
+                    break;
+                case '학습 방법 관련 상담':
+                    shouldShow = fieldText === '학습 방법 관련 상담';
+                    break;
+            }
+            
+            row.style.display = shouldShow ? '' : 'none';
+        }
     });
-
-    updatePagination();
+    
+    console.log('상담분류 필터:', category);
 }
+
+
+// 검색 기능
+document.querySelector('.search-btn').addEventListener('click', function() {
+    const searchType = document.querySelector('.search-type-select').value;
+    const searchText = document.querySelector('.search-input').value.trim();
+    
+    if (searchText === '') {
+        // 검색어가 없으면 모든 행 표시
+        document.querySelectorAll('.counselor-table tbody tr').forEach(row => {
+            row.style.display = '';
+        });
+        return;
+    }
+    
+    console.log('검색 유형:', searchType);
+    console.log('검색어:', searchText);
+    
+    searchCounselors(searchType, searchText);
+});
+
+// 검색 함수
+function searchCounselors(searchType, searchText) {
+    const rows = document.querySelectorAll('.data-table tbody tr');
+    
+    rows.forEach(row => {
+        let cellIndex = 0;
+        switch(searchType) {
+            case 'name': cellIndex = 1; break;
+            case 'empno': cellIndex = 2; break;
+        }
+        
+        const cellText = row.cells[cellIndex].textContent.trim().toLowerCase();
+        const searchLower = searchText.toLowerCase();
+        
+        row.style.display = cellText.includes(searchLower) ? '' : 'none';
+    });
+}
+
 
 // 페이지네이션 업데이트
 function updatePagination() {
@@ -84,59 +130,9 @@ function goToPage(page) {
 
 // 일정 상세 페이지로 이동
 function goToScheduleDetail(id) {
-    window.open('counselor_schedule_detail.html?id=' + id, '_blank');
+    location.href = './admin_counselor_scheduleDetail?id=' + id;
 }
 
-// 검색 기능
-function searchCounselors() {
-    const searchType = document.getElementById('searchType').value;
-    const searchValue = document.getElementById('searchInput').value.trim().toLowerCase();
-    const counselingType = document.getElementById('counselingType').value;
-
-    filteredData = counselorData.filter(counselor => {
-        // 상담분류 필터
-        let typeMatch = true;
-        if (counselingType) {
-            typeMatch = counselor.field.includes(counselingType);
-        }
-
-        // 검색어 필터
-        let searchMatch = true;
-        if (searchValue) {
-            switch (searchType) {
-                case 'name':
-                    searchMatch = counselor.name.toLowerCase().includes(searchValue);
-                    break;
-                case 'empno':
-                    searchMatch = counselor.empNo.toLowerCase().includes(searchValue);
-                    break;
-                case 'phone':
-                    searchMatch = counselor.phone.includes(searchValue);
-                    break;
-                case 'email':
-                    searchMatch = counselor.email.toLowerCase().includes(searchValue);
-                    break;
-            }
-        }
-
-        return typeMatch && searchMatch;
-    });
-
-    currentPage = 1;
-    renderTable();
-}
 
 // 상담분류 필터 변경 시 자동 검색
 document.getElementById('counselingType').addEventListener('change', searchCounselors);
-
-// 검색 입력 시 엔터키로 검색
-document.getElementById('searchInput').addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
-        searchCounselors();
-    }
-});
-
-// 초기 테이블 렌더링
-document.addEventListener('DOMContentLoaded', function() {
-    renderTable();
-});
