@@ -127,7 +127,7 @@ public class AdminNoncurrProgramService {
             
             // 4. 핵심역량 매핑 저장
             if (dto.getCompetencyIds() != null && !dto.getCompetencyIds().isEmpty()) {
-                saveCompetencyMappings(savedProgram.getPrgId(), dto.getCompetencyIds());
+            	saveCompetencyMappings(savedProgram.getPrgId(), dto.getCompetencyIds(), dto.getCompetencyScores());
             }
             
             log.info("비교과 프로그램 등록 완료: ID={}, 코드={}", savedProgram.getPrgId(), savedProgram.getPrgCd());
@@ -325,8 +325,29 @@ public class AdminNoncurrProgramService {
         return status.equals(program.getPrgStatNm());
     }
     
+    
     /**
-     * 프로그램 상세 조회
+     * ✅ 핵심역량 매핑 정보를 점수와 함께 조회하는 새로운 메서드
+     */
+    public List<Ncs_CclRel> getCompetencyMappingsWithScores(Integer prgId) {
+        log.info("핵심역량 점수 정보 조회: 프로그램ID={}", prgId);
+        
+        try {
+            // 핵심역량 매핑 정보 조회 (점수 포함)
+            List<Ncs_CclRel> competencyMappings = ncsCclRelRepository.findByPrgId(prgId);
+            
+            log.info("핵심역량 점수 정보 조회 완료: 프로그램ID={}, 매핑 개수={}", prgId, competencyMappings.size());
+            
+            return competencyMappings;
+            
+        } catch (Exception e) {
+            log.error("핵심역량 점수 정보 조회 실패: 프로그램ID={}, 오류={}", prgId, e.getMessage(), e);
+            return Collections.emptyList();
+        }
+    }
+    
+    /**
+     * ✅ 프로그램 상세 조회 메서드 - 수정 페이지용 (점수 정보 포함)
      */
     public NoncurrProgramDTO getProgramDetail(Integer prgId) {
         Ncs_PrgInfo program = ncsPrgInfoRepository.findById(prgId)
@@ -334,18 +355,39 @@ public class AdminNoncurrProgramService {
         
         NoncurrProgramDTO dto = convertToDto(program);
         
-        // 핵심역량 정보 추가 (복합키 방식)
+        // ✅ 핵심역량 정보 추가 (기존 - ID만)
         List<Ncs_CclRel> competencyMappings = ncsCclRelRepository.findByPrgId(prgId);
         List<Integer> competencyIds = competencyMappings.stream()
             .map(Ncs_CclRel::getCclId)
             .collect(Collectors.toList());
         dto.setCompetencyIds(competencyIds);
         
+        // ✅ 핵심역량 점수 정보 추가 (수정 페이지에서 필요)
+        Map<Integer, Integer> competencyScores = competencyMappings.stream()
+            .collect(Collectors.toMap(
+                Ncs_CclRel::getCclId,
+                mapping -> mapping.getCclScore() != null ? mapping.getCclScore() : 100,
+                (existing, replacement) -> existing  // 중복 키 처리
+            ));
+        dto.setCompetencyScores(competencyScores);
+        
+        // ✅ 점수 정보를 문자열로도 설정 (수정 페이지 JavaScript에서 사용)
+        if (!competencyScores.isEmpty()) {
+            String scoresStr = competencyScores.entrySet().stream()
+                .map(entry -> entry.getKey() + ":" + entry.getValue())
+                .collect(Collectors.joining(","));
+            dto.setCompetencyScoresStr(scoresStr);
+        }
+        
+        log.info("프로그램 상세 조회 완료: ID={}, 핵심역량 개수={}, 점수 정보={}", 
+                prgId, competencyIds.size(), competencyScores.size());
+        
         return dto;
     }
-
+    
+    
     /**
-     * 프로그램 수정
+     * 프로그램 수정 - admin_module.todays_module() + 한국 시간 조합
      */
     @Transactional
     public void updateProgram(Integer prgId, NoncurrProgramDTO dto) {
@@ -361,7 +403,13 @@ public class AdminNoncurrProgramService {
                 program.setComFile(newFile);
             }
             
-            // 2. 프로그램 정보 업데이트 (updDt는 @UpdateTimestamp로 자동 설정)
+            // ✅ 2. admin_module의 todays_module() + 한국 시간 조합
+            String koreanDate = adminModule.todays_module(); // "2025-06-30" 형태
+            String koreanTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"))
+                .format(DateTimeFormatter.ofPattern("HH:mm:ss")); // "14:30:25" 형태
+            String currentKoreanDateTime = koreanDate + " " + koreanTime; // "2025-06-30 14:30:25" 형태
+            
+            // 3. 프로그램 정보 업데이트
             program.setPrgNm(dto.getPrgNm());
             program.setPrgDesc(dto.getPrgDesc());
             program.setRecruitStDt(dto.getRecruitStDt());
@@ -373,17 +421,22 @@ public class AdminNoncurrProgramService {
             program.setPrgTel(dto.getPrgTel());
             program.setMlgDefScore(dto.getMlgDefScore());
             program.setSurveyDt(dto.getSurveyDt());
-            // ✅ updDt 제거 - @UpdateTimestamp가 자동 처리, regDt는 updatable=false라 수정 안됨
+            
+            // ✅ admin_module 날짜 + 한국 시간으로 설정 (updDt)
+            program.setUpdDt(currentKoreanDateTime);
+            // regDt는 수정하지 않음 (최초 등록일 유지)
+            
+            log.info("프로그램 수정 시간 설정: ID={}, 수정일시={}", prgId, currentKoreanDateTime);
             
             ncsPrgInfoRepository.save(program);
             
-            // 3. 기존 핵심역량 매핑 삭제 후 새로 저장
+            // 4. 기존 핵심역량 매핑 삭제 후 새로 저장
             ncsCclRelRepository.deleteByPrgId(prgId);
             if (dto.getCompetencyIds() != null && !dto.getCompetencyIds().isEmpty()) {
-                saveCompetencyMappings(prgId, dto.getCompetencyIds());
+                saveCompetencyMappings(prgId, dto.getCompetencyIds(), dto.getCompetencyScores());
             }
             
-            log.info("비교과 프로그램 수정 완료: ID={}", prgId);
+            log.info("비교과 프로그램 수정 완료: ID={}, 수정시간={}", prgId, currentKoreanDateTime);
             
         } catch (Exception e) {
             log.error("비교과 프로그램 수정 실패: ID={}, 오류={}", prgId, e.getMessage(), e);
@@ -666,9 +719,9 @@ public class AdminNoncurrProgramService {
     }
 
     /**
-     * 핵심역량 매핑 저장 (복합키 방식)
+     * 핵심역량 매핑 저장 (복합키 방식) - 점수 정보 포함
      */
-    private void saveCompetencyMappings(Integer prgId, List<Integer> competencyIds) {
+    private void saveCompetencyMappings(Integer prgId, List<Integer> competencyIds, Map<Integer, Integer> competencyScores) {
         // 프로그램 엔티티 조회
         Ncs_PrgInfo program = ncsPrgInfoRepository.findById(prgId)
             .orElseThrow(() -> new RuntimeException("프로그램을 찾을 수 없습니다."));
@@ -678,15 +731,28 @@ public class AdminNoncurrProgramService {
         
         // 매핑 엔티티 생성 및 저장
         for (Core_CptInfo competency : competencies) {
+            Integer competencyId = competency.getCclId();
+            
+            // ✅ 수정: 설정된 점수 사용, 없으면 기본값 100
+            Integer score = 100; // 기본값
+            if (competencyScores != null && competencyScores.containsKey(competencyId)) {
+                Integer userScore = competencyScores.get(competencyId);
+                if (userScore != null && userScore >= 15 && userScore <= 100) {
+                    score = userScore;
+                }
+            }
+            
             Ncs_CclRel mapping = Ncs_CclRel.builder()
                 .prgId(prgId)                    // 복합키 필드
                 .cclId(competency.getCclId())    // 복합키 필드
                 .ncsPrgInfo(program)             // 연관관계
                 .coreCptInfo(competency)         // 연관관계
-                .cclScore(100)                   // 기본 점수
+                .cclScore(score)                 // ✅ 수정: 설정된 점수 사용
                 .build();
             
             ncsCclRelRepository.save(mapping);
+            
+            log.info("핵심역량 매핑 저장: 프로그램ID={}, 역량ID={}, 점수={}", prgId, competencyId, score);
         }
         
         log.info("핵심역량 매핑 저장 완료: 프로그램ID={}, 역량 개수={}", prgId, competencies.size());

@@ -1,365 +1,398 @@
-// 초기 데이터 저장 변수
-let originalData = {};
+// 비교과 수정 페이지 JavaScript - 등록 페이지 기반
 
-// 페이지 로드 시 초기화
-document.addEventListener('DOMContentLoaded', function() {
-    // 원본 데이터 저장
-    saveOriginalData();
-    
-    // 이벤트 리스너 등록
-    initializeEventListeners();
-});
-
-// 원본 데이터 저장
-function saveOriginalData() {
-    originalData = {
-        programName: document.getElementById('programName').value,
-        recruitStart: document.getElementById('recruitStart').value,
-        recruitEnd: document.getElementById('recruitEnd').value,
-        capacity: document.getElementById('capacity').value,
-        department: document.getElementById('department').value,
-        operationStart: document.getElementById('operationStart').value,
-        operationEnd: document.getElementById('operationEnd').value,
-        contact: document.getElementById('contact').value,
-        surveyDeadline: document.getElementById('surveyDeadline').value,
-        mileagePoints: document.getElementById('mileagePoints').value,
-        description: document.getElementById('description').value,
-        competencies: getSelectedCompetencies(),
-        fileName: getAttachedFileName()
-    };
-}
-
-// 이벤트 리스너 초기화
-function initializeEventListeners() {
-    // 사이드바 토글
-    const sidebarToggle = document.getElementById('sidebarToggle');
-    if (sidebarToggle) {
-        sidebarToggle.addEventListener('click', function() {
-            const sidebar = document.getElementById('layoutSidenav_nav');
-            const content = document.getElementById('layoutSidenav_content');
-            
-            if (window.innerWidth <= 768) {
-                sidebar.classList.toggle('show');
-            } else {
-                sidebar.classList.toggle('collapsed');
-                content.classList.toggle('expanded');
-            }
-        });
-    }
-
-    // 윈도우 리사이즈 처리
-    window.addEventListener('resize', function() {
-        const sidebar = document.getElementById('layoutSidenav_nav');
-        const content = document.getElementById('layoutSidenav_content');
-        
-        if (window.innerWidth > 768) {
-            sidebar.classList.remove('show');
-        } else {
-            sidebar.classList.remove('collapsed');
-            content.classList.remove('expanded');
-        }
-    });
-
-    // 폼 제출 처리
-    const programForm = document.getElementById('programForm');
-    if (programForm) {
-        programForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            handleFormSubmit();
-        });
-    }
-
-    // 모달 외부 클릭 시 닫기
-    window.onclick = function(event) {
-        const modal = document.getElementById('previewModal');
-        if (event.target === modal) {
-            modal.style.display = 'none';
-        }
-    }
-}
-
-// 선택된 핵심역량 가져오기
-function getSelectedCompetencies() {
-    const competencies = [];
-    document.querySelectorAll('input[name="competencies"]:checked').forEach(checkbox => {
-        competencies.push(checkbox.value);
-    });
-    return competencies;
-}
-
-// 첨부파일명 가져오기
-function getAttachedFileName() {
-    const filePreview = document.getElementById('filePreview');
-    if (filePreview && filePreview.textContent) {
-        const match = filePreview.textContent.match(/현재 파일: (.+)/);
-        return match ? match[1] : '';
-    }
-    return '';
-}
-
-// 대표 사진 선택 처리
+// 대표 사진 선택 처리 (등록 페이지와 동일)
 function handleImageSelect(input) {
     const file = input.files[0];
     const uploadArea = input.parentElement;
+    const uploadContent = uploadArea.querySelector('.image-upload-content');
     
     if (file) {
-        // 파일 크기 검증 (5MB)
-        if (file.size > 5 * 1024 * 1024) {
-            alert('파일 크기는 5MB 이하여야 합니다.');
-            input.value = '';
+        // ✅ 파일 크기 검증 추가
+        console.log('선택된 파일:', file.name, '크기:', file.size, '타입:', file.type);
+        
+        if (file.size === 0) {
+            alert('선택된 파일이 비어있습니다. 다른 파일을 선택해주세요.');
+            input.value = ''; // 파일 입력 초기화
             return;
         }
-
-        // 파일 형식 검증
-        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
-        if (!allowedTypes.includes(file.type)) {
-            alert('JPG, PNG 파일만 업로드 가능합니다.');
-            input.value = '';
+        
+        if (file.size > 5 * 1024 * 1024) { // 5MB
+            alert('파일 크기가 5MB를 초과합니다.');
+            input.value = ''; // 파일 입력 초기화
             return;
         }
-
+        
+        // 기존 미리보기 이미지가 있다면 제거
+        const existingPreview = uploadArea.querySelector('.image-preview');
+        if (existingPreview) {
+            existingPreview.remove();
+        }
+        
         const reader = new FileReader();
         reader.onload = function(e) {
-            uploadArea.innerHTML = `
-                <input type="file" id="programImageInput" accept="image/*" onchange="handleImageSelect(this)">
-                <img src="${e.target.result}" alt="대표 사진" class="image-preview">
-            `;
+            // 새로운 이미지 요소 생성
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            img.alt = '대표 사진';
+            img.className = 'image-preview';
+            img.style.cssText = 'width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;';
+            
+            // 업로드 콘텐츠 숨기고 이미지 표시
+            uploadContent.style.display = 'none';
+            uploadArea.appendChild(img);
         };
         reader.readAsDataURL(file);
     } else {
-        // 원래 이미지로 복원
-        resetImageUploadArea(uploadArea);
+        // 파일이 없으면 미리보기 제거하고 원래 상태로
+        const existingPreview = uploadArea.querySelector('.image-preview');
+        if (existingPreview) {
+            existingPreview.remove();
+        }
+        uploadContent.style.display = 'flex';
     }
 }
 
-// 이미지 업로드 영역 초기화
-function resetImageUploadArea(uploadArea) {
-    uploadArea.innerHTML = `
-        <input type="file" id="programImageInput" accept="image/*" onchange="handleImageSelect(this)">
-        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23e9ecef'/%3E%3Ctext x='50%25' y='50%25' font-size='18' text-anchor='middle' dy='.3em' fill='%23495057'%3E프로그램 대표 사진%3C/text%3E%3C/svg%3E" alt="프로그램 대표 사진" class="image-preview">
-    `;
-}
-
-// 첨부파일 선택 처리
-function handleFileSelect(input) {
-    const file = input.files[0];
-    const preview = document.getElementById('filePreview');
+// ✅ 전화번호 포맷팅 함수 (등록 페이지와 동일)
+function formatPhoneNumber(input) {
+    // 숫자만 추출
+    let value = input.value.replace(/[^0-9]/g, '');
     
-    if (file) {
-        // 파일 크기 검증 (10MB)
-        if (file.size > 10 * 1024 * 1024) {
-            alert('파일 크기는 10MB 이하여야 합니다.');
-            input.value = '';
-            return;
-        }
-
-        // 파일 형식 검증
-        const allowedExtensions = ['.pdf', '.doc', '.docx', '.hwp', '.jpg', '.jpeg', '.png'];
-        const fileName = file.name.toLowerCase();
-        const isValidFile = allowedExtensions.some(ext => fileName.endsWith(ext));
-        
-        if (!isValidFile) {
-            alert('PDF, DOC, DOCX, HWP, JPG, PNG 파일만 업로드 가능합니다.');
-            input.value = '';
-            return;
-        }
-
-        preview.innerHTML = `<i class="fas fa-check-circle"></i> 선택된 파일: ${file.name}`;
-        preview.style.display = 'block';
-    } else {
-        if (originalData.fileName) {
-            preview.innerHTML = `<i class="fas fa-file-pdf"></i> 현재 파일: ${originalData.fileName}`;
+    // 길이에 따라 다른 포맷 적용
+    if (value.length <= 3) {
+        input.value = value;
+    } else if (value.length <= 7) {
+        // 02-1234, 031-123, 010-123 등
+        if (value.startsWith('02')) {
+            input.value = value.replace(/(\d{2})(\d+)/, '$1-$2');
         } else {
-            preview.style.display = 'none';
+            input.value = value.replace(/(\d{3})(\d+)/, '$1-$2');
+        }
+    } else {
+        // 완전한 전화번호
+        if (value.startsWith('02')) {
+            // 서울: 02-1234-5678 or 02-123-4567
+            if (value.length === 9) {
+                input.value = value.replace(/(\d{2})(\d{3})(\d{4})/, '$1-$2-$3');
+            } else {
+                input.value = value.replace(/(\d{2})(\d{4})(\d{4})/, '$1-$2-$3');
+            }
+        } else if (value.startsWith('01')) {
+            // 휴대폰: 010-1234-5678
+            input.value = value.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+        } else {
+            // 지역번호: 031-123-4567 or 031-1234-5678
+            if (value.length === 10) {
+                input.value = value.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+            } else {
+                input.value = value.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+            }
         }
     }
 }
 
-// 미리보기 표시
+// 체크박스 상태에 따라 점수 선택 보이기/숨기기 (등록 페이지와 동일)
+function toggleScoreSelect(checkbox) {
+    const competencyId = checkbox.value;
+    const scoreWrapper = document.getElementById('score_wrapper_' + competencyId);
+    
+    if (scoreWrapper) {
+        if (checkbox.checked) {
+            scoreWrapper.style.display = 'block';
+        } else {
+            scoreWrapper.style.display = 'none';
+        }
+    }
+    
+    // 체크박스 상태 변경시 점수 정보도 업데이트
+    updateCompetencyScores();
+}
+
+// ✅ 체크박스 값들 수집 (등록 페이지와 동일)
+function updateCompetencyIds() {
+    const checkboxes = document.querySelectorAll('input[name="competencyCheckbox"]:checked');
+    const competencyIds = Array.from(checkboxes).map(cb => cb.value);
+    
+    // 기존 히든 필드에 ID 저장 (하위 호환성)
+    const competencyIdsField = document.getElementById('competencyIdsStr');
+    if (competencyIdsField) {
+        competencyIdsField.value = competencyIds.join(',');
+    }
+    
+    console.log('선택된 핵심역량 ID:', competencyIds);
+}
+
+// ✅ 핵심역량 점수 정보 수집 (등록 페이지와 동일)
+function updateCompetencyScores() {
+    const checkboxes = document.querySelectorAll('input[name="competencyCheckbox"]:checked');
+    const scoresData = [];
+    
+    checkboxes.forEach(checkbox => {
+        const competencyId = checkbox.value;
+        const scoreSelect = document.getElementById('score_' + competencyId);
+        
+        if (scoreSelect && scoreSelect.value && scoreSelect.value !== '') {
+            const score = scoreSelect.value;
+            scoresData.push(competencyId + ':' + score);
+        }
+    });
+    
+    // 히든 필드에 점수 정보 저장 (형식: "1:100,2:95,3:80")
+    const scoresField = document.getElementById('competencyScoresStr');
+    if (scoresField) {
+        scoresField.value = scoresData.join(',');
+    }
+    
+    console.log('핵심역량 점수 정보:', scoresData.join(','));
+}
+
+// 미리보기 표시 (등록 페이지와 동일)
 function showPreview() {
-    const programName = document.getElementById('programName').value || '프로그램명';
-    const recruitStart = document.getElementById('recruitStart').value;
-    const recruitEnd = document.getElementById('recruitEnd').value;
-    const department = document.getElementById('department').value || '-';
-    const contact = document.getElementById('contact').value || '-';
-    const mileagePoints = document.getElementById('mileagePoints').value || '0';
-    const description = document.getElementById('description').value || '프로그램 설명이 없습니다.';
-    const programImageInput = document.getElementById('programImageInput');
+    // ✅ 수정: 모든 ID를 새로운 필드명에 맞게 변경
+    const prgNm = document.getElementById('prgNm').value || '프로그램명';
+    const recruitStDt = document.getElementById('recruitStDt').value;
+    const recruitEndDt = document.getElementById('recruitEndDt').value;
+    const prgDept = document.getElementById('prgDept').value || '-';
+    const prgTel = document.getElementById('prgTel').value || '-';
+    const mlgDefScore = document.getElementById('mlgDefScore').value || '0';
+    const prgDesc = document.getElementById('prgDesc').value || '프로그램 설명이 없습니다.';
+    const imageFileInput = document.getElementById('imageFile');
 
     // 미리보기 데이터 설정
-    document.getElementById('previewTitle').textContent = programName;
+    document.getElementById('previewTitle').textContent = prgNm;
     document.getElementById('previewRecruitPeriod').textContent = 
-        recruitStart && recruitEnd ? `${recruitStart} ~ ${recruitEnd}` : '-';
-    document.getElementById('previewDepartment').textContent = department;
-    document.getElementById('previewContact').textContent = contact;
-    document.getElementById('previewMileage').textContent = `${parseInt(mileagePoints).toLocaleString()} 포인트`;
-    document.getElementById('previewDescription').innerHTML = description.replace(/\n/g, '<br>');
+        recruitStDt && recruitEndDt ? `${recruitStDt} ~ ${recruitEndDt}` : '-';
+    document.getElementById('previewDepartment').textContent = prgDept;
+    document.getElementById('previewContact').textContent = prgTel;
+    document.getElementById('previewMileage').textContent = `${parseInt(mlgDefScore).toLocaleString()} 포인트`;
+    document.getElementById('previewDescription').textContent = prgDesc;
 
     // 대표 사진 미리보기
     const previewImage = document.getElementById('previewImage');
-    if (programImageInput.files && programImageInput.files[0]) {
+    if (imageFileInput.files && imageFileInput.files[0]) {
         const reader = new FileReader();
         reader.onload = function(e) {
             previewImage.innerHTML = `<img src="${e.target.result}" alt="프로그램 대표 사진" style="width: 100%; height: 100%; object-fit: cover;">`;
         };
-        reader.readAsDataURL(programImageInput.files[0]);
+        reader.readAsDataURL(imageFileInput.files[0]);
     } else {
-        previewImage.innerHTML = `<img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='150' viewBox='0 0 200 150'%3E%3Crect width='200' height='150' fill='%23e9ecef'/%3E%3Ctext x='50%25' y='50%25' font-size='14' text-anchor='middle' dy='.3em' fill='%23495057'%3E프로그램 사진%3C/text%3E%3C/svg%3E" style="width: 100%; height: 100%; object-fit: cover;">`;
+        // 기존 이미지가 있으면 그대로 표시
+        const existingImg = document.querySelector('.image-upload-area .image-preview');
+        if (existingImg) {
+            previewImage.innerHTML = `<img src="${existingImg.src}" alt="프로그램 대표 사진" style="width: 100%; height: 100%; object-fit: cover;">`;
+        } else {
+            previewImage.innerHTML = '대표 사진 미리보기';
+        }
     }
 
     // 모달 표시
     document.getElementById('previewModal').style.display = 'block';
 }
 
-// 미리보기 닫기
+// 미리보기 닫기 (등록 페이지와 동일)
 function closePreview() {
     document.getElementById('previewModal').style.display = 'none';
 }
 
-// 폼 원래대로 복원
+// 모달 외부 클릭 시 닫기 (등록 페이지와 동일)
+window.onclick = function(event) {
+    const modal = document.getElementById('previewModal');
+    if (event.target === modal) {
+        modal.style.display = 'none';
+    }
+}
+
+// 폼 초기화 (원본 데이터로 복원)
 function resetForm() {
-    if (confirm('원래 데이터로 복원하시겠습니까?')) {
-        loadOriginalData();
+    if (confirm('원본 데이터로 복원하시겠습니까?')) {
+        window.location.reload(); // 페이지 새로고침으로 원본 데이터 복원
     }
 }
 
-// 원본 데이터 로드
-function loadOriginalData() {
-    document.getElementById('programName').value = originalData.programName || '';
-    document.getElementById('recruitStart').value = originalData.recruitStart || '';
-    document.getElementById('recruitEnd').value = originalData.recruitEnd || '';
-    document.getElementById('capacity').value = originalData.capacity || '';
-    document.getElementById('department').value = originalData.department || '';
-    document.getElementById('operationStart').value = originalData.operationStart || '';
-    document.getElementById('operationEnd').value = originalData.operationEnd || '';
-    document.getElementById('contact').value = originalData.contact || '';
-    document.getElementById('surveyDeadline').value = originalData.surveyDeadline || '';
-    document.getElementById('mileagePoints').value = originalData.mileagePoints || '';
-    document.getElementById('description').value = originalData.description || '';
-    
-    // 핵심역량 체크박스 설정
-    const checkboxes = document.querySelectorAll('input[name="competencies"]');
-    checkboxes.forEach(checkbox => {
-        checkbox.checked = originalData.competencies && originalData.competencies.includes(checkbox.value);
-    });
-
-    // 첨부파일 정보 복원
-    const filePreview = document.getElementById('filePreview');
-    if (originalData.fileName) {
-        filePreview.innerHTML = `<i class="fas fa-file-pdf"></i> 현재 파일: ${originalData.fileName}`;
-        filePreview.style.display = 'block';
-    } else {
-        filePreview.style.display = 'none';
-    }
-    
-    // 파일 입력 초기화
-    document.getElementById('fileInput').value = '';
-    
-    // 대표 사진 복원
-    const imageUploadArea = document.querySelector('.image-upload-area');
-    resetImageUploadArea(imageUploadArea);
-    
-    // 프로그램 이미지 입력 초기화
-    document.getElementById('programImageInput').value = '';
-}
-
-// 취소
+// 취소 (등록 페이지와 동일)
 function cancelForm() {
     if (confirm('수정을 취소하시겠습니까? 변경사항이 저장되지 않습니다.')) {
         goToList();
     }
 }
 
-// 목록으로 이동
+// 목록으로 이동 (등록 페이지와 동일)
 function goToList() {
     window.location.href = '/admin/noncurr_list';
 }
 
-// 폼 제출 처리
-function handleFormSubmit() {
+// ✅ 폼 유효성 검사 (등록 페이지와 동일)
+function validateForm() {
     // 핵심역량 체크 검증
-    const competencies = document.querySelectorAll('input[name="competencies"]:checked');
+    const competencies = document.querySelectorAll('input[name="competencyCheckbox"]:checked');
     if (competencies.length === 0) {
         alert('핵심역량을 하나 이상 선택해주세요.');
-        return;
+        return false;
     }
 
-    // 날짜 검증
-    const recruitStart = new Date(document.getElementById('recruitStart').value);
-    const recruitEnd = new Date(document.getElementById('recruitEnd').value);
-    const operationStart = new Date(document.getElementById('operationStart').value);
-    const operationEnd = new Date(document.getElementById('operationEnd').value);
-    const surveyDeadline = new Date(document.getElementById('surveyDeadline').value);
-
-    if (recruitStart >= recruitEnd) {
-        alert('모집 마감일은 모집 시작일보다 늦어야 합니다.');
-        return;
-    }
-
-    if (operationStart >= operationEnd) {
-        alert('운영 종료일은 운영 시작일보다 늦어야 합니다.');
-        return;
-    }
-
-    if (recruitEnd > operationStart) {
-        alert('운영 시작일은 모집 마감일 이후여야 합니다.');
-        return;
-    }
-
-    if (surveyDeadline <= operationEnd) {
-        alert('만족도조사 마감일은 운영 종료일 이후여야 합니다.');
-        return;
-    }
-
-    // 수정 확인
-    if (confirm('비교과 프로그램을 수정하시겠습니까?')) {
-        // FormData 생성하여 파일과 함께 전송
-        const formData = new FormData(document.getElementById('programForm'));
-        
-        // 이미지 파일 추가
-        const imageFile = document.getElementById('programImageInput').files[0];
-        if (imageFile) {
-            formData.append('programImage', imageFile);
-        }
-
-        // 서버로 전송
-        submitFormData(formData);
-    }
-}
-
-// 폼 데이터 서버 전송
-function submitFormData(formData) {
-    const programId = document.getElementById('programId').value;
+    // ✅ 핵심역량 점수 검증 추가
+    const checkedBoxes = document.querySelectorAll('input[name="competencyCheckbox"]:checked');
+    let hasUnselectedScore = false;
     
-    fetch('/admin/noncurr_edit', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => {
-        if (response.ok) {
-            alert('비교과 프로그램이 성공적으로 수정되었습니다.');
-            goToList();
-        } else {
-            throw new Error('서버 오류가 발생했습니다.');
+    checkedBoxes.forEach(checkbox => {
+        const competencyId = checkbox.value;
+        const scoreSelect = document.getElementById('score_' + competencyId);
+        if (!scoreSelect.value || scoreSelect.value === '') {
+            hasUnselectedScore = true;
         }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('수정 중 오류가 발생했습니다. 다시 시도해주세요.');
     });
+    
+    if (hasUnselectedScore) {
+        alert('선택한 핵심역량의 점수를 모두 지정해주세요.');
+        return false;
+    }
+
+    // ✅ 수정: 새로운 필드 ID로 변경
+    const recruitStDt = new Date(document.getElementById('recruitStDt').value);
+    const recruitEndDt = new Date(document.getElementById('recruitEndDt').value);
+    const prgStDt = new Date(document.getElementById('prgStDt').value);
+    const prgEndDt = new Date(document.getElementById('prgEndDt').value);
+
+    if (recruitStDt >= recruitEndDt) {
+        alert('모집 시작일은 모집 마감일보다 이전이어야 합니다.');
+        return false;
+    }
+
+    if (prgStDt >= prgEndDt) {
+        alert('운영 시작일은 운영 종료일보다 이전이어야 합니다.');
+        return false;
+    }
+
+    if (recruitEndDt > prgStDt) {
+        alert('모집 마감일은 운영 시작일 이전이어야 합니다.');
+        return false;
+    }
+
+    // ✅ 파일 검증 추가
+    const fileInput = document.getElementById('imageFile');
+    if (fileInput.files && fileInput.files[0]) {
+        const file = fileInput.files[0];
+        if (file.size === 0) {
+            alert('선택된 파일이 비어있습니다. 다른 파일을 선택해주세요.');
+            return false;
+        }
+        console.log('검증 통과 - 파일:', file.name, '크기:', file.size);
+    }
+
+    return true;
 }
 
-// 유틸리티 함수들
-function formatNumber(num) {
-    return parseInt(num).toLocaleString();
-}
+// ✅ 페이지 로드 시 이벤트 설정 (등록 페이지 기반)
+document.addEventListener('DOMContentLoaded', function() {
+    // ✅ 기존 이미지가 있으면 업로드 콘텐츠 숨기기
+    const existingImage = document.querySelector('.image-upload-area .image-preview');
+    const uploadContent = document.querySelector('.image-upload-content');
+    if (existingImage && uploadContent) {
+        uploadContent.style.display = 'none';
+    }
+    
+    // 폼 제출 처리
+    const programForm = document.getElementById('programForm');
+    if (programForm) {
+        programForm.addEventListener('submit', function(e) {
+            
+            // 유효성 검사
+            if (!validateForm()) {
+                e.preventDefault();
+                return;
+            }
+            
+            // 체크박스 값들을 히든 필드에 설정
+            updateCompetencyIds();
+            updateCompetencyScores();
 
-function validateEmail(email) {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
-}
+            // 수정 확인
+            if (!confirm('비교과 프로그램을 수정하시겠습니까?')) {
+                e.preventDefault(); // 사용자가 취소 시에만 제출 방지
+                return false;
+            }
+            
+            // ✅ 파일 정보 최종 확인 (디버깅용)
+            const fileInput = document.getElementById('imageFile');
+            if (fileInput.files && fileInput.files[0]) {
+                console.log('제출 전 파일 확인:', fileInput.files[0].name, '크기:', fileInput.files[0].size);
+            }
+            
+            // 모든 검증 통과 시 정상 제출 (preventDefault 없음)
+            console.log('폼 제출 진행...');
+            return true;
+        });
+    }
 
-function validatePhoneNumber(phone) {
-    const re = /^[0-9-]+$/;
-    return re.test(phone);
+    // 체크박스 변경 시 히든 필드 업데이트
+    const competencyCheckboxes = document.querySelectorAll('input[name="competencyCheckbox"]');
+    competencyCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', updateCompetencyIds);
+        checkbox.addEventListener('change', updateCompetencyScores);
+    });
+
+    // ✅ 수정: 새로운 필드 ID로 변경
+    const maxCntInput = document.getElementById('maxCnt');
+    if (maxCntInput) {
+        maxCntInput.addEventListener('input', function() {
+            if (this.value < 1) {
+                this.value = 1;
+            }
+        });
+    }
+
+    // ✅ 수정: 새로운 필드 ID로 변경
+    const mlgDefScoreInput = document.getElementById('mlgDefScore');
+    if (mlgDefScoreInput) {
+        mlgDefScoreInput.addEventListener('input', function() {
+            if (this.value < 0) {
+                this.value = 0;
+            }
+        });
+    }
+
+    // ✅ 전화번호 자동 포맷팅 이벤트 추가
+    const prgTelInput = document.getElementById('prgTel');
+    if (prgTelInput) {
+        prgTelInput.addEventListener('input', function() {
+            formatPhoneNumber(this);
+        });
+        
+        // 붙여넣기 시에도 포맷팅 적용
+        prgTelInput.addEventListener('paste', function() {
+            setTimeout(() => {
+                formatPhoneNumber(this);
+            }, 10);
+        });
+    }
+
+    // 오늘 날짜보다 이전 날짜 선택 방지
+    const today = new Date().toISOString().split('T')[0];
+    // ✅ 수정: 새로운 필드 ID로 변경
+    const dateInputs = ['recruitStDt', 'recruitEndDt', 'prgStDt', 'prgEndDt', 'surveyDt'];
+    
+
+
+    // ✅ 페이지 로드시 초기 체크된 항목 처리
+    const initialCheckedBoxes = document.querySelectorAll('input[name="competencyCheckbox"]:checked');
+    initialCheckedBoxes.forEach(checkbox => {
+        toggleScoreSelect(checkbox);
+    });
+    
+    // ✅ 점수 선택 변경시 이벤트 추가
+    document.addEventListener('change', function(e) {
+        if (e.target.classList.contains('score-select')) {
+            updateCompetencyScores();
+        }
+    });
+    
+    // 페이지 로드 시 체크박스 상태 반영
+    updateCompetencyIds();
+    
+    // 초기 점수 정보 설정
+    updateCompetencyScores();
+});
+
+// ✅ 공통 JavaScript 로드 후 실행 (등록 페이지와 동일)
+if (typeof activateMenuByCurrentUrl === 'function') {
+    activateMenuByCurrentUrl();
 }

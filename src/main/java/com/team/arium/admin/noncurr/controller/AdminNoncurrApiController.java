@@ -146,7 +146,7 @@ public class AdminNoncurrApiController {
      * 비교과 프로그램 삭제
      */
     @PostMapping("/noncurr_delete")
-    public ResponseEntity<Map<String, Object>> noncurr_delete(@RequestParam Integer prgId) {
+    public ResponseEntity<Map<String, Object>> noncurr_delete(@RequestParam("prgId") Integer prgId) {
         log.info("비교과 프로그램 삭제 API 요청: ID={}", prgId);
         Map<String, Object> response = new HashMap<>();
         
@@ -487,5 +487,10 @@ public class AdminNoncurrApiController {
             return ResponseEntity.internalServerError().body(response);
         }
     }
+    
+
+
+
+    
     
 }

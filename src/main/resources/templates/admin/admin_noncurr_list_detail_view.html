@@ -16,6 +16,13 @@
                     <i class="fas fa-edit"></i>
                     수정
                 </button>
+                <button class="delete-btn" 
+                        th:if="${canDelete}" 
+                        onclick="deleteProgram()"
+                        th:title="${deleteReason}">
+                    <i class="fas fa-trash"></i>
+                    삭제
+                </button>                
             </div>
         </div>
         <div class="title-divider"></div>
@@ -41,11 +48,13 @@
                             <span class="detail-label">모집기간:</span>
                             <!-- ✅ 필드명 수정: recruitStartDate → recruitStDt -->
                             <span class="detail-value" id="recruitPeriod" 
-                                  th:text="${program != null ? (program.recruitStDt + ' ~ ' + program.recruitEndDt) : '날짜 정보 없음'}">모집기간</span>
+                                  th:text="${program != null ? (
+                                    (#strings.replace(program.recruitStDt, '-', '.')) + ' ~ ' + 
+                                    (#strings.replace(program.recruitEndDt, '-', '.'))
+                                  ) : '날짜 정보 없음'}">모집기간</span>
                         </div>
                         <div class="detail-right">
                             <span class="detail-label">모집인원:</span>
-                            <!-- ✅ 필드명 수정: capacity → maxCnt, applicantCount → currentCnt -->
                             <span class="detail-value" id="recruitCount" 
                                   th:text="${program != null ? ((program.currentCnt ?: 0) + '/' + (program.maxCnt ?: 0) + '명') : '인원 정보 없음'}">신청인원/최대인원</span>
                         </div>
@@ -56,7 +65,10 @@
                             <span class="detail-label">운영기간:</span>
                             <!-- ✅ 필드명 수정: operationStartDate → prgStDt -->
                             <span class="detail-value" id="operationPeriod" 
-                                  th:text="${program != null ? (program.prgStDt + ' ~ ' + program.prgEndDt) : '날짜 정보 없음'}">운영기간</span>
+                                  th:text="${program != null ? (
+                                    (#strings.replace(program.prgStDt, '-', '.')) + ' ~ ' + 
+                                    (#strings.replace(program.prgEndDt, '-', '.'))
+                                  ) : '날짜 정보 없음'}">운영기간</span>
                         </div>
                         <div class="detail-right">
                             <span class="detail-label">상태:</span>
@@ -92,20 +104,34 @@
                         </div>
                         <div class="detail-right">
                             <span class="detail-label">핵심역량:</span>
-                            <!-- ✅ 필드명 수정: program.competencies → competencyNames (컨트롤러에서 전달) -->
-                            <span class="detail-value" id="competencies" th:text="${competencyNames ?: '핵심역량 정보 없음'}">핵심역량</span>
+                            <!-- ✅ 핵심역량 데이터를 라벨에 더 가깝게 배치 -->
+                            <span class="detail-value competency-scores" id="competencies" 
+                                  th:text="${competencyNamesWithScores ?: '핵심역량 정보 없음'}">핵심역량</span>
+                        </div>
+                    </div>
+                    
+                    <!-- ✅ 만족도 조사 마감일을 오른쪽 열에 배치 -->
+                    <div class="detail-row survey-row">
+                        <div class="detail-left">
+                            <!-- 빈 공간 -->
+                        </div>
+                        <div class="detail-right">
+                            <span class="detail-label">만족도 조사 마감일:</span>
+                            <span class="detail-value survey-deadline" 
+                                 th:text="${program != null and program.surveyDt != null ? 
+                                          (#strings.replace(#strings.substring(program.surveyDt, 0, 10), '-', '.')) : 
+                                          '설정 안됨'}">설정 안됨</span>
                         </div>
                     </div>
 
-                    <!-- 프로그램 설명 -->
-                    <!-- ✅ 필드명 수정: description → prgDesc -->
-                    <div class="detail-row" th:if="${program != null and program.prgDesc != null and !#strings.isEmpty(program.prgDesc)}">
-                        <div class="detail-left" style="width: 100%;">
+                    <!-- ✅ 프로그램 설명을 전체 폭으로 배치 -->
+                    <div class="detail-row-wide" th:if="${program != null and program.prgDesc != null and !#strings.isEmpty(program.prgDesc)}">
+                        <div class="detail-left-wide">
                             <span class="detail-label">프로그램 설명:</span>
-                            <div class="detail-value program-description" th:text="${program.prgDesc}">
+                            <div class="program-description" th:text="${program.prgDesc}">
                                 프로그램 설명
                             </div>
-                        </div>
+                        </div>                     
                     </div>
                 </div>
             </div>

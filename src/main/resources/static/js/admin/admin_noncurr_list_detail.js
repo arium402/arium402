@@ -9,6 +9,43 @@ function goToList() {
     window.location.href = '/admin/noncurr_list';
 }
 
+// 삭제 버튼 클릭 처리
+function deleteProgram() {
+    const programName = document.getElementById('programName').textContent;
+    const confirmMessage = `정말로 "${programName}" 프로그램을 삭제하시겠습니까?\n\n이 작업은 되돌릴 수 없습니다.`;
+    
+    if (confirm(confirmMessage)) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const programId = urlParams.get('id');
+        
+        if (programId) {
+            // 삭제 API 호출
+            fetch('/api/admin/noncurr_delete', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'prgId=' + encodeURIComponent(programId)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    alert('프로그램이 성공적으로 삭제되었습니다.');
+                    window.location.href = '/admin/noncurr_list';
+                } else {
+                    alert('삭제 실패: ' + (result.error || '알 수 없는 오류가 발생했습니다.'));
+                }
+            })
+            .catch(error => {
+                console.error('삭제 오류:', error);
+                alert('삭제 중 오류가 발생했습니다. 다시 시도해주세요.');
+            });
+        } else {
+            alert('프로그램 ID를 찾을 수 없습니다.');
+        }
+    }
+}
+
 // 수정 페이지로 이동 함수
 function editProgram() {
     // URL에서 프로그램 ID 가져오기
@@ -67,36 +104,50 @@ async function refreshProgramInfo() {
     }
 }
 
+
+// ✅ 날짜 형식 변경 함수 추가 (2024-06-24 → 2024.06.24)
+function formatDateString(dateStr) {
+    if (!dateStr) return '';
+    
+    // 날짜 부분만 추출 (시간이 있으면 제거)
+    const datePart = dateStr.length >= 10 ? dateStr.substring(0, 10) : dateStr;
+    
+    // - 를 . 으로 변경
+    return datePart.replace(/-/g, '.');
+}
+
+
+
 // ✅ 프로그램 화면 표시 업데이트 (읽기 전용)
 function updateProgramDisplay(program) {
     if (!program) return;
     
     // 프로그램 기본 정보 업데이트
-    const elements = {
-        programName: program.prgNm,
-        recruitPeriod: `${program.recruitStDt} ~ ${program.recruitEndDt}`,
-        recruitCount: `${program.currentCnt || 0}/${program.maxCnt || 0}명`,
-        operationPeriod: `${program.prgStDt} ~ ${program.prgEndDt}`,
-        department: program.prgDept,
-        contact: program.prgTel,
-        mileage: `${program.mlgDefScore || 0}M`,
-        competencies: program.competencyNames || '핵심역량 정보 없음'
-    };
+	const elements = {
+	    programName: program.prgNm,
+	    recruitPeriod: `${formatDateString(program.recruitStDt)} ~ ${formatDateString(program.recruitEndDt)}`,
+	    recruitCount: `${program.currentCnt || 0}/${program.maxCnt || 0}명`,
+	    operationPeriod: `${formatDateString(program.prgStDt)} ~ ${formatDateString(program.prgEndDt)}`,
+	    department: program.prgDept,
+	    contact: program.prgTel,
+	    mileage: `${program.mlgDefScore || 0}M`,
+	    competencies: program.competencyNamesWithScores || '핵심역량 정보 없음'  // ✅ 점수 포함된 문자열 사용
+	};
     
     // DOM 업데이트
-    Object.entries(elements).forEach(([id, value]) => {
-        const element = document.getElementById(id);
-        if (element) {
-            element.textContent = value || '';
-        }
-    });
+	Object.entries(elements).forEach(([id, value]) => {
+	    const element = document.getElementById(id);
+	    if (element) {
+	        element.textContent = value || '';
+	    }
+	});
     
     // 프로그램 상태 업데이트 (CSS 클래스 포함)
-    const statusElement = document.getElementById('programStatus');
-    if (statusElement && program.prgStatNm) {
-        statusElement.textContent = program.prgStatNm;
-        statusElement.className = `status ${program.prgStatNm.toLowerCase().replace(/\s+/g, '-')}`;
-    }
+	const statusElement = document.getElementById('programStatus');
+	if (statusElement && program.prgStatNm) {
+	    statusElement.textContent = program.prgStatNm;
+	    statusElement.className = `status ${program.prgStatNm.toLowerCase().replace(/\s+/g, '-')}`;
+	}
     
     // 프로그램 이미지 업데이트
     updateProgramImage(program.imageUrl);

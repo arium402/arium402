@@ -138,12 +138,25 @@ body {
 }
 
 .image-upload-area input[type="file"] {
-    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 1;
 }
 
 .image-upload-content {
     text-align: center;
     color: #6c757d;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    z-index: 0;
 }
 
 .image-upload-content i {
@@ -234,11 +247,19 @@ body {
     box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
 }
 
+/* ✅ 핵심역량 관련 스타일 (등록 페이지와 동일) */
 .checkbox-group {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 12px;
     margin-top: 8px;
+}
+
+/* 핵심역량 래퍼 - 체크박스와 점수 선택을 세로로 배치 */
+.checkbox-item-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
 
 .checkbox-item {
@@ -247,9 +268,10 @@ body {
     gap: 8px;
 }
 
+/* ✅ 체크박스 크기 확대 */
 .checkbox-item input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
+    width: 24px;
+    height: 24px;
     accent-color: #3498db;
 }
 
@@ -259,6 +281,29 @@ body {
     cursor: pointer;
 }
 
+/* 점수 선택 영역 */
+.score-select-wrapper {
+    margin-left: 32px; /* 체크박스 너비에 맞춰 조정 */
+    margin-top: 2px;
+}
+
+/* 점수 선택 드롭다운 */
+.score-select {
+    padding: 4px 8px;
+    border: 1px solid #dee2e6;
+    background: white;
+    color: #495057;
+    font-size: 0.8rem;
+    width: 120px;
+    transition: all 0.3s ease;
+}
+
+.score-select:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.1);
+}
+
 .file-input {
     padding: 10px;
     border: 2px dashed #3498db;
@@ -266,6 +311,7 @@ body {
     text-align: center;
     cursor: pointer;
     transition: all 0.3s ease;
+    position: relative;
 }
 
 .file-input:hover {
@@ -274,7 +320,21 @@ body {
 }
 
 .file-input input[type="file"] {
-    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.file-input p,
+.file-input small {
+    pointer-events: none;
+    z-index: 0;
+    position: relative;
 }
 
 .file-preview {
@@ -311,12 +371,12 @@ body {
 }
 
 .btn-preview {
-    background: linear-gradient(135deg, #3498db, #2980b9);
+    background: linear-gradient(135deg, #2f86c0, #2f86c0);
     color: white;
 }
 
 .btn-preview:hover {
-    background: linear-gradient(135deg, #2980b9, #21618c);
+    background: linear-gradient(135deg, #2f86c0, #2f86c0);
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
 }
@@ -343,13 +403,14 @@ body {
     box-shadow: 0 4px 12px rgba(127, 140, 141, 0.3);
 }
 
+/* ✅ 수정 버튼 스타일 */
 .btn-update {
-    background: linear-gradient(135deg, #5dade2, #3498db);
+    background: linear-gradient(135deg, #5dade2, #5dade2);
     color: white;
 }
 
 .btn-update:hover {
-    background: linear-gradient(135deg, #3498db, #2980b9);
+    background: linear-gradient(135deg, #5dade2, #5dade2);
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(93, 173, 226, 0.3);
 }

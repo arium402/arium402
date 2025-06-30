@@ -40,6 +40,7 @@
                 <!-- 폼 컨텐츠 영역 -->
                 <div class="form-content-section">
                     <!-- ✅ 추가: 히든 필드 -->
+                    <!--  -->
                     <input type="hidden" id="competencyIdsStr" name="competencyIdsStr" value="">
                     <input type="hidden" id="prgStatCd" name="prgStatCd" value="51">
                     
@@ -113,40 +114,173 @@
                             <input type="number" class="form-input" id="mlgDefScore" name="mlgDefScore" placeholder="10000" min="0" required>
                         </div>
 
-                        <!-- ✅ 수정: 핵심역량 체크박스 완전 변경 -->
-                        <div class="form-item full-width">
-                            <label class="form-label required">핵심역량</label>
-                            <div class="checkbox-group" id="competencyCheckboxGroup">
-                                <!-- Thymeleaf로 동적 생성 -->
-                                <div th:each="competency : ${competencies}" class="checkbox-item">
-                                    <input type="checkbox" 
-                                           th:id="'competency_' + ${competency.cclId}" 
-                                           name="competencyCheckbox" 
-                                           th:value="${competency.cclId}">
-                                    <label th:for="'competency_' + ${competency.cclId}" 
-                                           th:text="${competency.cclNm}">핵심역량명</label>
-                                </div>
-                                <!-- 만약 competencies가 없다면 기본값들 표시 -->
-                                <div th:if="${competencies == null or #lists.isEmpty(competencies)}">
-                                    <div class="checkbox-item">
-                                        <input type="checkbox" id="competency_1" name="competencyCheckbox" value="1" checked>
-                                        <label for="competency_1">창의적 혁신역량</label>
-                                    </div>
-                                    <div class="checkbox-item">
-                                        <input type="checkbox" id="competency_2" name="competencyCheckbox" value="2" checked>
-                                        <label for="competency_2">융합적 탐구역량</label>
-                                    </div>
-                                    <div class="checkbox-item">
-                                        <input type="checkbox" id="competency_3" name="competencyCheckbox" value="3">
-                                        <label for="competency_3">협력적 소통역량</label>
-                                    </div>
-                                    <div class="checkbox-item">
-                                        <input type="checkbox" id="competency_4" name="competencyCheckbox" value="4">
-                                        <label for="competency_4">글로벌 리더역량</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+<!-- ✅ 수정: 핵심역량 체크박스 + 점수 선택 -->
+<div class="form-item full-width">
+    <label class="form-label required">핵심역량</label>
+    <div class="checkbox-group" id="competencyCheckboxGroup">
+        <!-- Thymeleaf로 동적 생성 -->
+        <div th:each="competency : ${competencies}" class="checkbox-item-wrapper">
+            <div class="checkbox-item">
+                <input type="checkbox" 
+                       th:id="'competency_' + ${competency.cclId}" 
+                       name="competencyCheckbox" 
+                       th:value="${competency.cclId}"
+                       onchange="toggleScoreSelect(this)">
+                <label th:for="'competency_' + ${competency.cclId}" 
+                       th:text="${competency.cclNm}">핵심역량명</label>
+            </div>
+            <!-- ✅ 새로 추가: 점수 선택 드롭다운 -->
+            <div class="score-select-wrapper" th:id="'score_wrapper_' + ${competency.cclId}" style="display: none;">
+                <select th:name="'competencyScore_' + ${competency.cclId}" 
+                        th:id="'score_' + ${competency.cclId}" 
+                        class="score-select">
+                    <option value="" selected>점수 지정</option>
+                    <option value="15">15점</option>
+                    <option value="20">20점</option>
+                    <option value="25">25점</option>
+                    <option value="30">30점</option>
+                    <option value="35">35점</option>
+                    <option value="40">40점</option>
+                    <option value="45">45점</option>
+                    <option value="50">50점</option>
+                    <option value="55">55점</option>
+                    <option value="60">60점</option>
+                    <option value="65">65점</option>
+                    <option value="70">70점</option>
+                    <option value="75">75점</option>
+                    <option value="80">80점</option>
+                    <option value="85">85점</option>
+                    <option value="90">90점</option>
+                    <option value="95">95점</option>
+                    <option value="100">100점</option>
+                </select>
+            </div>
+        </div>
+        
+        <!-- 만약 competencies가 없다면 기본값들 표시 -->
+        <div th:if="${competencies == null or #lists.isEmpty(competencies)}">
+            <div class="checkbox-item-wrapper">
+                <div class="checkbox-item">
+                    <input type="checkbox" id="competency_1" name="competencyCheckbox" value="1" checked onchange="toggleScoreSelect(this)">
+                    <label for="competency_1">창의적 혁신역량</label>
+                </div>
+                <div class="score-select-wrapper" id="score_wrapper_1">
+                    <select name="competencyScore_1" id="score_1" class="score-select">
+                        <option value="" selected>점수 지정</option>
+                        <option value="15">15점</option>
+                        <option value="20">20점</option>
+                        <option value="25">25점</option>
+                        <option value="30">30점</option>
+                        <option value="35">35점</option>
+                        <option value="40">40점</option>
+                        <option value="45">45점</option>
+                        <option value="50">50점</option>
+                        <option value="55">55점</option>
+                        <option value="60">60점</option>
+                        <option value="65">65점</option>
+                        <option value="70">70점</option>
+                        <option value="75">75점</option>
+                        <option value="80">80점</option>
+                        <option value="85">85점</option>
+                        <option value="90">90점</option>
+                        <option value="95">95점</option>
+                        <option value="100">100점</option>
+                    </select>
+                </div>
+            </div>
+            <div class="checkbox-item-wrapper">
+                <div class="checkbox-item">
+                    <input type="checkbox" id="competency_2" name="competencyCheckbox" value="2" checked onchange="toggleScoreSelect(this)">
+                    <label for="competency_2">융합적 탐구역량</label>
+                </div>
+                <div class="score-select-wrapper" id="score_wrapper_2">
+                    <select name="competencyScore_2" id="score_2" class="score-select">
+                        <option value="" selected>점수 지정</option>
+                        <option value="15">15점</option>
+                        <option value="20">20점</option>
+                        <option value="25">25점</option>
+                        <option value="30">30점</option>
+                        <option value="35">35점</option>
+                        <option value="40">40점</option>
+                        <option value="45">45점</option>
+                        <option value="50">50점</option>
+                        <option value="55">55점</option>
+                        <option value="60">60점</option>
+                        <option value="65">65점</option>
+                        <option value="70">70점</option>
+                        <option value="75">75점</option>
+                        <option value="80">80점</option>
+                        <option value="85">85점</option>
+                        <option value="90">90점</option>
+                        <option value="95">95점</option>
+                        <option value="100">100점</option>
+                    </select>
+                </div>
+            </div>
+            <div class="checkbox-item-wrapper">
+                <div class="checkbox-item">
+                    <input type="checkbox" id="competency_3" name="competencyCheckbox" value="3" onchange="toggleScoreSelect(this)">
+                    <label for="competency_3">협력적 소통역량</label>
+                </div>
+                <div class="score-select-wrapper" id="score_wrapper_3" style="display: none;">
+                    <select name="competencyScore_3" id="score_3" class="score-select">
+                        <option value="" selected>점수 지정</option>
+                        <option value="15">15점</option>
+                        <option value="20">20점</option>
+                        <option value="25">25점</option>
+                        <option value="30">30점</option>
+                        <option value="35">35점</option>
+                        <option value="40">40점</option>
+                        <option value="45">45점</option>
+                        <option value="50">50점</option>
+                        <option value="55">55점</option>
+                        <option value="60">60점</option>
+                        <option value="65">65점</option>
+                        <option value="70">70점</option>
+                        <option value="75">75점</option>
+                        <option value="80">80점</option>
+                        <option value="85">85점</option>
+                        <option value="90">90점</option>
+                        <option value="95">95점</option>
+                        <option value="100">100점</option>
+                    </select>
+                </div>
+            </div>
+            <div class="checkbox-item-wrapper">
+                <div class="checkbox-item">
+                    <input type="checkbox" id="competency_4" name="competencyCheckbox" value="4" onchange="toggleScoreSelect(this)">
+                    <label for="competency_4">글로벌 리더역량</label>
+                </div>
+                <div class="score-select-wrapper" id="score_wrapper_4" style="display: none;">
+                    <select name="competencyScore_4" id="score_4" class="score-select">
+                        <option value="" selected>점수 지정</option>
+                        <option value="15">15점</option>
+                        <option value="20">20점</option>
+                        <option value="25">25점</option>
+                        <option value="30">30점</option>
+                        <option value="35">35점</option>
+                        <option value="40">40점</option>
+                        <option value="45">45점</option>
+                        <option value="50">50점</option>
+                        <option value="55">55점</option>
+                        <option value="60">60점</option>
+                        <option value="65">65점</option>
+                        <option value="70">70점</option>
+                        <option value="75">75점</option>
+                        <option value="80">80점</option>
+                        <option value="85">85점</option>
+                        <option value="90">90점</option>
+                        <option value="95">95점</option>
+                        <option value="100">100점</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ✅ 히든 필드 추가: 점수 정보 전송용 -->
+    <input type="hidden" id="competencyScoresStr" name="competencyScoresStr" value="">
+</div>
 
                         <!-- ✅ 수정: name을 prgDesc로 변경 -->
                         <div class="form-item full-width">

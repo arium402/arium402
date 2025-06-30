@@ -91,16 +91,59 @@ function formatPhoneNumber(input) {
     }
 }
 
+// 체크박스 상태에 따라 점수 선택 보이기/숨기기
+function toggleScoreSelect(checkbox) {
+    const competencyId = checkbox.value;
+    const scoreWrapper = document.getElementById('score_wrapper_' + competencyId);
+    
+    if (scoreWrapper) {
+        if (checkbox.checked) {
+            scoreWrapper.style.display = 'block';
+        } else {
+            scoreWrapper.style.display = 'none';
+        }
+    }
+    
+    // 체크박스 상태 변경시 점수 정보도 업데이트
+    updateCompetencyScores();
+}
 
+// ✅ 새로 추가: 핵심역량 점수 정보 수집
+function updateCompetencyScores() {
+    const checkboxes = document.querySelectorAll('input[name="competencyCheckbox"]:checked');
+    const scoresData = [];
+    
+    checkboxes.forEach(checkbox => {
+        const competencyId = checkbox.value;
+        const scoreSelect = document.getElementById('score_' + competencyId);
+        
+        if (scoreSelect && scoreSelect.value && scoreSelect.value !== '') {
+            const score = scoreSelect.value;
+            scoresData.push(competencyId + ':' + score);
+        }
+    });
+    
+    // 히든 필드에 점수 정보 저장 (형식: "1:100,2:95,3:80")
+    const scoresField = document.getElementById('competencyScoresStr');
+    if (scoresField) {
+        scoresField.value = scoresData.join(',');
+    }
+    
+    console.log('핵심역량 점수 정보:', scoresData.join(','));
+}
 
-// 체크박스 값들을 콤마 구분 문자열로 변환
+// ✅ 수정: 체크박스 값들과 점수를 함께 수집
 function updateCompetencyIds() {
     const checkboxes = document.querySelectorAll('input[name="competencyCheckbox"]:checked');
     const competencyIds = Array.from(checkboxes).map(cb => cb.value);
-    document.getElementById('competencyIdsStr').value = competencyIds.join(',');
+    
+    // 기존 히든 필드에 ID 저장 (하위 호환성)
+    const competencyIdsField = document.getElementById('competencyIdsStr');
+    if (competencyIdsField) {
+        competencyIdsField.value = competencyIds.join(',');
+    }
     
     console.log('선택된 핵심역량 ID:', competencyIds);
-    console.log('히든 필드 값:', competencyIds.join(','));
 }
 
 // 미리보기 표시
@@ -248,6 +291,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // 체크박스 값들을 히든 필드에 설정
             updateCompetencyIds();
+			updateCompetencyScores(); // ✅ 이 줄 추가
 
 			// 등록 확인
 			if (!confirm('비교과 프로그램을 등록하시겠습니까?')) {
@@ -272,6 +316,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const competencyCheckboxes = document.querySelectorAll('input[name="competencyCheckbox"]');
     competencyCheckboxes.forEach(checkbox => {
         checkbox.addEventListener('change', updateCompetencyIds);
+		checkbox.addEventListener('change', updateCompetencyScores); // ✅ 이 줄 추가
     });
 
     // ✅ 수정: 새로운 필드 ID로 변경
@@ -324,9 +369,30 @@ document.addEventListener('DOMContentLoaded', function() {
 
     });
     
+	// ✅ 새로 추가: 초기 로드시 체크된 항목 처리
+	const initialCheckedBoxes = document.querySelectorAll('input[name="competencyCheckbox"]:checked');
+	initialCheckedBoxes.forEach(checkbox => {
+	    toggleScoreSelect(checkbox);
+	});
+	
+	// ✅ 점수 선택 변경시 이벤트 추가
+	document.addEventListener('change', function(e) {
+	    if (e.target.classList.contains('score-select')) {
+	        updateCompetencyScores();
+	    }
+	});
+	
     // 페이지 로드 시 체크박스 상태 반영
     updateCompetencyIds();
+	
+	// 초기 점수 정보 설정
+	updateCompetencyScores();
+	
 });
+
+
+
+
 
 // 공통 JavaScript 로드 후 실행
 if (typeof activateMenuByCurrentUrl === 'function') {
