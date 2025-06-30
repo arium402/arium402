@@ -445,7 +445,7 @@ public class AdminNoncurrProgramService {
     }
 
     /**
-     * 프로그램 삭제
+     * 프로그램 삭제 (이미지 파일 포함)
      */
     @Transactional
     public void deleteProgram(Integer prgId) {
@@ -456,10 +456,22 @@ public class AdminNoncurrProgramService {
         }
         
         try {
-            // 핵심역량 매핑 먼저 삭제 (복합키 방식)
+            // ✅ 1. 삭제 전 파일 정보 조회
+            Ncs_PrgInfo program = ncsPrgInfoRepository.findById(prgId)
+                .orElseThrow(() -> new RuntimeException("프로그램을 찾을 수 없습니다."));
+            
+            Common_File imageFile = program.getComFile();
+            
+            // ✅ 2. 연관된 파일 삭제 (DB 삭제 전에 먼저 처리)
+            if (imageFile != null) {
+                deleteImageFiles(imageFile);
+                log.info("프로그램 이미지 파일 삭제 완료: {}", imageFile.getSaveFileName());
+            }
+            
+            // ✅ 3. DB에서 핵심역량 매핑 삭제
             ncsCclRelRepository.deleteByPrgId(prgId);
             
-            // 프로그램 삭제
+            // ✅ 4. DB에서 프로그램 삭제
             ncsPrgInfoRepository.deleteById(prgId);
             
             log.info("비교과 프로그램 삭제 완료: ID={}", prgId);
@@ -469,6 +481,90 @@ public class AdminNoncurrProgramService {
             throw new RuntimeException("프로그램 삭제 중 오류가 발생했습니다.", e);
         }
     }
+    
+    /**
+     * ✅ 이미지 파일 삭제 (FTP + 로컬)
+     */
+    private void deleteImageFiles(Common_File fileInfo) {
+        if (fileInfo == null || fileInfo.getSaveFileName() == null) {
+            return;
+        }
+        
+        String fileName = fileInfo.getSaveFileName();
+        
+        try {
+            // ✅ 1. FTP 서버에서 파일 삭제
+            deleteFromFTPServer(fileName);
+            log.info("FTP 서버 파일 삭제 성공: {}", fileName);
+        } catch (Exception e) {
+            log.warn("FTP 서버 파일 삭제 실패 (계속 진행): {}", e.getMessage());
+        }
+        
+        try {
+            // ✅ 2. 로컬 서버에서 파일 삭제
+            deleteFromLocalServer(fileName);
+            log.info("로컬 파일 삭제 성공: {}", fileName);
+        } catch (Exception e) {
+            log.warn("로컬 파일 삭제 실패 (계속 진행): {}", e.getMessage());
+        }
+    }
+    
+    /**
+     * ✅ FTP 서버에서 파일 삭제
+     */
+    private void deleteFromFTPServer(String fileName) throws IOException {
+        FTPClient ftpClient = new FTPClient();
+        
+        try {
+            // FTP 서버 연결
+            ftpClient.connect(ftpHost, ftpPort);
+            boolean loginSuccess = ftpClient.login(ftpUsername, ftpPassword);
+            
+            if (!loginSuccess) {
+                throw new IOException("FTP 로그인 실패: " + ftpClient.getReplyString());
+            }
+            
+            // Passive 모드 설정
+            ftpClient.enterLocalPassiveMode();
+            
+            // 원격 디렉토리로 이동
+            ftpClient.changeWorkingDirectory(ftpRemoteDir);
+            
+            // 파일 삭제
+            boolean deleteSuccess = ftpClient.deleteFile(fileName);
+            if (!deleteSuccess) {
+                log.warn("FTP 파일 삭제 실패: {} (파일이 존재하지 않을 수 있음)", fileName);
+            }
+            
+        } finally {
+            if (ftpClient.isConnected()) {
+                try {
+                    ftpClient.logout();
+                    ftpClient.disconnect();
+                } catch (IOException e) {
+                    log.warn("FTP 연결 종료 중 오류: {}", e.getMessage());
+                }
+            }
+        }
+    }
+    
+    /**
+     * ✅ 로컬 서버에서 파일 삭제
+     */
+    private void deleteFromLocalServer(String fileName) {
+        String localUploadDir = System.getProperty("user.dir") + "/src/main/resources/static/uploads/noncurr/images/";
+        File file = new File(localUploadDir + fileName);
+        
+        if (file.exists()) {
+            boolean deleted = file.delete();
+            if (!deleted) {
+                log.warn("로컬 파일 삭제 실패: {}", file.getAbsolutePath());
+            }
+        } else {
+            log.warn("로컬 파일이 존재하지 않음: {}", file.getAbsolutePath());
+        }
+    }
+    
 
     /**
      * 파일 업로드 처리
