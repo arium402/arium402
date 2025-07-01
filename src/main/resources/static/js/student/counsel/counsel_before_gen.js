@@ -24,7 +24,7 @@ function updateCharCount(textarea) {
 }
 
 function saveAnswers() {
-	const formData = new FormData(document.getElementById('careerForm'));
+	const formData = new FormData();
 	formData.append('preSurveyId', preSurveyId);
 	formData.append('cnslCd', cnslCd);
 	

@@ -4,9 +4,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,11 +48,12 @@ public class StudentCounselBeforeController {
 	}
 	
 	@GetMapping("/con")
-	public String conPage(@RequestParam(defaultValue = "3") Integer preSurveyId, Model m) {
-		List<StudentCounselBeforeDTO> result = this.scs.getQuestionsByType(preSurveyId);
+	public String conPage(@RequestParam("cnslCd") Integer cnslCd, Model m) {
+		List<StudentCounselBeforeDTO> result = this.scs.getQuestionsByType(3);
 		
 		m.addAttribute("result", result);
-		m.addAttribute("preSurveyId", preSurveyId);
+		m.addAttribute("preSurveyId", 3);
+		m.addAttribute("cnslCd", cnslCd);
 		
 		return "/student/counsel/before/student_counsel_bef_con.html";	// 학습 컨설팅 사전 검사
 	}
