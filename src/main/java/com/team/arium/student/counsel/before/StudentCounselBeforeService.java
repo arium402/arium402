@@ -17,11 +17,11 @@ import com.team.arium.domain.Cnsl_PreQstOpt;
 public class StudentCounselBeforeService {
 	
 	@Autowired
-	private StudentCounselBeforeRepository pr;
+	private StudentCounselBeforeRepository br;
 	
 	// 일반상담 사전검사 문항들 조회
 	public List<StudentCounselBeforeDTO> getQuestionsByType(Integer preSurveyId) {
-		List<Cnsl_PreQst> questions = this.pr.findQuestionsByPreSurveyId(preSurveyId);
+		List<Cnsl_PreQst> questions = this.br.findQuestionsByPreSurveyId(preSurveyId);
 		List<StudentCounselBeforeDTO> result = new ArrayList<>();
 		
 		for (Cnsl_PreQst question : questions) {
@@ -59,7 +59,7 @@ public class StudentCounselBeforeService {
 		String preEvalId = "E" + String.valueOf(ctime).substring(5);
 		
 		// 마스터 정보 저장 (누가, 언제, 어떤 검사를 했는지)
-		this.pr.insertEvalMaster(preEvalId, stdId, preSurveyId);
+		this.br.insertEvalMaster(preEvalId, stdId, preSurveyId);
 		
 		// 답변 저장 (각 문항별로)
 		for (Map.Entry<String, String[]> entry : answers.entrySet()) {
@@ -73,11 +73,11 @@ public class StudentCounselBeforeService {
 					if (!value.trim().isEmpty()) {
 						if (isNumeric(value)) {
 							// 객관식 답변 (숫자 = 옵션 ID)
-							this.pr.insertEvalAnswer(preEvalId, questionId, Integer.parseInt(value), null);
+							this.br.insertEvalAnswer(preEvalId, questionId, Integer.parseInt(value), null);
 						}
 						else {
 							// 주관식 답변 (문자 = 텍스트) -> 113은 주관식 더미 pre_opt_id 값
-							this.pr.insertEvalAnswer(preEvalId, questionId, 113, value);
+							this.br.insertEvalAnswer(preEvalId, questionId, 113, value);
 						}
 					}
 				}
