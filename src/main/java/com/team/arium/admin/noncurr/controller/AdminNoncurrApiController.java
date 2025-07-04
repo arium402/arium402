@@ -3,6 +3,7 @@ package com.team.arium.admin.noncurr.controller;
 
 import com.team.arium.admin.noncurr.dto.ApplicantDTO;
 import com.team.arium.admin.noncurr.dto.NoncurrProgramDTO;
+import com.team.arium.admin.noncurr.dto.SatisfactionSurveyDTO;
 import com.team.arium.admin.noncurr.repository.CommonCodeRepository;
 import com.team.arium.admin.noncurr.service.AdminNoncurrProgramService;
 import com.team.arium.domain.Common_Code;
@@ -488,7 +489,45 @@ public class AdminNoncurrApiController {
         }
     }
     
-
+    /**
+     * 프로그램별 만족도 조사 통계 API
+     * JavaScript AJAX로 호출할 API
+     */
+    @GetMapping("/api/noncurr/satisfaction-stats/{prgId}")
+    @ResponseBody
+    public ResponseEntity<?> getSatisfactionStatistics(@PathVariable Integer prgId) {
+        log.info("만족도 조사 통계 API 호출: 프로그램ID={}", prgId);
+        
+        try {
+            // 만족도 조사 통계 조회
+            SatisfactionSurveyDTO statistics = adminNoncurrProgramService.getSatisfactionSurveyStatistics(prgId);
+            
+            log.info("만족도 조사 통계 조회 성공: 프로그램ID={}, 응답자수={}", 
+                    prgId, statistics.getTotalResponders());
+            
+            return ResponseEntity.ok(statistics);
+            
+        } catch (RuntimeException e) {
+            log.error("만족도 조사 통계 조회 실패: 프로그램ID={}, 오류={}", prgId, e.getMessage(), e);
+            
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("error", true);
+            errorResponse.put("message", e.getMessage());
+            errorResponse.put("prgId", prgId);
+            
+            return ResponseEntity.badRequest().body(errorResponse);
+            
+        } catch (Exception e) {
+            log.error("만족도 조사 통계 API 예상치 못한 오류: 프로그램ID={}, 오류={}", prgId, e.getMessage(), e);
+            
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("error", true);
+            errorResponse.put("message", "시스템 오류가 발생했습니다. 관리자에게 문의하세요.");
+            errorResponse.put("prgId", prgId);
+            
+            return ResponseEntity.internalServerError().body(errorResponse);
+        }
+    }
 
 
     

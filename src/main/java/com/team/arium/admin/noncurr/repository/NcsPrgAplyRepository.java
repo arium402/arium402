@@ -124,6 +124,16 @@ public interface NcsPrgAplyRepository extends JpaRepository<Ncs_PrgAply, Integer
         """, nativeQuery = true)
     List<Object[]> countApplicantsByStatus(@Param("prgId") Integer prgId);
 
-    
+    /**
+     * 특정 학생의 모든 신청 내역 조회
+     */
+    @Query("SELECT a FROM Ncs_PrgAply a WHERE a.stdInfo.stdId = :stdId ORDER BY a.aplyDt DESC")
+    List<Ncs_PrgAply> findByStdIdOrderByAplyDt(@Param("stdId") Integer stdId);
+
+    /**
+     * 학생의 특정 프로그램 신청 여부 확인
+     */
+    @Query("SELECT COUNT(a) > 0 FROM Ncs_PrgAply a WHERE a.ncsPrgInfo.prgId = :prgId AND a.stdInfo.stdId = :stdId")
+    boolean existsByPrgIdAndStdId(@Param("prgId") Integer prgId, @Param("stdId") Integer stdId);
     
 }

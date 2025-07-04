@@ -19,6 +19,10 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 public class NoncurrProgramDTO {
+	
+	private Integer totalApplicants;    // 총 참여인원
+	private String responseRate;        // 응답률
+	private String averageSatisfaction; // 평균만족도
 
     // 기본 프로그램 정보 (DB 컬럼명 매칭)
     private Integer prgId;              // 프로그램ID
@@ -73,6 +77,16 @@ public class NoncurrProgramDTO {
     private int size = 10;              // 페이지 크기
 
 
+ // getter, setter 추가
+    public Integer getTotalApplicants() { return totalApplicants; }
+    public void setTotalApplicants(Integer totalApplicants) { this.totalApplicants = totalApplicants; }
+
+    public String getResponseRate() { return responseRate; }
+    public void setResponseRate(String responseRate) { this.responseRate = responseRate; }
+
+    public String getAverageSatisfaction() { return averageSatisfaction; }
+    public void setAverageSatisfaction(String averageSatisfaction) { this.averageSatisfaction = averageSatisfaction; }
+    
     // ✅ 문자열로 받을 새 필드 추가
     private String competencyIdsStr;
     // ✅ 새로 추가: 핵심역량 점수 정보

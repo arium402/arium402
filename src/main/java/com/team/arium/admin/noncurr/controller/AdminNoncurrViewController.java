@@ -493,13 +493,44 @@ public class AdminNoncurrViewController {
      * 비교과 통계 페이지
      */
     @GetMapping("/noncurr_stat")
-    public String noncurr_stat(Model model) {
-        log.info("비교과 통계 페이지 요청");
+    public String noncurr_stat(
+            @RequestParam(name="page", defaultValue = "0") int page,
+            @RequestParam(name="size", defaultValue = "10") int size,
+            @RequestParam(name="search", required = false) String search,
+            @RequestParam(name="period", required = false) String period,    
+            @RequestParam(name="searchType", required = false) String searchType,
+            Model model) {
+        
+        log.info("비교과 통계 페이지 요청 - page: {}, size: {}, search: {}, period: {}, searchType: {}", 
+                page, size, search, period, searchType);
         
         try {
-            // 통계 데이터 조회 (추후 구현)
-            // Map<String, Object> stats = adminNoncurrProgramService.getStatistics();
-            // model.addAttribute("stats", stats);
+            Pageable pageable = PageRequest.of(page, size);
+            
+            // ✅ 완료된 프로그램 통계 목록 조회 (만족도 조사 마감일이 지난 프로그램만)
+            Page<NoncurrProgramDTO> completedPrograms = adminNoncurrProgramService.getCompletedProgramsForStats(
+                    search, period, searchType, pageable);
+            
+            model.addAttribute("programs", completedPrograms);
+            model.addAttribute("search", search);
+            model.addAttribute("period", period);
+            model.addAttribute("searchType", searchType);
+            model.addAttribute("currentPage", page);
+            model.addAttribute("totalPages", completedPrograms.getTotalPages());
+            model.addAttribute("totalElements", completedPrograms.getTotalElements());
+            
+            // 페이징 정보
+            model.addAttribute("hasPrevious", completedPrograms.hasPrevious());
+            model.addAttribute("hasNext", completedPrograms.hasNext());
+            model.addAttribute("isFirst", completedPrograms.isFirst());
+            model.addAttribute("isLast", completedPrograms.isLast());
+            
+            // 페이지 범위 계산
+            int totalPages = completedPrograms.getTotalPages();
+            int startPage = Math.max(1, page - 1); // 0-based에서 1-based로 변환
+            int endPage = Math.min(totalPages, page + 3);
+            model.addAttribute("startPage", startPage);
+            model.addAttribute("endPage", endPage);
             
             return "/admin/admin_noncurr_stat";
             
