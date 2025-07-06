@@ -150,75 +150,76 @@ function updateProgramGrid(programs) {
 
 // 프로그램 카드 HTML 생성
 function createProgramCard(program) {
-	    // 🔍 undefined 방지 처리
-	    const dDayText = program.dDayText || 'D-?';
-	    const programStatus = program.programStatus || 'available';
-	    const applicationStatus = program.applicationStatus || 'NOT_APPLIED';
-	    
-	    const dDayClass = programStatus === 'closed' ? 'urgent' : 
-	                     (program.dDay <= 3 ? 'urgent' : 
-	                      (program.dDay <= 7 ? 'warning' : ''));
-	    
-	    const buttonClass = applicationStatus === 'APPLIED' ? 'completed' : 
-	                       (programStatus === 'closed' ? 'disabled' : '');
-	    
-	    const buttonText = applicationStatus === 'APPLIED' ? '신청완료' : 
-	                      (programStatus === 'closed' ? '마감' : '신청하기');
-	    
-	    const capacityClass = program.currentApplicants >= program.maxCnt ? 'full' : '';
-	    
-	    // 🔍 디버그 로그 추가
-	    console.log('Program:', program.prgNm, 'D-Day Text:', dDayText);
-	    
-		
-		// 🔍 이미지 URL 디버깅
-		console.log('Program:', program.prgNm);
-		console.log('imageUrl:', program.imageUrl);
-		console.log('orgFileName:', program.orgFileName);
+    // 🔍 undefined 방지 처리
+    const dDayText = program.dDayText || 'D-?';
+    const programStatus = program.programStatus || 'available';
+    const applicationStatus = program.applicationStatus || 'NOT_APPLIED';
+    
+    const dDayClass = programStatus === 'closed' ? 'urgent' : 
+                     (program.dDay <= 3 ? 'urgent' : 
+                      (program.dDay <= 7 ? 'warning' : ''));
+    
+    const buttonClass = applicationStatus === 'APPLIED' ? 'completed' : 
+                       (programStatus === 'closed' ? 'disabled' : '');
+    
+    const buttonText = applicationStatus === 'APPLIED' ? '신청완료' : 
+                      (programStatus === 'closed' ? '마감' : '신청하기');
+    
+    const capacityClass = program.currentApplicants >= program.maxCnt ? 'full' : '';
+    
+    // 🔍 디버그 로그 추가
+    console.log('Program:', program.prgNm, 'D-Day Text:', dDayText);
+    console.log('Program:', program.prgNm);
+    console.log('imageUrl:', program.imageUrl);
+    console.log('orgFileName:', program.orgFileName);
 
-		
-	    return `
-	        <div class="program-card">
-	            <div class="program-image">
-	                <div class="dday-badge ${dDayClass}">${dDayText}</div>
-	                <div class="status-badge status-${programStatus}"></div>
-	                ${program.imageUrl ? 
-	                    `<img src="${program.imageUrl}" alt="프로그램 이미지">` : 
-	                    `<i class="fas fa-graduation-cap placeholder-icon"></i>`
-	                }
-	            </div>
-	            <div class="program-content">
-	                <h3 class="program-title">${program.prgNm || '프로그램명'}</h3>
-	                <div class="program-details">
-	                    <div class="program-dates">
-	                        <div class="date-item">
-	                            <span class="date-label">신청기간:</span>
-	                            <span class="date-value">${program.recruitStDt || '미정'} ~ ${program.recruitEndDt || '미정'}</span>
-	                        </div>
-	                        <div class="date-item">
-	                            <span class="date-label">운영기간:</span>
-	                            <span class="date-value">${program.prgStDt || '미정'} ~ ${program.prgEndDt || '미정'}</span>
-	                        </div>
-	                    </div>
-	                    <div class="program-info">
-	                        <span class="program-points">${program.mlgDefScore || 0} P</span>
-	                        <span class="program-capacity ${capacityClass}">${program.currentApplicants || 0}/${program.maxCnt || 0}</span>
-	                    </div>
-	                    <button class="apply-btn ${buttonClass}" 
-	                            ${programStatus === 'closed' ? 'disabled' : ''}
-	                            onclick="applyProgram(${program.prgId})">
-	                        ${buttonText}
-	                    </button>
-	                </div>
-	            </div>
-	        </div>
-	    `;
-	}
+    return `
+        <div class="program-card" onclick="goToDetail(${program.prgId})" style="cursor: pointer;">
+            <div class="program-image">
+                <div class="dday-badge ${dDayClass}">${dDayText}</div>
+                <div class="status-badge status-${programStatus}"></div>
+                ${program.imageUrl ? 
+                    `<img src="${program.imageUrl}" alt="프로그램 이미지">` : 
+                    `<i class="fas fa-graduation-cap placeholder-icon"></i>`
+                }
+            </div>
+            <div class="program-content">
+                <h3 class="program-title">${program.prgNm || '프로그램명'}</h3>
+                <div class="program-details">
+                    <div class="program-dates">
+                        <div class="date-item">
+                            <span class="date-label">신청기간:</span>
+                            <span class="date-value">${program.recruitStDt || '미정'} ~ ${program.recruitEndDt || '미정'}</span>
+                        </div>
+                        <div class="date-item">
+                            <span class="date-label">운영기간:</span>
+                            <span class="date-value">${program.prgStDt || '미정'} ~ ${program.prgEndDt || '미정'}</span>
+                        </div>
+                    </div>
+                    <div class="program-info">
+                        <span class="program-points">${program.mlgDefScore || 0} P</span>
+                        <span class="program-capacity ${capacityClass}">${program.currentApplicants || 0}/${program.maxCnt || 0}</span>
+                    </div>
+                    <button class="apply-btn ${buttonClass}" 
+                            ${programStatus === 'closed' ? 'disabled' : ''}
+                            onclick="applyProgram(${program.prgId}); event.stopPropagation();">
+                        ${buttonText}
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+}
 
-// 프로그램 신청 (경로 오류 수정)
+// ✅ 상세 페이지로 이동하는 함수
+function goToDetail(prgId) {
+    window.location.href = `/student/noncurr/detail?prgId=${prgId}`;
+}
+
+// 프로그램 신청
 function applyProgram(prgId) {
     if (confirm('이 프로그램에 신청하시겠습니까?')) {
-        fetch('/api/student/noncurr/apply', {  // ← 경로 수정
+        fetch('/api/student/noncurr/apply', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -229,7 +230,7 @@ function applyProgram(prgId) {
         .then(data => {
             alert(data.message);
             if (data.success) {
-                searchPrograms();
+                searchPrograms(); // 목록 새로고침
             }
         })
         .catch(error => {

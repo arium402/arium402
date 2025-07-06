@@ -50,6 +50,62 @@ public class StudentNoncurrApiController {
     }
     
     /**
+     * 핵심역량 차트 데이터 조회 API
+     */
+    @GetMapping("/competency/{prgId}")
+    public ResponseEntity<Map<String, Object>> getCompetencyData(@PathVariable("prgId") Integer prgId) {
+        try {
+            Integer stdId = 1; // 현재 하드코딩된 학생 ID
+            
+            CompetencyChartDTO competencyData = studentNoncurrService.getCompetencyChartData(prgId, stdId);
+            
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("data", competencyData);
+            
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+
+    /**
+     * 프로그램 신청 취소 API
+     */
+    @DeleteMapping("/cancel-application/{prgId}")
+    public ResponseEntity<Map<String, Object>> cancelApplicationNew(@PathVariable("prgId") Integer prgId) {
+        try {
+            Integer stdId = 1; // 현재 하드코딩된 학생 ID
+            
+            boolean success = studentNoncurrService.cancelApplication(prgId, stdId);
+            
+            Map<String, Object> response = new HashMap<>();
+            if (success) {
+                response.put("success", true);
+                response.put("message", "신청이 취소되었습니다.");
+                
+                // 업데이트된 프로그램 정보도 함께 반환
+                ProgramListDTO updatedProgram = studentNoncurrService.getProgramDetail(prgId, stdId);
+                response.put("program", updatedProgram);
+            } else {
+                response.put("success", false);
+                response.put("message", "취소에 실패했습니다.");
+            }
+            
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+    
+    
+    /**
      * 프로그램 상세 정보 API
      */
    @GetMapping("/detail/{prgId}")

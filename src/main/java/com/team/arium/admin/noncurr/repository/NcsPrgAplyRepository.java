@@ -6,10 +6,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.team.arium.domain.Ncs_PrgAply;
+
+import jakarta.persistence.QueryHint;
 
 @Repository
 public interface NcsPrgAplyRepository extends JpaRepository<Ncs_PrgAply, Integer> {
@@ -19,6 +22,17 @@ public interface NcsPrgAplyRepository extends JpaRepository<Ncs_PrgAply, Integer
     @Query(value = "SELECT COUNT(*) FROM ncs_prg_aply WHERE prg_id = ?1", nativeQuery = true)
     int countByPrgId(Integer prgId);
 
+    /**
+     * ✅ 캐시를 무시하고 프로그램과 학생으로 신청 내역 조회 (취소 후 재신청용)
+     */
+    @Query("SELECT a FROM Ncs_PrgAply a WHERE a.ncsPrgInfo.prgId = :prgId AND a.stdInfo.stdId = :stdId")
+    @QueryHints({
+        @QueryHint(name = "javax.persistence.cache.retrieveMode", value = "BYPASS"),
+        @QueryHint(name = "javax.persistence.cache.storeMode", value = "REFRESH")
+    })
+    List<Ncs_PrgAply> findByPrgIdAndStdIdWithRefresh(@Param("prgId") Integer prgId, @Param("stdId") Integer stdId);
+    
+    
     // ✅ 네이티브 쿼리 사용 (상태별)
     @Query(value = "SELECT COUNT(*) FROM ncs_prg_aply WHERE prg_id = ?1 AND aply_stat_cd = ?2", nativeQuery = true)
     int countByPrgIdAndAplyStatCd(Integer prgId, Integer aplyStatCd);

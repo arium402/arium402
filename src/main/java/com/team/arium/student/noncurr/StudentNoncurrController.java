@@ -32,7 +32,7 @@ public class StudentNoncurrController {
      * 프로그램 상세 페이지
      */
     @GetMapping("/detail")
-    public String detailPage(@RequestParam Integer prgId, Model model) {
+    public String detailPage(@RequestParam("prgId") Integer prgId, Model model) {
         Integer stdId = 1; 
         
         ProgramListDTO program = studentNoncurrService.getProgramDetail(prgId, stdId);
@@ -45,7 +45,7 @@ public class StudentNoncurrController {
      * 신청 페이지
      */
     @GetMapping("/add")
-    public String addPage(@RequestParam(required = false) Integer prgId, Model model) {
+    public String addPage(@RequestParam(value = "prgId", required = false) Integer prgId, Model model) {
         if (prgId != null) {
             Integer stdId = 1;
             ProgramListDTO program = studentNoncurrService.getProgramDetail(prgId, stdId);
@@ -72,7 +72,7 @@ public class StudentNoncurrController {
      * 만족도 조사 페이지
      */
     @GetMapping("/survey")
-    public String surveyPage(@RequestParam(required = false) Integer prgId, Model model) {
+    public String surveyPage(@RequestParam(value = "prgId", required = false) Integer prgId, Model model) {
         
         return "/student/noncurr/student_noncurr_survey";
     }

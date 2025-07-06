@@ -1,6 +1,8 @@
 package com.team.arium.student.noncurr;
 
 import com.team.arium.admin.noncurr.repository.NcsPrgInfoRepository;
+import com.team.arium.admin.admin_module;
+import com.team.arium.admin.noncurr.repository.CommonCodeRepository;
 import com.team.arium.admin.noncurr.repository.NcsPrgAplyRepository;
 import com.team.arium.domain.Ncs_PrgInfo;
 import com.team.arium.domain.Ncs_PrgAply;
@@ -8,6 +10,7 @@ import com.team.arium.domain.Std_Info;
 import com.team.arium.domain.Common_Code;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +27,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import com.team.arium.admin.noncurr.repository.NcsCclRelRepository;
+import com.team.arium.admin.noncurr.repository.StdCclScoreRepository;
+import com.team.arium.admin.noncurr.repository.CoreCptInfoRepository;
+import com.team.arium.domain.Ncs_CclRel;
+import com.team.arium.domain.Std_CclScore;
+import com.team.arium.domain.Core_CptInfo;
+
+
+
 @Service
 public class StudentNoncurrService {
     
@@ -32,6 +44,25 @@ public class StudentNoncurrService {
     
     @Autowired
     private NcsPrgAplyRepository ncsPrgAplyRepository;
+    
+    @Autowired
+    private CommonCodeRepository commonCodeRepository;
+    
+    @Autowired
+    private StdInfoRepository stdInfoRepository;
+    
+    @Autowired
+    private NcsCclRelRepository ncsCclRelRepository;
+
+    @Autowired
+    private StdCclScoreRepository stdCclScoreRepository;
+
+    @Autowired
+    private CoreCptInfoRepository coreCptInfoRepository;
+    
+    @Autowired
+    @Qualifier("admin_module")
+    private admin_module adminModule;
     
     /**
      * 학생용 프로그램 목록 조회
@@ -65,43 +96,66 @@ public class StudentNoncurrService {
     }
     
     /**
-     * 프로그램 신청
+     * ✅ 프로그램 신청 (개선된 버전)
      */
     @Transactional
     public boolean applyProgram(Integer prgId, Integer stdId) {
         try {
-            // 1. 중복 신청 체크
+            System.out.println("신청 처리 시작 - 프로그램 ID: " + prgId + ", 학생 ID: " + stdId);
+            
+            // 1. 프로그램 존재 여부 확인
+            Ncs_PrgInfo program = ncsPrgInfoRepository.findById(prgId)
+                .orElseThrow(() -> new RuntimeException("프로그램을 찾을 수 없습니다."));
+            
+            // ✅ 2. 중복 신청 체크 (캐시 무시)
             if (isAlreadyApplied(prgId, stdId)) {
                 throw new RuntimeException("이미 신청한 프로그램입니다.");
             }
             
-            // 2. 프로그램 존재 여부 및 신청 가능 여부 체크
-            Ncs_PrgInfo program = ncsPrgInfoRepository.findById(prgId)
-                .orElseThrow(() -> new RuntimeException("프로그램을 찾을 수 없습니다."));
-            
-            // 3. 모집 기간 체크
-            if (!isRecruitmentPeriod(program)) {
-                throw new RuntimeException("신청 기간이 아닙니다.");
-            }
-            
-            // 4. 정원 체크
+            // 3. 신청 가능 여부 체크
             int currentApplicants = ncsPrgAplyRepository.countByPrgId(prgId);
+            String applicationPeriodStatus = getApplicationPeriodStatus(program);
+            
+            // 정원 체크
             if (currentApplicants >= program.getMaxCnt()) {
                 throw new RuntimeException("모집 정원이 마감되었습니다.");
             }
             
-            // 5. 신청 정보 저장
+            // 신청 기간 체크
+            if ("BEFORE_PERIOD".equals(applicationPeriodStatus)) {
+                throw new RuntimeException("아직 신청 기간이 시작되지 않았습니다. 신청 시작일: " + program.getRecruitStDt());
+            } else if ("AFTER_PERIOD".equals(applicationPeriodStatus)) {
+                throw new RuntimeException("신청 기간이 종료되었습니다. 신청 마감일: " + program.getRecruitEndDt());
+            } else if (!"DURING_PERIOD".equals(applicationPeriodStatus)) {
+                throw new RuntimeException("현재 신청할 수 없는 프로그램입니다.");
+            }
+            
+            // 4. 신청 정보 저장
+            Common_Code aplyStatCode = commonCodeRepository.findById(61)
+                .orElseThrow(() -> new RuntimeException("신청 상태 코드를 찾을 수 없습니다."));
+            
+            Std_Info student = stdInfoRepository.findById(stdId)
+                .orElseThrow(() -> new RuntimeException("학생 정보를 찾을 수 없습니다."));
+            
+            String todayStr = adminModule.todays_module();
+            
             Ncs_PrgAply application = Ncs_PrgAply.builder()
                 .ncsPrgInfo(program)
-                .stdInfo(Std_Info.builder().stdId(stdId).build())
-                .aplyDt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
-                .aplyStatCd(Common_Code.builder().codeId(1).build()) // 신청완료 상태
+                .stdInfo(student)
+                .aplyDt(todayStr)
+                .aplyStatCd(aplyStatCode)
                 .build();
             
-            ncsPrgAplyRepository.save(application);
+            Ncs_PrgAply savedApplication = ncsPrgAplyRepository.save(application);
+            
+            // ✅ 강제로 플러시하여 즉시 DB 반영
+            ncsPrgAplyRepository.flush();
+            
+            System.out.println("신청 저장 완료 - 신청 ID: " + savedApplication.getAplyId());
             return true;
             
         } catch (Exception e) {
+            System.err.println("신청 처리 오류: " + e.getMessage());
             throw new RuntimeException("신청 처리 중 오류가 발생했습니다: " + e.getMessage());
         }
     }
@@ -121,7 +175,7 @@ public class StudentNoncurrService {
     // ==================== Private 메서드들 ====================
     
     /**
-     * 엔티티를 DTO로 변환
+     * 엔티티를 DTO로 변환 (수정된 버전)
      */
     private ProgramListDTO convertToDTO(Ncs_PrgInfo program, Integer stdId) {
         // 현재 신청인원 수 조회
@@ -137,11 +191,21 @@ public class StudentNoncurrService {
         // 프로그램 상태 결정
         String programStatus = getProgramStatus(dDay, currentApplicants, program.getMaxCnt());
         
-        System.out.println("Program: " + program.getPrgNm());
-        System.out.println("D-Day: " + dDay);
-        System.out.println("D-Day Text: " + dDayText);
-        System.out.println("Program Status: " + programStatus);
+        // ✅ 신청 기간 상태 확인
+        String applicationPeriodStatus = getApplicationPeriodStatus(program);
         
+        // ✅ 신청 가능 여부 계산
+        Boolean canApply = calculateCanApply(program, currentApplicants, applicationStatus);
+        
+        // ✅ 취소 가능 여부 및 이유 계산
+        CancelInfo cancelInfo = calculateCancelInfo(program, applicationStatus);
+        
+        System.out.println("Program: " + program.getPrgNm());
+        System.out.println("Application Period Status: " + applicationPeriodStatus);
+        System.out.println("D-Day: " + dDay);
+        System.out.println("Can Apply: " + canApply);
+        System.out.println("Can Cancel: " + cancelInfo.canCancel);
+        System.out.println("Cancel Reason: " + cancelInfo.reasonMessage);
         
         return ProgramListDTO.builder()
             .prgId(program.getPrgId())
@@ -162,21 +226,183 @@ public class StudentNoncurrService {
             .dDay(dDay)
             .dDayText(dDayText)
             .imageUrl(getImageUrl(program))
+            .canApply(canApply)
+            .canCancel(cancelInfo.canCancel)
+            .cancelReasonMessage(cancelInfo.reasonMessage)
+            .applicationPeriodStatus(applicationPeriodStatus)  // ✅ 신청 기간 상태 추가
             .build();
     }
     
     /**
-     * 중복 신청 체크
+     * ✅ 취소 가능 여부 및 이유 계산
+     */
+    private CancelInfo calculateCancelInfo(Ncs_PrgInfo program, String applicationStatus) {
+        try {
+            // 신청하지 않은 경우
+            if (!"APPLIED".equals(applicationStatus)) {
+                return new CancelInfo(false, "");
+            }
+            
+            String applicationPeriodStatus = getApplicationPeriodStatus(program);
+            
+            // 신청기간 중: 취소 가능
+            if ("DURING_PERIOD".equals(applicationPeriodStatus)) {
+                return new CancelInfo(true, "");
+            }
+            
+            // 신청기간 시작 전: 이론적으로는 취소 가능하지만 실제로는 발생하지 않아야 함
+            if ("BEFORE_PERIOD".equals(applicationPeriodStatus)) {
+                return new CancelInfo(false, "(신청기간 시작 전)");
+            }
+            
+            // 신청기간 종료 후: 운영기간 시작 여부에 따라 구분
+            if ("AFTER_PERIOD".equals(applicationPeriodStatus)) {
+                LocalDate today = getCurrentDate();
+                LocalDate programStartDate = LocalDate.parse(program.getPrgStDt());
+                
+                if (today.isBefore(programStartDate)) {
+                    // 신청기간은 끝났지만 운영기간은 시작되지 않음
+                    return new CancelInfo(false, "(신청기간 종료로 취소 불가)");
+                } else {
+                    // 운영기간 시작됨
+                    return new CancelInfo(false, "(운영기간 시작으로 취소 불가)");
+                }
+            }
+            
+            // 기타 경우 (예상하지 못한 상황)
+            return new CancelInfo(false, "(취소 불가)");
+            
+        } catch (Exception e) {
+            System.err.println("취소 가능 여부 계산 오류: " + e.getMessage());
+            return new CancelInfo(false, "(오류로 인한 취소 불가)");
+        }
+    }
+    
+    /**
+     * ✅ 취소 정보를 담는 내부 클래스
+     */
+    private static class CancelInfo {
+        final boolean canCancel;
+        final String reasonMessage;
+        
+        CancelInfo(boolean canCancel, String reasonMessage) {
+            this.canCancel = canCancel;
+            this.reasonMessage = reasonMessage;
+        }
+    }
+    
+    /**
+     * ✅ 신청 가능 여부 계산
+     */
+    private Boolean calculateCanApply(Ncs_PrgInfo program, int currentApplicants, String applicationStatus) {
+        try {
+            // 1. 이미 신청한 경우 신청 불가
+            if ("APPLIED".equals(applicationStatus)) {
+                return false;
+            }
+            
+            // 2. 정원 마감시 신청 불가
+            if (currentApplicants >= program.getMaxCnt()) {
+                return false;
+            }
+            
+            // 3. 신청기간이 아니면 신청 불가
+            LocalDate today = getCurrentDate();
+            LocalDate recruitStartDate = LocalDate.parse(program.getRecruitStDt());
+            LocalDate recruitEndDate = LocalDate.parse(program.getRecruitEndDt());
+            
+            boolean withinRecruitPeriod = !today.isBefore(recruitStartDate) && !today.isAfter(recruitEndDate);
+            
+            return withinRecruitPeriod;
+            
+        } catch (Exception e) {
+            System.err.println("신청 가능 여부 계산 오류: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * ✅ 신청 상태 구분 (신청 전/중/후 구분)
+     */
+    private String getApplicationPeriodStatus(Ncs_PrgInfo program) {
+        try {
+            LocalDate today = getCurrentDate();
+            LocalDate recruitStartDate = LocalDate.parse(program.getRecruitStDt());
+            LocalDate recruitEndDate = LocalDate.parse(program.getRecruitEndDt());
+            
+            if (today.isBefore(recruitStartDate)) {
+                return "BEFORE_PERIOD";  // 신청기간 시작 전
+            } else if (!today.isAfter(recruitEndDate)) {
+                return "DURING_PERIOD";  // 신청기간 중
+            } else {
+                return "AFTER_PERIOD";   // 신청기간 종료
+            }
+            
+        } catch (Exception e) {
+            System.err.println("신청 기간 상태 계산 오류: " + e.getMessage());
+            return "UNKNOWN";
+        }
+    }
+    
+    
+    /**
+     * 신청취소 가능 여부 계산 (신청기간 내에서만 취소 가능)
+     */
+    private Boolean calculateCanCancel(Ncs_PrgInfo program, String applicationStatus) {
+        // 신청하지 않은 경우 취소 불가
+        if (!"APPLIED".equals(applicationStatus)) {
+            return false;
+        }
+        
+        try {
+            LocalDate today = getCurrentDate();
+            
+            // ✅ 신청기간 확인 (운영기간이 아닌 신청기간)
+            LocalDate recruitStartDate = LocalDate.parse(program.getRecruitStDt());  // 신청 시작일
+            LocalDate recruitEndDate = LocalDate.parse(program.getRecruitEndDt());    // 신청 마감일
+            
+            // 현재 날짜가 신청기간 내에 있어야 취소 가능
+            boolean withinRecruitPeriod = !today.isBefore(recruitStartDate) && !today.isAfter(recruitEndDate);
+            
+            System.out.println("취소 가능 여부 계산:");
+            System.out.println("  - 오늘 날짜: " + today);
+            System.out.println("  - 신청 시작일: " + recruitStartDate);
+            System.out.println("  - 신청 마감일: " + recruitEndDate);
+            System.out.println("  - 신청기간 내: " + withinRecruitPeriod);
+            System.out.println("  - 취소 가능: " + withinRecruitPeriod);
+            
+            return withinRecruitPeriod;
+            
+        } catch (Exception e) {
+            System.err.println("취소 가능 여부 계산 오류: " + e.getMessage());
+            return false; // 오류 시 취소 불가
+        }
+    }
+    
+    /**
+     * ✅ 중복 신청 체크 (캐시 무시 버전)
      */
     private boolean isAlreadyApplied(Integer prgId, Integer stdId) {
-        return !ncsPrgAplyRepository.findByPrgIdAndStdId(prgId, stdId).isEmpty();
+        try {
+            // ✅ 캐시를 무시하고 직접 DB 조회
+            List<Ncs_PrgAply> applications = ncsPrgAplyRepository.findByPrgIdAndStdIdWithRefresh(prgId, stdId);
+            boolean isApplied = !applications.isEmpty();
+            
+            System.out.println("중복 신청 체크 - 프로그램 ID: " + prgId + ", 학생 ID: " + stdId + ", 결과: " + isApplied);
+            return isApplied;
+            
+        } catch (Exception e) {
+            System.err.println("중복 신청 체크 오류: " + e.getMessage());
+            // 안전을 위해 true 반환 (신청 차단)
+            return true;
+        }
     }
     
     /**
      * 모집 기간 체크
      */
     private boolean isRecruitmentPeriod(Ncs_PrgInfo program) {
-        LocalDate today = LocalDate.now();
+        LocalDate today = getCurrentDate();
         LocalDate startDate = LocalDate.parse(program.getRecruitStDt());
         LocalDate endDate = LocalDate.parse(program.getRecruitEndDt());
         
@@ -192,7 +418,7 @@ public class StudentNoncurrService {
                 return -999; // 기본값
             }
             
-            LocalDate today = LocalDate.now();
+            LocalDate today = getCurrentDate();
             LocalDate endDate = LocalDate.parse(recruitEndDt.trim());
             int dDay = (int) ChronoUnit.DAYS.between(today, endDate);
             
@@ -417,7 +643,7 @@ public class StudentNoncurrService {
     }
 
     /**
-     * 프로그램 신청 취소
+     * ✅ 프로그램 신청 취소 (개선된 버전)
      */
     @Transactional
     public boolean cancelApplication(Integer prgId, Integer stdId) {
@@ -432,14 +658,91 @@ public class StudentNoncurrService {
             Ncs_PrgAply application = applications.get(0);
             ncsPrgAplyRepository.delete(application);
             
+            // ✅ 강제로 플러시하여 즉시 DB 반영
+            ncsPrgAplyRepository.flush();
+            
+            System.out.println("신청 취소 완료 - 프로그램 ID: " + prgId + ", 학생 ID: " + stdId);
             return true;
             
         } catch (Exception e) {
+            System.err.println("신청 취소 오류: " + e.getMessage());
             throw new RuntimeException("신청 취소 중 오류가 발생했습니다: " + e.getMessage());
         }
     }
     
+    public CompetencyChartDTO getCompetencyChartData(Integer prgId, Integer stdId) {
+        try {
+            // 1. 상위 핵심역량만 조회 (up_ccl_id가 null인 것들)
+            List<Core_CptInfo> mainCompetencies = coreCptInfoRepository.findByUpCclIdIsNull();
+            
+            // 2. 프로그램 핵심역량 조회
+            List<Ncs_CclRel> programCompetencies = ncsCclRelRepository.findByPrgId(prgId);
+            
+            // 3. 학생 핵심역량 조회
+            List<Std_CclScore> studentScores = stdCclScoreRepository.findByStdId(stdId);
+            
+            // 4. 프로그램 데이터 구성
+            List<CompetencyData> programData = mainCompetencies.stream()
+                .map(comp -> {
+                    Integer score = programCompetencies.stream()
+                        .filter(rel -> rel.getCclId().equals(comp.getCclId()))
+                        .map(Ncs_CclRel::getCclScore)
+                        .findFirst()
+                        .orElse(0);
+                    
+                    return CompetencyData.builder()
+                        .competencyName(comp.getCclNm())
+                        .score(score)
+                        .build();
+                })
+                .collect(Collectors.toList());
+            
+            // 5. 학생 데이터 구성
+            List<StudentCompetencyData> studentData = mainCompetencies.stream()
+                .map(comp -> {
+                    Integer currentScore = studentScores.stream()
+                        .filter(score -> score.getCoreCptInfo().getCclId().equals(comp.getCclId()))
+                        .mapToInt(Std_CclScore::getScore)
+                        .sum();
+                    
+                    Integer programScore = programCompetencies.stream()
+                        .filter(rel -> rel.getCclId().equals(comp.getCclId()))
+                        .map(Ncs_CclRel::getCclScore)
+                        .findFirst()
+                        .orElse(0);
+                    
+                    return StudentCompetencyData.builder()
+                        .competencyName(comp.getCclNm())
+                        .currentScore(currentScore)
+                        .programScore(programScore)
+                        .build();
+                })
+                .collect(Collectors.toList());
+            
+            return CompetencyChartDTO.builder()
+                .programCompetencies(programData)
+                .studentCompetencies(studentData)
+                .build();
+                
+        } catch (Exception e) {
+            e.printStackTrace();
+            // 기본값 반환
+            return CompetencyChartDTO.builder()
+                .programCompetencies(new ArrayList<>())
+                .studentCompetencies(new ArrayList<>())
+                .build();
+        }
+    }
     
-    
+    // ✅ 그리고 이 메소드도 추가
+    private LocalDate getCurrentDate() {
+        try {
+            String todayStr = adminModule.todays_module();
+            return LocalDate.parse(todayStr);
+        } catch (Exception e) {
+            System.err.println("현재 날짜 조회 오류: " + e.getMessage());
+            return getCurrentDate(); // fallback
+        }
+    }
     
 }

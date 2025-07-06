@@ -28,6 +28,11 @@ public class ProgramListDTO {
     private Integer currentApplicants;
     private String applicationStatus;
     private String programStatus;
+    private Boolean canCancel; 
+    private Boolean canApply;           // ✅ 신청 가능 여부 추가
+    private String cancelReasonMessage; // ✅ 취소 불가 이유 메시지 추가
+    private String applicationPeriodStatus;  // ✅ 신청 기간 상태 추가 (BEFORE_PERIOD, DURING_PERIOD, AFTER_PERIOD)
+    
     
     @JsonProperty("dDay")        // ← JSON에서 "dDay"로 출력
     private Integer dDay;
@@ -38,4 +43,5 @@ public class ProgramListDTO {
     // 이미지 관련
     private String imageUrl;
     private String orgFileName;
+    
 }
