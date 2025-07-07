@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.team.arium.domain.Cnlr_Schd;
@@ -38,7 +41,16 @@ public class StudentCounselAddService {
 		
 		List<Cnlr_Schd> schedules = this.ar.findByYearAndMonth(year, month);
 		
-		// DTO로 변환
+		// 고정된 운영시간 (9시-16시, 1시간 단위)
+		List<String> timeSlots = Arrays.asList(
+			"09:00 ~ 10:00", "10:00 ~ 11:00", "11:00 ~ 12:00",
+			"12:00 ~ 13:00", "13:00 ~ 14:00", "14:00 ~ 15:00", "15:00 ~ 16:00"
+		);
+		
+		// 동적으로 실제 스케줄이 있는 요일만 수집
+		List<String> dynamicDays = new ArrayList<>();
+		
+		// DTO로 변환하면서 동시에 실제 스케줄 있는 요일 수집
 		List<StudentCounselAddDTO> counselors = new ArrayList<>();
 		
 		for (Cnlr_Schd schedule : schedules) {
@@ -54,6 +66,18 @@ public class StudentCounselAddService {
 			dto.setStatus(status);
 			
 			counselors.add(dto);
+			
+			// 실제 스케줄이 있는 요일만 수집 (중복 체크)
+			String day = schedule.getWorkDay().getCode();
+			
+			if (!dynamicDays.contains(day)) {
+				dynamicDays.add(day);
+			}
+		}
+		
+		// 스케줄이 없으면 기본 요일 표시 (월~금)
+		if (dynamicDays.isEmpty()) {
+			dynamicDays = Arrays.asList("월", "화", "수", "목", "금");
 		}
 		
 		// 결과 반환
@@ -61,8 +85,8 @@ public class StudentCounselAddService {
 		result.put("counselors", counselors);
 		result.put("startDate", startDate);
 		result.put("endDate", calculateEndDate(startDate));
-		result.put("timeSlots", Arrays.asList("09:00 ~ 10:00", "10:00 ~ 11:00", "11:00 ~ 12:00", "12:00 ~ 13:00", "13:00 ~ 14:00", "14:00 ~ 15:00", "15:00 ~ 16:00"));
-		result.put("days", Arrays.asList("월", "화", "수", "목", "금"));
+		result.put("timeSlots", timeSlots);
+		result.put("days", dynamicDays); 
 		
 		// 화면 표시용 날짜 (yyyy.MM.dd)
 		result.put("displayStartDate", startDate.replace("-", "."));
@@ -108,5 +132,94 @@ public class StudentCounselAddService {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		
 		return sdf.format(cal.getTime());
+	}
+	
+	// 특정 학생의 상담 신청 내역 조회 (페이징)
+	public Page<StudentCounselAddDTO> getCnslAplyList(Integer stdId, Pageable pageable) {
+		stdId = 1;
+
+		Page<Cnsl_Aply> entityPage = this.ar.findCnslAplyByStdId(stdId, pageable);
+		
+		// Entity List를 DTO List로 변환
+		List<StudentCounselAddDTO> dtoList = new ArrayList<>();
+		for (Cnsl_Aply entity : entityPage.getContent()) {
+			StudentCounselAddDTO dto = convertToDto(entity);
+			dtoList.add(dto);
+		}
+		
+		// 새로운 Page 객체 생성
+		return new PageImpl<>(dtoList, pageable, entityPage.getTotalElements());
+	}
+	
+	// Entity를 DTO로 변환
+	private StudentCounselAddDTO convertToDto(Cnsl_Aply entity) {
+		StudentCounselAddDTO dto = new StudentCounselAddDTO();
+		
+		dto.setCnslAplyId(entity.getCnslAplyId());
+		dto.setEmplName(entity.getEmplInfo().getEmplName());
+		
+		// 상담 분류는 cnslPreEvalMaster → cnslPreInfo → preTypeCd(공통코드) → codeName
+		String preEvalType = entity.getCnslPreEvalMaster().getCnslPreInfo().getPreTypeCd().getCode();
+		dto.setPreEvalType(preEvalType);
+		
+		dto.setRegDt(entity.getRegDt());
+		
+		// 날짜 기준으로 상담 현황 자동 계산
+		String cnslStatus = calculateCnslStatus(entity.getCnclDt());
+		dto.setCnslStatus(cnslStatus);
+		
+		// CSS 클래스 설정 (공통코드 기준)
+		if ("심리".equals(preEvalType)) {
+			dto.setPreEvalTypeCode("category-psychology");
+		}
+		else if ("진로/취업".equals(preEvalType)) {
+			dto.setPreEvalTypeCode("category-career");
+		}
+		else if ("학습 컨설팅".equals(preEvalType)) {
+			dto.setPreEvalTypeCode("category-learning");
+		}
+		else if ("익명".equals(preEvalType)) {
+			dto.setPreEvalTypeCode("category-anonymous");
+		}
+		else if ("위기".equals(preEvalType)) {
+			dto.setPreEvalTypeCode("category-crisis");
+		}
+		
+		// 상담 현황별 CSS 클래스
+		if ("신청".equals(cnslStatus)) {
+			dto.setCnslStatusCode("status-waiting");
+		}
+		else if ("진행".equals(cnslStatus)) {
+			dto.setCnslStatusCode("status-ongoing");
+		}
+		else if ("종료".equals(cnslStatus)) {
+			dto.setCnslStatusCode("status-completed");
+		}
+		
+		return dto;
+	}
+	
+	// 상담 날짜 기준으로 현황 계산
+	private String calculateCnslStatus(String cnclDt) {
+		try {
+			// 현재 날짜
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			Calendar cal = Calendar.getInstance();
+			String today = sdf.format(cal.getTime());
+			
+			// 날짜 문자열 비교
+			if (today.compareTo(cnclDt) < 0) {
+				return "신청";	// 현재 날짜 < 상담 날짜
+			}
+			else if (today.equals(cnclDt)) {
+				return "진행";	// 현재 날짜 = 상담 날짜
+			}
+			else {
+				return "종료";	// 현재 날짜 > 상담 날짜
+			}
+		}
+		catch (Exception e) {
+			return "신청";	// 오류시 기본값
+		}
 	}
 }

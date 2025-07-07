@@ -32,4 +32,12 @@ public class StudentCounselAddDTO {
 	// 화면 표시용
 	private String timeSlot;	// 시간대 (09:00~10:00)
 	private String dayName;	// 요일명 (월, 화, 수, 목, 금)
+	
+	// 상담 신청 내역 정보 (추가)
+	private Integer cnslAplyId;	// 상담 신청 ID
+	private String preEvalType;	// 상담 분류
+	private String regDt;	// 신청일자
+	private String cnslStatus;	// 상담 현황
+	private String cnslStatusCode;	// 상담 현황 코드
+	private String preEvalTypeCode;	// 상담 분류 코드
 }

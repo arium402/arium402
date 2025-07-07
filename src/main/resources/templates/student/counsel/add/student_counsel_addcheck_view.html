@@ -14,7 +14,7 @@
 					<h3 class="table-title">
 						<i class="fas fa-file-alt me-2"></i>나의 상담 신청 내역
 					</h3>
-					<span class="table-info">총 <strong>5건</strong>의 상담 신청 내역이 있습니다.</span>
+					<span class="table-info">총 <strong th:text="${cnslList.totalElements}"></strong>건의 상담 신청 내역이 있습니다.</span>
 				</div>
 
 				<table class="counseling-table">
@@ -28,59 +28,22 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td>5</td>
+						<!-- 데이터가 있을 때 -->
+						<tr th:each="cnsl : ${cnslList.content}">
+							<td th:text="${cnsl.cnslAplyId}">5</td>
 							<td>
-								<span class="category-badge category-psychology">심리상담</span>
+								<span th:class="|category-badge ${cnsl.preEvalTypeCode}|" th:text="${cnsl.preEvalType}"></span>
 							</td>
-							<td>김상담</td>
-							<td>2024.12.15</td>
+							<td th:text="${cnsl.emplName}"></td>
+							<td th:text="${cnsl.regDt}"></td>
 							<td>
-								<span class="status-badge status-ongoing">진행</span>
-							</td>
-						</tr>
-						<tr>
-							<td>4</td>
-							<td>
-								<span class="category-badge category-career">진로/취업</span>
-							</td>
-							<td>이상담</td>
-							<td>2024.12.10</td>
-							<td>
-								<span class="status-badge status-completed">종료</span>
+								<span th:class="|status-badge ${cnsl.cnslStatusCode}|" th:text="${cnsl.cnslStatus}"></span>
 							</td>
 						</tr>
-						<tr>
-							<td>3</td>
-							<td>
-								<span class="category-badge category-learning">학습컨설팅</span>
-							</td>
-							<td>박상담</td>
-							<td>2024.11.28</td>
-							<td>
-								<span class="status-badge status-completed">종료</span>
-							</td>
-						</tr>
-						<tr>
-							<td>2</td>
-							<td>
-								<span class="category-badge category-anonymous">익명상담</span>
-							</td>
-							<td>최상담</td>
-							<td>2024.11.20</td>
-							<td>
-								<span class="status-badge status-completed">종료</span>
-							</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>
-								<span class="category-badge category-psychology">심리상담</span>
-							</td>
-							<td>정상담</td>
-							<td>2024.11.15</td>
-							<td>
-								<span class="status-badge status-completed">종료</span>
+						<!-- 데이터가 없을 때 -->
+						<tr th:if="${#lists.isEmpty(cnslList.content)}">
+							<td colspan="5" style="text-align: center;">
+								상담 신청 내역이 없습니다.
 							</td>
 						</tr>
 					</tbody>
@@ -89,39 +52,33 @@
 				<!-- 페이징 네비게이션 -->
 				<nav aria-label="상담 신청 내역 페이징" class="mt-4">
 					<ul class="pagination justify-content-center">
-						<li class="page-item disabled">
-							<a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+						<!-- 첫 페이지 (데이터가 있고 여러 페이지일 때만) -->
+						<li class="page-item" th:if="${cnslList.totalPages > 1}" th:classappend="${cnslList.first} ? 'disabled'">
+							<a class="page-link" th:href="${cnslList.first} ? '#' : '?page=0'" tabindex="-1">
 								<i class="fas fa-angle-double-left"></i>
 							</a>
 						</li>
-						<li class="page-item disabled">
-							<a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+						<!-- 이전 페이지 (데이터가 있고 여러 페이지일 때만) -->
+						<li class="page-item" th:if="${cnslList.totalPages > 1}" th:classappend="${cnslList.first} ? 'disabled'">
+							<a class="page-link" th:href="${cnslList.first} ? '#' : '?page=' + ${cnslList.number - 1}" tabindex="-1">
 								<i class="fas fa-angle-left"></i>
 							</a>
 						</li>
-						<li class="page-item active">
-							<a class="page-link" href="#">1</a>
+						<!-- 페이지 번호들 (항상 현재 페이지는 표시) -->
+						<li class="page-item" th:each="i : ${#numbers.sequence(1, T(java.lang.Math).max(1, cnslList.totalPages))}"
+							th:classappend="${i - 1 == cnslList.number} ? 'active'">
+							<a class="page-link" th:href="'?page=' + ${i - 1}" th:text="${i}">1</a>
 						</li>
-						<li class="page-item">
-							<a class="page-link" href="#">2</a>
-						</li>
-						<li class="page-item">
-							<a class="page-link" href="#">3</a>
-						</li>
-						<li class="page-item">
-							<a class="page-link" href="#">4</a>
-						</li>
-						<li class="page-item">
-							<a class="page-link" href="#">5</a>
-						</li>
-						<li class="page-item">
-							<a class="page-link" href="#">
-						<i class="fas fa-angle-right"></i>
+						<!-- 다음 페이지 (데이터가 있고 여러 페이지일 때만) -->
+						<li class="page-item" th:if="${cnslList.totalPages > 1}" th:classappend="${cnslList.last} ? 'disabled'">
+							<a class="page-link" th:href="${cnslList.last} ? '#' : '?page=' + ${cnslList.number + 1}">
+								<i class="fas fa-angle-right"></i>
 							</a>
 						</li>
-						<li class="page-item">
-							<a class="page-link" href="#">
-								<i class="fas fa-angle-double-double-right"></i>
+						<!-- 마지막 페이지 (데이터가 있고 여러 페이지일 때만) -->
+						<li class="page-item" th:if="${cnslList.totalPages > 1}" th:classappend="${cnslList.last} ? 'disabled'">
+							<a class="page-link" th:href="${cnslList.last} ? '#' : '?page=' + ${cnslList.totalPages - 1}">
+								<i class="fas fa-angle-double-right"></i>
 							</a>
 						</li>
 					</ul>
