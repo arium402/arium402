@@ -1,217 +1,307 @@
-// 프로그램 데이터
-const programData = [
-	{
-		id: 1,
-		name: "진로탐색 및 자기계발 워크샵",
-		period: "2024-06-20 ~ 2024-06-22",
-		status: "applied",
-		satisfaction: "none"
-	},
-	{
-		id: 2,
-		name: "리더십 개발 프로그램",
-		period: "2024-05-15 ~ 2024-05-17",
-		status: "ongoing",
-		satisfaction: "none"
-	},
-	{
-		id: 3,
-		name: "창업 아이디어 경진대회",
-		period: "2024-04-10 ~ 2024-04-12",
-		status: "completed",
-		satisfaction: "pending"
-	},
-	{
-		id: 4,
-		name: "글로벌 역량 강화 세미나",
-		period: "2024-03-20 ~ 2024-03-22",
-		status: "completed",
-		satisfaction: "completed"
-	},
-	{
-		id: 5,
-		name: "소통 스킬 향상 워크샵",
-		period: "2024-02-25 ~ 2024-02-27",
-		status: "completed",
-		satisfaction: "completed"
-	},
-	{
-		id: 6,
-		name: "디지털 리터러시 교육",
-		period: "2024-01-15 ~ 2024-01-17",
-		status: "completed",
-		satisfaction: "pending"
-	},
-	{
-		id: 7,
-		name: "팀워크 향상 프로그램",
-		period: "2023-12-10 ~ 2023-12-12",
-		status: "completed",
-		satisfaction: "completed"
-	},
-	{
-		id: 8,
-		name: "취업 역량 강화 세미나",
-		period: "2023-11-20 ~ 2023-11-22",
-		status: "completed",
-		satisfaction: "completed"
-	}
-];
-
+// ✅ 서버 데이터 사용 (하드코딩 제거)
+let programData = [];
 let currentFilter = 'all';
-let filteredData = [...programData];
+let filteredData = [];
+let serverCurrentDate = null;  // ✅ 서버 날짜 저장용
 
+// ✅ HTML의 data 속성에서 서버 데이터 읽기
+function loadServerData() {
+    const dataContainer = document.getElementById('applicationsData');
+    
+    // ✅ 서버 날짜 읽기
+    serverCurrentDate = dataContainer.getAttribute('data-server-date');
+    console.log('서버 현재 날짜 (아시아/서울):', serverCurrentDate);
+    
+    const appDataItems = dataContainer.querySelectorAll('.app-data-item');
+    
+    const serverApplications = [];
+    
+    appDataItems.forEach(item => {
+        serverApplications.push({
+            prgId: parseInt(item.getAttribute('data-app-id')),
+            prgNm: item.getAttribute('data-app-name'),
+            prgStDt: item.getAttribute('data-start-date'),
+            prgEndDt: item.getAttribute('data-end-date'),
+            applicationStatus: item.getAttribute('data-application-status')
+        });
+    });
+    
+    console.log('HTML에서 읽어온 서버 데이터:', serverApplications);
+    return serverApplications;
+}
+
+// ✅ 서버 데이터를 화면용 형태로 변환
+function convertServerDataToDisplayFormat(serverApplications) {
+    return serverApplications.map((app, index) => ({
+        id: app.prgId,
+        name: app.prgNm,
+        period: `${app.prgStDt} ~ ${app.prgEndDt}`,
+        status: getProgramStatus(app),           // 상태 계산
+        satisfaction: getSatisfactionStatus(app) // 만족도 조사 상태 계산
+    }));
+}
+
+// ✅ 프로그램 상태 계산 (서버 날짜 기준)
+function getProgramStatus(app) {
+    // ✅ 서버 날짜 사용 (아시아/서울 시간)
+    const today = new Date(serverCurrentDate);
+    const startDate = new Date(app.prgStDt);
+    const endDate = new Date(app.prgEndDt);
+    
+    console.log(`프로그램 ${app.prgNm} 상태 계산:`);
+    console.log(`  - 서버 기준 오늘: ${serverCurrentDate}`);
+    console.log(`  - 운영 시작일: ${app.prgStDt}`);
+    console.log(`  - 운영 종료일: ${app.prgEndDt}`);
+    
+    if (today < startDate) {
+        console.log(`  → 결과: applied (운영 시작 전)`);
+        return 'applied';  // 신청 (운영 시작 전)
+    } else if (today >= startDate && today <= endDate) {
+        console.log(`  → 결과: ongoing (운영 중)`);
+        return 'ongoing';  // 진행 (운영 중)
+    } else {
+        console.log(`  → 결과: completed (운영 종료)`);
+        return 'completed'; // 완료 (운영 종료)
+    }
+}
+
+// ✅ 만족도 조사 상태 계산
+function getSatisfactionStatus(app) {
+    const status = getProgramStatus(app);
+    
+    // 운영기간이 끝났을 때만 만족도 조사 대상
+    if (status === 'completed') {
+        // 실제로는 서버에서 만족도 조사 완료 여부를 받아와야 함
+        // 일단 기본적으로 '실시' 상태로 설정
+        return 'pending';  // 항상 '실시' 버튼 표시
+    }
+    
+    return 'none'; // 운영기간이 끝나지 않으면 '-' 표시
+}
 // 상태별 스타일 반환
 function getStatusBadge(status) {
-	const statusMap = {
-		'applied': { class: 'status-applied', text: '신청' },
-		'ongoing': { class: 'status-ongoing', text: '진행' },
-		'completed': { class: 'status-completed', text: '완료' }
-	};
+    const statusMap = {
+        'applied': { class: 'status-applied', text: '신청' },
+        'ongoing': { class: 'status-ongoing', text: '진행' },
+        'completed': { class: 'status-completed', text: '완료' }
+    };
 
-	const statusInfo = statusMap[status];
-	return `<span class="status-badge ${statusInfo.class}">${statusInfo.text}</span>`;
+    const statusInfo = statusMap[status];
+    return `<span class="status-badge ${statusInfo.class}">${statusInfo.text}</span>`;
 }
 
 // 만족도 조사 상태 반환
 function getSatisfactionElement(program) {
-	if (program.satisfaction === 'none') {
-		return '<span class="satisfaction-none">-</span>';
-	}
-	else if (program.satisfaction === 'pending') {
-		return `<button class="satisfaction-btn" onclick="openSatisfactionSurvey(${program.id})">실시</button>`;
-	}
-	else if (program.satisfaction === 'completed') {
-		return '<span class="satisfaction-completed">완료</span>';
-	}
+    if (program.satisfaction === 'none') {
+        return '<span class="satisfaction-none">-</span>';
+    }
+    else if (program.satisfaction === 'pending') {
+        return `<button class="satisfaction-btn" onclick="openSatisfactionSurvey(${program.id})">실시</button>`;
+    }
+    else if (program.satisfaction === 'completed') {
+        return '<span class="satisfaction-completed">완료</span>';
+    }
 }
 
 // 테이블 렌더링
 function renderTable(data) {
-	const tbody = document.getElementById('programTableBody');
+    const tbody = document.getElementById('programTableBody');
 
-	if (data.length === 0) {
-		tbody.innerHTML = `
-			<tr>
-				<td colspan="5" class="no-results">검색 결과가 없습니다.</td>
-			</tr>
-		`;
-		return;
-	}
+    if (data.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="5" class="no-results">검색 결과가 없습니다.</td>
+            </tr>
+        `;
+        return;
+    }
 
-	tbody.innerHTML = data.map((program, index) => `
-		<tr>
-			<td>${index + 1}</td>
-			<td class="program-name">${program.name}</td>
-			<td>${program.period}</td>
-			<td>${getStatusBadge(program.status)}</td>
-			<td>${getSatisfactionElement(program)}</td>
-		</tr>
-	`).join('');
+    tbody.innerHTML = data.map((program, index) => `
+        <tr>
+            <td>${index + 1}</td>
+            <td class="program-name">${program.name}</td>
+            <td>${program.period}</td>
+            <td>${getStatusBadge(program.status)}</td>
+            <td>${getSatisfactionElement(program)}</td>
+        </tr>
+    `).join('');
 }
 
 // 필터 설정
 function setFilter(filterType) {
-	currentFilter = filterType;
+    currentFilter = filterType;
 
-	// 모든 탭에서 active 클래스 제거
-	document.querySelectorAll('.filter-tab').forEach(tab => {
-		tab.classList.remove('active');
-	});
+    // 모든 탭에서 active 클래스 제거
+    document.querySelectorAll('.filter-tab').forEach(tab => {
+        tab.classList.remove('active');
+    });
 
-	// 클릭된 탭에 active 클래스 추가
-	event.target.classList.add('active');
+    // 클릭된 탭에 active 클래스 추가
+    event.target.classList.add('active');
 
-	// 필터링 적용
-	filterPrograms();
+    // 필터링 적용
+    filterPrograms();
 }
 
 // 검색 버튼 클릭 처리
 function performSearch() {
-	filterPrograms();
+    filterPrograms();
 }
 
 // 프로그램 필터링
 function filterPrograms() {
-	const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
 
-	let filtered = [...programData];
+    let filtered = [...programData];
 
-	// 상태별 필터링
-	if (currentFilter !== 'all') {
-		filtered = filtered.filter(program => program.status === currentFilter);
-	}
+    // 상태별 필터링
+    if (currentFilter !== 'all') {
+        filtered = filtered.filter(program => program.status === currentFilter);
+    }
 
-	// 검색어 필터링
-	if (searchTerm) {
-		filtered = filtered.filter(program => 
-			program.name.toLowerCase().includes(searchTerm)
-		);
-	}
+    // 검색어 필터링
+    if (searchTerm) {
+        filtered = filtered.filter(program => 
+            program.name.toLowerCase().includes(searchTerm)
+        );
+    }
 
-	filteredData = filtered;
-	renderTable(filteredData);
-	updatePagination();
+    filteredData = filtered;
+    updatePagination(); // ✅ 필터링 후 페이지네이션 업데이트
 }
 
 // 만족도 조사 함수
 function openSatisfactionSurvey(programId) {
-	if (confirm('만족도 조사를 실시하시겠습니까?')) {
-		alert('만족도 조사 페이지로 이동합니다.');
-		location.href = /*[[@{/student/noncurr/survey}]]*/ '/student/noncurr/survey';
-	}
+    if (confirm('만족도 조사를 실시하시겠습니까?')) {
+        alert('만족도 조사 페이지로 이동합니다.');
+        // ✅ 실제 프로그램 ID를 파라미터로 전달
+        window.location.href = `/student/noncurr/survey?prgId=${programId}`;
+    }
 }
 
 // 페이지네이션 함수
 let currentPage = 1;
+const itemsPerPage = 10; // 페이지당 아이템 수
 
 function changePage(page) {
-	const buttons = document.querySelectorAll('.pagination button');
+    const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+    
+    if (page === 'prev') {
+        if (currentPage > 1) {
+            currentPage--;
+        }
+    } 
+    else if (page === 'next') {
+        if (currentPage < totalPages) {
+            currentPage++;
+        }
+    }
+    else {
+        currentPage = page;
+    }
 
-	if (page === 'prev') {
-		if (currentPage > 1) {
-			currentPage--;
-		}
-	} 
-	else if (page === 'next') {
-		if (currentPage < 3) {
-			currentPage++;
-		}
-	}
-	else {
-		currentPage = page;
-	}
+    updatePaginationButtons();
+    renderCurrentPage();
+    
+    console.log('페이지 변경:', currentPage);
+}
 
-	// 모든 버튼에서 active 클래스 제거
-	buttons.forEach(btn => btn.classList.remove('active'));
+// ✅ 현재 페이지 데이터만 렌더링
+function renderCurrentPage() {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const currentPageData = filteredData.slice(startIndex, endIndex);
+    
+    renderTable(currentPageData, startIndex); // startIndex를 넘겨서 번호 계산
+}
 
-	// 현재 페이지 버튼에 active 클래스 추가
-	buttons.forEach(btn => {
-		if (btn.textContent == currentPage) {
-			btn.classList.add('active');
-		}
-	});
+// ✅ 테이블 렌더링 (번호 계산 수정)
+function renderTable(data, startIndex = 0) {
+    const tbody = document.getElementById('programTableBody');
 
-	// 이전/다음 버튼 상태 업데이트
-	buttons[0].disabled = currentPage === 1; // 이전 버튼
-	buttons[buttons.length - 1].disabled = currentPage === 3; // 다음 버튼
+    if (data.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="5" class="no-results">검색 결과가 없습니다.</td>
+            </tr>
+        `;
+        return;
+    }
 
-	console.log('페이지 변경:', currentPage);
+    tbody.innerHTML = data.map((program, index) => `
+        <tr>
+            <td>${startIndex + index + 1}</td>
+            <td class="program-name">${program.name}</td>
+            <td>${program.period}</td>
+            <td>${getStatusBadge(program.status)}</td>
+            <td>${getSatisfactionElement(program)}</td>
+        </tr>
+    `).join('');
+}
+
+// ✅ 페이지네이션 버튼 업데이트 (동적 생성) - 수정된 버전
+function updatePaginationButtons() {
+    const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+    const paginationContainer = document.querySelector('.pagination');
+    
+    // ✅ 데이터가 아예 없을 때만 페이지네이션 숨김
+    if (filteredData.length === 0) {
+        paginationContainer.style.display = 'none';
+        return;
+    } else {
+        paginationContainer.style.display = 'flex';
+    }
+    
+    let paginationHtml = '';
+    
+    // 이전 버튼
+    paginationHtml += `
+        <button onclick="changePage('prev')" ${currentPage === 1 ? 'disabled' : ''}>◀</button>
+    `;
+    
+    // 페이지 번호들 (최대 5개만 표시)
+    const startPage = Math.max(1, currentPage - 2);
+    const endPage = Math.min(totalPages, startPage + 4);
+    
+    for (let i = startPage; i <= endPage; i++) {
+        paginationHtml += `
+            <button onclick="changePage(${i})" ${i === currentPage ? 'class="active"' : ''}>${i}</button>
+        `;
+    }
+    
+    // 다음 버튼
+    paginationHtml += `
+        <button onclick="changePage('next')" ${currentPage === totalPages ? 'disabled' : ''}>▶</button>
+    `;
+    
+    paginationContainer.innerHTML = paginationHtml;
 }
 
 function updatePagination() {
-	// 실제로는 데이터 길이에 따라 페이지네이션을 동적으로 업데이트
-	// 지금은 기본 구현 유지
+    currentPage = 1; // 검색/필터링시 첫 페이지로
+    updatePaginationButtons();
+    renderCurrentPage();
 }
 
-// 페이지 로드 시 실행
+// ✅ 페이지 로드 시 실행 (HTML data 속성에서 데이터 로드)
 document.addEventListener('DOMContentLoaded', function() {
-	// 비교과 메뉴 열기
-	const extracurricularMenu = document.querySelector('.sidebar ul li:nth-child(4)');
-	if (extracurricularMenu) {
-		extracurricularMenu.classList.add('active');
-	}
+    console.log('신청 내역 페이지 로드 시작');
+    
+    // ✅ HTML의 data 속성에서 서버 데이터 읽기
+    const serverApplications = loadServerData();
+    
+    if (serverApplications && serverApplications.length > 0) {
+        console.log('서버 데이터:', serverApplications);
+        programData = convertServerDataToDisplayFormat(serverApplications);
+        console.log('변환된 데이터:', programData);
+    } else {
+        console.log('서버 데이터가 없습니다.');
+        programData = [];
+    }
 
-	// 초기 테이블 렌더링
-	renderTable(programData);
+    // 초기 테이블 렌더링
+    filteredData = [...programData];
+    updatePagination();
+    
+    console.log('신청 내역 페이지 로드 완료');
 });

@@ -25,6 +25,17 @@
 				</div>
 			</div>
 
+			<!-- ✅ 서버 데이터를 data 속성으로 전달 (Controller에서 받은 날짜 사용) -->
+			<div id="applicationsData" style="display: none;" th:attr="data-server-date=${currentDate}">
+				<span th:each="app, iterStat : ${applications}" 
+				      th:attr="data-app-id=${app.prgId},
+				               data-app-name=${app.prgNm},
+				               data-start-date=${app.prgStDt},
+				               data-end-date=${app.prgEndDt},
+				               data-application-status=${app.applicationStatus}"
+				      class="app-data-item"></span>
+			</div>
+
 			<!-- 신청내역 테이블 -->
 			<table class="history-table">
 				<thead>
@@ -37,18 +48,30 @@
 					</tr>
 				</thead>
 				<tbody id="programTableBody">
-					<!-- 동적으로 생성될 내용 -->
+					<!-- ✅ 서버 데이터가 없는 경우 -->
+					<tr th:if="${#lists.isEmpty(applications)}">
+						<td colspan="5" class="no-results">신청한 프로그램이 없습니다.</td>
+					</tr>
+					
+					<!-- ✅ 서버 데이터로 초기 렌더링 (JavaScript에서 다시 처리됨) -->
+					<tr th:each="app, iterStat : ${applications}" th:attr="data-program='${app.prgNm}', data-status='${app.applicationStatus}'">
+						<td th:text="${iterStat.count}">1</td>
+						<td class="program-name" th:text="${app.prgNm}">프로그램명</td>
+						<td th:text="${app.prgStDt + ' ~ ' + app.prgEndDt}">운영기간</td>
+						<td>
+							<span class="status-badge status-applied" th:text="${app.applicationStatus}">신청</span>
+						</td>
+						<td>
+							<span class="satisfaction-none">-</span>
+						</td>
+					</tr>
 				</tbody>
 			</table>
 
 			<!-- 페이지네이션 -->
 			<div class="pagination-container">
 				<div class="pagination">
-					<button onclick="changePage('prev')" disabled>◀</button>
-					<button onclick="changePage(1)" class="active">1</button>
-					<button onclick="changePage(2)">2</button>
-					<button onclick="changePage(3)">3</button>
-					<button onclick="changePage('next')">▶</button>
+
 				</div>
 			</div>
 		</div>

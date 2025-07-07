@@ -164,8 +164,8 @@ public class StudentNoncurrService {
      * 학생의 신청 내역 조회
      */
     public List<ProgramListDTO> getMyApplications(Integer stdId) {
-        // 해당 학생의 신청 정보들 조회
-        List<Ncs_PrgAply> applications = ncsPrgAplyRepository.findByPrgIdAndStdId(null, stdId);
+        // ✅ 수정: findByStdId 사용 (학생의 모든 신청 내역)
+        List<Ncs_PrgAply> applications = ncsPrgAplyRepository.findByStdId(stdId);
         
         return applications.stream()
             .map(app -> convertToDTO(app.getNcsPrgInfo(), stdId))

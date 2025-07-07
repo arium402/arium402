@@ -33,6 +33,14 @@ public class ProgramListDTO {
     private String cancelReasonMessage; // ✅ 취소 불가 이유 메시지 추가
     private String applicationPeriodStatus;  // ✅ 신청 기간 상태 추가 (BEFORE_PERIOD, DURING_PERIOD, AFTER_PERIOD)
     
+    // ✅ 신청 내역용 추가 필드들
+    private String applicationDate;        // 신청일자
+    private String programProgressStatus;  // 프로그램 진행 상태 (신청/진행/완료)
+    private Boolean isSurveyAvailable;     // 만족도 조사 가능 여부
+    private Boolean isSurveyCompleted;     // 만족도 조사 완료 여부
+    private String surveyDeadline;         // 만족도 조사 마감일
+    private Integer applicationId;         // 신청 ID (취소용)
+    
     
     @JsonProperty("dDay")        // ← JSON에서 "dDay"로 출력
     private Integer dDay;

@@ -17,7 +17,12 @@ import jakarta.persistence.QueryHint;
 @Repository
 public interface NcsPrgAplyRepository extends JpaRepository<Ncs_PrgAply, Integer> {
     
-
+	/**
+	 * 학생별 신청 내역 조회
+	 */
+	@Query("SELECT a FROM Ncs_PrgAply a WHERE a.stdInfo.stdId = :stdId")
+	List<Ncs_PrgAply> findByStdId(@Param("stdId") Integer stdId);
+	
     // ✅ 네이티브 쿼리 사용 (DB 컬럼명 직접 사용)
     @Query(value = "SELECT COUNT(*) FROM ncs_prg_aply WHERE prg_id = ?1", nativeQuery = true)
     int countByPrgId(Integer prgId);

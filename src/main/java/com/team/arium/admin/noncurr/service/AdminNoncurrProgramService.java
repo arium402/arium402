@@ -50,6 +50,10 @@ public class AdminNoncurrProgramService {
     private final NcsPrgAplyRepository ncsPrgAplyRepository;
     private final DgstfnEvalRepository dgstfnEvalRepository;
     
+    // ✅ 외부 업로드 디렉토리 설정 추가
+    @Value("${app.upload.dir}")
+    private String uploadDir;
+    
     
     // FTP 서버 설정
     @Value("${app.ftp.host}")
@@ -554,7 +558,7 @@ public class AdminNoncurrProgramService {
      */
     private void deleteFromLocalServer(String fileName) {
         String localUploadDir = System.getProperty("user.dir") + "/src/main/resources/static/uploads/noncurr/images/";
-        File file = new File(localUploadDir + fileName);
+        File file = new File(uploadDir + File.separator + fileName);
         
         if (file.exists()) {
             boolean deleted = file.delete();
@@ -635,19 +639,22 @@ public class AdminNoncurrProgramService {
      */
     private void uploadToLocalServer(MultipartFile file, String savedFileName) throws IOException {
         // 로컬 업로드 디렉토리 설정
-        String localUploadDir = System.getProperty("user.dir") + "/src/main/resources/static/uploads/noncurr/images/";
-        
+        //String localUploadDir = System.getProperty("user.dir") + "/src/main/resources/static/uploads/noncurr/images/";
+    	String localUploadDir = uploadDir;
+    	
         // 디렉토리 생성 (없으면)
         File directory = new File(localUploadDir);
         if (!directory.exists()) {
             boolean created = directory.mkdirs();
             if (created) {
                 log.info("로컬 업로드 디렉토리 생성: {}", localUploadDir);
+            } else {
+                throw new IOException("업로드 디렉토리 생성 실패: " + localUploadDir);
             }
         }
         
         // 파일 저장
-        File destFile = new File(localUploadDir + savedFileName);
+        File destFile = new File(localUploadDir + File.separator + savedFileName);
         file.transferTo(destFile);
         
         log.info("로컬 파일 저장 완료: {}", destFile.getAbsolutePath());
@@ -658,7 +665,7 @@ public class AdminNoncurrProgramService {
      */
     private boolean checkFileExistsLocal(String fileName) {
         String localUploadDir = System.getProperty("user.dir") + "/src/main/resources/static/uploads/noncurr/images/";
-        File file = new File(localUploadDir + fileName);
+        File file = new File(uploadDir  + File.separator + fileName);
         return file.exists();
     }
 
@@ -908,6 +915,9 @@ public class AdminNoncurrProgramService {
         
         return dto;
     }
+    
+
+    
     
     /**
      * 현재 신청인원 조회 (임시로 0 반환 - 서버 실행 우선)
