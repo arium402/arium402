@@ -1347,24 +1347,34 @@ public class AdminNoncurrProgramService {
 		}
 
 		/**
-		 * 엔티티 -> 통계용 DTO 변환
+		 * 엔티티 -> 통계용 DTO 변환 (수정됨)
 		 */
 		private NoncurrProgramDTO convertToDtoWithStats(Ncs_PrgInfo entity) {
-			NoncurrProgramDTO dto = convertToDto(entity); // 기존 변환 메서드 사용
+		    NoncurrProgramDTO dto = convertToDto(entity); // 기존 변환 메서드 사용
 
-			// ✅ 통계 정보 추가
-			Integer prgId = entity.getPrgId();
-			Integer totalApplicants = getCurrentApplicantCount(prgId);
+		    // ✅ 통계 정보 추가 - 실제 데이터 사용
+		    Integer prgId = entity.getPrgId();
+		    Integer totalApplicants = getCurrentApplicantCount(prgId);
+		    
+		    // ✅ 실제 만족도 조사 응답자 수 조회
+		    Integer totalResponders = dgstfnEvalRepository.countTotalRespondersByPrgId(prgId);
+		    if (totalResponders == null) totalResponders = 0;
+		    
+		    // ✅ 실제 평균 만족도 조회
+		    Double avgSatisfaction = dgstfnEvalRepository.findOverallAverageByPrgId(prgId);
 
-			// 응답률과 만족도는 실제 만족도 조사 데이터가 있어야 하지만,
-			// 현재는 시뮬레이션 데이터로 설정
-			dto.setTotalApplicants(totalApplicants);
-			dto.setResponseRate(calculateResponseRate(totalApplicants));
-			dto.setAverageSatisfaction(calculateAverageSatisfaction(prgId));
+		    dto.setTotalApplicants(totalApplicants);
+		    
+		    // ✅ 수정: 실제 응답자 수로 정확한 응답률 계산
+		    dto.setResponseRate(calculateResponseRate(totalResponders, totalApplicants)); // 2개 파라미터 버전 사용
+		    
+		    // ✅ 수정: 실제 만족도 또는 기본값
+		    String averageSatisfaction = avgSatisfaction != null ? 
+		        String.format("%.1f점", avgSatisfaction) : "0.0점";
+		    dto.setAverageSatisfaction(averageSatisfaction);
 
-			return dto;
+		    return dto;
 		}
-
 		/**
 		 * 응답률 계산 (실제로는 만족도 조사 테이블에서 가져와야 함)
 		 */

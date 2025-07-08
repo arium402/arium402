@@ -61,7 +61,7 @@
                         <td class="text-left" th:text="${program.prgNm}">프로그램명</td>
                         <td th:text="${program.prgDept}">운영부서</td>
                         <td th:text="${#strings.replace(program.prgStDt, '-', '.')} + '~' + ${#strings.substring(#strings.replace(program.prgEndDt, '-', '.'), 5)}">운영기간</td>
-                        <td th:text="${program.totalApplicants ?: 0}">참여인원</td>
+                        <td th:text="${(program.totalApplicants ?: 0) + '명'}">참여인원</td>
                         <td>
                             <span class="response-rate" th:text="${program.responseRate ?: '0.0%'}">0.0%</span>
                         </td>
@@ -80,17 +80,25 @@
             </table>
         </div>
         
-        <!-- 페이징 -->
-        <div class="pagination-container">
-            <nav aria-label="Page navigation">
-                <ul class="pagination" id="pagination">
-                    <!-- 동적으로 생성됨 -->
-                </ul>
-            </nav>
-            <div class="pagination-info" id="paginationInfo">
-                통계 로딩 중...
-            </div>
-        </div>
+<!-- 페이징 -->
+<div class="pagination-container"
+     th:data-current-page="${programs?.number ?: 0}"
+     th:data-total-pages="${programs?.totalPages ?: 1}" 
+     th:data-total-elements="${programs?.totalElements ?: 0}"
+     th:data-size="${programs?.size ?: 10}"
+     th:data-has-next="${programs?.hasNext ?: false}"
+     th:data-has-previous="${programs?.hasPrevious ?: false}">
+    
+    <nav aria-label="Page navigation">
+        <ul class="pagination" id="pagination">
+            <!-- JavaScript로 동적 생성 -->
+        </ul>
+    </nav>
+    
+    <div class="pagination-info" id="paginationInfo">
+        <!-- JavaScript로 동적 생성 -->
+    </div>
+</div>
     </div>
 
     <!-- 상세 통계 모달 -->

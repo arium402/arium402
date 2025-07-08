@@ -16,32 +16,6 @@ let currentTab = 'all';
 let currentPage = 1;
 const itemsPerPage = 5;
 
-// 사이드바 토글 기능
-document.getElementById('sidebarToggle').addEventListener('click', function() {
-    const sidebar = document.getElementById('layoutSidenav_nav');
-    const content = document.getElementById('layoutSidenav_content');
-    
-    if (window.innerWidth <= 768) {
-        sidebar.classList.toggle('show');
-    } else {
-        sidebar.classList.toggle('collapsed');
-        content.classList.toggle('expanded');
-    }
-});
-
-// 윈도우 리사이즈 시 클래스 정리
-window.addEventListener('resize', function() {
-    const sidebar = document.getElementById('layoutSidenav_nav');
-    const content = document.getElementById('layoutSidenav_content');
-    
-    if (window.innerWidth > 768) {
-        sidebar.classList.remove('show');
-    } else {
-        sidebar.classList.remove('collapsed');
-        content.classList.remove('expanded');
-    }
-});
-
 // 탭 전환 기능
 document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', function() {
