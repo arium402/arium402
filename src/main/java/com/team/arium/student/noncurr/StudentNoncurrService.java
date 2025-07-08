@@ -7,6 +7,7 @@ import com.team.arium.admin.noncurr.repository.NcsPrgAplyRepository;
 import com.team.arium.domain.Ncs_PrgInfo;
 import com.team.arium.domain.Ncs_PrgAply;
 import com.team.arium.domain.Std_Info;
+import com.team.arium.domain.yn;
 import com.team.arium.domain.Common_Code;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -28,11 +31,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import com.team.arium.admin.noncurr.repository.NcsCclRelRepository;
+import com.team.arium.admin.noncurr.repository.NcsCmpInfoRepository;
 import com.team.arium.admin.noncurr.repository.StdCclScoreRepository;
 import com.team.arium.admin.noncurr.repository.CoreCptInfoRepository;
+import com.team.arium.admin.noncurr.repository.DgstfnEvalRepository;
+import com.team.arium.admin.noncurr.repository.DgstfnQstRepository;
 import com.team.arium.domain.Ncs_CclRel;
+import com.team.arium.domain.Ncs_CmpInfo;
 import com.team.arium.domain.Std_CclScore;
 import com.team.arium.domain.Core_CptInfo;
+import com.team.arium.domain.Dgstfn_Eval;
+import com.team.arium.domain.Dgstfn_Qst;
 
 
 
@@ -61,8 +70,19 @@ public class StudentNoncurrService {
     private CoreCptInfoRepository coreCptInfoRepository;
     
     @Autowired
+    private DgstfnQstRepository dgstfnQstRepository;
+    
+    @Autowired
+    private DgstfnEvalRepository dgstfnEvalRepository;
+    
+    @Autowired
+    private NcsCmpInfoRepository ncsCmpInfoRepository;
+    
+    @Autowired
     @Qualifier("admin_module")
     private admin_module adminModule;
+    
+    
     
     /**
      * 학생용 프로그램 목록 조회
@@ -161,10 +181,16 @@ public class StudentNoncurrService {
     }
     
     /**
-     * 학생의 신청 내역 조회
+     * 학생의 신청 내역 조회 (자동 이수 처리 포함)
      */
     public List<ProgramListDTO> getMyApplications(Integer stdId) {
-        // ✅ 수정: findByStdId 사용 (학생의 모든 신청 내역)
+        // ✅ 자동 이수 처리 먼저 실행
+        processCompletedPrograms(stdId);
+        
+        // ✅ 기존 완료된 만족도 조사 일괄 업데이트
+        updateExistingSurveyCompletions(stdId);
+        
+        // 기존 로직
         List<Ncs_PrgAply> applications = ncsPrgAplyRepository.findByStdId(stdId);
         
         return applications.stream()
@@ -199,13 +225,15 @@ public class StudentNoncurrService {
         
         // ✅ 취소 가능 여부 및 이유 계산
         CancelInfo cancelInfo = calculateCancelInfo(program, applicationStatus);
+
+        // ✅ 만족도 조사 상태 계산
+        String satisfactionStatus = calculateSatisfactionStatus(program, stdId);
+        boolean surveyCompleted = "completed".equals(satisfactionStatus);
         
-        System.out.println("Program: " + program.getPrgNm());
-        System.out.println("Application Period Status: " + applicationPeriodStatus);
-        System.out.println("D-Day: " + dDay);
-        System.out.println("Can Apply: " + canApply);
-        System.out.println("Can Cancel: " + cancelInfo.canCancel);
-        System.out.println("Cancel Reason: " + cancelInfo.reasonMessage);
+        System.out.println("=== DTO 변환 ===");
+        System.out.println("프로그램: " + program.getPrgNm());
+        System.out.println("만족도 상태: " + satisfactionStatus);
+        System.out.println("===============");
         
         return ProgramListDTO.builder()
             .prgId(program.getPrgId())
@@ -230,8 +258,14 @@ public class StudentNoncurrService {
             .canCancel(cancelInfo.canCancel)
             .cancelReasonMessage(cancelInfo.reasonMessage)
             .applicationPeriodStatus(applicationPeriodStatus)  // ✅ 신청 기간 상태 추가
+            .surveyCompleted(surveyCompleted)           // ✅ 추가
+            .satisfactionStatus(satisfactionStatus)     // ✅ 추가
             .build();
     }
+    
+    
+    
+    
     
     /**
      * ✅ 취소 가능 여부 및 이유 계산
@@ -734,7 +768,123 @@ public class StudentNoncurrService {
         }
     }
     
-    // ✅ 그리고 이 메소드도 추가
+    /**
+     * 운영기간이 끝난 프로그램의 자동 이수 처리
+     */
+    @Transactional
+    public void processCompletedPrograms(Integer stdId) {
+        try {
+            // 1. 해당 학생의 모든 신청 내역 조회
+            List<Ncs_PrgAply> applications = ncsPrgAplyRepository.findByStdId(stdId);
+            
+            LocalDate today = getCurrentDate();
+            
+            for (Ncs_PrgAply application : applications) {
+                Ncs_PrgInfo program = application.getNcsPrgInfo();
+                LocalDate programEndDate = LocalDate.parse(program.getPrgEndDt());
+                
+                // 2. 운영기간이 끝났는지 확인
+                if (today.isAfter(programEndDate)) {
+                    // 3. 이미 이수 정보가 있는지 확인
+                    Optional<Ncs_CmpInfo> existingCompletion = ncsCmpInfoRepository.findByNcsPrgAply_AplyId(application.getAplyId());
+                    
+                    if (existingCompletion.isEmpty()) {
+                        // 4. 이수 정보 자동 생성
+                        Ncs_CmpInfo completion = Ncs_CmpInfo.builder()
+                            .ncsPrgAply(application)
+                            .ncsPrgInfo(program)
+                            .stdInfo(application.getStdInfo())
+                            .cmpYn(yn.Y)  // ✅ ENUM 사용
+                            .surveyYn(yn.N)  // ✅ ENUM 사용
+                            .build();
+                        
+                        ncsCmpInfoRepository.save(completion);
+                        
+                        System.out.println("자동 이수 처리 완료 - 프로그램: " + program.getPrgNm() + ", 학생 ID: " + stdId);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("자동 이수 처리 오류: " + e.getMessage());
+        }
+    }
+    
+    /**
+     * 만족도 조사 완료 시 이수 정보 업데이트
+     */
+    @Transactional
+    public void updateSurveyCompletion(Integer prgId, Integer stdId) {
+        try {
+            System.out.println("=== 만족도 조사 완료 플래그 업데이트 ===");
+            System.out.println("프로그램 ID: " + prgId + ", 학생 ID: " + stdId);
+        	
+            // 해당 프로그램과 학생의 이수 정보 찾기
+            List<Ncs_PrgAply> applications = ncsPrgAplyRepository.findByPrgIdAndStdId(prgId, stdId);
+            System.out.println("신청 내역 개수: " + applications.size());
+            
+            if (!applications.isEmpty()) {
+                Ncs_PrgAply application = applications.get(0);
+                System.out.println("신청 ID: " + application.getAplyId());
+                
+                Optional<Ncs_CmpInfo> completion = ncsCmpInfoRepository.findByNcsPrgAply_AplyId(application.getAplyId());
+                System.out.println("이수 정보 존재 여부: " + completion.isPresent());
+                
+                if (completion.isPresent()) {
+                    Ncs_CmpInfo cmpInfo = completion.get();
+                    System.out.println("기존 survey_yn: " + cmpInfo.getSurveyYn());
+                    
+                    cmpInfo.setSurveyYn(yn.Y);  // 만족도 조사 완료로 업데이트
+                    Ncs_CmpInfo saved = ncsCmpInfoRepository.save(cmpInfo);
+                    
+                    System.out.println("업데이트 후 survey_yn: " + saved.getSurveyYn());
+                    System.out.println("만족도 조사 완료 업데이트 성공 - 프로그램: " + prgId + ", 학생: " + stdId);
+                } else {
+                    System.out.println("이수 정보를 찾을 수 없습니다!");
+                }
+            } else {
+                System.out.println("신청 내역을 찾을 수 없습니다!");
+            }
+            System.out.println("==========================================");
+        } catch (Exception e) {
+            System.err.println("만족도 조사 완료 업데이트 오류: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    
+    /**
+     * 기존 완료된 만족도 조사에 대해 survey_yn 일괄 업데이트
+     */
+    @Transactional
+    public void updateExistingSurveyCompletions(Integer stdId) {
+        try {
+            System.out.println("=== 기존 만족도 조사 완료 상태 일괄 업데이트 ===");
+            
+            // 해당 학생의 모든 이수 정보 조회
+            List<Ncs_CmpInfo> completions = ncsCmpInfoRepository.findByStdId(stdId);
+            
+            for (Ncs_CmpInfo completion : completions) {
+                Integer prgId = completion.getNcsPrgInfo().getPrgId();
+                
+                // dgstfn_eval에서 만족도 조사 완료 여부 확인
+                boolean surveyExists = dgstfnEvalRepository.existsByPrgIdAndStdId(prgId, stdId);
+                
+                if (surveyExists && completion.getSurveyYn() == yn.N) {
+                    // 만족도 조사는 완료했는데 survey_yn이 N인 경우 업데이트
+                    completion.setSurveyYn(yn.Y);
+                    ncsCmpInfoRepository.save(completion);
+                    
+                    System.out.println("프로그램 " + prgId + " survey_yn을 Y로 업데이트");
+                }
+            }
+            
+            System.out.println("=== 일괄 업데이트 완료 ===");
+        } catch (Exception e) {
+            System.err.println("기존 만족도 조사 일괄 업데이트 오류: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    
     private LocalDate getCurrentDate() {
         try {
             String todayStr = adminModule.todays_module();
@@ -742,6 +892,242 @@ public class StudentNoncurrService {
         } catch (Exception e) {
             System.err.println("현재 날짜 조회 오류: " + e.getMessage());
             return getCurrentDate(); // fallback
+        }
+    }
+    
+    /**
+     * 만족도 조사 문항 조회 (섹션별로 구분)
+     */
+    public SatisfactionQuestionResponseDTO getSatisfactionQuestions(Integer prgId) {
+        try {
+            // 1. 프로그램 정보 조회
+            Ncs_PrgInfo program = ncsPrgInfoRepository.findById(prgId)
+                .orElseThrow(() -> new RuntimeException("프로그램을 찾을 수 없습니다."));
+            
+            // 2. 기본 만족도 조사 문항들 조회 (survey_id = 1)
+            List<Dgstfn_Qst> allQuestions = dgstfnQstRepository.findBySurveyIdOrderBySurOrd(1);
+            
+            // 3. 섹션별로 분류
+            List<QuestionDTO> section1 = allQuestions.stream()
+                .filter(q -> q.getSurOrd() >= 1 && q.getSurOrd() <= 5)
+                .map(this::convertToQuestionDTO)
+                .collect(Collectors.toList());
+                
+            List<QuestionDTO> section2 = allQuestions.stream()
+                .filter(q -> q.getSurOrd() >= 6 && q.getSurOrd() <= 8)
+                .map(this::convertToQuestionDTO)
+                .collect(Collectors.toList());
+                
+            List<QuestionDTO> section3 = allQuestions.stream()
+                .filter(q -> q.getSurOrd() >= 9 && q.getSurOrd() <= 11)
+                .map(this::convertToQuestionDTO)
+                .collect(Collectors.toList());
+            
+            return SatisfactionQuestionResponseDTO.builder()
+                .prgId(prgId)
+                .prgNm(program.getPrgNm())
+                .section1Questions(section1)
+                .section2Questions(section2)
+                .section3Questions(section3)
+                .build();
+                
+        } catch (Exception e) {
+            System.err.println("만족도 조사 문항 조회 오류: " + e.getMessage());
+            throw new RuntimeException("만족도 조사 문항을 가져오는 중 오류가 발생했습니다.");
+        }
+    }
+
+    private QuestionDTO convertToQuestionDTO(Dgstfn_Qst question) {
+        return QuestionDTO.builder()
+            .surId(question.getSurId())
+            .surContent(question.getSurContent())
+            .surOrd(question.getSurOrd())
+            .build();
+    }
+    
+    /**
+     * 학생 기본 정보 조회 (만족도 조사용)
+     */
+    public StudentBasicInfoDTO getStudentBasicInfo(Integer stdId) {
+        try {
+            Std_Info student = stdInfoRepository.findById(stdId)
+                .orElseThrow(() -> new RuntimeException("학생 정보를 찾을 수 없습니다."));
+            
+            // 학년 표시 (1->1학년, 2->2학년...)
+            String gradeDisplay = student.getSchYr() + "학년";
+            
+            // 학과명 가져오기
+            String deptName = student.getDeptInfo() != null ? student.getDeptInfo().getDeptNm() : "학과 미정";
+            
+            return StudentBasicInfoDTO.builder()
+                .stdId(student.getStdId())
+                .stdNm(student.getStdNm())
+                .stdGender(student.getStdGender())
+                .schYr(gradeDisplay)
+                .deptNm(deptName)
+                .build();
+                
+        } catch (Exception e) {
+            System.err.println("학생 정보 조회 오류: " + e.getMessage());
+            throw new RuntimeException("학생 정보를 조회하는 중 오류가 발생했습니다.");
+        }
+    }
+    
+    /**
+     * 만족도 조사 결과 저장
+     */
+    @Transactional
+    public boolean submitSatisfactionSurvey(Integer prgId, Integer stdId, Map<String, Integer> surveyData) {
+        try {
+            System.out.println("만족도 조사 저장 시작 - 프로그램 ID: " + prgId + ", 학생 ID: " + stdId);
+            
+            // 1. 프로그램과 학생 정보 조회
+            Ncs_PrgInfo program = ncsPrgInfoRepository.findById(prgId)
+                .orElseThrow(() -> new RuntimeException("프로그램을 찾을 수 없습니다."));
+            
+            Std_Info student = stdInfoRepository.findById(stdId)
+                .orElseThrow(() -> new RuntimeException("학생 정보를 찾을 수 없습니다."));
+            
+            // 2. 만족도 조사 실시 ID 생성 (예: S + 현재시간 + 랜덤숫자)
+            String surEvalId = generateSurveyEvalId();
+            
+            // 3. 각 문항별 응답 저장
+            List<Dgstfn_Eval> evaluations = new ArrayList<>();
+            
+            for (Map.Entry<String, Integer> entry : surveyData.entrySet()) {
+                String questionKey = entry.getKey(); // 예: "section1_1", "section2_6" 등
+                Integer score = entry.getValue();
+                
+                // 문항 ID 추출 (section1_1 -> 1, section2_6 -> 6)
+                Integer surId = extractSurIdFromKey(questionKey);
+                
+                if (surId != null) {
+                    // 문항 정보 조회
+                    Dgstfn_Qst question = dgstfnQstRepository.findById(surId)
+                        .orElseThrow(() -> new RuntimeException("문항을 찾을 수 없습니다: " + surId));
+                    
+                    // 만족도 조사 응답 생성
+                    Dgstfn_Eval evaluation = Dgstfn_Eval.builder()
+                        .surEvalId(surEvalId)
+                        .ncsPrgInfo(program)
+                        .stdInfo(student)
+                        .dgstfnQst(question)
+                        .ansScore(score)
+                        .build();
+                    
+                    evaluations.add(evaluation);
+                }
+            }
+            
+            // 4. 일괄 저장
+            dgstfnEvalRepository.saveAll(evaluations);
+            
+            // ✅ 만족도 조사 완료 후 이수 정보 업데이트
+            updateSurveyCompletion(prgId, stdId);
+            
+            // ✅ 만족도 조사 완료 후 이수 정보 업데이트
+            System.out.println("만족도 조사 완료 플래그 업데이트 시작");
+            updateSurveyCompletion(prgId, stdId);
+            System.out.println("만족도 조사 완료 플래그 업데이트 완료");
+            
+            System.out.println("만족도 조사 저장 완료 - 총 " + evaluations.size() + "개 응답 저장");
+            return true;
+            
+        } catch (Exception e) {
+            System.err.println("만족도 조사 저장 오류: " + e.getMessage());
+            throw new RuntimeException("만족도 조사 저장 중 오류가 발생했습니다: " + e.getMessage());
+        }
+    }
+
+    /**
+     * 만족도 조사 실시 ID 생성
+     */
+    private String generateSurveyEvalId() {
+        // 현재 시간 기반으로 고유 ID 생성 (예: S25070801)
+        String todayStr = adminModule.todays_module().replace("-", "").substring(2); // 250708
+        int randomNum = (int)(Math.random() * 100); // 00-99
+        return String.format("S%s%02d", todayStr, randomNum);
+    }
+
+    /**
+     * 문항 키에서 실제 문항 ID 추출
+     */
+    private Integer extractSurIdFromKey(String questionKey) {
+        try {
+            // section1_1 -> 1, section2_6 -> 6, section3_9 -> 9
+            String[] parts = questionKey.split("_");
+            if (parts.length == 2) {
+                return Integer.parseInt(parts[1]);
+            }
+            return null;
+        } catch (Exception e) {
+            System.err.println("문항 키 파싱 오류: " + questionKey);
+            return null;
+        }
+    }
+    
+    /**
+     * 만족도 조사 완료 여부 확인 (디버깅 버전)
+     */
+    private boolean isSurveyCompleted(Integer prgId, Integer stdId) {
+        try {
+            // 응답 개수 확인
+            Long count = dgstfnEvalRepository.countByPrgIdAndStdId(prgId, stdId);
+            boolean exists = dgstfnEvalRepository.existsByPrgIdAndStdId(prgId, stdId);
+            
+            System.out.println("=== 만족도 조사 완료 여부 확인 ===");
+            System.out.println("프로그램 ID: " + prgId);
+            System.out.println("학생 ID: " + stdId);
+            System.out.println("응답 개수: " + count);
+            System.out.println("존재 여부: " + exists);
+            System.out.println("================================");
+            
+            return exists;
+        } catch (Exception e) {
+            System.err.println("만족도 조사 완료 여부 확인 오류: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * ✅ 만족도 조사 상태 계산 (디버깅 버전)
+     */
+    private String calculateSatisfactionStatus(Ncs_PrgInfo program, Integer stdId) {
+        try {
+            System.out.println("=== 만족도 조사 상태 계산 ===");
+            System.out.println("프로그램: " + program.getPrgNm());
+            System.out.println("프로그램 ID: " + program.getPrgId());
+            System.out.println("학생 ID: " + stdId);
+            
+            // 1. 운영기간이 끝났는지 확인
+            LocalDate today = getCurrentDate();
+            LocalDate programEndDate = LocalDate.parse(program.getPrgEndDt());
+            
+            System.out.println("오늘 날짜: " + today);
+            System.out.println("프로그램 종료일: " + programEndDate);
+            System.out.println("운영기간 종료 여부: " + today.isAfter(programEndDate));
+            
+            if (today.isBefore(programEndDate) || today.isEqual(programEndDate)) {
+                System.out.println("결과: none (운영기간 중)");
+                return "none";
+            }
+            
+            // 2. 운영기간이 끝났으면 만족도 조사 완료 여부 확인
+            boolean surveyCompleted = isSurveyCompleted(program.getPrgId(), stdId);
+            
+            if (surveyCompleted) {
+                System.out.println("결과: completed (조사 완료)");
+                return "completed";
+            } else {
+                System.out.println("결과: pending (조사 미완료)");
+                return "pending";
+            }
+            
+        } catch (Exception e) {
+            System.err.println("만족도 조사 상태 계산 오류: " + e.getMessage());
+            e.printStackTrace();
+            return "none";
         }
     }
     

@@ -139,12 +139,7 @@
 
         <!-- 신청자 목록 테이블 -->
         <div class="table-container">
-            <div class="table-header">
-                <h3>
-                    <i class="fas fa-users"></i>
-                    신청자 목록 (총 <span th:text="${applicantCount ?: 0}">0</span>명)
-                </h3>
-            </div>
+
             
             <div class="table-content">
                 <table class="data-table">
@@ -190,7 +185,7 @@
             </div>
             
             <!-- ✅ 페이징 (실제 데이터 기반) -->
-            <div class="pagination-container" th:if="${applicantList != null and !#lists.isEmpty(applicantList) and totalPages > 1}">
+            <div class="pagination-container" th:if="${applicantList != null and !#lists.isEmpty(applicantList) and totalPages >= 1}">
                 <nav aria-label="Page navigation">
                     <ul class="pagination" id="pagination">
                         <!-- 이전 페이지 -->

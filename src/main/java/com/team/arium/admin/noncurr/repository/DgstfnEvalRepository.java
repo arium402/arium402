@@ -78,6 +78,20 @@ public interface DgstfnEvalRepository extends JpaRepository<Dgstfn_Eval, Integer
     List<Object[]> findSectionStatisticsByPrgId(@Param("prgId") Integer prgId);
     
     /**
+     * 특정 프로그램과 학생의 만족도 조사 응답 존재 여부 확인 (디버깅 버전)
+     */
+    @Query("SELECT COUNT(e) FROM Dgstfn_Eval e WHERE e.ncsPrgInfo.prgId = :prgId AND e.stdInfo.stdId = :stdId")
+    Long countByPrgIdAndStdId(@Param("prgId") Integer prgId, @Param("stdId") Integer stdId);
+
+    
+    /**
+     * 특정 프로그램과 학생의 만족도 조사 응답 존재 여부 확인
+     */
+    @Query("SELECT COUNT(e) > 0 FROM Dgstfn_Eval e WHERE e.ncsPrgInfo.prgId = :prgId AND e.stdInfo.stdId = :stdId")
+    boolean existsByPrgIdAndStdId(@Param("prgId") Integer prgId, @Param("stdId") Integer stdId);
+    
+    
+    /**
      * 특정 프로그램의 전체 응답자 수
      */
     @Query("SELECT COUNT(DISTINCT e.stdInfo.stdId) FROM Dgstfn_Eval e WHERE e.ncsPrgInfo.prgId = :prgId")

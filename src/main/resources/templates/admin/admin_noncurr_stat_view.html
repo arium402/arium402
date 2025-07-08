@@ -52,14 +52,28 @@
                         <th style="width: 100px;">평균만족도</th>
                     </tr>
                 </thead>
-                <tbody id="statisticsTableBody">
-                    <!-- 로딩 중 표시 -->
-                    <tr id="loadingRow">
-                        <td colspan="7" style="text-align: center; padding: 50px;">
-                            <div class="spinner-border" role="status">
-                                <span class="sr-only">Loading...</span>
-                            </div>
-                            <p style="margin-top: 15px;">완료된 프로그램 통계를 불러오는 중...</p>
+<tbody id="statisticsTableBody">
+                    <!-- ✅ 서버에서 전달된 완료 프로그램 데이터 표시 -->
+                    <tr th:each="program, iterStat : ${programs.content}" 
+                        th:data-program-id="${program.prgId}"
+                        style="cursor: pointer;">
+                        <td th:text="${programs.pageable.offset + iterStat.index + 1}">1</td>
+                        <td class="text-left" th:text="${program.prgNm}">프로그램명</td>
+                        <td th:text="${program.prgDept}">운영부서</td>
+                        <td th:text="${#strings.replace(program.prgStDt, '-', '.')} + '~' + ${#strings.substring(#strings.replace(program.prgEndDt, '-', '.'), 5)}">운영기간</td>
+                        <td th:text="${program.totalApplicants ?: 0}">참여인원</td>
+                        <td>
+                            <span class="response-rate" th:text="${program.responseRate ?: '0.0%'}">0.0%</span>
+                        </td>
+                        <td>
+                            <span class="satisfaction-score" th:text="${program.averageSatisfaction ?: '0.0점'}">0.0점</span>
+                        </td>
+                    </tr>
+                    
+                    <!-- ✅ 완료된 프로그램이 없을 때만 표시 -->
+                    <tr th:if="${programs == null or programs.content.size() == 0}">
+                        <td colspan="7" style="text-align: center; padding: 50px; color: #6c757d;">
+                            완료된 프로그램이 없습니다
                         </td>
                     </tr>
                 </tbody>

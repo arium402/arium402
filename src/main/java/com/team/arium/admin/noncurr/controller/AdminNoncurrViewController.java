@@ -210,15 +210,45 @@ public class AdminNoncurrViewController {
             @RequestParam(value = "size", defaultValue = "10") int size,
             Model model) {
         
+        // ✅ 1. 디버깅 코드 추가 - 메서드 시작 부분
+        System.out.println("=== 프로그램 상세 조회 시작: ID = " + prgId + " ===");
         log.info("비교과 상세 페이지 요청: 프로그램ID={}, 페이지={}", prgId, page);
         
         try {
             // 1. 프로그램 상세 정보 조회
             NoncurrProgramDTO program = adminNoncurrProgramService.getProgramDetail(prgId);
             
+            // ✅ 2. 디버깅 메서드 호출 - 프로그램 조회 직후
+            System.out.println("=== 프로그램 기본 정보 조회 완료 ===");
+            System.out.println("프로그램명: " + program.getPrgNm());
+            System.out.println("프로그램ID: " + program.getPrgId());
+
+            // ✅ 3. 신청자 디버깅 메서드 호출
+            try {
+                System.out.println("=== 신청자 데이터 디버깅 시작 ===");
+                adminNoncurrProgramService.debugApplicantData(prgId);
+            } catch (Exception debugError) {
+                System.err.println("디버깅 실패: " + debugError.getMessage());
+                debugError.printStackTrace();
+            }
+            
             // 2. 신청자 목록 조회 (페이징)
             Pageable pageable = PageRequest.of(page - 1, size); // 페이지는 1부터 시작하므로 -1
             Page<ApplicantDTO> applicantPage = adminNoncurrProgramService.getApplicantList(prgId, pageable);
+            
+            // ✅ 4. 신청자 목록 조회 결과 확인
+            System.out.println("=== 신청자 목록 조회 결과 ===");
+            System.out.println("조회된 신청자 수: " + applicantPage.getContent().size());
+            System.out.println("전체 신청자 수: " + applicantPage.getTotalElements());
+
+            // 첫 번째 신청자 정보 출력 (있다면)
+            if (!applicantPage.getContent().isEmpty()) {
+                ApplicantDTO firstApplicant = applicantPage.getContent().get(0);
+                System.out.println("첫 번째 신청자 - 학번: " + firstApplicant.getStudentId() + 
+                                 ", 이름: " + firstApplicant.getName() + 
+                                 ", 이수여부: " + firstApplicant.getCompleted() + 
+                                 ", 만족도조사: " + firstApplicant.getSurveyCompleted());
+            }
             
             // 3. 핵심역량 정보 조회
             List<Core_CptInfo> allCompetencies = adminNoncurrProgramService.getAllCompetencies();
@@ -269,6 +299,16 @@ public class AdminNoncurrViewController {
             
             // 프로그램 ID (JavaScript에서 사용)
             model.addAttribute("programId", prgId);
+           
+            // ✅ 5. 최종 결과 로그
+            System.out.println("=== 프로그램 상세 페이지 데이터 준비 완료 ===");
+            System.out.println("프로그램: " + program.getPrgNm());
+            System.out.println("신청자: " + totalElements + "명");
+            System.out.println("페이지: " + page + "/" + totalPages);
+            System.out.println("삭제가능: " + canDelete);
+            System.out.println("=== 디버깅 종료 ===");
+
+            
             
             log.info("비교과 상세 페이지 데이터 준비 완료: 프로그램={}, 신청자={}, 페이지={}/{}, 삭제가능={}", 
                     program.getPrgNm(), totalElements, page, totalPages, canDelete);

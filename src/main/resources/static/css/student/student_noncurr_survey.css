@@ -79,6 +79,24 @@
 	border-color: var(--main-color);
 }
 
+/* 읽기 전용 필드 스타일 */
+.form-control[readonly] {
+    background-color: #f8f9fa;
+    border-color: #dee2e6;
+    color: #6c757d;
+    cursor: not-allowed;
+}
+
+.form-check-input[disabled] {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.form-check-label {
+    cursor: not-allowed;
+}
+
+
 .btn-primary {
 	background: var(--main-color);
 	border-color: var(--main-color);

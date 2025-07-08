@@ -4,11 +4,10 @@ let currentFilter = 'all';
 let filteredData = [];
 let serverCurrentDate = null;  // ✅ 서버 날짜 저장용
 
-// ✅ HTML의 data 속성에서 서버 데이터 읽기
+// ✅ HTML에서 서버 데이터 읽기 (만족도 조사 상태 포함)
 function loadServerData() {
     const dataContainer = document.getElementById('applicationsData');
     
-    // ✅ 서버 날짜 읽기
     serverCurrentDate = dataContainer.getAttribute('data-server-date');
     console.log('서버 현재 날짜 (아시아/서울):', serverCurrentDate);
     
@@ -22,14 +21,14 @@ function loadServerData() {
             prgNm: item.getAttribute('data-app-name'),
             prgStDt: item.getAttribute('data-start-date'),
             prgEndDt: item.getAttribute('data-end-date'),
-            applicationStatus: item.getAttribute('data-application-status')
+            applicationStatus: item.getAttribute('data-application-status'),
+            satisfactionStatus: item.getAttribute('data-satisfaction-status') // ✅ 추가
         });
     });
     
     console.log('HTML에서 읽어온 서버 데이터:', serverApplications);
     return serverApplications;
 }
-
 // ✅ 서버 데이터를 화면용 형태로 변환
 function convertServerDataToDisplayFormat(serverApplications) {
     return serverApplications.map((app, index) => ({
@@ -37,7 +36,7 @@ function convertServerDataToDisplayFormat(serverApplications) {
         name: app.prgNm,
         period: `${app.prgStDt} ~ ${app.prgEndDt}`,
         status: getProgramStatus(app),           // 상태 계산
-        satisfaction: getSatisfactionStatus(app) // 만족도 조사 상태 계산
+        satisfaction: app.satisfactionStatus || getSatisfactionStatus(app) // ✅ 서버 데이터 우선 사용
     }));
 }
 
@@ -173,7 +172,6 @@ function filterPrograms() {
 // 만족도 조사 함수
 function openSatisfactionSurvey(programId) {
     if (confirm('만족도 조사를 실시하시겠습니까?')) {
-        alert('만족도 조사 페이지로 이동합니다.');
         // ✅ 실제 프로그램 ID를 파라미터로 전달
         window.location.href = `/student/noncurr/survey?prgId=${programId}`;
     }

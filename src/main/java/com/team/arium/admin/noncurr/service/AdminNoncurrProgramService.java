@@ -1042,47 +1042,64 @@ public class AdminNoncurrProgramService {
         }
     }
         
-        /**
-         * Object[] 배열을 ApplicantDTO로 변환
-         * 네이티브 쿼리 결과를 DTO로 매핑
-         */
-        private ApplicantDTO convertToApplicantDTO(Object[] row) {
-            try {
-                return ApplicantDTO.builder()
-                    .id(row[0] != null ? ((Number) row[0]).longValue() : null)          // aply_id
-                    .prgId(row[1] != null ? ((Number) row[1]).intValue() : null)        // prg_id
-                    .stdId(row[2] != null ? ((Number) row[2]).intValue() : null)        // std_id
-                    .applyDate(row[3] != null ? row[3].toString() : null)               // aply_dt
-                    .regDt(row[4] != null ? row[4].toString() : null)                   // reg_dt
-                    .updDt(row[5] != null ? row[5].toString() : null)                   // upd_dt
-                    .studentId(row[6] != null ? row[6].toString() : "")                 // std_no
-                    .name(row[7] != null ? row[7].toString() : "")                      // std_nm
-                    .schYr(row[8] != null ? ((Number) row[8]).intValue() : null)        // sch_yr
-                    .stdGender(row[9] != null ? row[9].toString() : "")                 // std_gender
-                    .stdTellno(row[10] != null ? row[10].toString() : "")               // std_tellno
-                    .stdEmlAddr(row[11] != null ? row[11].toString() : "")              // std_eml_addr
-                    .department(row[12] != null ? row[12].toString() : "")              // dept_nm
-                    .college(row[13] != null ? row[13].toString() : "")                 // college
-                    .status(row[14] != null ? row[14].toString() : "")                  // aply_stat_desc
-                    .statusCode(row[15] != null ? row[15].toString() : "")              // aply_stat_code
-                    .cmpId(row[16] != null ? ((Number) row[16]).intValue() : null)      // cmp_id
-                    .completed("Y".equals(row[17]))                                     // cmp_yn
-                    .surveyCompleted("Y".equals(row[18]))                               // survey_yn
-                    .appliedDateFormatted(formatApplyDate(row[3]))                      // 포맷된 날짜
-                    .statusBadgeClass(getStatusBadgeClass(row[15]))                     // CSS 클래스
-                    .canEdit(true)                                                      // 수정 가능 여부
-                    .build();
-            } catch (Exception e) {
-                log.error("ApplicantDTO 변환 실패: {}", e.getMessage(), e);
-                return ApplicantDTO.builder()
-                    .name("변환 오류")
-                    .studentId("ERROR")
-                    .department("변환 실패")
-                    .completed(false)
-                    .surveyCompleted(false)
-                    .build();
-            }
+    /**
+     * Object[] 배열을 ApplicantDTO로 변환
+     * 네이티브 쿼리 결과를 DTO로 매핑
+     */
+    private ApplicantDTO convertToApplicantDTO(Object[] row) {
+        try {
+            // ✅ 디버깅 로그 추가
+            String studentId = row[6] != null ? row[6].toString() : "";
+            String cmpYn = row[17] != null ? row[17].toString() : "N";
+            String surveyYn = row[18] != null ? row[18].toString() : "N";
+            
+            System.out.println("=== convertToApplicantDTO 디버깅 ===");
+            System.out.println("학번: " + studentId);
+            System.out.println("cmp_yn 원본값: '" + cmpYn + "' (타입: " + (row[17] != null ? row[17].getClass().getSimpleName() : "null") + ")");
+            System.out.println("survey_yn 원본값: '" + surveyYn + "' (타입: " + (row[18] != null ? row[18].getClass().getSimpleName() : "null") + ")");
+            
+            boolean completed = "Y".equals(cmpYn);
+            boolean surveyCompleted = "Y".equals(surveyYn);
+            
+            System.out.println("변환 후 completed: " + completed);
+            System.out.println("변환 후 surveyCompleted: " + surveyCompleted);
+            System.out.println("===============================");
+            
+            return ApplicantDTO.builder()
+                .id(row[0] != null ? ((Number) row[0]).longValue() : null)          // aply_id
+                .prgId(row[1] != null ? ((Number) row[1]).intValue() : null)        // prg_id
+                .stdId(row[2] != null ? ((Number) row[2]).intValue() : null)        // std_id
+                .applyDate(row[3] != null ? row[3].toString() : null)               // aply_dt
+                .regDt(row[4] != null ? row[4].toString() : null)                   // reg_dt
+                .updDt(row[5] != null ? row[5].toString() : null)                   // upd_dt
+                .studentId(studentId)                                               // std_no
+                .name(row[7] != null ? row[7].toString() : "")                      // std_nm
+                .schYr(row[8] != null ? ((Number) row[8]).intValue() : null)        // sch_yr
+                .stdGender(row[9] != null ? row[9].toString() : "")                 // std_gender
+                .stdTellno(row[10] != null ? row[10].toString() : "")               // std_tellno
+                .stdEmlAddr(row[11] != null ? row[11].toString() : "")              // std_eml_addr
+                .department(row[12] != null ? row[12].toString() : "")              // dept_nm
+                .college(row[13] != null ? row[13].toString() : "")                 // college
+                .status(row[14] != null ? row[14].toString() : "")                  // aply_stat_desc
+                .statusCode(row[15] != null ? row[15].toString() : "")              // aply_stat_code
+                .cmpId(row[16] != null ? ((Number) row[16]).intValue() : null)      // cmp_id
+                .completed(completed)                                               // ✅ 디버깅된 값 사용
+                .surveyCompleted(surveyCompleted)                                   // ✅ 디버깅된 값 사용
+                .appliedDateFormatted(formatApplyDate(row[3]))                      // 포맷된 날짜
+                .statusBadgeClass(getStatusBadgeClass(row[15]))                     // CSS 클래스
+                .canEdit(true)                                                      // 수정 가능 여부
+                .build();
+        } catch (Exception e) {
+            log.error("ApplicantDTO 변환 실패: {}", e.getMessage(), e);
+            return ApplicantDTO.builder()
+                .name("변환 오류")
+                .studentId("ERROR")
+                .department("변환 실패")
+                .completed(false)
+                .surveyCompleted(false)
+                .build();
         }
+    }
         
         /**
          * 신청자 상태 업데이트 (관리자가 이수여부/만족도조사 직접 수정)
@@ -1212,15 +1229,17 @@ public class AdminNoncurrProgramService {
             }
         } 
     
-        /**
-         * 완료된 프로그램 통계 목록 조회 (만족도 조사 마감일이 지난 프로그램만)
-         */
+     // ✅ getCompletedProgramsForStats 메서드에도 디버깅 추가
         public Page<NoncurrProgramDTO> getCompletedProgramsForStats(String searchKeyword, String period, 
                                                                   String searchType, Pageable pageable) {
             log.info("완료된 프로그램 통계 조회 - 검색어: {}, 기간: {}, 검색타입: {}", searchKeyword, period, searchType);
             
-            // ✅ 현재 한국 날짜 가져오기
-            String today = adminModule.todays_module(); // "2025-06-30" 형태
+            // 현재 한국 날짜 가져오기
+            String today = LocalDate.now(ZoneId.of("Asia/Seoul"))
+                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            
+            System.out.println("=== 완료된 프로그램 조회 시작 ===");
+            System.out.println("서울 기준 오늘 날짜: " + today);
             
             // 1. 전체 프로그램 조회
             List<Ncs_PrgInfo> allPrograms;
@@ -1234,13 +1253,20 @@ public class AdminNoncurrProgramService {
                 allPrograms = ncsPrgInfoRepository.findAll();
             }
             
-            // 2. 완료된 프로그램만 필터링 (만족도 조사 마감일이 지난 것)
+            System.out.println("전체 프로그램 수: " + allPrograms.size());
+            
+            // 2. 완료된 프로그램만 필터링
             List<NoncurrProgramDTO> completedPrograms = allPrograms.stream()
-                .filter(program -> isCompletedProgram(program, today))
+                .filter(program -> {
+                    boolean isCompleted = isCompletedProgram(program, today);
+                    if (isCompleted) {
+                        System.out.println("🎯 완료된 프로그램 발견: " + program.getPrgNm() + " (ID: " + program.getPrgId() + ")");
+                    }
+                    return isCompleted;
+                })
                 .filter(program -> applyPeriodFilter(program, period))
                 .map(this::convertToDtoWithStats)
                 .sorted((p1, p2) -> {
-                    // 운영 종료일 기준 내림차순 정렬
                     if (p1.getPrgEndDt() == null && p2.getPrgEndDt() == null) return 0;
                     if (p1.getPrgEndDt() == null) return 1;
                     if (p2.getPrgEndDt() == null) return -1;
@@ -1248,37 +1274,61 @@ public class AdminNoncurrProgramService {
                 })
                 .collect(Collectors.toList());
             
+            System.out.println("=== 완료된 프로그램 필터링 결과 ===");
+            System.out.println("완료된 프로그램 수: " + completedPrograms.size());
+            
+            if (completedPrograms.isEmpty()) {
+                System.out.println("⚠️ 완료된 프로그램이 없습니다!");
+            } else {
+                System.out.println("완료된 프로그램 목록:");
+                for (int i = 0; i < completedPrograms.size(); i++) {
+                    NoncurrProgramDTO dto = completedPrograms.get(i);
+                    System.out.println((i+1) + ". " + dto.getPrgNm() + " (ID: " + dto.getPrgId() + ")");
+                }
+            }
+            
             // 3. 수동 페이징 처리
             int start = (int) pageable.getOffset();
             int end = Math.min(start + pageable.getPageSize(), completedPrograms.size());
             
-			List<NoncurrProgramDTO> pagedContent = start <= completedPrograms.size()
-					? completedPrograms.subList(start, end)
-					: Collections.emptyList();
+            List<NoncurrProgramDTO> pagedContent = start <= completedPrograms.size() ? 
+                completedPrograms.subList(start, end) : 
+                Collections.emptyList();
+            
+            System.out.println("페이징 처리 - start: " + start + ", end: " + end + ", 페이지 내용 수: " + pagedContent.size());
+            
+            return new PageImpl<>(pagedContent, pageable, completedPrograms.size());
+        }
 
-			return new PageImpl<>(pagedContent, pageable, completedPrograms.size());
-		}
-
-		/**
-		 * 프로그램이 완료되었는지 확인 (만족도 조사 마감일까지 지났는지)
-		 */
-		private boolean isCompletedProgram(Ncs_PrgInfo program, String today) {
-			// 만족도 조사 마감일이 설정되어 있고, 오늘 날짜가 그 이후인 경우
-			if (program.getSurveyDt() != null && !program.getSurveyDt().trim().isEmpty()) {
-				String surveyEndDate = program.getSurveyDt().length() >= 10 ? program.getSurveyDt().substring(0, 10)
-						: program.getSurveyDt();
-				return today.compareTo(surveyEndDate) > 0;
-			}
-
-			// 만족도 조사 마감일이 없으면 운영 종료일로 판단
-			if (program.getPrgEndDt() != null && !program.getPrgEndDt().trim().isEmpty()) {
-				String programEndDate = program.getPrgEndDt().length() >= 10 ? program.getPrgEndDt().substring(0, 10)
-						: program.getPrgEndDt();
-				return today.compareTo(programEndDate) > 0;
-			}
-
-			return false;
-		}
+        /**
+         * 프로그램이 완료되었는지 확인 - 만족도 조사 마감일만 체크
+         */
+        private boolean isCompletedProgram(Ncs_PrgInfo program, String today) {
+            System.out.println("=== 만족도 조사 마감일 체크 ===");
+            System.out.println("프로그램ID: " + program.getPrgId());
+            System.out.println("프로그램명: " + program.getPrgNm());
+            System.out.println("오늘 날짜: " + today);
+            System.out.println("만족도 조사 마감일: " + program.getSurveyDt());
+            
+            // ✅ 만족도 조사 마감일에서 날짜 부분만 추출
+            String surveyEndDate = program.getSurveyDt().length() >= 10 ? 
+                program.getSurveyDt().substring(0, 10) : program.getSurveyDt();
+            
+            System.out.println("추출된 조사마감일: " + surveyEndDate);
+            
+            // ✅ 오늘이 만족도 조사 마감일보다 이후인지만 체크
+            boolean surveyEnded = today.compareTo(surveyEndDate) > 0;
+            System.out.println("만족도 조사 마감? " + surveyEnded + 
+                             " (오늘:" + today + " > 마감:" + surveyEndDate + ")");
+            
+            if (surveyEnded) {
+                System.out.println("✅ 만족도 조사 완료된 프로그램 - ID: " + program.getPrgId());
+                return true;
+            } else {
+                System.out.println("❌ 만족도 조사 아직 안 끝남 - ID: " + program.getPrgId());
+                return false;
+            }
+        }
 
 		/**
 		 * 기간 필터 적용 (통계용)
@@ -1539,6 +1589,55 @@ public class AdminNoncurrProgramService {
 		        .sections(Collections.emptyList())
 		        .build();
 		}
+		
+	    /**
+	     * ✅ 임시 디버깅 메서드 - 원시 데이터 확인용
+	     */
+	    public void debugApplicantData(Integer prgId) {
+	        System.out.println("=== 디버깅 시작: 프로그램 ID " + prgId + " ===");
+	        
+	        try {
+	            // 1. 원시 쿼리 결과 확인
+	            List<Object[]> rawResults = ncsPrgAplyRepository.findApplicantDetailsByPrgId(prgId);
+	            System.out.println("조회된 신청자 수: " + rawResults.size());
+	            
+	            for (int i = 0; i < rawResults.size(); i++) {
+	                Object[] row = rawResults.get(i);
+	                System.out.println("--- 신청자 " + (i+1) + " Raw Data ---");
+	                System.out.println("aply_id (0): " + row[0]);
+	                System.out.println("std_id (2): " + row[2]);
+	                System.out.println("std_no (6): " + row[6]);
+	                System.out.println("std_nm (7): " + row[7]);
+	                System.out.println("dept_nm (12): " + row[12]);
+	                System.out.println("cmp_id (16): " + row[16]);
+	                System.out.println("cmp_yn (17): '" + row[17] + "' (타입: " + (row[17] != null ? row[17].getClass().getSimpleName() : "null") + ")");
+	                System.out.println("survey_yn (18): '" + row[18] + "' (타입: " + (row[18] != null ? row[18].getClass().getSimpleName() : "null") + ")");
+	                System.out.println("------------------");
+	            }
+	            
+	            // 2. DTO 변환 후 확인
+	            List<ApplicantDTO> dtoList = rawResults.stream()
+	                .map(this::convertToApplicantDTO)
+	                .collect(Collectors.toList());
+	            
+	            for (int i = 0; i < dtoList.size(); i++) {
+	                ApplicantDTO dto = dtoList.get(i);
+	                System.out.println("--- 신청자 " + (i+1) + " DTO Data ---");
+	                System.out.println("studentId: " + dto.getStudentId());
+	                System.out.println("name: " + dto.getName());
+	                System.out.println("completed: " + dto.getCompleted());
+	                System.out.println("surveyCompleted: " + dto.getSurveyCompleted());
+	                System.out.println("------------------");
+	            }
+	            
+	        } catch (Exception e) {
+	            System.err.println("디버깅 중 오류: " + e.getMessage());
+	            e.printStackTrace();
+	        }
+	        
+	        System.out.println("=== 디버깅 완료 ===");
+	    }
+
 		
 
 		

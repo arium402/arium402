@@ -84,6 +84,17 @@ public class StudentNoncurrController {
      */
     @GetMapping("/survey")
     public String surveyPage(@RequestParam(value = "prgId", required = false) Integer prgId, Model model) {
+        Integer stdId = 1; // 하드코딩된 학생 ID
+        
+        if (prgId != null) {
+            // DB에서 만족도 조사 문항들 가져오기
+            SatisfactionQuestionResponseDTO surveyData = studentNoncurrService.getSatisfactionQuestions(prgId);
+            model.addAttribute("surveyData", surveyData);
+        }
+        
+        // 학생 기본 정보 가져오기
+        StudentBasicInfoDTO studentInfo = studentNoncurrService.getStudentBasicInfo(stdId);
+        model.addAttribute("studentInfo", studentInfo);
         
         return "/student/noncurr/student_noncurr_survey";
     }

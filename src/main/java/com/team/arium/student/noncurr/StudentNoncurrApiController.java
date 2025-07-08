@@ -221,4 +221,35 @@ public class StudentNoncurrApiController {
         }
     }
     
+    /**
+     * 만족도 조사 제출 API
+     */
+    @PostMapping("/submit-survey")
+    public ResponseEntity<Map<String, Object>> submitSatisfactionSurvey(
+            @RequestParam("prgId") Integer prgId,
+            @RequestBody Map<String, Integer> surveyData) {
+        try {
+            Integer stdId = 1; // 하드코딩된 학생 ID
+            
+            boolean success = studentNoncurrService.submitSatisfactionSurvey(prgId, stdId, surveyData);
+            
+            Map<String, Object> response = new HashMap<>();
+            if (success) {
+                response.put("success", true);
+                response.put("message", "만족도 조사가 완료되었습니다!");
+            } else {
+                response.put("success", false);
+                response.put("message", "만족도 조사 제출에 실패했습니다.");
+            }
+            
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+    
+    
 }

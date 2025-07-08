@@ -41,6 +41,9 @@ public class ProgramListDTO {
     private String surveyDeadline;         // 만족도 조사 마감일
     private Integer applicationId;         // 신청 ID (취소용)
     
+    // ✅ 만족도 조사 관련 필드 추가
+    private Boolean surveyCompleted;        // 만족도 조사 완료 여부
+    private String satisfactionStatus;      // none/pending/completed
     
     @JsonProperty("dDay")        // ← JSON에서 "dDay"로 출력
     private Integer dDay;

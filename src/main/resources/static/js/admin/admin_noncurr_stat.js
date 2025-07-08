@@ -267,7 +267,7 @@ function showModalError(message, container) {
         <div class="stats-section">
             <div class="error-container" style="text-align: center; padding: 50px;">
                 <div class="alert alert-warning" role="alert">
-                    <h4 class="alert-heading">⚠️ 통계 데이터 없음</h4>
+                    <h4 class="alert-heading">통계 데이터 없음</h4>
                     <p style="margin: 15px 0;">${message}</p>
                     <hr>
                     <p class="mb-0">
