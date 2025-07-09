@@ -1,37 +1,8 @@
 // 내 일정 등록 페이지 JavaScript
 
-// 상담 시간대 체크박스 상호 배타적 처리
-function setupConsultationTimeHandlers() {
-    var allTimeCheckbox = document.getElementById('allTime');
-    var specificTimeCheckboxes = ['morning', 'lunch', 'afternoon'];
-    
-    // 전체 시간 체크박스 클릭 시
-    allTimeCheckbox.addEventListener('change', function() {
-        if (this.checked) {
-            // 전체 시간이 체크되면 다른 모든 시간대 체크 해제
-            specificTimeCheckboxes.forEach(function(id) {
-                document.getElementById(id).checked = false;
-            });
-        }
-    });
-    
-    // 개별 시간대 체크박스 클릭 시
-    specificTimeCheckboxes.forEach(function(id) {
-        document.getElementById(id).addEventListener('change', function() {
-            if (this.checked) {
-                // 개별 시간대가 체크되면 전체 시간 체크 해제
-                allTimeCheckbox.checked = false;
-            }
-        });
-    });
-}
-
 // 폼 초기화
 function resetForm() {
     if (confirm('모든 설정을 초기화하시겠습니까?')) {
-        // 기본 정보 초기화
-        document.getElementById('scheduleYear').value = '2025';
-        document.getElementById('scheduleMonth').value = '6';
         
         // 근무 시간 초기화
         document.getElementById('startTime').value = '09:00';
@@ -44,7 +15,6 @@ function resetForm() {
         });
         
         // 상담 시간 초기화 (전체 시간만 체크)
-        document.getElementById('allTime').checked = true;
         document.getElementById('morning').checked = false;
         document.getElementById('lunch').checked = false;
         document.getElementById('afternoon').checked = false;
@@ -97,6 +67,7 @@ function saveSchedule() {
     
     // 실제로는 서버에 데이터 전송
     var scheduleData = {
+		emplno : userno,
         year: year,
         month: month,
         startTime: startTime,
@@ -107,14 +78,32 @@ function saveSchedule() {
     
     console.log('저장할 데이터:', scheduleData);
     
-    alert(year + '년 ' + month + '월 일정이 성공적으로 저장되었습니다!');
+	fetch("./scheduleok",{
+					method : "POST",				
+					headers : {"Content-type":"application/json"},
+					body : JSON.stringify(scheduleData)
+				})	
+				.then(function(aa){	
+					return aa.text();
+				})
+				.then(function(bb){	
+					console.log(bb);
+					alert(year + '년 ' + month + '월 일정이 성공적으로 저장되었습니다!');	
+				})
+				.catch(function(error){	
+					console.log("Ajax 통신 오류 발생!!");
+	});
+	
     
+	
     // 부모 창의 달력 새로고침
-    if (window.opener && window.opener.generateCalendar) {
+   /*
+	 if (window.opener && window.opener.generateCalendar) {
         window.opener.location.reload();
     }
     
     window.close();
+	*/
 }
 
 // 마이페이지로 이동
@@ -123,9 +112,7 @@ function goToMyPage() {
 }
 
 // 페이지 로드 시 초기화
-window.onload = function() {
-    setupConsultationTimeHandlers();
-    
+window.onload = function() { 
     // 현재 날짜 기준으로 기본값 설정
     var currentDate = new Date();
     document.getElementById('scheduleYear').value = currentDate.getFullYear();

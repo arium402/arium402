@@ -95,20 +95,22 @@
             <div class="consultation-time-section">
                 <label class="form-label">상담 가능 시간대</label>
                 <div class="consultation-checkboxes">
+                <!-- 
                     <div class="consultation-checkbox-group">
                         <input type="checkbox" class="consultation-checkbox" id="allTime" value="all" checked>
                         <label class="consultation-label" for="allTime">전체 시간</label>
                     </div>
+                 -->
                     <div class="consultation-checkbox-group">
-                        <input type="checkbox" class="consultation-checkbox" id="morning" value="morning">
+                        <input type="checkbox" class="consultation-checkbox" id="morning" value="2">
                         <label class="consultation-label" for="morning">오전 (9~12시)</label>
                     </div>
                     <div class="consultation-checkbox-group">
-                        <input type="checkbox" class="consultation-checkbox" id="lunch" value="lunch">
+                        <input type="checkbox" class="consultation-checkbox" id="lunch" value="3">
                         <label class="consultation-label" for="lunch">점심 (12~13시)</label>
                     </div>
                     <div class="consultation-checkbox-group">
-                        <input type="checkbox" class="consultation-checkbox" id="afternoon" value="afternoon">
+                        <input type="checkbox" class="consultation-checkbox" id="afternoon" value="4">
                         <label class="consultation-label" for="afternoon">오후 (13~16시)</label>
                     </div>
                 </div>
@@ -124,7 +126,9 @@
     </section>
         </div>
     
-
+	<script th:inline="javascript">
+	var userno = /*[[${UserNo}]]*/ 0; 
+	</script>
     <!-- JavaScript 파일 -->
     <script src="/js/counselor/counselor_schedule_registration.js"></script>
     

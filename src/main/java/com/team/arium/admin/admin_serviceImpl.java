@@ -31,6 +31,7 @@ public class admin_serviceImpl implements admin_service{
 		List<admin_counselor_DTO> dtoList = new ArrayList<>();
 		 for (Empl_Info e : entityList) {
 		    	admin_counselor_DTO dto = new admin_counselor_DTO();
+		    	dto.setEmplId(e.getEmplId());
 		    	dto.setEmplNo(e.getEmplNo());
 		        dto.setEmplName(e.getEmplName());
 		        dto.setCnslCdDesc(this.cmn_svc.getCodeDesc("cnsl_cd", e.getCnslCd().getCodeId()));

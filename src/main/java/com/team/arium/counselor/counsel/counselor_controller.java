@@ -1,12 +1,19 @@
 package com.team.arium.counselor.counsel;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
+import com.team.arium.DTO.counselor_cnlr_schd;
 import com.team.arium.DTO.counselor_patient_DTO;
 import com.team.arium.admin.admin_service;
 import com.team.arium.domain.Empl_Info;
@@ -14,7 +21,11 @@ import com.team.arium.domain.Std_Info;
 import com.team.arium.model.pageing;
 
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,6 +36,7 @@ import java.util.Map;
 @RequestMapping("/counselor")
 public class counselor_controller {
     
+	PrintWriter pw = null;
     
 	@Autowired
 	public counselor_repo cns_repo;
@@ -34,6 +46,44 @@ public class counselor_controller {
 	
 	@Resource(name="pageing")
 	pageing m_pg;
+	
+	@Resource(name="cnlr_schd_DTO")
+	counselor_cnlr_schd schd;
+	
+	//근무일정 관리
+	@PostMapping("/scheduleok")
+	public String scheduleok(@RequestBody String data, HttpServletResponse res, 
+			@SessionAttribute(name = "UserNo", required = false) String UserNo) throws Exception {
+		this.pw = res.getWriter();			
+		try {
+			JSONObject jo = new JSONObject(data);
+			System.out.println(jo.get("emplno"));	//상담사 고유값
+			JSONArray ja = (JSONArray)jo.get("workDays");	//근무요일			
+			JSONArray ja2 = (JSONArray)jo.get("consultationTimes");	//상담가능 시간대
+			int w = 0;
+			while(w < ja.length()) {
+				
+				int wa = 0;
+				while(wa < ja2.length()) {
+					System.out.println(ja2.get(wa).toString());
+					
+					this.cns_repo.schedule_insert(null);	//DB 입력사항
+					
+					
+					wa++;
+				}
+				
+				w++;
+			}
+			this.pw.print("ok");
+		}catch(Exception e) {
+			this.pw.print("error");
+		}finally {
+			//this.pw.close();
+		}
+		return null;
+	}
+	
 	
 	//신청자 관리 
     @GetMapping("/applicants")
@@ -105,16 +155,19 @@ public class counselor_controller {
         return "/counselor/counselor_schedule_check";
     }
     
+    //근무일정관리
     @GetMapping("/counseling_schedule")
     public String counseling_schedule(Model model) {
         
+    	
+    	
         return "/counselor/counselor_counseling_schedule";
     }
     
     
     @GetMapping("/schedule_registration")
-    public String schedule_registration(Model model) {
-        
+    public String schedule_registration(Model model,@SessionAttribute(name = "UserNo", required = false) String UserNo) {
+        model.addAttribute("UserNo",UserNo);
         return "/counselor/counselor_schedule_registration";
     }
     

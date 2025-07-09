@@ -39,6 +39,7 @@ public class CounselorDashboard_controller {
     	}
     	else {
     		this.dtoList = this.admin_svc.my_counselor_info2(this.userid);
+    		session.setAttribute("UserNo", this.dtoList.get(0).emplId);
     		session.setAttribute("UserId", this.userid);
     		session.setAttribute("UserNm", this.dtoList.get(0).emplName);
     		session.setAttribute("UserIdx", this.dtoList.get(0).emplId);
