@@ -6,6 +6,8 @@ window.addEventListener('DOMContentLoaded', function () {
         alert('아이디 또는 비밀번호가 틀렸습니다.');
     } else if (params.get('error') === 'forbidden') {
         alert('접근 권한이 없습니다.');
+	}else if (params.get('error') !== null) {
+		alert('로그인에 실패했습니다. 다시 시도해주세요.');
 	}
 	
     // URL 파라미터 제거

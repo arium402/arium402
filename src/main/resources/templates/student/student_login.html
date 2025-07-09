@@ -269,7 +269,7 @@
     <div class="main-container">
         <div class="login-card">
             <div class="logo-section">
-                <img src="./logo-header.png" alt="한국방송통신대학교 로고" style="width: 400px; margin-bottom: 20px;">
+                <img th:src="@{/images/logo-header.png}" alt="한국방송통신대학교 로고" style="width: 400px; margin-bottom: 20px;">
                 <div class="logo-subtext">Korea National Open University</div>
             </div>
 
@@ -298,14 +298,14 @@
             </div>
 
             <div id="counselor-tab" class="tab-content">
-                <form>
+                <form action="/counselor-login-process" method="post">
                     <div class="form-group">
                         <label class="form-label">아이디</label>
-                        <input type="text" class="form-control" placeholder="아이디를 입력하세요">
+                        <input type="text" class="form-control" id="counselorId" name="username" placeholder="아이디를 입력하세요">
                     </div>
                     <div class="form-group">
                         <label class="form-label">패스워드</label>
-                        <input type="password" class="form-control" placeholder="패스워드를 입력하세요">
+                        <input type="password" class="form-control" id="counselorPw" name="password" placeholder="패스워드를 입력하세요">
                     </div>
                     <div class="help-links">
                         <a href="#">아이디 찾기</a> | <a href="#">패스워드 찾기</a>
@@ -337,23 +337,6 @@
             &copy; 2025 한국방송통신대학교. All rights reserved.
         </div>
     </div>
-
-    <script>
-        function switchTab(tabName) {
-            // 모든 탭 버튼 비활성화
-            document.querySelectorAll('.tab-button').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            // 모든 탭 컨텐츠 숨기기
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active');
-            });
-            
-            // 선택된 탭 활성화
-            event.target.classList.add('active');
-            document.getElementById(tabName + '-tab').classList.add('active');
-        }
-    </script>
+    <script src="/js/student/login/student_login.js?v=1"></script>
 </body>
 </html>

@@ -337,12 +337,3 @@ function confirmLogout() {
         if (form) form.submit();
     }
 }
-
-// 로그아웃 완료 메시지
-document.addEventListener('DOMContentLoaded', function () {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('logout') !== null) {
-        alert('로그아웃 되었습니다.');
-    }
-});
-
