@@ -11,7 +11,8 @@
 			<!-- 주간 네비게이션 -->
 			<div class="week-navigation">
 				<button class="nav-button" onclick="changeWeek(-1)">‹</button>
-				<div class="week-display" id="week-display">2025.06.16 ~ 2025.06.20</div>
+				<div class="week-display" id="week-display" 
+					th:text="${scheduleData.displayStartDate} + ' ~ ' + ${scheduleData.displayEndDate}"></div>
 				<button class="nav-button" onclick="changeWeek(1)">›</button>
 			</div>
 
@@ -19,20 +20,15 @@
 			<div class="timetable-container">
 				<table class="timetable">
 					<thead>
-						<tr>
+						<tr id="table-header">
 							<th class="diagonal-header">
 								<span class="time-text">시간</span>
 								<span class="day-text">요일</span>
 							</th>
-							<th>월</th>
-							<th>화</th>
-							<th>수</th>
-							<th>목</th>
-							<th>금</th>
 						</tr>
 					</thead>
 					<tbody id="timetable-body">
-					 	<!-- 타임테이블 내용이 여기에 동적으로 생성됩니다 -->
+						<!-- js에서 핸들링 -->
 					</tbody>
 				</table>
 			</div>
@@ -51,5 +47,15 @@
 		</div>
 	</div>
 </div>
+
+<script th:inline="javascript">
+	const counselors = /*[[${scheduleData.counselors}]]*/ [];
+	const startDate = /*[[${scheduleData.startDate}]]*/ '';
+	const endDate = /*[[${scheduleData.endDate}]]*/ '';
+	const timeSlots = /*[[${scheduleData.timeSlots}]]*/ ['09:00 ~ 10:00', '10:00 ~ 11:00', '11:00 ~ 12:00', '12:00 ~ 13:00', '13:00 ~ 14:00', '14:00 ~ 15:00', '15:00 ~ 16:00'];
+	const days = /*[[${scheduleData.days}]]*/ ['월', '화', '수', '목', '금'];
+	console.log("timeSlots:", timeSlots);
+    console.log("days:", days);
+</script>
 
 </div>

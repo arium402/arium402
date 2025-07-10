@@ -24,6 +24,10 @@ public class Cnsl_PreEval {
     @Column(name = "pre_qst_id")
     private Integer preQstId;
     
+    @Id
+    @Column(name = "pre_opt_id")
+    private Integer preOptId;
+    
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pre_eval_id", insertable = false, updatable = false)
     private Cnsl_PreEvalMaster cnslPreEvalMaster;

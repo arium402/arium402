@@ -9,4 +9,5 @@ import java.io.Serializable;
 public class Cnsl_PreEvalId implements Serializable {
     private String preEvalId; 
     private Integer preQstId;
+    private Integer preOptId;
 }
