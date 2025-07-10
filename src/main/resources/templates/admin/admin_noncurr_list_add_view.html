@@ -14,73 +14,64 @@
         </div>
         <div class="title-divider"></div>
 
-        <!-- 등록 폼 섹션 -->
-        <div class="register-form-section">
-            <!-- 대표 사진 영역 -->
-            <div class="program-image-section" th:object="${formDto}">
-                <label class="form-label required">프로그램 대표 사진</label>
-                <div class="image-upload-area">
-                    <input type="file" 
-                    	id="imageFile"
-                    	name="imageFile" 
-						th:field="*{imageFile}"
-						accept="image/*" 
-						onchange="handleImageSelect(this)">
-                    <div class="image-upload-content">
-                        <i class="fas fa-camera"></i>
-                        <div>대표 사진 업로드</div>
-                        <small>클릭하여 선택</small>
+        <!-- 폼 전체 감싸기 -->
+        <form id="programForm" th:action="@{/admin/noncurr_add}" method="post" enctype="multipart/form-data">
+            <!-- 등록 폼 섹션 - 원래 CSS 구조 유지 -->
+            <div class="register-form-section">
+                <!-- 대표 사진 영역 -->
+                <div class="program-image-section">
+                    <label class="form-label required">프로그램 대표 사진</label>
+                    <div class="image-upload-area">
+                        <!-- ✅ 수정: name을 imageFile로 변경 -->
+                        <input type="file" id="imageFile" name="imageFile" accept="image/*" onchange="handleImageSelect(this)">
+                        <div class="image-upload-content">
+                            <i class="fas fa-camera"></i>
+                            <div>대표 사진 업로드</div>
+                            <small>클릭하여 선택</small>
+                        </div>
+                    </div>
+                    <div class="image-info">
+                        • 권장 크기: 400×300px<br>
+                        • 파일 형식: JPG, PNG<br>
+                        • 최대 크기: 5MB
                     </div>
                 </div>
-                <div class="image-info">
-                    • 권장 크기: 400×300px<br>
-                    • 파일 형식: JPG, PNG<br>
-                    • 최대 크기: 5MB
-                </div>
-            </div>
 
-            <!-- 폼 컨텐츠 영역 -->
-            <div class="form-content-section">
-                <form th:action="@{/api/admin/noncurr_add}" 
-                	th:object="${formDto}"
-                	method="post" 
-                	enctype="multipart/form-data"
-                	id="programForm">
-                	
+                <!-- 폼 컨텐츠 영역 -->
+                <div class="form-content-section">
+                    <!-- ✅ 추가: 히든 필드 -->
+                    <!--  -->
+                    <input type="hidden" id="competencyIdsStr" name="competencyIdsStr" value="">
+                    <input type="hidden" id="prgStatCd" name="prgStatCd" value="51">
+                    
                     <div class="form-grid">
-                        <!-- 비교과명 -->
+                        <!-- ✅ 수정: name을 prgNm으로 변경 -->
                         <div class="form-item full-width">
                             <label class="form-label required">비교과명</label>
-                            <input type="text" class="form-input" th:field="*{prgNm}" placeholder="비교과 프로그램명을 입력하세요" required>
+                            <input type="text" class="form-input" id="prgNm" name="prgNm" placeholder="비교과 프로그램명을 입력하세요" required>
                         </div>
 
-                        <!-- 모집기간 -->
+                        <!-- ✅ 수정: name을 recruitStDt, recruitEndDt로 변경 -->
                         <div class="form-item">
                             <label class="form-label required">모집 시작일</label>
-                            <input type="date" 
-                            	class="form-input" 
-                            	th:field="*{recruitStDt}" 
-                            	
-                            	required>
+                            <input type="date" class="form-input" id="recruitStDt" name="recruitStDt" required>
                         </div>
 
                         <div class="form-item">
                             <label class="form-label required">모집 마감일</label>
-                            <input type="date" class="form-input" 
-                            	th:field="*{recruitEndDt}" required>
+                            <input type="date" class="form-input" id="recruitEndDt" name="recruitEndDt" required>
                         </div>
 
-                        <!-- 모집인원 -->
+                        <!-- ✅ 수정: name을 maxCnt로 변경 -->
                         <div class="form-item">
                             <label class="form-label required">모집인원</label>
-                            <input type="number" class="form-input" th:field="*{maxCnt}"
-                            	 placeholder="30" min="1" required>
+                            <input type="number" class="form-input" id="maxCnt" name="maxCnt" placeholder="30" min="1" required>
                         </div>
 
-                        <!-- 운영부서 -->
+                        <!-- ✅ 수정: name을 prgDept로 변경 -->
                         <div class="form-item">
                             <label class="form-label required">운영부서</label>
-                            <select class="form-input" th:field="*{prgDept}" required>
+                            <select class="form-input" id="prgDept" name="prgDept" required>
                                 <option value="">선택하세요</option>
                                 <option value="교양학부">교양학부</option>
                                 <option value="취업지원처">취업지원처</option>
@@ -94,56 +85,207 @@
                             </select>
                         </div>
 
-                        <!-- 운영기간 -->
+                        <!-- ✅ 수정: name을 prgStDt, prgEndDt로 변경 -->
                         <div class="form-item">
                             <label class="form-label required">운영 시작일</label>
-                            <input type="date" class="form-input" th:field="*{prgStDt}" required>
+                            <input type="date" class="form-input" id="prgStDt" name="prgStDt" required>
                         </div>
 
                         <div class="form-item">
                             <label class="form-label required">운영 종료일</label>
-                            <input type="date" class="form-input" th:field="*{prgEndDt}" required>
+                            <input type="date" class="form-input" id="prgEndDt" name="prgEndDt" required>
                         </div>
 
-                        <!-- 문의 전화번호 -->
+                        <!-- ✅ 수정: name을 prgTel로 변경 -->
                         <div class="form-item">
                             <label class="form-label required">문의 전화번호</label>
-                            <input type="tel" class="form-input" th:field="*{prgTel}" placeholder="02-3668-4321" required>
+                            <input type="tel" class="form-input" id="prgTel" name="prgTel" placeholder="02-3668-4321" required>
                         </div>
 
-                        <!-- 만족도조사 마감일 -->
+                        <!-- ✅ 수정: name을 surveyDt로 변경 -->
                         <div class="form-item">
                             <label class="form-label required">만족도조사 마감일</label>
-                            <input type="date" class="form-input" th:field="*{surveyDt}" required>
+                            <input type="date" class="form-input" id="surveyDt" name="surveyDt" required>
                         </div>
 
-                        <!-- 마일리지 점수 -->
+                        <!-- ✅ 수정: name을 mlgDefScore로 변경 -->
                         <div class="form-item">
                             <label class="form-label required">마일리지 점수</label>
-                            <input type="number" class="form-input" th:field="*{mlgDefScore}" placeholder="10000" min="0" required>
+                            <input type="number" class="form-input" id="mlgDefScore" name="mlgDefScore" placeholder="10000" min="0" required>
                         </div>
 
-                        <!-- 핵심역량 체크 (동적 생성) -->
-                        <div class="form-item full-width">
-                            <label class="form-label required">핵심역량</label>
-                            <div class="checkbox-group">
-                                <div class="checkbox-item" 
-                                     th:each="competency : ${competencies}">
-                                    <input type="checkbox" 
-                                           name="competencyIds"
-                                           th:value="${competency.cclId}"
-                                           th:id="${'competency_' + competency.cclId}">
-                                    <label th:for="${'competency_' + competency.cclId}" 
-                                           th:text="${competency.cclNm}">
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
+<!-- ✅ 수정: 핵심역량 체크박스 + 점수 선택 -->
+<div class="form-item full-width">
+    <label class="form-label required">핵심역량</label>
+    <div class="checkbox-group" id="competencyCheckboxGroup">
+        <!-- Thymeleaf로 동적 생성 -->
+        <div th:each="competency : ${competencies}" class="checkbox-item-wrapper">
+            <div class="checkbox-item">
+                <input type="checkbox" 
+                       th:id="'competency_' + ${competency.cclId}" 
+                       name="competencyCheckbox" 
+                       th:value="${competency.cclId}"
+                       onchange="toggleScoreSelect(this)">
+                <label th:for="'competency_' + ${competency.cclId}" 
+                       th:text="${competency.cclNm}">핵심역량명</label>
+            </div>
+            <!-- ✅ 새로 추가: 점수 선택 드롭다운 -->
+            <div class="score-select-wrapper" th:id="'score_wrapper_' + ${competency.cclId}" style="display: none;">
+                <select th:name="'competencyScore_' + ${competency.cclId}" 
+                        th:id="'score_' + ${competency.cclId}" 
+                        class="score-select">
+                    <option value="" selected>점수 지정</option>
+                    <option value="15">15점</option>
+                    <option value="20">20점</option>
+                    <option value="25">25점</option>
+                    <option value="30">30점</option>
+                    <option value="35">35점</option>
+                    <option value="40">40점</option>
+                    <option value="45">45점</option>
+                    <option value="50">50점</option>
+                    <option value="55">55점</option>
+                    <option value="60">60점</option>
+                    <option value="65">65점</option>
+                    <option value="70">70점</option>
+                    <option value="75">75점</option>
+                    <option value="80">80점</option>
+                    <option value="85">85점</option>
+                    <option value="90">90점</option>
+                    <option value="95">95점</option>
+                    <option value="100">100점</option>
+                </select>
+            </div>
+        </div>
+        
+        <!-- 만약 competencies가 없다면 기본값들 표시 -->
+        <div th:if="${competencies == null or #lists.isEmpty(competencies)}">
+            <div class="checkbox-item-wrapper">
+                <div class="checkbox-item">
+                    <input type="checkbox" id="competency_1" name="competencyCheckbox" value="1" checked onchange="toggleScoreSelect(this)">
+                    <label for="competency_1">창의적 혁신역량</label>
+                </div>
+                <div class="score-select-wrapper" id="score_wrapper_1">
+                    <select name="competencyScore_1" id="score_1" class="score-select">
+                        <option value="" selected>점수 지정</option>
+                        <option value="15">15점</option>
+                        <option value="20">20점</option>
+                        <option value="25">25점</option>
+                        <option value="30">30점</option>
+                        <option value="35">35점</option>
+                        <option value="40">40점</option>
+                        <option value="45">45점</option>
+                        <option value="50">50점</option>
+                        <option value="55">55점</option>
+                        <option value="60">60점</option>
+                        <option value="65">65점</option>
+                        <option value="70">70점</option>
+                        <option value="75">75점</option>
+                        <option value="80">80점</option>
+                        <option value="85">85점</option>
+                        <option value="90">90점</option>
+                        <option value="95">95점</option>
+                        <option value="100">100점</option>
+                    </select>
+                </div>
+            </div>
+            <div class="checkbox-item-wrapper">
+                <div class="checkbox-item">
+                    <input type="checkbox" id="competency_2" name="competencyCheckbox" value="2" checked onchange="toggleScoreSelect(this)">
+                    <label for="competency_2">융합적 탐구역량</label>
+                </div>
+                <div class="score-select-wrapper" id="score_wrapper_2">
+                    <select name="competencyScore_2" id="score_2" class="score-select">
+                        <option value="" selected>점수 지정</option>
+                        <option value="15">15점</option>
+                        <option value="20">20점</option>
+                        <option value="25">25점</option>
+                        <option value="30">30점</option>
+                        <option value="35">35점</option>
+                        <option value="40">40점</option>
+                        <option value="45">45점</option>
+                        <option value="50">50점</option>
+                        <option value="55">55점</option>
+                        <option value="60">60점</option>
+                        <option value="65">65점</option>
+                        <option value="70">70점</option>
+                        <option value="75">75점</option>
+                        <option value="80">80점</option>
+                        <option value="85">85점</option>
+                        <option value="90">90점</option>
+                        <option value="95">95점</option>
+                        <option value="100">100점</option>
+                    </select>
+                </div>
+            </div>
+            <div class="checkbox-item-wrapper">
+                <div class="checkbox-item">
+                    <input type="checkbox" id="competency_3" name="competencyCheckbox" value="3" onchange="toggleScoreSelect(this)">
+                    <label for="competency_3">협력적 소통역량</label>
+                </div>
+                <div class="score-select-wrapper" id="score_wrapper_3" style="display: none;">
+                    <select name="competencyScore_3" id="score_3" class="score-select">
+                        <option value="" selected>점수 지정</option>
+                        <option value="15">15점</option>
+                        <option value="20">20점</option>
+                        <option value="25">25점</option>
+                        <option value="30">30점</option>
+                        <option value="35">35점</option>
+                        <option value="40">40점</option>
+                        <option value="45">45점</option>
+                        <option value="50">50점</option>
+                        <option value="55">55점</option>
+                        <option value="60">60점</option>
+                        <option value="65">65점</option>
+                        <option value="70">70점</option>
+                        <option value="75">75점</option>
+                        <option value="80">80점</option>
+                        <option value="85">85점</option>
+                        <option value="90">90점</option>
+                        <option value="95">95점</option>
+                        <option value="100">100점</option>
+                    </select>
+                </div>
+            </div>
+            <div class="checkbox-item-wrapper">
+                <div class="checkbox-item">
+                    <input type="checkbox" id="competency_4" name="competencyCheckbox" value="4" onchange="toggleScoreSelect(this)">
+                    <label for="competency_4">글로벌 리더역량</label>
+                </div>
+                <div class="score-select-wrapper" id="score_wrapper_4" style="display: none;">
+                    <select name="competencyScore_4" id="score_4" class="score-select">
+                        <option value="" selected>점수 지정</option>
+                        <option value="15">15점</option>
+                        <option value="20">20점</option>
+                        <option value="25">25점</option>
+                        <option value="30">30점</option>
+                        <option value="35">35점</option>
+                        <option value="40">40점</option>
+                        <option value="45">45점</option>
+                        <option value="50">50점</option>
+                        <option value="55">55점</option>
+                        <option value="60">60점</option>
+                        <option value="65">65점</option>
+                        <option value="70">70점</option>
+                        <option value="75">75점</option>
+                        <option value="80">80점</option>
+                        <option value="85">85점</option>
+                        <option value="90">90점</option>
+                        <option value="95">95점</option>
+                        <option value="100">100점</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ✅ 히든 필드 추가: 점수 정보 전송용 -->
+    <input type="hidden" id="competencyScoresStr" name="competencyScoresStr" value="">
+</div>
 
-                        <!-- 설명(세부사항) -->
+                        <!-- ✅ 수정: name을 prgDesc로 변경 -->
                         <div class="form-item full-width">
                             <label class="form-label required">설명 (세부사항)</label>
-                            <textarea class="form-textarea" th:field="*{prgDesc}" placeholder="프로그램에 대한 상세한 설명을 입력하세요..." required></textarea>
+                            <textarea class="form-textarea" id="prgDesc" name="prgDesc" placeholder="프로그램에 대한 상세한 설명을 입력하세요..." required></textarea>
                         </div>
                     </div>
 
@@ -166,9 +308,9 @@
                             등록
                         </button>
                     </div>
-                </form>
+                </div>
             </div>
-        </div>
+        </form>
 
         <!-- 미리보기 모달 -->
         <div id="previewModal" class="modal">
@@ -222,5 +364,6 @@
             </div>
         </div>
     </div>
+
 </body>
 </html>

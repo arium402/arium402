@@ -1,21 +1,3 @@
-// 사이드바 메뉴 토글
-function toggleMenu(menuId) {
-	const submenu = document.getElementById(menuId);
-	const menuTitle = submenu.previousElementSibling;
-    
-	// 모든 메뉴 닫기
-	document.querySelectorAll('.submenu').forEach(menu => {
-		if (menu !== submenu) {
-			menu.classList.remove('show');
- 			menu.previousElementSibling.classList.remove('active');
-		}
-	});
-
-	// 클릭된 메뉴 토글
-	submenu.classList.toggle('show');
-	menuTitle.classList.toggle('active');
-}
-
 // 옵션 선택 토글
 function toggleOption(optionElement) {
 	const checkbox = optionElement.querySelector('input[type="checkbox"]');
@@ -41,39 +23,28 @@ function updateCharCount(textarea) {
 	}
 }
 
-// 상담사 선택 버튼 클릭
-function selectCounselor() {
-	// 선택된 항목들 수집
-	const selectedItems = {
-		relation: [],
-		emotion: [],
-		habit: [],
-		gender: [],
-		other: [],
-		currentDifficulty: document.getElementById('currentDifficulty').value
-	};
-
-	// 각 카테고리별 선택된 항목 수집
-	document.querySelectorAll('input[name="relation"]:checked').forEach(item => {
-		selectedItems.relation.push(item.value);
+function saveAnswers() {
+	const formData = new FormData();
+	formData.append('preSurveyId', preSurveyId);
+	formData.append('cnslCd', cnslCd);
+	
+	fetch('/student/counsel/before/save', {
+		method: 'POST',
+		body: formData
+	})
+	.then(response => response.json())
+	.then(data => {
+		if (data.success) {
+			alert('사전 검사가 완료되었습니다. 상담사 선택 페이지로 이동합니다.');
+			location.href = /*[[@{/student/counsel/add/choose}]]*/ '/student/counsel/add/choose' + '?cnslCd=' + data.cnslCd;
+		}
+		else {
+			alert('저장 중 오류가 발생했습니다: ' + data.message);
+		}
+	}).catch(error => {
+		console.error('Error:', error);
+		alert('통신 오류가 발생했습니다. 다시 시도해주세요.');
 	});
-	document.querySelectorAll('input[name="emotion"]:checked').forEach(item => {
-		selectedItems.emotion.push(item.value);
-	});
-	document.querySelectorAll('input[name="habit"]:checked').forEach(item => {
-		selectedItems.habit.push(item.value);
-	});
-	document.querySelectorAll('input[name="gender"]:checked').forEach(item => {
-		selectedItems.gender.push(item.value);
-	});
-	document.querySelectorAll('input[name="other"]:checked').forEach(item => {
-		selectedItems.other.push(item.value);
-	});
-
-	// 결과 출력 (실제 구현에서는 다음 페이지로 이동)
-	console.log('선택된 항목들:', selectedItems);
-	alert('사전 검사가 완료되었습니다. 상담사 선택 페이지로 이동합니다.');
-	location.href = /*[[@{/student/counsel/add/choose}]]*/ '/student/counsel/add/choose';
 }
 
 // 페이지 로드 시 초기화

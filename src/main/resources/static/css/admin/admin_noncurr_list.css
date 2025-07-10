@@ -152,14 +152,13 @@
     background: white;
     box-shadow: 0 4px 20px rgba(0,0,0,0.08);
     overflow: visible;
-    flex: 1;
     display: flex;
     flex-direction: column;
-    min-height: 0;
-    width: calc(100% - 0px); /* 전체 너비 사용 */
+    width: calc(100% - 0px);
     margin-left: 0;
     margin-right: 0;
-    padding: 0; /* 기본 패딩 제거 */
+    padding: 0;
+    /* min-height 완전 제거 */
 }
 
 .table-header h3 {
@@ -174,11 +173,29 @@
 .table-content {
     padding: 0;
     overflow: visible;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    background: white; /* 배경색 명시적 지정 */
+    display: block;
+    background: white;
     width: 100%;
+}
+
+/* 데이터가 적을 때 (3개 이하) */
+.table-container.small-data-count {
+    /* flex 사용하지 않음 - 자연스러운 크기 */
+    min-height: auto;
+}
+
+.table-content.small-data-count {
+    /* flex 사용하지 않음 - 자연스러운 크기 */
+    min-height: auto;
+}
+
+/* 데이터가 많을 때 (4개 이상) */
+.table-container.normal-data-count {
+    flex: 1; /* 남은 공간 모두 차지 */
+}
+
+.table-content.normal-data-count {
+    flex: 1; /* 남은 공간 모두 차지 */
 }
 
 .data-table {
@@ -186,12 +203,11 @@
     border-collapse: collapse;
     font-size: 0.85rem;
     margin: 0;
-    height: auto;
+    height: auto; /* 자동 높이 */
     display: table;
-    flex: 1;
     table-layout: fixed !important;
     border-spacing: 0;
-    background: white; /* 테이블 배경색 명시적 지정 */
+    background: white;
 }
 
 .data-table th {
@@ -342,20 +358,20 @@
     border: 1px solid #f5c6cb;
 }
 
-/* 페이징 - 배경색 명시적 지정 */
+/* 페이징 컨테이너 - 항상 아래쪽 고정 */
 .pagination-container {
-    background: white !important; /* 강제 지정 */
-    padding: 15px 25px; /* 좌우 패딩 늘림 */
+    background: white !important;
+    padding: 15px 25px;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
     border-top: 1px solid #e9ecef;
-    flex-shrink: 0;
+    flex-shrink: 0; /* ← 중요! 페이징 영역은 고정 크기 */
     width: 100%;
     box-sizing: border-box;
+    margin-top: auto; /* ← 이걸 추가하면 항상 아래쪽에 붙음 */
 }
-
 .pagination {
     display: flex;
     align-items: center;
@@ -425,20 +441,44 @@
     font-weight: 500;
 }
 
-/* 반응형 */
+/* 반응형 수정 */
 @media (max-width: 768px) {
     .main-container {
-        padding: 8px; /* 모바일에서 더 줄임 */
+        padding: 8px;
         height: auto;
         min-height: calc(100vh - 70px);
         overflow-y: visible;
-        display: block;
+        display: flex; /* ← block에서 flex로 변경 */
+        flex-direction: column; /* ← 추가 */
     }
     
     .table-container {
-        flex: none;
-        margin: 0; /* 마진 제거 */
+        flex: 1; /* ← 모바일에서도 flex 유지 */
+        margin: 0;
     }
+    
+        .table-container.normal-data-count {
+        flex: 1;
+    }
+    
+    .table-content.normal-data-count {
+        flex: 1;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .table-container.small-data-count {
+        /* 모바일에서도 데이터 적으면 자연스러운 크기 */
+        flex: none;
+    }
+    
+    .table-content.small-data-count {
+        /* 모바일에서도 데이터 적으면 자연스러운 크기 */
+        flex: none;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
     
     .filter-section {
         padding: 10px 15px;
@@ -477,6 +517,7 @@
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
         background: white !important;
+        flex: 1; /* ← 모바일에서도 flex 유지 */
     }
     
     .data-table {

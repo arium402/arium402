@@ -28,6 +28,27 @@ public interface NcsPrgInfoRepository extends JpaRepository<Ncs_PrgInfo, Integer
     // 부서별 조회
     List<Ncs_PrgInfo> findByPrgDept(String prgDept);
     
+    List<Ncs_PrgInfo> findByPrgNmContainingIgnoreCase(String prgNm);
+    List<Ncs_PrgInfo> findByPrgDeptContainingIgnoreCase(String prgDept);
+    
+ // NcsPrgInfoRepository.java에 추가할 메서드
+
+    /**
+     * 프로그램명으로 존재 여부 확인
+     */
+    boolean existsByPrgNm(String prgNm);
+
+    /**
+     * 프로그램명으로 조회 (정확히 일치)
+     */
+    Optional<Ncs_PrgInfo> findByPrgNm(String prgNm);
+
+    /**
+     * 프로그램명 중복 체크 (대소문자 무시, 공백 제거)
+     */
+    @Query("SELECT COUNT(p) > 0 FROM Ncs_PrgInfo p WHERE UPPER(TRIM(p.prgNm)) = UPPER(TRIM(:prgNm))")
+    boolean existsByPrgNmIgnoreCaseAndTrim(@Param("prgNm") String prgNm);
+    
     // 키워드 검색 (프로그램명, 설명, 부서)
     @Query("SELECT p FROM Ncs_PrgInfo p WHERE " +
            "p.prgNm LIKE %:keyword% OR " +
@@ -50,4 +71,15 @@ public interface NcsPrgInfoRepository extends JpaRepository<Ncs_PrgInfo, Integer
     // 최근 등록된 프로그램 조회
     @Query("SELECT p FROM Ncs_PrgInfo p ORDER BY p.regDt DESC")
     List<Ncs_PrgInfo> findRecentPrograms(Pageable pageable);
+    
+/*
+    @Query(value = "SELECT COUNT(*) FROM ncs_prg_aply WHERE prg_id = ?1", nativeQuery = true)
+    int countApplicantsByPrgId(Integer prgId);
+ * 
+ */
+
+    // 또는 승인된 신청만 카운트하려면
+
+    
+    
 }
