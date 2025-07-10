@@ -87,6 +87,12 @@
 	min-width: 60px;
 }
 
+.status-waiting {
+	background: #fff8e1;
+	color: #f57c00;
+	border: 1px solid #ffe0b2;
+}
+
 .status-ongoing {
 	background: #e3f2fd;
 	color: #1976d2;

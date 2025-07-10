@@ -39,31 +39,28 @@ function updateCharCount(textarea) {
 	}
 }
 
-// 상담사 선택 버튼 클릭
-function selectCounselor() {
-	// 선택된 항목들 수집
-	const selectedItems = {
-		grade: document.querySelector('input[name="grade"]:checked')?.value || '',
-		career_status: document.querySelector('input[name="career_status"]:checked')?.value || '',
-		job_field: [],
-		region: [],
-		work_type: document.querySelector('input[name="work_type"]:checked')?.value || '',
-		salary: document.querySelector('input[name="salary"]:checked')?.value || '',
-		applicationReason: document.getElementById('applicationReason').value
-	};
-
-	// 복수 선택 항목들 수집
-	document.querySelectorAll('input[name="job_field"]:checked').forEach(item => {
-		selectedItems.job_field.push(item.value);
+function saveAnswers() {
+	const formData = new FormData();
+	formData.append('preSurveyId', preSurveyId);
+	formData.append('cnslCd', cnslCd);
+	
+	fetch('/student/counsel/before/save', {
+		method: 'POST',
+		body: formData
+	})
+	.then(response => response.json())
+	.then(data => {
+		if (data.success) {
+			alert('사전 검사가 완료되었습니다. 상담사 선택 페이지로 이동합니다.');
+			location.href = /*[[@{/student/counsel/add/choose}]]*/ '/student/counsel/add/choose' + '?cnslCd=' + data.cnslCd;
+		}
+		else {
+			alert('저장 중 오류가 발생했습니다: ' + data.message);
+		}
+	}).catch(error => {
+		console.error('Error:', error);
+		alert('통신 오류가 발생했습니다. 다시 시도해주세요.');
 	});
-	document.querySelectorAll('input[name="region"]:checked').forEach(item => {
-		selectedItems.region.push(item.value);
-	});
-
-	// 결과 출력 (실제 구현에서는 다음 페이지로 이동)
-	console.log('선택된 항목들:', selectedItems);
-	alert('취업/진로 사전 검사가 완료되었습니다. 상담사 선택 페이지로 이동합니다.');
-	location.href = /*[[@{/student/counsel/add/choose}]]*/ '/student/counsel/add/choose';
 }
 
 // 페이지 로드 시 초기화
