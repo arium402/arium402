@@ -14,12 +14,15 @@
 							<span class="ms-1" style="font-size: 0.85rem;">님</span>
 						</div>
 					</a>
-					<a href="#" onclick="logout(); return false;">
-						<i class="fas fa-sign-out-alt text-primary" style="font-size: 1.2rem;"></i>
+					<!-- 로그아웃 아이콘 (클릭 시 logoutStudent() 실행) -->
+					<a href="#" onclick="logoutStudent(); return false;">
+					    <i class="fas fa-sign-out-alt text-primary" style="font-size: 1.2rem;"></i>
 					</a>
+					
+					<!-- 숨겨진 로그아웃 폼 -->
+					<form id="studentLogoutForm" th:action="@{/student/logout}" method="post" style="display: none;"></form>
 				</div>
 			</div>
 		</nav>
 	</header>
-
 </div>

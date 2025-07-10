@@ -309,10 +309,10 @@ function openDetailPage(inquiry) {
 // 페이지 로드 시 초기화
 document.addEventListener('DOMContentLoaded', function() {
     // 사이드바 토글 설정
-    setupSidebarToggle();
+    //setupSidebarToggle();
     
     // 윈도우 리사이즈 설정
-    setupWindowResize();
+    //setupWindowResize();
     
     // 카테고리 탭 설정
     setupCategoryTabs();

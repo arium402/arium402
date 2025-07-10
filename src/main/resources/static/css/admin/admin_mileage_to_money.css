@@ -387,7 +387,7 @@
     text-align: right;
 }
 
-.btn {
+.modal-footer .btn {
     padding: 12px 25px;
     border: none;
     font-weight: 600;

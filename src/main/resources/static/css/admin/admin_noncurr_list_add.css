@@ -261,8 +261,8 @@ body {
 }
 
 .checkbox-item input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
+    width: 24px;
+    height: 24px;
     accent-color: #3498db;
 }
 
@@ -509,6 +509,38 @@ body {
     color: #2c3e50;
     margin-bottom: 10px;
 }
+
+
+/* 핵심역량 래퍼 - 체크박스와 점수 선택을 세로로 배치 */
+.checkbox-item-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/* 점수 선택 영역 */
+.score-select-wrapper {
+    margin-left: 32px; /* 체크박스 너비에 맞춰 조정 */
+    margin-top: 2px;
+}
+
+/* 점수 선택 드롭다운 */
+.score-select {
+    padding: 4px 8px;
+    border: 1px solid #dee2e6;
+    background: white;
+    color: #495057;
+    font-size: 0.8rem;
+    width: 120px;
+    transition: all 0.3s ease;
+}
+
+.score-select:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.1);
+}
+
 
 /* 반응형 */
 @media (max-width: 768px) {

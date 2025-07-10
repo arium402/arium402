@@ -1,8 +1,11 @@
 // 헤더
-function logout() {
-	if (confirm('로그아웃 하시겠습니까?')) {
-		alert('로그아웃 되었습니다.');
-	}
+// 학생 로그아웃 함수
+function logoutStudent() {
+    const confirmed = confirm("로그아웃 하시겠습니까?");
+    if (confirmed) {
+        const form = document.getElementById("studentLogoutForm");
+        if (form) form.submit();
+    }
 }
 
 // 사이드바

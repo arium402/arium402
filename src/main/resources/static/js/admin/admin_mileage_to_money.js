@@ -84,18 +84,7 @@ let conversionRates = [
 ];
 let currentRateIndex = 0;
 
-// 사이드바 토글 기능
-document.getElementById('sidebarToggle').addEventListener('click', function() {
-    const sidebar = document.getElementById('layoutSidenav_nav');
-    const content = document.getElementById('layoutSidenav_content');
-    
-    if (window.innerWidth <= 768) {
-        sidebar.classList.toggle('show');
-    } else {
-        sidebar.classList.toggle('collapsed');
-        content.classList.toggle('expanded');
-    }
-});
+
 
 // 탭 전환 기능
 document.querySelectorAll('.tab-btn').forEach(btn => {
