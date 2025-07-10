@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 @Table(name = "dgstfn_qst",
-       uniqueConstraints = @UniqueConstraint(columnNames = {"survey_id", "sur_drd"}))
+       uniqueConstraints = @UniqueConstraint(columnNames = {"survey_id", "sur_ord"}))
 public class Dgstfn_Qst {
 //만족도 조사 문항 
 	

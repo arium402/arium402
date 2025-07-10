@@ -8,7 +8,7 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #ffffff;
+    background-color: #f8f9fa;
     margin: 0;
     padding: 0;
 }
@@ -39,7 +39,7 @@ body {
     margin-left: 250px;
     width: calc(100% - 250px);
     min-height: calc(100vh - 70px);
-    background-color: #ffffff;
+    background-color: #f8f9fa;  /* ← 연한 회색으로 변경 */
     transition: margin-left 0.3s ease, width 0.3s ease;
 }
 
@@ -48,11 +48,11 @@ body {
     width: 100%;
 }
 
-/* 메인 컨텐츠 */
+/* 수정 후 */
 .main-container {
     padding: 20px;
-    background-color: #ffffff;
-    min-height: calc(100vh - 70px);
+    background-color: #f8f9fa;  /* ← 연한 회색으로 변경 */
+    height: calc(100vh - 70px);  /* ← min-height에서 height로 변경 */
     overflow-y: auto;
     display: flex;
     flex-direction: column;
@@ -174,7 +174,7 @@ body {
     transform: translateY(-1px);
 }
 
-/* 테이블 영역 */
+/* 수정 후 */
 .table-container {
     background: white;
     box-shadow: 0 4px 20px rgba(0,0,0,0.08);
@@ -182,7 +182,7 @@ body {
     flex: 1;
     display: flex;
     flex-direction: column;
-    min-height: 500px;
+    min-height: 0;  /* ← 0으로 변경 */
 }
 
 .table-header {
@@ -216,9 +216,10 @@ body {
     margin: 0;
     height: auto;
     display: table;
-    flex: 1;
+
     table-layout: fixed !important;
     border-spacing: 0;
+    
 }
 
 .data-table th {
@@ -631,7 +632,7 @@ body {
     #layoutSidenav_content {
         margin-left: 0;
         width: 100%;
-        background-color: #ffffff;
+        background-color: #f8f9fa;
     }
     
     .main-container {
@@ -639,7 +640,7 @@ body {
         min-height: calc(100vh - 70px);
         overflow-y: visible;
         display: block;
-        background-color: #ffffff;
+        background-color: #f8f9fa;
     }
     
     .table-container {

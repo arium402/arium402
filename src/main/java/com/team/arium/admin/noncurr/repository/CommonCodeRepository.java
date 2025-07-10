@@ -23,10 +23,10 @@ public interface CommonCodeRepository extends JpaRepository<Common_Code, Integer
     List<Common_Code> findByCodeType(String codeType);
     
     // 비교과 프로그램 상태 코드 조회 (코드 타입으로 조회)
-    @Query("SELECT c FROM Common_Code c WHERE c.codeType = 'PRG_STAT'")
+    @Query("SELECT c FROM Common_Code c WHERE c.codeType = 'prg_stat_cd'")
     List<Common_Code> findProgramStatusCodes();
     
     // 기본 상태 코드 조회 (등록시 사용) - 실제 코드값에 맞게 수정
-    @Query("SELECT c FROM Common_Code c WHERE c.codeType = 'PRG_STAT' AND c.code = 'ACTIVE'")
+    @Query("SELECT c FROM Common_Code c WHERE c.codeType = 'prg_stat_cd' AND c.code = '오픈'")
     Optional<Common_Code> findDefaultProgramStatus();
 }

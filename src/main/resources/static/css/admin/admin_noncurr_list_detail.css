@@ -75,7 +75,9 @@ body {
 
 .header-buttons {
     display: flex;
-    gap: 12px;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
 .btn-list {
@@ -96,6 +98,34 @@ body {
     background: linear-gradient(135deg, #7f8c8d, #6c7b7d);
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(149, 165, 166, 0.3);
+}
+
+/* ✅ 삭제 버튼 */
+.delete-btn {
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    color: white;
+    border: none;
+    border-radius: 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 8px rgba(231, 76, 60, 0.3);
+}
+
+.delete-btn:hover {
+    background: linear-gradient(135deg, #c0392b, #a93226);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
+}
+
+.delete-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(231, 76, 60, 0.3);
 }
 
 /* 수정 버튼 */
@@ -203,15 +233,59 @@ body {
     font-size: 0.95rem;
 }
 
+/* ✅ 핵심역량 데이터를 라벨에 더 가깝게 배치 */
+.detail-right .detail-value.competency-scores {
+    margin-left: -5px; /* 왼쪽으로 5px 당겨서 라벨에 더 가깝게 */
+}
+
+/* ✅ 프로그램 설명 단독 배치 */
+.detail-row-wide {
+    margin-top: 12px;
+}
+
+.detail-left-wide {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
 /* 프로그램 설명 */
 .program-description {
-    margin-top: 8px;
-    padding: 15px;
     background: #f8f9fa;
     border: 1px solid #e9ecef;
     border-radius: 4px;
+    padding: 15px;
     line-height: 1.6;
+    min-height: 80px;
+    color: #495057;
     white-space: pre-wrap;
+    margin-top: 0; /* ✅ 라벨과 같은 높이에 배치 */
+    width: 100%; /* ✅ 컨테이너 내에서 100% 사용 */
+    flex: 1; /* ✅ 남은 공간 차지 */
+    max-width: 100%; /* ✅ 최대 너비를 더 넓게 (280px → 500px) */
+}
+
+/* ✅ 만족도 조사 마감일 스타일 - 배경 도형 제거 */
+.survey-deadline {
+    color: #495057;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-align: left;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+/* ✅ 만족도 조사 마감일 아래 구분선 */
+.survey-row {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+
+.survey-deadline:empty::before {
+    content: "설정 안됨";
+    color: #6c757d;
+    font-weight: normal;
 }
 
 /* 상태 배지 */
@@ -260,6 +334,99 @@ body {
     color: white;
     border: 1px solid #2c3e50;
     display: inline-block;
+}
+
+/* ✅ 핵심역량 점수 표시 스타일 - 배경 도형 제거 */
+.competency-scores {
+    line-height: 1.6;
+    word-break: keep-all;
+    color: #2c3e50;
+    font-size: 0.9rem;
+}
+
+/* ✅ 삭제 확인 모달 스타일 */
+.delete-modal .modal-content {
+    max-width: 500px;
+    border-radius: 8px;
+}
+
+.delete-header {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    color: white;
+}
+
+.delete-warning {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.delete-warning i {
+    font-size: 3rem;
+    color: #e74c3c;
+    margin-bottom: 15px;
+}
+
+.delete-warning p {
+    margin: 10px 0;
+    font-size: 1.1rem;
+    color: #2c3e50;
+}
+
+.warning-text {
+    color: #e74c3c !important;
+    font-weight: 600;
+    font-size: 0.95rem !important;
+}
+
+.program-info-summary {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 15px;
+    margin: 15px 0;
+    text-align: left;
+    color: #495057;
+    line-height: 1.6;
+}
+
+/* ✅ 삭제 모달 버튼들 */
+.delete-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.btn-cancel-delete,
+.btn-confirm-delete {
+    padding: 10px 25px;
+    border: none;
+    border-radius: 0; /* 각진 버튼 */
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 100px;
+}
+
+.btn-cancel-delete {
+    background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+    color: white;
+}
+
+.btn-cancel-delete:hover {
+    background: linear-gradient(135deg, #7f8c8d, #6c7b7d);
+    transform: translateY(-1px);
+}
+
+.btn-confirm-delete {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    color: white;
+}
+
+.btn-confirm-delete:hover {
+    background: linear-gradient(135deg, #c0392b, #a93226);
+    transform: translateY(-1px);
 }
 
 /* 신청자 목록 테이블 */
@@ -477,12 +644,19 @@ body {
     .header-buttons {
         flex-direction: column;
         gap: 8px;
+        width: 100%;
     }
     
+    .delete-btn,
     .btn-list,
     .edit-btn {
         width: 100%;
         justify-content: center;
+    }
+    
+    .delete-modal .modal-content {
+        width: 95%;
+        margin: 5% auto;
     }
     
     .program-header {
@@ -500,6 +674,11 @@ body {
         margin-bottom: 15px;
     }
     
+    .detail-row-wide {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
     .detail-left,
     .detail-right {
         width: 100%;
@@ -508,6 +687,15 @@ body {
     
     .detail-right {
         margin-bottom: 0;
+    }
+    
+    /* ✅ 모바일에서는 핵심역량 margin 조정 해제 */
+    .detail-right .detail-value.competency-scores {
+        margin-left: 0;
+    }
+    
+    .detail-right-narrow {
+        padding-left: 0;
     }
     
     .table-container {

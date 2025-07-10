@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Data
@@ -17,6 +19,10 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 public class NoncurrProgramDTO {
+	
+	private Integer totalApplicants;    // 총 참여인원
+	private String responseRate;        // 응답률
+	private String averageSatisfaction; // 평균만족도
 
     // 기본 프로그램 정보 (DB 컬럼명 매칭)
     private Integer prgId;              // 프로그램ID
@@ -71,9 +77,21 @@ public class NoncurrProgramDTO {
     private int size = 10;              // 페이지 크기
 
 
+ // getter, setter 추가
+    public Integer getTotalApplicants() { return totalApplicants; }
+    public void setTotalApplicants(Integer totalApplicants) { this.totalApplicants = totalApplicants; }
+
+    public String getResponseRate() { return responseRate; }
+    public void setResponseRate(String responseRate) { this.responseRate = responseRate; }
+
+    public String getAverageSatisfaction() { return averageSatisfaction; }
+    public void setAverageSatisfaction(String averageSatisfaction) { this.averageSatisfaction = averageSatisfaction; }
+    
     // ✅ 문자열로 받을 새 필드 추가
     private String competencyIdsStr;
-    
+    // ✅ 새로 추가: 핵심역량 점수 정보
+    private String competencyScoresStr;                    // "1:100,2:95,3:80" 형태
+    private Map<Integer, Integer> competencyScores;        // ID -> 점수 매핑
     
     // ✅ 문자열을 List로 변환하는 메서드 추가
     public void setCompetencyIdsStr(String competencyIdsStr) {
@@ -86,6 +104,47 @@ public class NoncurrProgramDTO {
                 .collect(Collectors.toList());
         }
     }
+    
+    // ✅ 문자열을 Map으로 변환하는 메서드 추가
+    public void setCompetencyScoresStr(String competencyScoresStr) {
+        this.competencyScoresStr = competencyScoresStr;
+        this.competencyScores = new HashMap<>();
+        
+        if (competencyScoresStr != null && !competencyScoresStr.trim().isEmpty()) {
+            String[] pairs = competencyScoresStr.split(",");
+            for (String pair : pairs) {
+                String[] parts = pair.trim().split(":");
+                if (parts.length == 2) {
+                    try {
+                        Integer competencyId = Integer.parseInt(parts[0].trim());
+                        Integer score = Integer.parseInt(parts[1].trim());
+                        this.competencyScores.put(competencyId, score);
+                    } catch (NumberFormatException e) {
+                        // 파싱 오류 무시하고 계속 진행
+                    }
+                }
+            }
+        }
+    }
+    
+    // ✅ 특정 핵심역량의 점수 조회 메서드
+    public Integer getCompetencyScore(Integer competencyId) {
+        return competencyScores != null ? competencyScores.getOrDefault(competencyId, null) : null;
+    }
+    
+    // ✅ Getter/Setter
+    public String getCompetencyScoresStr() {
+        return competencyScoresStr;
+    }
+    
+    public Map<Integer, Integer> getCompetencyScores() {
+        return competencyScores;
+    }
+    
+    public void setCompetencyScores(Map<Integer, Integer> competencyScores) {
+        this.competencyScores = competencyScores;
+    }
+    
     
     @Data
     @Builder
