@@ -111,12 +111,12 @@ public class AdminMileageViewController {
             return "/admin/admin_error";
         }
     }
-
+    
     /**
-     * 마일리지 지급 상세 페이지 (특정 프로그램)
+     * 마일리지 지급 상세 페이지 (기존 HTML 파일명 기준)
      */
-    @GetMapping("/mileage_payment_detail")
-    public String mileagePaymentDetail(
+    @GetMapping("/admin_mileage_payment_add")
+    public String adminMileagePaymentAdd(
             @RequestParam("prgId") Integer prgId,
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "size", defaultValue = "10") int size,
@@ -132,60 +132,29 @@ public class AdminMileageViewController {
                 return "redirect:/admin/admin_mileage_payment";
             }
             
-            // 2. 프로그램 정보 조회
-            Pageable pageable = PageRequest.of(0, 1); // 단일 프로그램만 조회
-            Page<NoncurrProgramDTO> programPage = adminMileageService.getMileageProgramList(null, null, pageable);
-            
-            NoncurrProgramDTO program = programPage.getContent().stream()
-                .filter(p -> prgId.equals(p.getPrgId()))
-                .findFirst()
-                .orElse(null);
-            
-            if (program == null) {
-                redirectAttributes.addFlashAttribute("errorMessage", "프로그램을 찾을 수 없습니다.");
-                return "redirect:/admin/admin_mileage_payment";
-            }
-            
-            // 3. 지급 대상자 목록 조회
-            List<ApplicantDTO> allParticipants = adminMileageService.getMileageParticipants(prgId);
-            
-            // 4. 수동 페이징 처리
-            int start = (page - 1) * size;
-            int end = Math.min(start + size, allParticipants.size());
-            List<ApplicantDTO> pagedParticipants = start < allParticipants.size() ? 
-                allParticipants.subList(start, end) : List.of();
-            
-            // 5. 통계 정보 계산
-            Map<String, Object> statistics = calculateDetailStatistics(allParticipants, program);
-            
-            // 6. 페이징 정보 계산
-            int totalPages = (int) Math.ceil((double) allParticipants.size() / size);
-            Map<String, Object> pagination = createPaginationInfo(page, size, allParticipants.size(), totalPages);
-            
-            // 7. 모델에 데이터 추가
-            model.addAttribute("program", program);
-            model.addAttribute("participants", pagedParticipants);
-            model.addAttribute("allParticipants", allParticipants); // JavaScript에서 사용
-            model.addAttribute("statistics", statistics);
-            model.addAttribute("pagination", pagination);
+            // 2. 기본 페이지 설정
             model.addAttribute("programId", prgId);
+            model.addAttribute("currentPage", page);
+            model.addAttribute("pageSize", size);
             model.addAttribute("currentDate", adminModule.todays_module());
             
-            // 8. 페이지 메타데이터
-            model.addAttribute("pageTitle", "마일리지 지급 상세: " + program.getPrgNm());
+            // 3. 페이지 메타데이터
+            model.addAttribute("pageTitle", "마일리지 지급 상세");
             model.addAttribute("pageDescription", "프로그램별 마일리지 지급 대상자 목록 및 지급 처리");
-            model.addAttribute("breadcrumbItems", createDetailBreadcrumbItems(program.getPrgNm()));
+            model.addAttribute("breadcrumbItems", createDetailBreadcrumbItems("프로그램 상세"));
             
-            // 9. 액션 버튼 설정
-            model.addAttribute("canProcessPayment", canProcessPayment(statistics));
-            model.addAttribute("canSelectAll", allParticipants.size() > 0);
-            model.addAttribute("hasUnpaidParticipants", hasUnpaidParticipants(allParticipants));
-            
-            // 10. JavaScript 설정
+            // 4. JavaScript 설정
             model.addAttribute("jsConfig", createDetailJavaScriptConfig(prgId, page, size));
             
-            log.info("마일리지 지급 상세 페이지 로드 완료: 프로그램ID={}, 대상자수={}", prgId, allParticipants.size());
-            return "admin/admin_mileage_payment_detail";
+            // 5. API 엔드포인트 설정
+            model.addAttribute("apiEndpoints", Map.of(
+                "participants", "/api/admin/mileage_participants",
+                "payment", "/api/admin/mileage_payment",
+                "validate", "/api/admin/mileage_validate"
+            ));
+            
+            log.info("마일리지 지급 상세 페이지 로드 완료: 프로그램ID={}", prgId);
+            return "/admin/admin_mileage_payment_add"; // 기존 HTML 파일명과 일치
             
         } catch (Exception e) {
             log.error("마일리지 지급 상세 페이지 로드 실패: 프로그램ID={}, 오류={}", prgId, e.getMessage(), e);
