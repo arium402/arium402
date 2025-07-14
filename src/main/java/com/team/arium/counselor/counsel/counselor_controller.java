@@ -26,8 +26,10 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,29 +59,38 @@ public class counselor_controller {
 		this.pw = res.getWriter();			
 		try {
 			JSONObject jo = new JSONObject(data);
-			System.out.println(jo.get("emplno"));	//상담사 고유값
+			//System.out.println(jo.get("emplno"));	//상담사 고유값
 			JSONArray ja = (JSONArray)jo.get("workDays");	//근무요일			
 			JSONArray ja2 = (JSONArray)jo.get("consultationTimes");	//상담가능 시간대
+			this.schd.setEmpl_id(Integer.parseInt(jo.get("emplno").toString()));
+			this.schd.setWork_year(jo.get("year").toString());
+			this.schd.setWork_month(jo.get("month").toString());
+			this.schd.setStart_time(jo.get("startTime").toString());
+			this.schd.setEnd_time(jo.get("endTime").toString());
+						
 			int w = 0;
 			while(w < ja.length()) {
+				this.schd.setWork_day(Integer.parseInt(ja.get(w).toString()));
+				this.cns_repo.schedule_insert(this.schd);	//DB 입력사항
 				
 				int wa = 0;
-				while(wa < ja2.length()) {
+				while(wa < ja2.length()) {	
+					/*
 					System.out.println(ja2.get(wa).toString());
-					
-					this.cns_repo.schedule_insert(null);	//DB 입력사항
-					
-					
+					System.out.println(jo.get("year").toString());
+					System.out.println(jo.get("month").toString());
+					System.out.println(jo.get("emplno").toString());
+					*/
+					this.cns_repo.schedule_insert(ja2.get(wa).toString(), jo.get("year").toString(), jo.get("month").toString(), jo.get("emplno").toString());
 					wa++;
 				}
-				
 				w++;
 			}
 			this.pw.print("ok");
 		}catch(Exception e) {
 			this.pw.print("error");
 		}finally {
-			//this.pw.close();
+			this.pw.close();
 		}
 		return null;
 	}

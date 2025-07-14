@@ -87,8 +87,12 @@ function saveSchedule() {
 					return aa.text();
 				})
 				.then(function(bb){	
-					console.log(bb);
-					alert(year + '년 ' + month + '월 일정이 성공적으로 저장되었습니다!');	
+					if(bb=="ok"){
+						alert(year + '년 ' + month + '월 일정이 성공적으로 저장되었습니다!');
+					}	
+					else{
+						alert("스케줄 데이터 오류가 발생 하였습니다.");
+					}
 				})
 				.catch(function(error){	
 					console.log("Ajax 통신 오류 발생!!");
