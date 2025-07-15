@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping("/student")
 public class StudentLogin {
-
+/*
 	@GetMapping("/login")
 	public String myPage(@RequestParam(name="error", required = false)String error) {
 		System.out.println("에러발생시 :" + error);
@@ -20,7 +20,5 @@ public class StudentLogin {
   	public String loginok() {	//로그인 확인 페이지
   		return null;
   	}
-	
-	
-	
+*/	
 }

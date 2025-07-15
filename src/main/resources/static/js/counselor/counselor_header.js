@@ -5,9 +5,11 @@ function goToMyPage() {
     window.open('/counselor/mypage', '_blank');
 }
 
-// 로그아웃
-function logout() {
-    if (confirm('로그아웃 하시겠습니까?')) {
-        location.href = './logout';
+//상담사 로그아웃 확인 후 진행
+function confirmLogout() {
+    const confirmed = confirm("로그아웃 하시겠습니까?");
+    if (confirmed) {
+        const form = document.getElementById("logoutForm");
+        if (form) form.submit();
     }
 }

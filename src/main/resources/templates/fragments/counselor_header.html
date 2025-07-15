@@ -19,7 +19,9 @@
                 </svg>
                 <div class="profile-tooltip"><a href="/counselor/mypage">마이페이지</a></div>
             </div>
-            <button class="logout-btn">로그아웃</button>
+           <form id="logoutForm" th:action="@{/counselor/logout}" method="post">
+			  <button type="button" class="logout-btn" onclick="confirmLogout()">로그아웃</button>
+		   </form>
         </div>
     </div>
 </body>

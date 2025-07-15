@@ -103,13 +103,6 @@ function goToNotices() {
     window.location.href = '/counselor/notices';
 }
 
-// 로그아웃
-function logout() {
-    if (confirm('로그아웃 하시겠습니까?')) {
-        window.location.href = '/logout';
-    }
-}
-
 // 페이지 로드 시 초기화
 document.addEventListener('DOMContentLoaded', function() {
     // 차트 그리기
