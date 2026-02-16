@@ -149,10 +149,12 @@
             color: #1e3c72;
             text-decoration: none;
             font-weight: 500;
+            cursor: pointer;
         }
 
         .help-links a:hover {
             text-decoration: underline;
+            cursor: pointer;
         }
 
         .social-login {
@@ -291,7 +293,9 @@
                         <input type="password" class="form-control" id="studentPw" name="password" placeholder="패스워드를 입력하세요">
                     </div>
                     <div class="help-links">
-                        <a href="#">학번 찾기</a> | <a href="#">패스워드 찾기</a>
+                        <a onclick="openFindStudentId()">학번 찾기</a> | 
+                        <a onclick="openFindStudentPassword()">패스워드 찾기</a> | 
+                        <a onclick="openChangePassword()">패스워드 변경</a>
                     </div>
                     <button type="submit" class="login-btn">로그인</button>
                 </form>
@@ -308,28 +312,12 @@
                         <input type="password" class="form-control" id="counselorPw" name="password" placeholder="패스워드를 입력하세요">
                     </div>
                     <div class="help-links">
-                        <a href="#">아이디 찾기</a> | <a href="#">패스워드 찾기</a>
+                        <a onclick="openFindCounselorId()">사번 찾기</a> | 
+                        <a onclick="openFindCounselorPassword()">패스워드 찾기</a> | 
+                        <a onclick="openChangePassword()">패스워드 변경</a>
                     </div>
                     <button type="submit" class="login-btn">로그인</button>
                 </form>
-            </div>
-
-            <div class="social-login">
-                <div class="social-login-title">간편 로그인</div>
-                <div class="social-buttons">
-                    <button class="social-btn google-btn" onclick="location.href='#'">
-                        <span class="social-icon">G</span>
-                        Google 로그인
-                    </button>
-                    <button class="social-btn naver-btn" onclick="location.href='#'">
-                        <span class="social-icon">N</span>
-                        네이버 로그인
-                    </button>
-                    <button class="social-btn kakao-btn" onclick="location.href='#'">
-                        <span class="social-icon">K</span>
-                        카카오 로그인
-                    </button>
-                </div>
             </div>
         </div>
 

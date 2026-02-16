@@ -8,12 +8,12 @@
         <div class="program-info-header">
             프로그램 정보
         </div>
-        <div class="program-info-content">
-            <div class="program-title">토익 특강 프로그램</div>
-            <div class="program-period">2024-03-15 ~ 2024-05-30</div>
+        <div class="program-info-content" id="programInfoContent">
+            <div class="program-title" id="programTitle">프로그램 정보를 불러오는 중...</div>
+            <div class="program-period" id="programPeriod">-</div>
             <div class="program-details">
-                <div class="program-participants">인원 25명</div>
-                <div class="program-mileage">마일리지 50점</div>
+                <div class="program-participants" id="programParticipants">인원 - 명</div>
+                <div class="program-mileage" id="programMileage">마일리지 - 점</div>
             </div>
         </div>
     </div>
@@ -21,8 +21,8 @@
     <!-- 신청자 리스트 섹션 -->
     <div class="applicant-section">
         <div class="applicant-header">
-            <span>신청자 리스트</span>
-            <button class="bulk-payment-btn" onclick="bulkPayment()">
+            <span id="applicantListTitle">신청자 리스트</span>
+            <button class="bulk-payment-btn" onclick="bulkPayment()" id="bulkPaymentBtn">
                 <i class="fas fa-coins"></i> 전체 지급
             </button>
         </div>
@@ -43,6 +43,11 @@
                 </thead>
                 <tbody id="applicantTableBody">
                     <!-- 데이터가 여기에 동적으로 추가됩니다 -->
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 20px;">
+                            <i class="fas fa-spinner fa-spin"></i> 데이터를 불러오는 중...
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>

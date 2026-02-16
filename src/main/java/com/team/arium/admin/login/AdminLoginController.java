@@ -7,33 +7,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
-//@RequestMapping("/admin")
+@RequestMapping("/admin")
 public class AdminLoginController {
 
-	// 로그인 페이지
-	@GetMapping("/admin/login")
+	//관리자 로그인 페이지
+	@GetMapping("/login")
 	public String adloginpage() {
 
 		return "/admin/admin_login";
 	}
 
 	// 관리자 메인(대시보드) 페이지
-	@GetMapping("/admin/dashboard")
+	@GetMapping("/dashboard")
 	public String adminDash() {
 
 		return "/admin/admin_dashboard";
-	}
-	
-	@GetMapping("/student/login")
-	public String stloginpage() {
-		
-		return "/student/student_login";
-	}
-	
-	@GetMapping("/student/main")
-	public String stmainpage() {
-		
-		return "/student/main/student_main";
 	}
 	
 //	//인가

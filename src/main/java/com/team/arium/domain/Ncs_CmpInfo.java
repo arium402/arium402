@@ -31,9 +31,9 @@ public class Ncs_CmpInfo {
     
     @Enumerated(EnumType.STRING)
     @Column(name = "cmp_yn", nullable = false, length = 1)
-    private yn cmpYn;
+    private Yn cmpYn;
     
     @Enumerated(EnumType.STRING)
     @Column(name = "survey_yn", nullable = false, length = 1)
-    private yn surveyYn;
+    private Yn surveyYn;
 }

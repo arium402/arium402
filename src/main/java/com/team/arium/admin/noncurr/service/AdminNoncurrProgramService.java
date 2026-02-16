@@ -1125,16 +1125,16 @@ public class AdminNoncurrProgramService {
                         .ncsPrgAply(application)
                         .ncsPrgInfo(application.getNcsPrgInfo())
                         .stdInfo(application.getStdInfo())
-                        .cmpYn(yn.N)
-                        .surveyYn(yn.N)
+                        .cmpYn(Yn.N)
+                        .surveyYn(Yn.N)
                         .build();
                 }
                 
                 // 타입에 따라 상태 업데이트
                 if ("completion".equals(type)) {
-                    completion.setCmpYn(status ? yn.Y : yn.N);
+                    completion.setCmpYn(status ? Yn.Y : Yn.N);
                 } else if ("survey".equals(type)) {
-                    completion.setSurveyYn(status ? yn.Y : yn.N);
+                    completion.setSurveyYn(status ? Yn.Y : Yn.N);
                 } else {
                     throw new RuntimeException("알 수 없는 상태 타입: " + type);
                 }

@@ -2,9 +2,7 @@
 const pageData = [
     { id: 1, mainCategory: "비교과", subCategory: "프로그램 안내", registrationDate: "2025.06.15" },
     { id: 2, mainCategory: "상담", subCategory: "심리상담", registrationDate: "2025.06.14" },
-    { id: 3, mainCategory: "기타", subCategory: "시설이용", registrationDate: "2025.06.13" },
-    { id: 4, mainCategory: "비교과", subCategory: "자격증 취득", registrationDate: "2025.06.12" },
-    { id: 5, mainCategory: "상담", subCategory: "진로상담", registrationDate: "2025.06.11" }
+    { id: 3, mainCategory: "기타", subCategory: "시설이용", registrationDate: "2025.06.13" }
 ];
 
 // 샘플 F&Q 데이터
@@ -60,8 +58,9 @@ function updatePageTable() {
         // 행 클릭 이벤트 추가 - 상세 페이지로 이동
         row.addEventListener('click', () => {
             // URL 파라미터로 분류 정보 전달
-            const detailURL = `faq-detail.html?category=${encodeURIComponent(item.mainCategory)}&subCategory=${encodeURIComponent(item.subCategory)}`;
-            window.location.href = detailURL;
+			const detailURL =
+			    `/admin/faq_list_detail?category=${encodeURIComponent(item.mainCategory)}&subCategory=${encodeURIComponent(item.subCategory)}`;
+			window.location.href = detailURL;
         });
         
         tbody.appendChild(row);
@@ -112,10 +111,10 @@ function updateFAQTable() {
             <td class="date">${item.registrationDate}</td>
         `;
         
-        // 행 클릭 이벤트 추가
-        row.addEventListener('click', () => {
-            alert(`F&Q 상세: ${item.title}`);
-        });
+		row.addEventListener('click', () => {
+		    const detailURL = `/admin/faq_detail?id=${item.id}`;
+		    window.location.href = detailURL;
+		});
         
         tbody.appendChild(row);
     });
