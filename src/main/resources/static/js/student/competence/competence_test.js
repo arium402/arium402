@@ -131,10 +131,25 @@ function showResults() {
 
 // 페이지 로드 시 실행
 document.addEventListener('DOMContentLoaded', function() {
+	// 에러가 있는 경우
+	if (hasError) {
+		alert(`오류가 발생하였습니다 : ${errorMessage}`);
+		return;
+	}
+	
+	// 이미 진단을 완료한 경우
+	if (hasCompleted) {
+		alert('이미 핵심역량 진단을 완료하셨습니다.\n결과 페이지로 이동합니다.');
+		location.href = /*[[@{/student/competence/chart}]]*/ `/student/competence/chart`;
+		return;
+	}
+	
 	// 라디오 버튼 변경 시 진행률 업데이트
 	const form = document.getElementById('diagnosisForm');
-	form.addEventListener('change', updateProgress);
-  
-	// 초기 진행률 설정
-	updateProgress();
+	if (form) {
+		form.addEventListener('change', updateProgress);
+	
+		// 초기 진행률 설정
+		updateProgress();
+	}
 });

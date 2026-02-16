@@ -49,20 +49,67 @@ function switchTab(tabName) {
     if (targetContent) targetContent.classList.add('active');
 }
 
+// 팝업창 참조를 저장할 전역 변수
+let currentPopup = null;
 
-/*function switchTab(tabName) {
-         // 모든 탭 버튼 비활성화
-         document.querySelectorAll('.tab-button').forEach(btn => {
-             btn.classList.remove('active');
-         });
-         
-         // 모든 탭 컨텐츠 숨기기
-         document.querySelectorAll('.tab-content').forEach(content => {
-             content.classList.remove('active');
-         });
-         
-         // 선택된 탭 활성화
-         event.target.classList.add('active');
-         document.getElementById(tabName + '-tab').classList.add('active');
-     }
-*/
+
+// 기존 팝업창을 닫고 새 팝업창을 여는 공통 함수
+function openSinglePopup(url, windowName, windowFeatures) {
+    // 기존에 열린 팝업창이 있으면 닫기
+    if (currentPopup && !currentPopup.closed) {
+        currentPopup.close();
+    }
+    
+    // 새 팝업창 열기
+    currentPopup = window.open(url, windowName, windowFeatures);
+    
+    // 팝업창이 닫혔을 때 참조 초기화
+    if (currentPopup) {
+        currentPopup.addEventListener('beforeunload', function() {
+            currentPopup = null;
+        });
+    }
+    
+    return currentPopup;
+}
+
+// 팝업창 열기 함수들
+function openFindStudentId() {
+    const url = '/student/find_student_id'; // 실제 파일 경로로 수정 필요
+    const windowName = 'findStudentId';
+    const windowFeatures = 'width=500,height=650,scrollbars=yes,resizable=yes,location=no,menubar=no,toolbar=no,status=no';
+            
+    openSinglePopup(url, windowName, windowFeatures);
+}
+
+function openFindCounselorId() {
+    const url = '/student/find_counselor_id'; // 실제 파일 경로로 수정 필요
+    const windowName = 'findCounselorId';
+    const windowFeatures = 'width=500,height=650,scrollbars=yes,resizable=yes,location=no,menubar=no,toolbar=no,status=no';
+            
+    openSinglePopup(url, windowName, windowFeatures);
+}
+
+function openFindStudentPassword() {
+    const url = '/student/find_student_password'; // 실제 파일 경로로 수정 필요
+    const windowName = 'findStudentPassword';
+    const windowFeatures = 'width=500,height=700,scrollbars=yes,resizable=yes,location=no,menubar=no,toolbar=no,status=no';
+            
+    openSinglePopup(url, windowName, windowFeatures);
+}
+
+function openFindCounselorPassword() {
+    const url = '/student/find_counselor_password'; // 실제 파일 경로로 수정 필요
+    const windowName = 'findCounselorPassword';
+    const windowFeatures = 'width=500,height=700,scrollbars=yes,resizable=yes,location=no,menubar=no,toolbar=no,status=no';
+            
+    openSinglePopup(url, windowName, windowFeatures);
+}
+
+function openChangePassword() {
+    const url = '/student/change_password'; // 실제 파일 경로로 수정 필요
+    const windowName = 'changePassword';
+    const windowFeatures = 'width=500,height=750,scrollbars=yes,resizable=yes,location=no,menubar=no,toolbar=no,status=no';
+            
+    openSinglePopup(url, windowName, windowFeatures);
+}

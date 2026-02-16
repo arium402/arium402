@@ -36,6 +36,7 @@ public class SecurityConfig {
 	}
 	
 	  /* authorizeHttpRequests: URL 보안 인증 및 인가를 구현
+	    * securityMatcher: 유형별로 보안 설정 분리할 때 사용
 	    * requestMatchers: 컨트롤에 사용되는 요청 타입에 따라 페이지 지정, 권한 레벨에 맞춰 접근 설정 가능
 	    * 
 	    * 접근권한
@@ -50,7 +51,7 @@ public class SecurityConfig {
 	@Order(1)
 	public SecurityFilterChain adminfilterch(HttpSecurity http) throws Exception{
 		http
-			.securityMatcher("/admin/**", "/admin-login-process", "/logout")
+			.securityMatcher("/admin/**", "/admin-login-process", "/logout") //해당 경로에 securityfilterchain이 적용됨
 			.csrf((auth)->auth.disable()) //CSRF 보호 기능 비활성화
 			.authorizeHttpRequests(auth -> auth
 		        .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()  // 정적 자원 허용
@@ -67,16 +68,16 @@ public class SecurityConfig {
 		        //.failureUrl("/admin/login?error")             // 실패 시 이동할 페이지
 		        .permitAll()									//로그인 시도를 모두 허용
 		    )
-		    .exceptionHandling(exception -> exception
-	                .accessDeniedPage("/access-denied")  
-	        )
 		    .logout(logout -> logout
-		    	    .logoutUrl("/admin/logout")                       // 로그아웃 처리 URL
+		    	    .logoutUrl("/admin/logout")                 // 로그아웃 처리 URL
 		    	    .logoutSuccessUrl("/admin/login?logout")    // 로그아웃 후 이동할 페이지
 		    	    .invalidateHttpSession(true)                // 세션 무효화
 		    	    .deleteCookies("JSESSIONID")                // JSESSIONID 쿠키 삭제
 		    	    .permitAll()
 		    )
+		    .sessionManagement(auth -> auth
+				    .sessionFixation().changeSessionId()
+			)
 		    .userDetailsService(EmplUserDetailsService);
 		    return http.build();
    }
@@ -90,6 +91,7 @@ public class SecurityConfig {
 			.authorizeHttpRequests(auth -> auth
 					.requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
 					.requestMatchers("/student/login", "/counselor-login-process").permitAll()
+					.requestMatchers("/counselor/find_*").permitAll()
 					.requestMatchers("/counselor/**").hasRole("COUNSELOR")
 					.anyRequest().authenticated()
 			)
@@ -100,9 +102,6 @@ public class SecurityConfig {
 			        .failureHandler(loginFail)			
 					.permitAll()
 			)
-			.exceptionHandling(exception -> exception
-	                .accessDeniedPage("/access-denied")  
-	        )
 			.logout(logout -> logout
 		    	    .logoutUrl("/counselor/logout")                                 
 		    	    .logoutSuccessUrl("/student/login?logout")              
@@ -110,6 +109,9 @@ public class SecurityConfig {
 		    	    .deleteCookies("JSESSIONID")                         
 		    	    .permitAll()
 		    )
+			.sessionManagement(auth -> auth
+				    .sessionFixation().changeSessionId()
+			)
 			.userDetailsService(EmplUserDetailsService);
 		return http.build();
 	}
@@ -134,9 +136,6 @@ public class SecurityConfig {
 			        .failureHandler(loginFail)		
 					.permitAll()
 			)
-			.exceptionHandling(exception -> exception
-	                .accessDeniedPage("/access-denied")  
-	        )
 			.logout(logout -> logout
 		    	    .logoutUrl("/student/logout")                                 
 		    	    .logoutSuccessUrl("/student/login?logout")              
@@ -144,6 +143,11 @@ public class SecurityConfig {
 		    	    .deleteCookies("JSESSIONID")                          
 		    	    .permitAll()
 		    )
+			.sessionManagement(session -> session
+					.sessionFixation().changeSessionId()	//sessionFixation(): 세선 고정 공격 방지, changeSessionId(): 기존 세션 유지하되, 세션 ID 새로 부여
+					.maximumSessions(1) 					//한 계정당 동시에 유지 가능한 세션 수 1개
+					.maxSessionsPreventsLogin(true)			//이미 로그인된 세션이 있으면, 새로운 로그인 시도 차단
+			)
 			.userDetailsService(StuUserDetailsService);
 		return http.build();
 	}

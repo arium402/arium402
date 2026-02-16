@@ -17,7 +17,7 @@
 				</div>
 			</div>
 
-			<form id="diagnosisForm">
+			<form id="diagnosisForm" th:if="${data != null and !hasCompleted}">
 				<div th:each="category : ${data.up}">
 				
 					<div class="diagnosis-section">
@@ -81,5 +81,12 @@
 		<a href="#" class="result-button" onclick="showResults(); return false;">진단 결과 보러가기</a>
 	</div>
 </main>
+
+<script th:inline="javascript">
+	const hasCompleted = /*[[${hasCompleted}]]*/ false;
+	const evalId = /*[[${evalId}]]*/ null;
+	const hasError = /*[[${error != null}]]*/ false;
+	const errorMessage = /*[[${error}]]*/ '';
+</script>
 
 </div>

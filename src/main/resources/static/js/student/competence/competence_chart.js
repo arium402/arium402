@@ -198,14 +198,28 @@ function updateScoreSummary() {
 
 // 이벤트 리스너 등록
 document.addEventListener('DOMContentLoaded', function() {
-	// 데이터가 있을 때만 차트 초기화
-	if (validateData()) {
-		// 핵심역량 메뉴 열기
-		const competencyMenu = document.querySelector('.sidebar ul li:nth-child(3)');
-		if (competencyMenu) {
-			competencyMenu.classList.add('active');
+	// 에러가 있는 경우 먼저 체크
+	if (hasError) {
+		// 진단 페이지로 이동
+		if (errorMessage.includes("진단을 먼저 완료")) {
+			alert('핵심역량 진단을 먼저 완료해주세요.\n진단 페이지로 이동합니다.');
+			location.href = /*[[@{/student/competence/test}]]*/ '/student/competence/test';
+			return;
 		}
-  
+		else if (errorMessage.includes("진단 결과를 찾을 수 없습니다")) {
+			alert('진단 결과를 불러올 수 없습니다.\n잠시 후 다시 시도해주세요.');
+			history.back();
+			return;
+		}
+		else {
+			alert('시스템 오류가 발생했습니다.\n잠시 후 다시 시도해주세요.');
+			history.back();
+			return;
+		}
+	}
+		
+	// 에러가 없을 때만 기존 로직 실행
+	if (validateData()) {
 		// 초기 차트 로드
 		showAllChart();
 		updateScoreSummary();
