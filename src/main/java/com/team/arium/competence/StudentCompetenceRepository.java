@@ -31,6 +31,14 @@ public interface StudentCompetenceRepository extends JpaRepository<Core_CptInfo,
 	@Query("SELECT COUNT(e) > 0 FROM Core_CptEval e WHERE e.evalId = :evalId")
 	boolean existsEvalByEvalId(@Param("evalId") String evalId);	// 실시 id 조회
 	
+	// 학번으로 std_id 조회
+	@Query(value = "SELECT std_id FROM std_info WHERE std_no = :stdNo", nativeQuery = true)
+	Integer findStdIdByStdNo(@Param("stdNo") String stdNo);
+	
+	// 특정 학생의 진단 기록 조회
+	@Query(value = "SELECT eval_id FROM core_cpt_eval WHERE std_id = :stdId LIMIT 1", nativeQuery = true)
+	String findEvalIdByStdId(@Param("stdId") Integer stdId);
+	
 	// 답변 저장 쿼리 추가
 	@Query(value = "INSERT INTO core_cpt_eval (eval_id, qst_id, std_id, ans_score, ans_dt, reg_dt) " +
 			"VALUES (:evalId, :qstId, :stdId, :ansScore, :ansDt, NOW())", nativeQuery = true)
