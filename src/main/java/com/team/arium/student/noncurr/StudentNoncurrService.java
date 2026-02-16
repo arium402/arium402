@@ -7,7 +7,7 @@ import com.team.arium.admin.noncurr.repository.NcsPrgAplyRepository;
 import com.team.arium.domain.Ncs_PrgInfo;
 import com.team.arium.domain.Ncs_PrgAply;
 import com.team.arium.domain.Std_Info;
-import com.team.arium.domain.yn;
+import com.team.arium.domain.Yn;
 import com.team.arium.domain.Common_Code;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -794,8 +794,8 @@ public class StudentNoncurrService {
                             .ncsPrgAply(application)
                             .ncsPrgInfo(program)
                             .stdInfo(application.getStdInfo())
-                            .cmpYn(yn.Y)  // ✅ ENUM 사용
-                            .surveyYn(yn.N)  // ✅ ENUM 사용
+                            .cmpYn(Yn.Y)  // ✅ ENUM 사용
+                            .surveyYn(Yn.N)  // ✅ ENUM 사용
                             .build();
                         
                         ncsCmpInfoRepository.save(completion);
@@ -833,7 +833,7 @@ public class StudentNoncurrService {
                     Ncs_CmpInfo cmpInfo = completion.get();
                     System.out.println("기존 survey_yn: " + cmpInfo.getSurveyYn());
                     
-                    cmpInfo.setSurveyYn(yn.Y);  // 만족도 조사 완료로 업데이트
+                    cmpInfo.setSurveyYn(Yn.Y);  // 만족도 조사 완료로 업데이트
                     Ncs_CmpInfo saved = ncsCmpInfoRepository.save(cmpInfo);
                     
                     System.out.println("업데이트 후 survey_yn: " + saved.getSurveyYn());
@@ -869,9 +869,9 @@ public class StudentNoncurrService {
                 // dgstfn_eval에서 만족도 조사 완료 여부 확인
                 boolean surveyExists = dgstfnEvalRepository.existsByPrgIdAndStdId(prgId, stdId);
                 
-                if (surveyExists && completion.getSurveyYn() == yn.N) {
+                if (surveyExists && completion.getSurveyYn() == Yn.N) {
                     // 만족도 조사는 완료했는데 survey_yn이 N인 경우 업데이트
-                    completion.setSurveyYn(yn.Y);
+                    completion.setSurveyYn(Yn.Y);
                     ncsCmpInfoRepository.save(completion);
                     
                     System.out.println("프로그램 " + prgId + " survey_yn을 Y로 업데이트");

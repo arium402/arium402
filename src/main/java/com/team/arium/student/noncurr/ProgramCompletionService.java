@@ -139,8 +139,8 @@ public class ProgramCompletionService {
             .ncsPrgAply(application)
             .ncsPrgInfo(application.getNcsPrgInfo())
             .stdInfo(application.getStdInfo())
-            .cmpYn(yn.Y)        // 이수 완료
-            .surveyYn(yn.N)     // 만족도 조사 미완료 (추후 별도 처리)
+            .cmpYn(Yn.Y)        // 이수 완료
+            .surveyYn(Yn.N)     // 만족도 조사 미완료 (추후 별도 처리)
             .build();
         
         ncsCmpInfoRepository.save(completion);

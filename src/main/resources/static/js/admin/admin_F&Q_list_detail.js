@@ -77,7 +77,6 @@ function renderFAQList() {
     if (faqItems.length === 0) {
         faqList.innerHTML = `
             <div class="empty-state">
-                <i class="fas fa-question-circle"></i>
                 <h3>등록된 F&Q가 없습니다</h3>
                 <p>현재 이 분류에 등록된 자주묻는질문이 없습니다.<br>새로운 F&Q를 등록해보세요.</p>
             </div>
@@ -134,7 +133,7 @@ function deleteFAQPage() {
         if (confirm('삭제를 진행하시겠습니까?')) {
             // 실제로는 서버에 삭제 요청을 보냄
             alert('F&Q 페이지가 성공적으로 삭제되었습니다.');
-            window.location.href = 'faq-management-updated.html';
+            window.location.href = '/admin/faq';
         }
     }
 }
