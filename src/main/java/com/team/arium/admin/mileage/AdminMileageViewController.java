@@ -1,23 +1,9 @@
 package com.team.arium.admin.mileage;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import java.util.List;
+import java.util.Map;
 
-import jakarta.servlet.http.HttpServletResponse;
-
-
-import com.team.arium.admin.admin_module;
-import com.team.arium.admin.mileage.AdminMileageService;
-import com.team.arium.admin.mileage.MileageStatisticsDTO;
-import com.team.arium.admin.noncurr.dto.NoncurrProgramDTO;
-import com.team.arium.admin.noncurr.dto.ApplicantDTO;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,9 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import com.team.arium.admin.admin_module;
+import com.team.arium.admin.noncurr.dto.ApplicantDTO;
+import com.team.arium.admin.noncurr.dto.NoncurrProgramDTO;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
@@ -112,6 +101,7 @@ public class AdminMileageViewController {
         }
     }
     
+    
     /**
      * 마일리지 지급 상세 페이지 (기존 HTML 파일명 기준)
      */
@@ -161,6 +151,11 @@ public class AdminMileageViewController {
             redirectAttributes.addFlashAttribute("errorMessage", "상세 페이지를 불러오는 중 오류가 발생했습니다.");
             return "redirect:/admin/admin_mileage_payment";
         }
+    }
+    
+    @GetMapping("/admin_mileage_to_money")
+    public String adminMileage_to_money() {
+    	return "/admin/admin_mileage_to_money";
     }
 
     /**

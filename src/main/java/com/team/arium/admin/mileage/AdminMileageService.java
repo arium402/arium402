@@ -222,11 +222,11 @@ public class AdminMileageService {
             .orElseThrow(() -> new RuntimeException("이수 정보를 찾을 수 없습니다: " + cmpId));
         
         // 2. 이수 완료 및 만족도 조사 완료 확인
-        if (!yn.Y.equals(completion.getCmpYn())) {
+        if (!Yn.Y.equals(completion.getCmpYn())) {
             throw new RuntimeException("이수가 완료되지 않은 학생입니다");
         }
         
-        if (!yn.Y.equals(completion.getSurveyYn())) {
+        if (!Yn.Y.equals(completion.getSurveyYn())) {
             throw new RuntimeException("만족도 조사가 완료되지 않은 학생입니다");
         }
         
@@ -312,8 +312,8 @@ public class AdminMileageService {
             // 이수 완료자 수 계산
             List<Ncs_CmpInfo> allCompletions = ncsCmpInfoRepository.findByPrgId(program.getPrgId());
             Integer completedCount = (int) allCompletions.stream()
-                .filter(completion -> yn.Y.equals(completion.getCmpYn()) && 
-                                    yn.Y.equals(completion.getSurveyYn()))
+                .filter(completion -> Yn.Y.equals(completion.getCmpYn()) && 
+                                    Yn.Y.equals(completion.getSurveyYn()))
                 .count();
             
             // 마일리지 지급 여부 확인
@@ -446,7 +446,7 @@ public class AdminMileageService {
                 // 이수 완료자 수 계산
                 List<Ncs_CmpInfo> completions = ncsCmpInfoRepository.findByPrgId(program.getPrgId());
                 int completedCount = (int) completions.stream()
-                    .filter(c -> yn.Y.equals(c.getCmpYn()) && yn.Y.equals(c.getSurveyYn()))
+                    .filter(c -> Yn.Y.equals(c.getCmpYn()) && Yn.Y.equals(c.getSurveyYn()))
                     .count();
                 
                 if (completedCount > 0) {

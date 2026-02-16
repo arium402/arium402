@@ -119,14 +119,14 @@ public class SecurityConfig {
 	public SecurityFilterChain SuFilterch(HttpSecurity http) throws Exception{
 		
 		http
-			.securityMatcher("/student/**", "/student-login-process")
-			.csrf((auth)->auth.disable())
-			.authorizeHttpRequests(auth -> auth
-					.requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
-					.requestMatchers("/student/login", "/student-login-process").permitAll()
-					.requestMatchers("/student/**").hasRole("STUDENT")
-					.anyRequest().authenticated()
-			)
+        .securityMatcher("/student/**", "/api/student/**", "/student-login-process")
+        .csrf((auth)->auth.disable())
+        .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
+                .requestMatchers("/student/login", "/student-login-process").permitAll()
+                .requestMatchers("/student/**", "/api/student/**").hasRole("STUDENT")  // ✅ API 경로 추가
+                .anyRequest().authenticated()
+        )
 			.formLogin(form -> form
 					.loginPage("/student/login")
 					.loginProcessingUrl("/student-login-process")
