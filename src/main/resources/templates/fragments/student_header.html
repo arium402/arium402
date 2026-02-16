@@ -10,7 +10,7 @@
 					<a th:href="@{/student/my/mypage}" class="text-decoration-none">
 						<div class="d-flex align-items-center bg-white rounded-pill px-3 py-2 border me-3">
 							<i class="fas fa-user-circle text-primary me-2" style="font-size: 1rem;"></i>
-							<span class="text-primary fw-bold" style="font-size: 0.85rem;">홍길동</span>
+							<span class="text-primary fw-bold" style="font-size: 0.85rem;">[[${session.userName}]]</span>
 							<span class="ms-1" style="font-size: 0.85rem;">님</span>
 						</div>
 					</a>
