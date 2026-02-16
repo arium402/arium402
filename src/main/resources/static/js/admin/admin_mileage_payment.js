@@ -21,13 +21,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const currentPath = window.location.pathname;
     console.log('페이지 로드:', currentPath);
     
-    if (currentPath.includes('mileage_payment_detail')) {
-        // 상세 페이지 초기화
-        initDetailPage();
-    } else if (currentPath.includes('admin_mileage_payment')) {
-        // 메인 페이지 초기화
-        initMainPage();
-    }
+	// ✅ 메인 페이지만 처리
+	if (currentPath.includes('admin_mileage_payment') && !currentPath.includes('admin_mileage_payment_add')) {
+	    // 메인 페이지 초기화
+	    initMainPage();
+	}
 });
 
 // ============= 메인 페이지 로직 =============
@@ -159,8 +157,13 @@ function mapStatus(apiStatus) {
 function formatPeriod(startDt, endDt) {
     if (!startDt || !endDt) return '기간 정보 없음';
     
-    const start = startDt.length >= 10 ? startDt.substring(0, 10) : startDt;
-    const end = endDt.length >= 10 ? endDt.substring(0, 10) : endDt;
+    let start = startDt.length >= 10 ? startDt.substring(0, 10) : startDt;
+    let end = endDt.length >= 10 ? endDt.substring(0, 10) : endDt;
+    
+    // 하이픈을 점으로 변경: 2025-07-04 → 2025.07.04
+    start = start.replace(/-/g, '.');
+    end = end.replace(/-/g, '.');
+    
     return `${start} ~ ${end}`;
 }
 
@@ -214,12 +217,26 @@ function updateTable() {
         const statusText = program.status === 'waiting' ? '대기' : '완료';
         const rowNumber = (currentPage - 1) * currentSize + index + 1;
         
+        // ✅ 전체 행에 클릭 이벤트 및 스타일 추가
+        row.style.cursor = 'pointer';
+        row.onclick = function() {
+            viewProgramDetail(program.id);
+        };
+        
+        // ✅ 호버 효과를 위한 이벤트 추가
+        row.onmouseenter = function() {
+            this.style.backgroundColor = '#f8f9fa';
+        };
+        row.onmouseleave = function() {
+            this.style.backgroundColor = '';
+        };
+        
         row.innerHTML = `
             <td>${rowNumber}</td>
             <td class="program-name">
-                <a href="javascript:void(0)" onclick="viewProgramDetail(${program.id})" class="program-link">
+                <span class="program-text" style="color: #333;">
                     ${program.name}
-                </a>
+                </span>
             </td>
             <td class="program-period">${program.period}</td>
             <td class="program-participants">${program.participants}명</td>
@@ -286,27 +303,9 @@ function viewProgramDetail(prgId) {
     }
     
     console.log('프로그램 상세보기:', prgId);
-    window.location.href = `/admin/mileage_payment_detail?prgId=${prgId}`;
+    window.location.href = `/admin/admin_mileage_payment_add?prgId=${prgId}`;
 }
 
-// ============= 상세 페이지 로직 (나중에 구현) =============
-
-function initDetailPage() {
-    console.log('마일리지 지급 상세 페이지 초기화');
-    
-    // URL에서 프로그램 ID 추출
-    const urlParams = new URLSearchParams(window.location.search);
-    const programId = parseInt(urlParams.get('prgId'));
-    
-    if (!programId) {
-        alert('프로그램 ID가 유효하지 않습니다.');
-        window.location.href = '/admin/admin_mileage_payment';
-        return;
-    }
-    
-    // 상세 페이지 로직은 나중에 구현
-    console.log('상세 페이지 로직 구현 예정. 프로그램 ID:', programId);
-}
 
 // 전역 함수로 노출
 window.viewProgramDetail = viewProgramDetail;

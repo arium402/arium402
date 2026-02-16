@@ -46,11 +46,11 @@ public class Pst_Post {
     
     @Enumerated(EnumType.STRING)
     @Column(name = "fixed_yn", nullable = false, length = 1)
-    private yn fixedYn;
+    private Yn fixedYn;
     
     @Enumerated(EnumType.STRING)
     @Column(name = "public_yn", nullable = false, length = 1)
-    private yn publicYn;
+    private Yn publicYn;
     
     @Column(name = "inq_cnt", nullable = false)
     @Builder.Default

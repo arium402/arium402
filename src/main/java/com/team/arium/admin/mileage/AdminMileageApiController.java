@@ -3,6 +3,8 @@ package com.team.arium.admin.mileage;
 
 import com.team.arium.admin.mileage.*;
 import com.team.arium.admin.noncurr.dto.NoncurrProgramDTO;  // ✅ 기존 DTO 활용
+import com.team.arium.admin.noncurr.repository.NcsPrgInfoRepository;
+import com.team.arium.domain.Ncs_PrgInfo;
 import com.team.arium.admin.noncurr.dto.ApplicantDTO;      // ✅ 기존 DTO 활용
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -23,7 +26,7 @@ import java.util.Map;
 public class AdminMileageApiController {
 
     private final AdminMileageService adminMileageService;
-
+    private final NcsPrgInfoRepository ncsPrgInfoRepository;
     /**
      * ✅ 기존 NoncurrProgramDTO를 활용한 마일리지 프로그램 목록 조회
      */
@@ -70,9 +73,10 @@ public class AdminMileageApiController {
             return ResponseEntity.internalServerError().body(response);
         }
     }
-
+    
+    
     /**
-     * ✅ 기존 ApplicantDTO를 활용한 마일리지 지급 대상자 목록 조회
+     * ✅ 기존 ApplicantDTO를 활용한 마일리지 지급 대상자 목록 조회 + 프로그램 정보
      */
     @GetMapping("/mileage_participants/{prgId}")
     public ResponseEntity<Map<String, Object>> getMileageParticipants(
@@ -82,26 +86,44 @@ public class AdminMileageApiController {
         Map<String, Object> response = new HashMap<>();
         
         try {
-            // ✅ 기존 ApplicantDTO 활용
+            // 1. 프로그램 정보 조회 (Service 통해서)
+            Map<String, Object> programInfo = adminMileageService.getProgramBasicInfo(prgId);
+            if (programInfo == null) {
+                response.put("success", false);
+                response.put("error", "프로그램을 찾을 수 없습니다.");
+                return ResponseEntity.notFound().build();
+            }
+            
+            // 2. 지급 대상자 목록 조회
             List<ApplicantDTO> participants = adminMileageService.getMileageParticipants(prgId);
             
-            // 통계 정보 계산
+            // 3. 통계 정보 계산
             int totalCount = participants.size();
             int paidCount = (int) participants.stream()
-                .filter(p -> "success".equals(p.getStatusBadgeClass())) // 마일리지 지급 완료
+                .filter(p -> "success".equals(p.getStatusBadgeClass()))
                 .count();
             int pendingCount = totalCount - paidCount;
             
+            // 프로그램 정보에서 마일리지 점수 가져오기
+            Integer mlgDefScore = (Integer) programInfo.get("mlgDefScore");
+            if (mlgDefScore == null) mlgDefScore = 0;
+            
             Map<String, Object> statistics = new HashMap<>();
-            statistics.put("totalCount", totalCount);
+            statistics.put("totalParticipants", totalCount);
             statistics.put("paidCount", paidCount);
             statistics.put("pendingCount", pendingCount);
+            statistics.put("mileagePerPerson", mlgDefScore);
+            statistics.put("totalMileageAmount", totalCount * mlgDefScore);
+            statistics.put("paidMileageAmount", paidCount * mlgDefScore);
+            statistics.put("pendingMileageAmount", pendingCount * mlgDefScore);
             
             response.put("success", true);
+            response.put("program", programInfo);  // ✅ 프로그램 정보 추가
             response.put("participants", participants);
             response.put("statistics", statistics);
             
-            log.info("마일리지 지급 대상자 조회 성공: 전체 {} 명, 지급완료 {} 명", totalCount, paidCount);
+            log.info("마일리지 지급 대상자 조회 성공: 프로그램={}, 전체 {} 명, 지급완료 {} 명", 
+                    programInfo.get("prgNm"), totalCount, paidCount);
             return ResponseEntity.ok(response);
             
         } catch (Exception e) {

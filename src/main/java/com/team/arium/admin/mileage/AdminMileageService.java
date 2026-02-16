@@ -53,6 +53,7 @@ public class AdminMileageService {
     private final StdMileageHistRepository stdMileageHistRepository;
     private final StdInfoRepository stdInfoRepository;
     private final NcsPrgAplyRepository ncsPrgAplyRepository;
+    private final DgstfnEvalRepository dgstfnEvalRepository;
     private final admin_module adminModule;
 
     /**
@@ -221,11 +222,11 @@ public class AdminMileageService {
             .orElseThrow(() -> new RuntimeException("이수 정보를 찾을 수 없습니다: " + cmpId));
         
         // 2. 이수 완료 및 만족도 조사 완료 확인
-        if (!yn.Y.equals(completion.getCmpYn())) {
+        if (!Yn.Y.equals(completion.getCmpYn())) {
             throw new RuntimeException("이수가 완료되지 않은 학생입니다");
         }
         
-        if (!yn.Y.equals(completion.getSurveyYn())) {
+        if (!Yn.Y.equals(completion.getSurveyYn())) {
             throw new RuntimeException("만족도 조사가 완료되지 않은 학생입니다");
         }
         
@@ -250,14 +251,19 @@ public class AdminMileageService {
         // 6. 마일리지 가산 코드 조회
         Common_Code addCode = getOrCreateAdditionCode();
         
-        // 7. 만족도 조사 ID 생성
-        String surEvalId = generateSurveyEvalId(student.getStdId(), program.getPrgId());
+        // ✅ 7. 기존 만족도 조사 ID 조회 (수정된 부분)
+        String surEvalId = findExistingSurveyEvalId(student.getStdId(), program.getPrgId());
+        if (surEvalId == null) {
+            throw new RuntimeException("만족도 조사 ID를 찾을 수 없습니다. 학생ID: " + student.getStdId() + ", 프로그램ID: " + program.getPrgId());
+        }
+        
+        log.info("기존 만족도 조사 ID 사용: {}", surEvalId);
         
         // 8. 마일리지 지급 내역 생성 및 저장
         Std_MileageHist mileageHist = Std_MileageHist.builder()
             .stdInfo(student)
             .ncsCmpInfo(completion)
-            .surEvalId(surEvalId)
+            .surEvalId(surEvalId)  // ✅ 기존 ID 사용
             .mlgScore(mileageScore)
             .mlgAddCd(addCode)
             .mlgDt(paymentDate)
@@ -272,6 +278,32 @@ public class AdminMileageService {
         return student.getStdNm();
     }
 
+    // ✅ 3. 새로운 메서드 추가
+    /**
+     * 기존 만족도 조사 ID 조회
+     */
+    private String findExistingSurveyEvalId(Integer stdId, Integer prgId) {
+        try {
+            log.info("기존 만족도 조사 ID 조회: 학생ID={}, 프로그램ID={}", stdId, prgId);
+            
+            // dgstfn_eval 테이블에서 기존 만족도 조사 ID 조회
+            String existingId = dgstfnEvalRepository.findSurEvalIdByStdIdAndPrgId(stdId, prgId);
+            
+            if (existingId != null && !existingId.trim().isEmpty()) {
+                log.info("기존 만족도 조사 ID 발견: {}", existingId);
+                return existingId;
+            }
+            
+            log.warn("기존 만족도 조사 ID가 없습니다: 학생ID={}, 프로그램ID={}", stdId, prgId);
+            return null;
+            
+        } catch (Exception e) {
+            log.error("기존 만족도 조사 ID 조회 실패: stdId={}, prgId={}, 오류={}", stdId, prgId, e.getMessage());
+            return null;
+        }
+    }
+    
+    
     /**
      * 기존 NoncurrProgramDTO로 변환 + 마일리지 정보 추가
      */
@@ -280,8 +312,8 @@ public class AdminMileageService {
             // 이수 완료자 수 계산
             List<Ncs_CmpInfo> allCompletions = ncsCmpInfoRepository.findByPrgId(program.getPrgId());
             Integer completedCount = (int) allCompletions.stream()
-                .filter(completion -> yn.Y.equals(completion.getCmpYn()) && 
-                                    yn.Y.equals(completion.getSurveyYn()))
+                .filter(completion -> Yn.Y.equals(completion.getCmpYn()) && 
+                                    Yn.Y.equals(completion.getSurveyYn()))
                 .count();
             
             // 마일리지 지급 여부 확인
@@ -310,10 +342,9 @@ public class AdminMileageService {
                 .updDt(program.getUpdDt())
                 .prgStatNm(mileageStatus) // 마일리지 상태
                 .applicationStatus(mileageStatus) // 마일리지 상태
-                .comFile(program.getComFile())
-                .prgStatCd(program.getPrgStatCd())
-                .imageUrl(program.getComFile() != null ? 
-                    "/uploads/noncurr/images/" + program.getComFile().getSaveFileName() : null)
+                .comFile(null)
+                .prgStatCd(null)
+                .imageUrl(null)
                 .build();
                 
         } catch (Exception e) {
@@ -415,7 +446,7 @@ public class AdminMileageService {
                 // 이수 완료자 수 계산
                 List<Ncs_CmpInfo> completions = ncsCmpInfoRepository.findByPrgId(program.getPrgId());
                 int completedCount = (int) completions.stream()
-                    .filter(c -> yn.Y.equals(c.getCmpYn()) && yn.Y.equals(c.getSurveyYn()))
+                    .filter(c -> Yn.Y.equals(c.getCmpYn()) && Yn.Y.equals(c.getSurveyYn()))
                     .count();
                 
                 if (completedCount > 0) {
@@ -471,6 +502,40 @@ public class AdminMileageService {
         }
     }
 
+    /**
+     * 프로그램 기본 정보 조회 (상세 페이지용)
+     */
+    public Map<String, Object> getProgramBasicInfo(Integer prgId) {
+        log.info("프로그램 기본 정보 조회: 프로그램ID={}", prgId);
+        
+        try {
+            Optional<Ncs_PrgInfo> programOpt = ncsPrgInfoRepository.findById(prgId);
+            if (programOpt.isEmpty()) {
+                return null;
+            }
+            
+            Ncs_PrgInfo program = programOpt.get();
+            
+            Map<String, Object> programInfo = new HashMap<>();
+            programInfo.put("prgId", program.getPrgId());
+            programInfo.put("prgNm", program.getPrgNm());
+            programInfo.put("prgDesc", program.getPrgDesc());
+            programInfo.put("prgStDt", program.getPrgStDt());
+            programInfo.put("prgEndDt", program.getPrgEndDt());
+            programInfo.put("mlgDefScore", program.getMlgDefScore());
+            programInfo.put("maxCnt", program.getMaxCnt());
+            programInfo.put("prgDept", program.getPrgDept());
+            programInfo.put("prgTel", program.getPrgTel());
+            
+            return programInfo;
+            
+        } catch (Exception e) {
+            log.error("프로그램 기본 정보 조회 실패: 프로그램ID={}, 오류={}", prgId, e.getMessage(), e);
+            return null;
+        }
+    }
+    
+    
     /**
      * 만족도 조사 완료 여부 확인
      */
@@ -559,24 +624,19 @@ public class AdminMileageService {
      * 마일리지 가산 코드 조회 또는 생성
      */
     private Common_Code getOrCreateAdditionCode() {
-        return commonCodeRepository.findByCode("ADD")
+        // ✅ 실제 DB 코드 ID 71번 사용 ("적립" 코드)
+        return commonCodeRepository.findById(71)
             .orElseGet(() -> {
-                log.warn("마일리지 가산 코드(ADD)가 없어 기본값 사용");
+                log.warn("마일리지 가산 코드(71)가 없어 기본값 사용");
                 Common_Code defaultCode = new Common_Code();
-                defaultCode.setCodeId(100);
-                defaultCode.setCode("ADD");
-                defaultCode.setCodeDesc("마일리지 가산");
+                defaultCode.setCodeId(71);
+                defaultCode.setCode("적립");
+                defaultCode.setCodeDesc("마일리지 적립");
                 return defaultCode;
             });
     }
 
-    /**
-     * 만족도 조사 ID 생성
-     */
-    private String generateSurveyEvalId(Integer stdId, Integer prgId) {
-        String timestamp = String.valueOf(System.currentTimeMillis());
-        return "MLG_" + stdId + "_" + prgId + "_" + timestamp.substring(timestamp.length() - 6);
-    }
+
 
     /**
      * 학생 계좌 정보 요약 조회

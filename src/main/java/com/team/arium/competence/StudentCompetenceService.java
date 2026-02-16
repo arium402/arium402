@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -79,6 +81,40 @@ public class StudentCompetenceService {
 		data.put("up", up);
 		
 		return data;
+	}
+	
+	// 현재 로그인한 사용자의 std_id 조회
+	public Integer getCurrentStdId() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		
+		if (authentication == null || !authentication.isAuthenticated()) {
+			throw new RuntimeException("인증되지 않은 사용자입니다.");
+		}
+		
+		String stdNo = authentication.getName();	// 학번
+		Integer stdId = this.scr.findStdIdByStdNo(stdNo);
+		
+		if (stdId == null) {
+			throw new RuntimeException("학생 정보를 찾을 수 없습니다: " + stdNo);
+		}
+		
+		return stdId;
+	}
+	
+	// 현재 사용자의 진단 완료 여부 및 evalId 반환
+	public Map<String, Object> checkDiagnosisStatus() {
+		Integer stdId = getCurrentStdId();
+		
+		Map<String, Object> result = new HashMap<>();
+		String evalId = this.scr.findEvalIdByStdId(stdId);
+		
+		// evalId가 있으면 진단 완료, 없으면 미완료
+		boolean hasCompleted = (evalId != null);
+		
+		result.put("hasCompleted", hasCompleted);
+		result.put("evalId", evalId);
+		
+		return result;
 	}
 
 	// 답변 저장
