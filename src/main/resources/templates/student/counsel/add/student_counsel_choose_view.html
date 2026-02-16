@@ -1,0 +1,61 @@
+<div th:fragment="view">
+
+<!-- Main Content -->
+<main class="col-md-9 col-lg-10 p-0" style="margin-left: 16.66667%; min-height: calc(100vh - 60px); width: 83.33333%;">
+	<div class="main-content">
+		<!-- 상담사 선택 페이지 -->
+		<div class="counselor-content">
+			<!-- 페이지 제목 -->
+			<h1 class="page-title">상담사 시간표</h1>
+
+			<!-- 주간 네비게이션 -->
+			<div class="week-navigation">
+				<button class="nav-button" onclick="changeWeek(-1)">‹</button>
+				<div class="week-display" id="week-display" 
+					th:text="${scheduleData.displayStartDate} + ' ~ ' + ${scheduleData.displayEndDate}"></div>
+				<button class="nav-button" onclick="changeWeek(1)">›</button>
+			</div>
+
+			<!-- 타임테이블 -->
+			<div class="timetable-container">
+				<table class="timetable">
+					<thead>
+						<tr id="table-header">
+							<th class="diagonal-header">
+								<span class="time-text">시간</span>
+								<span class="day-text">요일</span>
+							</th>
+						</tr>
+					</thead>
+					<tbody id="timetable-body">
+						<!-- js에서 핸들링 -->
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</main>
+
+<!-- 확인 모달 -->
+<div id="confirmModal" class="modal">
+	<div class="modal-content">
+		<div class="modal-title">상담 신청 확인</div>
+		<div class="modal-message" id="modal-message"></div>
+		<div class="modal-buttons">
+			<button class="modal-button confirm-button" onclick="confirmBooking()">예</button>
+			<button class="modal-button cancel-button" onclick="closeModal()">아니요</button>
+		</div>
+	</div>
+</div>
+
+<script th:inline="javascript">
+	const counselors = /*[[${scheduleData.counselors}]]*/ [];
+	const startDate = /*[[${scheduleData.startDate}]]*/ '';
+	const endDate = /*[[${scheduleData.endDate}]]*/ '';
+	const timeSlots = /*[[${scheduleData.timeSlots}]]*/ ['09:00 ~ 10:00', '10:00 ~ 11:00', '11:00 ~ 12:00', '12:00 ~ 13:00', '13:00 ~ 14:00', '14:00 ~ 15:00', '15:00 ~ 16:00'];
+	const days = /*[[${scheduleData.days}]]*/ ['월', '화', '수', '목', '금'];
+	console.log("timeSlots:", timeSlots);
+    console.log("days:", days);
+</script>
+
+</div>

@@ -1,0 +1,85 @@
+<div th:fragment="view">
+
+<!-- Main Content -->
+<main class="col-md-9 col-lg-10 p-0" style="margin-left: 16.66667%; min-height: calc(100vh - 70px); width: 83.33333%;">
+	<div class="main-content">
+		<!-- 핵심역량 진단 페이지 -->
+		<div class="diagnosis-content">
+			<!-- 페이지 제목 -->
+			<h1 class="page-title">핵심역량진단</h1>
+			<div class="page-title-divider"></div>
+
+			<!-- 진행률 표시 -->
+			<div class="progress-container">
+				<div class="progress-text" id="progressText">진행률: 0/40 (0%)</div>
+				<div class="progress-bar-container">
+					<div class="progress-bar-fill" id="progressBar"></div>
+				</div>
+			</div>
+
+			<form id="diagnosisForm">
+				<div th:each="category : ${data.up}">
+				
+					<div class="diagnosis-section">
+						<h2 class="section-title" th:text="${category.cclNm}"></h2>
+						
+						<th:block th:each="question : ${data.result}">
+							<div th:if="${question.categoryName == category.cclNm}" class="question-item">
+							
+								<div class="question-text">
+									<span class="question-number" th:text="${question.qstOrd} + '.'"></span>
+									<span th:text="${question.qstContent}">질문 내용</span>
+								</div>
+								
+								<div class="answer-options">
+									<div class="answer-option">
+										<input type="radio"
+											th:id="'q' + ${question.qstOrd} + '_1'" 
+											th:name="'q' + ${question.qstOrd}" 
+											th:value="${question.qstId} + '_1'">
+										<label th:for="'q' + ${question.qstOrd} + '_1'">1. 전혀 그렇지 않다</label>
+									</div>
+									<div class="answer-option">
+										<input type="radio"
+											th:id="'q' + ${question.qstOrd} + '_2'" 
+											th:name="'q' + ${question.qstOrd}" 
+											th:value="${question.qstId} + '_2'">
+										<label th:for="'q' + ${question.qstOrd} + '_2'">2. 그렇지 않다</label>
+									</div>
+									<div class="answer-option">
+										<input type="radio"
+											th:id="'q' + ${question.qstOrd} + '_3'" 
+											th:name="'q' + ${question.qstOrd}" 
+											th:value="${question.qstId} + '_3'">
+										<label th:for="'q' + ${question.qstOrd} + '_3'">3. 보통이다</label>
+									</div>
+									<div class="answer-option">
+										<input type="radio"
+											th:id="'q' + ${question.qstOrd} + '_4'" 
+											th:name="'q' + ${question.qstOrd}" 
+											th:value="${question.qstId} + '_4'">
+										<label th:for="'q' + ${question.qstOrd} + '_4'">4. 그렇다</label>
+									</div>
+									<div class="answer-option">
+										<input type="radio"
+											th:id="'q' + ${question.qstOrd} + '_5'" 
+											th:name="'q' + ${question.qstOrd}" 
+											th:value="${question.qstId} + '_5'">
+										<label th:for="'q' + ${question.qstOrd} + '_5'">5. 매우 그렇다</label>
+									</div>
+								</div>
+							</div>
+						</th:block>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<!-- 진단 결과 보러가기 버튼 -->
+	<div class="result-button-container">
+		<a href="#" class="result-button" onclick="showResults(); return false;">진단 결과 보러가기</a>
+	</div>
+</main>
+
+</div>

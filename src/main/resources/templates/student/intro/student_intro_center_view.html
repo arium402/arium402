@@ -1,0 +1,109 @@
+<div th:fragment="view">
+
+<main class="col-md-9 col-lg-10 p-0" style="margin-left: 16.66667%; min-height: calc(100vh - 60px); width: 83.33333%;">
+	<div class="main-content">
+		<!-- 센터 소개 페이지 -->
+		<div class="center-content">
+			<!-- 페이지 제목 -->
+			<h1 class="page-title">센터 소개</h1>
+			<div class="page-title-divider"></div>
+
+			<!-- 센터 소개 메인 섹션 -->
+			<div class="center-intro-section">
+				<!-- 왼쪽 이미지 -->
+				<div class="center-image-container">
+					<img th:src="@{/images/intro_school.png}" 
+						alt="대학교 건물" 
+						class="center-image">
+				</div>
+
+				<!-- 오른쪽 센터 소개 내용 -->
+				<div class="center-description">
+					<h2 class="center-title">학생성공센터</h2>
+					<p class="center-subtitle">학생 개인의 성장과 성공을 위한 종합적인 지원 시스템</p>
+
+					<p class="center-text">
+						한국방송통신대학교 학생성공센터는 모든 학생이 학업과 진로에서 성공할 수 있도록 
+						개인 맞춤형 지원 서비스를 제공합니다. 전문적인 상담부터 핵심역량 진단, 
+						비교과 프로그램까지 학생의 전인적 성장을 돕는 원스톱 서비스를 운영하고 있습니다.
+					</p>
+
+					<div class="highlight-box">
+						<p class="highlight-text">
+							"상담 → 진단 → 역량강화 → 성과인정"의 체계적인 프로세스를 통해 
+							학생 개개인의 잠재력을 발견하고 극대화합니다.
+						</p>
+					</div>
+
+					<p class="center-text">
+						다양한 배경을 가진 원격교육 환경의 학생들에게 심리적 안정감과 학업 동기를 
+						제공하며, 개인별 역량 진단을 통해 맞춤형 성장 로드맵을 제시합니다. 
+						또한 비교과 활동 참여를 통한 실질적 역량 향상과 성취에 대한 
+						마일리지 보상 시스템으로 지속적인 학습 동기를 부여합니다.
+					</p>
+				</div>
+			</div>
+
+			<!-- 서비스 소개 섹션 -->
+			<div class="services-section">
+				<h2 class="services-title">주요 서비스</h2>
+
+				<div class="services-grid">
+					<!-- 상담 서비스 -->
+					<div class="service-card">
+						<div class="service-icon">
+							<i class="fas fa-comments"></i>
+						</div>
+						<h3 class="service-title">전문 상담 서비스</h3>
+						<p class="service-description">
+							심리, 익명, 위기상담 등 일반상담과 진로/취업, 학습컨설팅 등 학업상담을 
+							전문 상담사가 1:1 맞춤형으로 제공합니다. 온라인을 통해 
+							언제든지 편리하게 상담받을 수 있습니다.
+						</p>
+					</div>
+
+					<!-- 핵심역량 진단 -->
+					<div class="service-card">
+						<div class="service-icon">
+							<i class="fas fa-chart-line"></i>
+						</div>
+						<h3 class="service-title">핵심역량 진단</h3>
+						<p class="service-description">
+							협력적 소통역량, 융합적 탐구역량, 창의적 혁신역량, 글로컬 리더역량의 
+							4개 영역을 체계적으로 분석하여 개인별 강점과 보완점을 파악하고 
+							맞춤형 역량 개발 방향을 제시합니다.
+						</p>
+					</div>
+
+					<!-- 비교과 프로그램 -->
+					<div class="service-card">
+						<div class="service-icon">
+							<i class="fas fa-calendar-alt"></i>
+						</div>
+						<h3 class="service-title">비교과 프로그램</h3>
+						<p class="service-description">
+							핵심역량 향상을 위한 다양한 비교과 프로그램을 제공합니다. 
+							워크숍, 세미나, 특강, 실습 프로그램 등을 통해 실질적인 역량 개발과 
+							네트워킹 기회를 제공합니다.
+						</p>
+					</div>
+
+					<!-- 마일리지 시스템 -->
+					<div class="service-card">
+						<div class="service-icon">
+							<i class="fas fa-coins"></i>
+						</div>
+						<h3 class="service-title">마일리지 시스템</h3>
+						<p class="service-description">
+							비교과 프로그램 참여와 만족도 조사 완료 시 마일리지를 적립하여 
+							장학금으로 교환할 수 있습니다. 지속적인 참여 동기를 
+							부여하는 보상 체계입니다.
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
+
+</div>

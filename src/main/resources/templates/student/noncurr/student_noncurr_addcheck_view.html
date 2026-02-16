@@ -1,0 +1,82 @@
+<div th:fragment="view">
+
+<main class="col-md-9 col-lg-10 p-0" style="margin-left: 16.66667%; min-height: calc(100vh - 70px); width: 83.33333%;">
+	<div class="main-content">
+		<!-- 신청내역 페이지 -->
+		<div class="history-content">
+			<!-- 페이지 제목 -->
+			<h1 class="page-title">비교과 신청내역</h1>
+			<div class="page-title-divider"></div>
+
+			<!-- 검색 및 필터 영역 -->
+			<div class="search-filter-section">
+				<div class="search-filter-container">
+					<div class="filter-tabs">
+						<button class="filter-tab active" onclick="setFilter('all')">전체</button>
+						<button class="filter-tab" onclick="setFilter('applied')">신청</button>
+						<button class="filter-tab" onclick="setFilter('ongoing')">진행</button>
+						<button class="filter-tab" onclick="setFilter('completed')">완료</button>
+					</div>
+
+					<div class="search-container">
+						<input type="text" class="search-input" id="searchInput" placeholder="프로그램명을 입력하여 검색하세요" oninput="filterPrograms()">
+						<button class="search-btn" onclick="performSearch()">검색</button>
+					</div>
+				</div>
+			</div>
+
+<!-- ✅ 서버 데이터를 data 속성으로 전달 (Controller에서 받은 날짜 사용) -->
+<div id="applicationsData" style="display: none;" th:attr="data-server-date=${currentDate}">
+    <span th:each="app, iterStat : ${applications}" 
+          th:attr="data-app-id=${app.prgId},
+                   data-app-name=${app.prgNm},
+                   data-start-date=${app.prgStDt},
+                   data-end-date=${app.prgEndDt},
+                   data-application-status=${app.applicationStatus},
+                   data-satisfaction-status=${app.satisfactionStatus}"
+          class="app-data-item"></span>
+</div>
+
+			<!-- 신청내역 테이블 -->
+			<table class="history-table">
+				<thead>
+					<tr>
+						<th style="width: 8%;">NO</th>
+						<th style="width: 35%;">프로그램 이름</th>
+						<th style="width: 25%;">운영기간</th>
+						<th style="width: 12%;">상태</th>
+						<th style="width: 20%;">만족도 조사</th>
+					</tr>
+				</thead>
+				<tbody id="programTableBody">
+					<!-- ✅ 서버 데이터가 없는 경우 -->
+					<tr th:if="${#lists.isEmpty(applications)}">
+						<td colspan="5" class="no-results">신청한 프로그램이 없습니다.</td>
+					</tr>
+					
+					<!-- ✅ 서버 데이터로 초기 렌더링 (JavaScript에서 다시 처리됨) -->
+					<tr th:each="app, iterStat : ${applications}" th:attr="data-program='${app.prgNm}', data-status='${app.applicationStatus}'">
+						<td th:text="${iterStat.count}">1</td>
+						<td class="program-name" th:text="${app.prgNm}">프로그램명</td>
+						<td th:text="${app.prgStDt + ' ~ ' + app.prgEndDt}">운영기간</td>
+						<td>
+							<span class="status-badge status-applied" th:text="${app.applicationStatus}">신청</span>
+						</td>
+						<td>
+							<span class="satisfaction-none">-</span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<!-- 페이지네이션 -->
+			<div class="pagination-container">
+				<div class="pagination">
+
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
+    
+</div>

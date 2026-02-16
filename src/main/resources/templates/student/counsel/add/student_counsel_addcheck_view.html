@@ -1,0 +1,91 @@
+<div th:fragment="view">
+
+<!-- Main Content -->
+<main class="col-md-9 col-lg-10 p-0" style="position: fixed; left: 16.66667%; right: 0; top: 70px; height: calc(100vh - 70px);">
+	<div class="main-content">
+		<div class="content-wrapper">
+			<!-- 상담 신청 내역 테이블 -->
+			<div class="counseling-table-container">
+				<div class="table-header">
+					<h2>상담 신청 내역</h2>
+				</div>
+
+				<div style="margin-top: 30px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+					<h3 class="table-title">
+						<i class="fas fa-file-alt me-2"></i>나의 상담 신청 내역
+					</h3>
+					<span class="table-info">총 <strong th:text="${cnslList.totalElements}"></strong>건의 상담 신청 내역이 있습니다.</span>
+				</div>
+
+				<table class="counseling-table">
+					<thead>
+						<tr>
+							<th width="8%">No</th>
+							<th width="20%">상담 분류</th>
+							<th width="20%">상담사</th>
+							<th width="20%">신청일자</th>
+							<th width="15%">상담 현황</th>
+						</tr>
+					</thead>
+					<tbody>
+						<!-- 데이터가 있을 때 -->
+						<tr th:each="cnsl : ${cnslList.content}">
+							<td th:text="${cnsl.cnslAplyId}">5</td>
+							<td>
+								<span th:class="|category-badge ${cnsl.preEvalTypeCode}|" th:text="${cnsl.preEvalType}"></span>
+							</td>
+							<td th:text="${cnsl.emplName}"></td>
+							<td th:text="${cnsl.regDt}"></td>
+							<td>
+								<span th:class="|status-badge ${cnsl.cnslStatusCode}|" th:text="${cnsl.cnslStatus}"></span>
+							</td>
+						</tr>
+						<!-- 데이터가 없을 때 -->
+						<tr th:if="${#lists.isEmpty(cnslList.content)}">
+							<td colspan="5" style="text-align: center;">
+								상담 신청 내역이 없습니다.
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<!-- 페이징 네비게이션 -->
+				<nav aria-label="상담 신청 내역 페이징" class="mt-4">
+					<ul class="pagination justify-content-center">
+						<!-- 첫 페이지 (데이터가 있고 여러 페이지일 때만) -->
+						<li class="page-item" th:if="${cnslList.totalPages > 1}" th:classappend="${cnslList.first} ? 'disabled'">
+							<a class="page-link" th:href="${cnslList.first} ? '#' : '?page=0'" tabindex="-1">
+								<i class="fas fa-angle-double-left"></i>
+							</a>
+						</li>
+						<!-- 이전 페이지 (데이터가 있고 여러 페이지일 때만) -->
+						<li class="page-item" th:if="${cnslList.totalPages > 1}" th:classappend="${cnslList.first} ? 'disabled'">
+							<a class="page-link" th:href="${cnslList.first} ? '#' : '?page=' + ${cnslList.number - 1}" tabindex="-1">
+								<i class="fas fa-angle-left"></i>
+							</a>
+						</li>
+						<!-- 페이지 번호들 (항상 현재 페이지는 표시) -->
+						<li class="page-item" th:each="i : ${#numbers.sequence(1, T(java.lang.Math).max(1, cnslList.totalPages))}"
+							th:classappend="${i - 1 == cnslList.number} ? 'active'">
+							<a class="page-link" th:href="'?page=' + ${i - 1}" th:text="${i}">1</a>
+						</li>
+						<!-- 다음 페이지 (데이터가 있고 여러 페이지일 때만) -->
+						<li class="page-item" th:if="${cnslList.totalPages > 1}" th:classappend="${cnslList.last} ? 'disabled'">
+							<a class="page-link" th:href="${cnslList.last} ? '#' : '?page=' + ${cnslList.number + 1}">
+								<i class="fas fa-angle-right"></i>
+							</a>
+						</li>
+						<!-- 마지막 페이지 (데이터가 있고 여러 페이지일 때만) -->
+						<li class="page-item" th:if="${cnslList.totalPages > 1}" th:classappend="${cnslList.last} ? 'disabled'">
+							<a class="page-link" th:href="${cnslList.last} ? '#' : '?page=' + ${cnslList.totalPages - 1}">
+								<i class="fas fa-angle-double-right"></i>
+							</a>
+						</li>
+					</ul>
+				</nav>
+			</div>
+		</div>
+	</div>
+</main>
+
+</div>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="https://www.thymeleaf.org/">
+<head th:replace="~{admin_config :: admin_config}"></head>
+<title>마일리지 지급 - 관리자 페이지</title>
+<link rel="stylesheet" th:href="@{/css/admin/admin_mileage_payment.css?v=1}">
+
+<body class="sb-nav-fixed">
+<!-- 상단 네비게이션 바 -->
+<nav th:replace="~{admin_top :: admin_top}"></nav>
+
+<div id="layoutSidenav">
+    <!-- 사이드바 -->
+    <div th:replace="~{admin_sidebar :: admin_sidebar}">
+    </div>
+
+    <!-- 메인 컨텐츠 -->
+    <div id="layoutSidenav_content">
+        <!-- 페이지 뷰 영역 -->
+        <div th:replace="~{admin/admin_mileage_payment_view :: mileage_payment_view}">
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/js/admin/admin_mileage_payment.js}"></script>
+</body>
+</html>

@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>자료실 상세보기</title>
+<link href="/css/bootstrap/bootstrap.css" rel="stylesheet" crossorigin="anonymous">
+<link href="/css/home.css" rel="stylesheet">
+<link href="/css/board.css" rel="stylesheet">
+<style>
+    body {
+        font-family: 'Noto Sans KR', Arial, sans-serif;
+        background-color: #fef7f0;
+        margin: 0;
+        padding: 0;
+    }
+
+    .header-bar {
+        background: white;
+        padding: 15px 30px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+    }
+
+    .logo img {
+        height: 40px;
+    }
+
+    .user-info {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .user-name {
+        font-weight: 600;
+        color: #2c3e50;
+    }
+
+    .profile-icon {
+        width: 32px;
+        height: 32px;
+        cursor: pointer;
+        transition: opacity 0.2s ease;
+        position: relative;
+        color: #2c3e50;
+    }
+
+    .profile-icon:hover {
+        opacity: 0.7;
+    }
+
+    .logout-btn {
+        background: #6c757d;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    .logout-btn:hover {
+        background: #5a6268;
+    }
+
+    .main-container {
+        display: flex;
+        min-height: calc(100vh - 80px);
+    }
+
+    .sidebar {
+        width: 250px;
+        background: #3498db;
+        min-height: 100%;
+    }
+
+    .sidebar-header {
+        background: #2980b9;
+        color: white;
+        padding: 20px;
+        font-size: 18px;
+        font-weight: 600;
+    }
+
+    .sidebar-menu {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .sidebar-menu li {
+        border-bottom: 1px solid #5dade2;
+    }
+
+    .sidebar-menu a {
+        display: block;
+        color: white;
+        padding: 15px 20px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .sidebar-menu a:hover {
+        background: #2980b9;
+        color: white;
+        text-decoration: none;
+    }
+
+    .sidebar-menu a.active {
+        background: #e6a456;
+        color: white;
+        text-decoration: none;
+    }
+
+    .sidebar-menu .main-category {
+        font-weight: 600;
+        background: #2980b9;
+    }
+
+    .sidebar-menu .sub-category {
+        padding-left: 35px;
+        font-size: 14px;
+    }
+
+    .contents {
+        flex: 1;
+        padding: 30px;
+        background: white;
+        margin: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .board_title {
+        font-size: 24px;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 25px;
+        text-align: left;
+        border-bottom: 2px solid #e6a456;
+        padding-bottom: 10px;
+    }
+
+    .data-detail {
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .data-header {
+        background: #f8f9fa;
+        padding: 25px;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    .data-title {
+        font-size: 20px;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 15px;
+        line-height: 1.4;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .file-icon {
+        width: 20px;
+        height: 20px;
+        color: #e6a456;
+    }
+
+    .data-meta {
+        display: flex;
+        gap: 30px;
+        font-size: 14px;
+        color: #6c757d;
+        flex-wrap: wrap;
+    }
+
+    .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .meta-label {
+        font-weight: 500;
+        color: #2c3e50;
+    }
+
+    .data-content {
+        padding: 30px;
+        min-height: 300px;
+    }
+
+    .content-text {
+        font-size: 16px;
+        line-height: 1.8;
+        color: #2c3e50;
+        margin-bottom: 25px;
+    }
+
+    .file-attachments {
+        background: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 6px;
+        padding: 20px;
+        margin: 25px 0;
+    }
+
+    .attachments-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .file-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .file-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 0;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    .file-item:last-child {
+        border-bottom: none;
+    }
+
+    .file-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex: 1;
+    }
+
+    .file-name {
+        font-weight: 500;
+        color: #2c3e50;
+    }
+
+    .file-size {
+        font-size: 12px;
+        color: #6c757d;
+        background: #e9ecef;
+        padding: 2px 6px;
+        border-radius: 3px;
+    }
+
+    .download-btn {
+        background: #e6a456;
+        color: white;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 4px;
+        font-size: 12px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .download-btn:hover {
+        background: #d4924a;
+        transform: translateY(-1px);
+    }
+
+    .info-box {
+        background: #fff5e6;
+        border-left: 4px solid #e6a456;
+        padding: 20px;
+        margin: 20px 0;
+        border-radius: 0 6px 6px 0;
+    }
+
+    .info-box .info-title {
+        font-weight: 600;
+        color: #b8860b;
+        margin-bottom: 10px;
+    }
+
+    .action-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        padding: 25px;
+        border-top: 1px solid #e9ecef;
+        background: #f8f9fa;
+    }
+
+    .btn {
+        padding: 12px 25px;
+        border: none;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .btn-list {
+        background: #6c757d;
+        color: white;
+    }
+
+    .btn-list:hover {
+        background: #5a6268;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+    }
+
+    .icon {
+        width: 16px;
+        height: 16px;
+    }
+
+    @media (max-width: 768px) {
+        .main-container {
+            flex-direction: column;
+        }
+        
+        .sidebar {
+            width: 100%;
+            min-height: auto;
+        }
+        
+        .contents {
+            margin: 10px;
+            padding: 20px;
+        }
+        
+        .data-meta {
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .data-content {
+            padding: 20px;
+        }
+        
+        .file-item {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        
+        .download-btn {
+            align-self: flex-end;
+        }
+    }
+</style>
+</head>
+<body>
+    <div class="header-bar">
+        <div class="logo">
+            <img src="/images/logo-header.png" alt="로고">
+        </div>
+        <div class="user-info">
+            <span class="user-name">김상담 상담사</span>
+            <div class="profile-icon" onclick="goToMyPage()">
+                <svg fill="currentColor" viewBox="0 0 20 20" width="32" height="32">
+                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+                </svg>
+            </div>
+            <button class="logout-btn">로그아웃</button>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <nav class="sidebar">
+            <ul class="sidebar-menu">
+                <li><a href="#" class="main-category">상담관리</a></li>
+                <li><a href="#" class="sub-category">신청리스트</a></li>
+                <li><a href="#" class="sub-category">내담자 리스트</a></li>
+                <li><a href="#" class="sub-category">스케줄 관리</a></li>
+                <li><a href="#" class="main-category">게시판 관리</a></li>
+                <li><a href="#" class="sub-category">공지사항</a></li>
+                <li><a href="#" class="sub-category active">자료실</a></li>
+                <li><a href="#" class="sub-category">F&Q</a></li>
+                <li><a href="#" class="sub-category">문의 게시판</a></li>
+            </ul>
+        </nav>
+
+        <section class="contents">
+            <h4 class="board_title">자료실</h4>
+            
+            <div class="data-detail">
+                <div class="data-header">
+                    <div class="data-title">
+                        <svg class="file-icon" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"></path>
+                        </svg>
+                        상담 매뉴얼 2025년 개정판
+                    </div>
+                    <div class="data-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">작성자:</span>
+                            <span>관리자</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">등록일:</span>
+                            <span>2025-06-10</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">조회수:</span>
+                            <span>156</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">파일 수:</span>
+                            <span>3개</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="data-content">
+                    <div class="content-text">
+                        2025년도 상담 업무를 위한 개정된 매뉴얼입니다.<br>
+                        모든 상담사분들께서는 반드시 숙지하시어 원활한 상담 업무를 진행해 주시기 바랍니다.
+                    </div>
+
+                    <div class="info-box">
+                        <div class="info-title">주요 개정 내용</div>
+                        <div class="content-text">
+                            • 온라인 상담 프로세스 신설<br>
+                            • 위기상담 대응 매뉴얼 강화<br>
+                            • 개인정보 보호 가이드라인 업데이트<br>
+                            • 상담 만족도 조사 방법 개선
+                        </div>
+                    </div>
+
+                    <div class="file-attachments">
+                        <div class="attachments-title">
+                            <svg class="icon" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                            </svg>
+                            첨부파일
+                        </div>
+                        <ul class="file-list">
+                            <li class="file-item">
+                                <div class="file-info">
+                                    <svg class="icon" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    <div>
+                                        <div class="file-name">상담매뉴얼_2025_개정판.pdf</div>
+                                        <span class="file-size">2.4MB</span>
+                                    </div>
+                                </div>
+                                <button class="download-btn" onclick="downloadFile('counseling_manual_2025.pdf')">
+                                    <svg class="icon" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    다운로드
+                                </button>
+                            </li>
+                            <li class="file-item">
+                                <div class="file-info">
+                                    <svg class="icon" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    <div>
+                                        <div class="file-name">체크리스트_양식.xlsx</div>
+                                        <span class="file-size">145KB</span>
+                                    </div>
+                                </div>
+                                <button class="download-btn" onclick="downloadFile('checklist_form.xlsx')">
+                                    <svg class="icon" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    다운로드
+                                </button>
+                            </li>
+                            <li class="file-item">
+                                <div class="file-info">
+                                    <svg class="icon" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    <div>
+                                        <div class="file-name">변경사항_요약.docx</div>
+                                        <span class="file-size">328KB</span>
+                                    </div>
+                                </div>
+                                <button class="download-btn" onclick="downloadFile('changes_summary.docx')">
+                                    <svg class="icon" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    다운로드
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="content-text">
+                        문의사항이 있으시면 관리자에게 연락 바랍니다.<br>
+                        <strong>연락처:</strong> admin@knou.ac.kr | 02-1234-5678
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-list" onclick="goToDataList()">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd"></path>
+                        </svg>
+                        목록
+                    </button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // 마이페이지로 이동
+        function goToMyPage() {
+            window.open('mypage.html', '_blank');
+        }
+
+        // 목록으로 돌아가기
+        function goToDataList() {
+            window.location.href = 'data-list.html';
+        }
+
+        // 파일 다운로드
+        function downloadFile(filename) {
+            alert(`${filename} 파일을 다운로드합니다.`);
+            // 실제 다운로드 로직 구현
+            // const link = document.createElement('a');
+            // link.href = `/download/${filename}`;
+            // link.download = filename;
+            // link.click();
+        }
+
+        // 사이드바 메뉴 클릭 핸들링
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuLinks = document.querySelectorAll('.sidebar-menu a:not(.main-category)');
+            
+            menuLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // 모든 메뉴에서 active 클래스 제거
+                    menuLinks.forEach(l => l.classList.remove('active'));
+                    
+                    // 클릭된 메뉴에 active 클래스 추가
+                    this.classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<div th:fragment="view">
+
+<!-- Main Content -->
+<main class="col-md-9 col-lg-10 p-0" style="margin-left: 16.66667%; min-height: calc(100vh - 60px); width: 83.33333%;">
+	<div class="main-content">
+		<!-- 핵심역량 소개 페이지 -->
+		<div class="competency-content">
+			<!-- 페이지 제목 -->
+			<h1 class="page-title">핵심역량 소개</h1>
+			<div class="page-title-divider"></div>
+
+			<!-- 핵심역량 원형 도표 -->
+			<div class="competency-diagram">
+				<!-- 핵심역량 다이어그램 이미지 -->
+				<img th:src="@{/images/student-competence.png}"
+					alt="핵심역량 다이어그램" 
+					class="competency-image"
+					style="border: 2px solid #ddd; background: #f8f9fa; padding: 20px;">
+			</div>
+
+			<!-- 핵심역량 구성체계 -->
+			<div class="competency-system">
+				<h2 class="system-title">핵심역량 구성체계</h2>
+				
+				<div th:each="up : ${data.upcom}">
+					<table class="competency-table">
+						<thead>
+							<tr>
+								<th colspan="2" th:text="${up.cclNm}"></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="com : ${data.result}">
+								<td th:if="${#strings.equals(com.categoryName, up.cclNm)}" class="competency-name" th:text="${com.cclNm}"></td>
+								<td th:if="${#strings.equals(com.categoryName, up.cclNm)}" class="competency-description" th:text="${com.cclDesc}"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+	
+			</div>
+
+			<!-- 진단하기 버튼 -->
+			<div class="diagnosis-button-container">
+				<a href="#" class="diagnosis-button" onclick="startDiagnosis(); return false;">진단하기</a>
+			</div>
+		</div>
+	</div>
+</main>
+
+</div>

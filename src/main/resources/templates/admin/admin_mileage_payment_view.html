@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="https://www.thymeleaf.org/">
+
+<!-- 마일리지 지급 뷰 영역 -->
+<div th:fragment="mileage_payment_view" class="main-content">
+    <!-- 페이지 제목 -->
+    <h1 class="page-title">마일리지 지급</h1>
+    <div class="title-divider"></div>
+
+    <!-- 프로그램 목록 섹션 -->
+    <div class="program-section">
+        <div class="program-header">
+            프로그램 목록
+        </div>
+
+        <!-- 탭 메뉴 -->
+        <div class="program-tabs">
+            <div class="tab-container">
+                <button class="tab-btn active" data-tab="all">전체</button>
+                <button class="tab-btn" data-tab="waiting">대기</button>
+                <button class="tab-btn" data-tab="completed">완료</button>
+            </div>
+        </div>
+
+        <!-- 프로그램 테이블 -->
+        <table class="program-table" id="programTable">
+            <thead>
+                <tr>
+                    <th style="width: 8%;">NO</th>
+                    <th style="width: 40%;">프로그램 이름</th>
+                    <th style="width: 25%;">운영기간</th>
+                    <th style="width: 12%;">인원</th>
+                    <th style="width: 15%;">지급여부</th>
+                </tr>
+            </thead>
+            <tbody id="programTableBody">
+                <!-- 데이터는 JavaScript로 동적 생성 -->
+                <tr>
+                    <td colspan="5" class="text-center py-4">
+                        <div class="loading-message">
+                            <i class="fas fa-spinner fa-spin fa-2x text-primary mb-2"></i>
+                            <p class="text-muted">프로그램 목록을 불러오는 중입니다...</p>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- 페이지네이션 -->
+        <div class="pagination-container">
+            <div class="pagination" id="pagination">
+                <!-- 페이지네이션 버튼이 여기에 동적으로 추가됩니다 -->
+                <button class="pagination-btn disabled">‹</button>
+                <button class="pagination-btn active">1</button>
+                <button class="pagination-btn disabled">›</button>
+            </div>
+            <div class="pagination-info" id="paginationInfo">
+                <!-- 페이지 정보가 여기에 표시됩니다 -->
+                총 0건 중 0-0건 표시
+            </div>
+        </div>
+    </div>
+</div>
+
+</html>

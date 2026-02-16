@@ -1,0 +1,62 @@
+<div th:fragment="view">
+
+<main class="col-md-9 col-lg-10 p-0" style="margin-left: 16.66667%; min-height: calc(100vh - 60px); width: 83.33333%;">
+	<div class="main-content">
+		<!-- 심리 상담 페이지 -->
+		<div class="counseling-content">
+			<!-- 페이지 제목 -->
+			<h1 class="page-title">심리 상담</h1>
+			<div class="page-title-divider"></div>
+
+			<!-- 상담 프로세스 -->
+			<div class="process-section">
+				<h2 class="process-title">상담 프로세스</h2>
+				<div class="process-flow">
+					<div class="process-step">사전 검사</div>
+					<div class="process-arrow">→</div>
+					<div class="process-step">상담 신청</div>
+					<div class="process-arrow">→</div>
+					<div class="process-step">상담 진행</div>
+				</div>
+			</div>
+
+			<!-- 상담 설명 소개 -->
+			<div class="intro-section">
+				<h2 class="intro-title">심리 상담</h2>
+				<p class="intro-description">
+					혼자 해결하기 힘든 어려움이 있을 때, 상담자와 함께 문제해결을 하기 위한 자기 이해 및 성장의 과정입니다.<br>
+					상담자와 일대일로 진행되며 여러 회기 동안 지속적으로 진행되기 때문에 여러문제에 대해 전문적이고도 심층적인 도움을 받을 수 있습니다.
+				</p>
+
+				<div class="when-to-apply">
+					<h3 class="when-title">이럴 때 신청하세요</h3>
+					<div class="apply-grid">
+						<div class="apply-item">
+							<h4>정서적 고통</h4>
+							<p>✔️ 우울감, 불안, 스트레스, 슬픔 등의 강한 감정을 지속적으로 경험할 경우</p>
+						</div>
+						<div class="apply-item">
+							<h4>대인 관계 문제</h4>
+							<p>✔️ 친구, 가족, 동료와의 관계에서 갈등이나 문제가 발생하거나, 대인 관계에서 어려움을 겪을 경우</p>
+						</div>
+						<div class="apply-item">
+							<h4>자아 문제</h4>
+							<p>✔️ 자기 자신에 대한 부정적인 인식, 낮은 자존감, 자기 가치감의 부족 등이 문제일 경우</p>
+						</div>
+						<div class="apply-item">
+							<h4>심리적 외상</h4>
+							<p>✔️ 사고, 폭력, 성적 학대 등 심리적 외상이나 트라우마를 경험했을 때, 이러한 경험이 일상 생활에 영향을 미치고 있을 경우</p>
+						</div>
+					</div>
+				</div>
+
+				<!-- 사전 검사 버튼 -->
+				<div class="pre-test-section">
+					<button class="pre-test-btn" onclick="goToPreTest()">상담 사전 검사</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
+
+</div>

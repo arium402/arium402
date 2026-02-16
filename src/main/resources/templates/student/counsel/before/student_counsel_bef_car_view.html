@@ -1,0 +1,68 @@
+<div th:fragment="view">
+
+<!-- Main Content -->
+<main class="col-md-9 col-lg-10 p-0" style="margin-left: 16.66667%; min-height: calc(100vh - 60px); width: 83.33333%;">
+	<div class="main-content">
+		<!-- 취업/진로 사전 검사 페이지 -->
+		<div class="pretest-content">
+			<!-- 페이지 제목 -->
+			<h1 class="page-title">진로/취업 상담 사전 검사</h1>
+			<div class="page-title-divider"></div>
+			<p class="page-subtitle">진로/취업 상담 전 사전 검사를 통해 보다 효과적인 상담을 진행할 수 있습니다.</p>
+
+			<div class="form-container">
+				<form id="careerForm">
+					<th:block th:each="item, stat : ${result}" th:if="${stat.index == 0 || result[stat.index-1].preQstId != item.preQstId}">
+						<div class="question-group">
+							<div class="question-title">
+								<span class="question-number" th:text="${item.preQstOrd}"></span>
+								<span th:text="${item.preQstContent}"></span>
+								<span th:if="${item.preQstType == 101 && (item.preQstOrd == 3 || item.preQstOrd == 4)}" class="multiple-choice">(복수 선택 가능)</span>
+							</div>
+							
+							<!-- 객관식 - 단일선택 (radio) : 1,2,5,6번 문항 -->
+							<div th:if="${item.preQstType == 101 && (item.preQstOrd == 1 || item.preQstOrd == 2 || item.preQstOrd == 5 || item.preQstOrd == 6)}" class="options-grid">
+								<th:block th:each="option : ${result}" th:if="${option.preQstId == item.preQstId}">
+									<div class="option-item" th:onclick="'toggleRadio(this, \'question' + ${option.preQstId} + '\')'">
+										<input type="radio" th:id="'q' + ${option.preQstId} + '_' + ${option.preOptId}" th:name="'question' + ${option.preQstId}" th:value="${option.preOptId}">
+										<label th:for="'q' + ${option.preQstId} + '_' + ${option.preOptId}" th:text="${option.optContent}"></label>
+									</div>
+								</th:block>
+							</div>
+							
+							<!-- 객관식 - 복수선택 (checkbox) : 3,4번 문항 -->
+							<div th:if="${item.preQstType == 101 && (item.preQstOrd == 3 || item.preQstOrd == 4)}" class="options-grid">
+								<th:block th:each="option : ${result}" th:if="${option.preQstId == item.preQstId}">
+									<div class="option-item" onclick="toggleOption(this)">
+										<input type="checkbox" th:id="'q' + ${option.preQstId} + '_' + ${option.preOptId}" th:name="'question' + ${option.preQstId}" th:value="${option.preOptId}">
+										<label th:for="'q' + ${option.preQstId} + '_' + ${option.preOptId}" th:text="${option.optContent}"></label>
+									</div>
+								</th:block>
+							</div>
+							
+							<!-- 주관식 입력 -->
+							<div th:if="${item.preQstType == 102}" class="textarea-container">
+								<textarea th:id="'question' + ${item.preQstId}" th:name="'question' + ${item.preQstId}" oninput="updateCharCount(this)"></textarea>
+								<div class="char-count">
+									<span id="charCount">0</span> / 1000자
+								</div>
+							</div>
+						</div>
+					</th:block>
+
+					<!-- 하단 버튼 -->
+					<div class="form-footer">
+						<button type="button" class="counselor-select-btn" onclick="saveAnswers()">상담사 선택</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</main>
+
+<script th:inline="javascript">
+	const preSurveyId = /*[[${preSurveyId}]]*/ 2;
+	const cnslCd = /*[[${cnslCd}]]*/ null;
+</script>
+
+</div>

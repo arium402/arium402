@@ -1,0 +1,71 @@
+<div th:fragment="view">
+
+<main class="col-md-9 col-lg-10 p-0" style="margin-left: 16.66667%; min-height: calc(100vh - 70px);">
+	<div class="main-content">
+		<div class="board-container">
+			<!-- 게시판 헤더 -->
+			<div class="board-header">
+				<h1 class="board-title">
+					<i class="fas fa-question-circle me-3"></i>문의 게시판
+				</h1>
+			</div>
+
+			<!-- 게시판 컨텐츠 -->
+			<div class="board-content">
+				<!-- 검색 및 등록 영역 -->
+				<div class="search-register-area">
+					<div class="search-area">
+						<select class="search-type" id="searchType">
+							<option value="all">전체</option>
+							<option value="title">제목</option>
+							<option value="content">내용</option>
+							<option value="author">작성자</option>
+						</select>
+						<input type="text" class="search-input" id="searchInput" placeholder="검색어를 입력하세요">
+						<button class="search-btn" onclick="searchPosts()">
+							<i class="fas fa-search"></i>
+							검색
+						</button>
+					</div>
+					<button class="register-btn" onclick="openWritePage()">
+						<i class="fas fa-plus"></i>
+						등록
+					</button>
+				</div>
+
+				<!-- 게시판 테이블 -->
+				<table class="board-table">
+					<thead>
+						<tr>
+							<th class="col-no">No</th>
+							<th class="col-title">제목</th>
+							<th class="col-date">작성일</th>
+							<th class="col-author">작성자</th>
+							<th class="col-views">조회수</th>
+						</tr>
+					</thead>
+					<tbody id="boardTableBody">
+						<!-- JavaScript로 동적 생성 -->
+					</tbody>
+				</table>
+
+				<!-- 페이지네이션 -->
+				<div class="pagination-area">
+					<div class="pagination">
+						<a href="#" class="page-btn disabled" onclick="return false;">‹‹</a>
+						<a href="#" class="page-btn disabled" onclick="return false;">‹</a>
+						<a href="#" class="page-btn active" onclick="return false;">1</a>
+						<a href="#" class="page-btn" onclick="return false;">2</a>
+						<a href="#" class="page-btn" onclick="return false;">3</a>
+						<a href="#" class="page-btn" onclick="return false;">4</a>
+						<a href="#" class="page-btn" onclick="return false;">5</a>
+						<a href="#" class="page-btn" onclick="return false;">›</a>
+						<a href="#" class="page-btn" onclick="return false;">››</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
+    
+</div>

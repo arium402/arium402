@@ -1,0 +1,149 @@
+
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="https://www.thymeleaf.org/">
+
+<body>
+ <!-- 비교과 목록 뷰 영역 -->
+ <div th:fragment="noncurr_list_view" class="main-container">
+    <!-- 페이지 제목 -->
+    <h1 class="page-title">비교과 목록</h1>
+    <div class="title-divider"></div>
+
+    <!-- 필터 및 검색 영역 -->
+    <div class="filter-section">
+        <div class="filter-row">
+            <div class="search-area">
+                <select class="search-type-select" id="searchType">
+                    <option value="prgNm">프로그램명</option>
+                    <option value="prgDept">운영부서</option>
+                </select>
+                <input type="text" class="search-input" id="searchInput" th:value="${search}" placeholder="검색어를 입력하세요">
+                <button class="search-btn" onclick="searchPrograms()">
+                    <i class="fas fa-search"></i> 검색
+                </button>
+            </div>
+            
+            <div class="filter-left">
+                <label class="filter-label">기간</label>
+                <select class="filter-select" id="periodFilter">
+                    <option value="">전체</option>
+                    <option value="2025" th:selected="${period == '2025'}">2025년</option>
+                    <option value="2024" th:selected="${period == '2024'}">2024년</option>
+                    <option value="2023" th:selected="${period == '2023'}">2023년</option>
+                </select>
+                
+                <label class="filter-label">상태</label>
+                <select class="filter-select" id="statusFilter">
+                    <option value="">전체</option>
+                    <option value="오픈" th:selected="${status == '오픈'}">오픈</option>
+                    <option value="진행" th:selected="${status == '진행'}">진행</option>
+                    <option value="종료" th:selected="${status == '종료'}">종료</option>
+                    <option value="인원 마감" th:selected="${status == '인원 마감'}">인원 마감</option>
+                </select>
+            </div>
+            
+            <button class="register-btn" onclick="registerProgram()">
+                <span class="material-symbols-outlined">add</span>
+                비교과 등록
+            </button>
+        </div>
+    </div>
+
+    <!-- 테이블 영역 -->
+    <div class="table-container">
+        <div class="table-content">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th style="width: 50px;">No</th>
+                        <th style="width: calc(100% - 750px);">프로그램 명</th>
+                        <th style="width: 120px;">운영부서</th>
+                        <th style="width: 150px;">모집기간</th>
+                        <th style="width: 80px;">모집인원</th>
+                        <th style="width: 150px;">운영기간</th>
+                        <th style="width: 140px;">상태</th>
+                    </tr>
+                </thead>
+                <tbody id="programTableBody">
+                    <!-- ✅ Thymeleaf로 동적 데이터 바인딩 -->
+                    <tr th:each="program, iterStat : ${programs.content}" 
+                        th:data-program-id="${program.prgId}"
+                        onclick="goToDetail(this)">
+                        <td th:text="${programs.pageable.offset + iterStat.index + 1}">1</td>
+                        <td class="text-left" th:text="${program.prgNm}">프로그램명</td>
+                        <td th:text="${program.prgDept}">운영부서</td>
+                        <td th:text="${#strings.replace(program.recruitStDt, '-', '.')} + '~' + ${#strings.substring(#strings.replace(program.recruitEndDt, '-', '.'), 5)}">모집기간</td>
+                        <td th:text="${program.currentCnt != null ? program.currentCnt : 0} + '/' + ${program.maxCnt}">모집인원</td>
+                        <td th:text="${#strings.replace(program.prgStDt, '-', '.')} + '~' + ${#strings.substring(#strings.replace(program.prgEndDt, '-', '.'), 5)}">운영기간</td>
+                        <td>
+                            <span class="status" 
+                                  th:classappend="${program.prgStatNm == '오픈' ? 'open' : 
+                                                 program.prgStatNm == '진행' ? 'pro' : 
+                                                 program.prgStatNm == '완료' ? 'completed' : 
+                                                 program.prgStatNm == '인원 마감' ? 'full' : 'open'}"
+                                  th:text="${program.prgStatNm}">상태</span>
+                        </td>
+                    </tr>
+                    
+                    <!-- ✅ 데이터가 없을 때 표시 -->
+                    <tr th:if="${#lists.isEmpty(programs.content)}">
+                        <td colspan="7" style="text-align: center; padding: 20px;">등록된 비교과 프로그램이 없습니다.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- ✅ 동적 페이징 -->
+        <div class="pagination-container">
+            <nav aria-label="Page navigation">
+                <ul class="pagination" id="pagination">
+                    <!-- 이전 버튼 -->
+                    <li class="page-item" th:classappend="${programs.first} ? 'disabled' : ''">
+                        <a class="page-link page-arrow" 
+                           th:href="@{/admin/noncurr_list(page=${programs.number - 1}, size=${programs.size}, search=${search}, period=${period}, status=${status}, searchType=${searchType})}"
+                           th:if="${!programs.first}"
+                           aria-label="Previous">
+                            <i class="fas fa-angle-left"></i>
+                        </a>
+                        <span class="page-link page-arrow" th:if="${programs.first}" aria-label="Previous">
+                            <i class="fas fa-angle-left"></i>
+                        </span>
+                    </li>
+                    
+                    <!-- 페이지 번호들 -->
+                    <li class="page-item" 
+                        th:each="pageNum : ${#numbers.sequence(0, programs.totalPages - 1)}"
+                        th:if="${pageNum >= programs.number - 2 && pageNum <= programs.number + 2}"
+                        th:classappend="${pageNum == programs.number} ? 'active' : ''">
+                        <a class="page-link" 
+                          th:href="@{/admin/noncurr_list(page=${pageNum}, size=${programs.size}, search=${search}, period=${period}, status=${status}, searchType=${searchType})}"
+                           th:text="${pageNum + 1}">1</a>
+                    </li>
+                    
+                    <!-- 다음 버튼 -->
+                    <li class="page-item" th:classappend="${programs.last} ? 'disabled' : ''">
+                        <a class="page-link page-arrow" 
+                           th:href="@{/admin/noncurr_list(page=${programs.number + 1}, size=${programs.size}, search=${search}, period=${period}, status=${status}, searchType=${searchType})}"
+                           th:if="${!programs.last}"
+                           aria-label="Next">
+                            <i class="fas fa-angle-right"></i>
+                        </a>
+                        <span class="page-link page-arrow" th:if="${programs.last}" aria-label="Next">
+                            <i class="fas fa-angle-right"></i>
+                        </span>
+                    </li>
+                </ul>
+            </nav>
+            <div class="pagination-info" id="paginationInfo">
+                <!-- ✅ 동적 페이징 정보 -->
+                <span th:text="'총 ' + ${programs.totalElements} + '건 중 ' + 
+                              ${programs.pageable.offset + 1} + '-' + 
+                              ${programs.pageable.offset + programs.numberOfElements} + '건 표시'">
+                    총 0건 중 0-0건 표시
+                </span>
+            </div>
+        </div>
+    </div>
+ </div>
+</body>
+</html>

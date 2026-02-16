@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="https://www.thymeleaf.org/">
+    <head th:replace="~{/admin_config.html :: admin_config}"></head>
+    <title>상담사별 통계 - 관리자 페이지</title>
+ 	<link rel="stylesheet" th:href="@{/css/admin/admin_counselor_statistics.css?v=1}">
+ 	
+    <body class="sb-nav-fixed">
+        <!-- 상단 네비게이션 바 -->
+        <nav th:replace="~{/admin_top.html :: admin_top}"></nav>
+     
+        <div id="layoutSidenav">
+            <!-- 사이드바 -->
+            <div th:replace="~{/admin_sidebar.html :: admin_sidebar}"> </div>
+            
+            <!-- 메인 컨텐츠 -->
+            <div id="layoutSidenav_content">
+                <div class="main-content">
+                    <!-- 페이지 제목 -->
+                    <h1 class="page-title">상담사별 통계</h1>
+                    <div class="title-divider"></div>
+                    
+                    <!-- 필터 영역 -->
+                    <div class="filter-section">
+                        <div class="filter-row">
+                            <div class="filter-left">
+                                <label class="filter-label">년도</label>
+                                <select class="filter-select" id="yearFilter">
+                                    <option value="2025">2025년</option>
+                                    <option value="2024">2024년</option>
+                                    <option value="2023">2023년</option>
+                                    <option value="2022">2022년</option>
+                                </select>
+                                
+                                <label class="filter-label">상담분류</label>
+                                <select class="filter-select" id="counselingType">
+                                    <option value="">전체</option>
+                                    <option value="심리">심리</option>
+                                    <option value="위기">위기</option>
+                                    <option value="익명">익명</option>
+                                    <option value="진로/취업">진로/취업</option>
+                                    <option value="학습 컨설팅">학습 컨설팅</option>
+                                </select>
+                            </div>
+                            
+                            <div class="search-area">
+                                <select class="search-type-select" id="searchType">
+                                    <option value="name">이름</option>
+                                    <option value="empno">사번</option>
+                                    <option value="phone">전화번호</option>
+                                    <option value="email">이메일</option>
+                                </select>
+                                <input type="text" class="search-input" id="searchInput" placeholder="검색어를 입력하세요">
+                                <button class="search-btn" onclick="searchCounselors()">
+                                    <i class="fas fa-search"></i> 검색
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 테이블 -->
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th class="col-no">NO</th>
+                                    <th class="col-name">이름</th>
+                                    <th class="col-empno">사번</th>
+                                    <th class="col-field">분야</th>
+                                </tr>
+                            </thead>
+                            <tbody id="counselorTableBody">
+                                <!-- 데이터가 여기에 동적으로 추가됩니다 -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- 페이지네이션 -->
+                    <div class="pagination-container">
+                        <div class="pagination" id="pagination">
+                            <!-- 페이지네이션 버튼이 여기에 동적으로 추가됩니다 -->
+                        </div>
+                        <div class="pagination-info" id="paginationInfo">
+                            <!-- 페이지 정보가 여기에 표시됩니다 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 통계 모달 -->
+        <div class="modal-overlay" id="statisticsModal">
+            <div class="statistics-modal">
+                <div class="modal-header">
+                    <h2 class="modal-title">상담사 통계</h2>
+                    <button class="modal-close" onclick="closeModal()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="counselor-info">
+                        <div class="counselor-name" id="modalCounselorName">상담사 이름</div>
+                        <div class="counselor-field" id="modalCounselorField">상담 분야</div>
+                    </div>
+                    
+                    <div class="semester-controls">
+                        <div class="semester-toggle">
+                            <button class="semester-btn active" data-semester="1" onclick="changeSemester(1)">1학기</button>
+                            <button class="semester-btn" data-semester="2" onclick="changeSemester(2)">2학기</button>
+                        </div>
+                    </div>
+                    
+                    <div class="semester-title" id="semesterTitle">2025학년도 1학기 통계</div>
+                    
+                    <div class="statistics-content">
+                        <div class="stats-left">
+                            <div class="stat-item">
+                                <div class="stat-label">완료</div>
+                                <div class="stat-value" id="completedCount">15 건</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-label">예정</div>
+                                <div class="stat-value" id="scheduledCount">8 건</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stats-right">
+                            <div class="chart-container">
+                                <canvas id="gradeChart"></canvas>
+                            </div>
+                            <div class="chart-legend">
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background-color: #3498db;"></div>
+                                    <span>1학년</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background-color: #e74c3c;"></div>
+                                    <span>2학년</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background-color: #f39c12;"></div>
+                                    <span>3학년</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background-color: #27ae60;"></div>
+                                    <span>4학년</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <script th:src="@{/js/admin/admin_counselor_statistics.js}"></script>
+    </body>
+</html>

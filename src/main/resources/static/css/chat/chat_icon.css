@@ -1,0 +1,61 @@
+/* 채팅 아이콘 전용 CSS */
+.chat-icon-widget {
+    position: fixed !important;
+    bottom: 25px !important;
+    right: 25px !important;
+    z-index: 9999 !important;
+    pointer-events: none !important;
+    font-family: 'Noto Sans KR', Arial, sans-serif !important;
+}
+
+.chat-icon-button {
+    width: 60px !important;
+    height: 60px !important;
+    background: linear-gradient(135deg, #e6a456 0%, #d4932b 100%) !important;
+    border: none !important;
+    border-radius: 50% !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 15px rgba(230, 164, 86, 0.4) !important;
+    transition: all 0.3s ease !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    pointer-events: auto !important;
+    position: relative !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.chat-icon-button:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(230, 164, 86, 0.6) !important;
+    background: linear-gradient(135deg, #d4932b 0%, #c87f1a 100%) !important;
+}
+
+.chat-icon-button:active {
+    transform: translateY(0) !important;
+}
+
+.chat-bubble-icon {
+    width: 32px !important;
+    height: 32px !important;
+    fill: white !important;
+}
+
+/* 모바일 반응형 */
+@media (max-width: 768px) {
+    .chat-icon-widget {
+        bottom: 20px !important;
+        right: 20px !important;
+    }
+    
+    .chat-icon-button {
+        width: 55px !important;
+        height: 55px !important;
+    }
+    
+    .chat-bubble-icon {
+        width: 28px !important;
+        height: 28px !important;
+    }
+}

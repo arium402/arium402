@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="https://www.thymeleaf.org/">
+<div th:fragment="noncurr_stat_view" class="main-container">
+    <!-- 페이지 제목 -->
+    <h1 class="page-title">비교과 통계</h1>
+    <div class="title-divider"></div>
+
+    <!-- 필터 및 검색 영역 -->
+    <div class="filter-section">
+        <div class="filter-row">
+            <div class="search-area">
+                <select class="search-type-select" id="searchType">
+                    <option value="name">프로그램명</option>
+                    <option value="department">부서</option>
+                </select>
+                <input type="text" class="search-input" id="searchInput" placeholder="검색어를 입력하세요">
+                <button class="search-btn" onclick="searchStatistics()">
+                    <i class="fas fa-search"></i> 검색
+                </button>
+            </div>
+            
+            <div class="filter-left">
+                <label class="filter-label">기간</label>
+                <select class="filter-select" id="periodFilter">
+                    <option value="">전체</option>
+                    <option value="2025">2025년</option>
+                    <option value="2024">2024년</option>
+                    <option value="2023">2023년</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- 테이블 영역 -->
+    <div class="table-container">
+        <div class="table-header">
+            <h3>
+                <span class="material-symbols-outlined">analytics</span>
+                비교과 만족도 조사 통계 (완료된 프로그램만 표시)
+            </h3>
+        </div>
+        <div class="table-content">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th style="width: 50px;">No</th>
+                        <th style="width: calc(100% - 550px);">프로그램명</th>
+                        <th style="width: 120px;">운영부서</th>
+                        <th style="width: 150px;">운영기간</th>
+                        <th style="width: 80px;">참여인원</th>
+                        <th style="width: 100px;">응답률</th>
+                        <th style="width: 100px;">평균만족도</th>
+                    </tr>
+                </thead>
+<tbody id="statisticsTableBody">
+                    <!-- ✅ 서버에서 전달된 완료 프로그램 데이터 표시 -->
+                    <tr th:each="program, iterStat : ${programs.content}" 
+                        th:data-program-id="${program.prgId}"
+                        style="cursor: pointer;">
+                        <td th:text="${programs.pageable.offset + iterStat.index + 1}">1</td>
+                        <td class="text-left" th:text="${program.prgNm}">프로그램명</td>
+                        <td th:text="${program.prgDept}">운영부서</td>
+                        <td th:text="${#strings.replace(program.prgStDt, '-', '.')} + '~' + ${#strings.substring(#strings.replace(program.prgEndDt, '-', '.'), 5)}">운영기간</td>
+                        <td th:text="${(program.totalApplicants ?: 0) + '명'}">참여인원</td>
+                        <td>
+                            <span class="response-rate" th:text="${program.responseRate ?: '0.0%'}">0.0%</span>
+                        </td>
+                        <td>
+                            <span class="satisfaction-score" th:text="${program.averageSatisfaction ?: '0.0점'}">0.0점</span>
+                        </td>
+                    </tr>
+                    
+                    <!-- ✅ 완료된 프로그램이 없을 때만 표시 -->
+                    <tr th:if="${programs == null or programs.content.size() == 0}">
+                        <td colspan="7" style="text-align: center; padding: 50px; color: #6c757d;">
+                            완료된 프로그램이 없습니다
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+<!-- 페이징 -->
+<div class="pagination-container"
+     th:data-current-page="${programs?.number ?: 0}"
+     th:data-total-pages="${programs?.totalPages ?: 1}" 
+     th:data-total-elements="${programs?.totalElements ?: 0}"
+     th:data-size="${programs?.size ?: 10}"
+     th:data-has-next="${programs?.hasNext ?: false}"
+     th:data-has-previous="${programs?.hasPrevious ?: false}">
+    
+    <nav aria-label="Page navigation">
+        <ul class="pagination" id="pagination">
+            <!-- JavaScript로 동적 생성 -->
+        </ul>
+    </nav>
+    
+    <div class="pagination-info" id="paginationInfo">
+        <!-- JavaScript로 동적 생성 -->
+    </div>
+</div>
+    </div>
+
+    <!-- 상세 통계 모달 -->
+    <div id="detailModal" class="detail-modal">
+        <div class="detail-modal-content">
+            <div class="detail-modal-header">
+                <h2 class="detail-modal-title">프로그램 상세 만족도 통계</h2>
+                <button class="detail-modal-close" onclick="closeDetailModal()">&times;</button>
+            </div>
+            <div class="detail-modal-body">
+                <!-- 프로그램 정보 -->
+                <div class="modal-program-info">
+                    <h3 id="modalProgramTitle" class="modal-program-title">프로그램명</h3>
+                    <div class="modal-program-details">
+                        <div class="modal-detail-item">
+                            <span class="modal-detail-label">운영부서</span>
+                            <span id="modalDepartment" class="modal-detail-value">-</span>
+                        </div>
+                        <div class="modal-detail-item">
+                            <span class="modal-detail-label">운영기간</span>
+                            <span id="modalPeriod" class="modal-detail-value">-</span>
+                        </div>
+                        <div class="modal-detail-item">
+                            <span class="modal-detail-label">참여인원</span>
+                            <span id="modalParticipants" class="modal-detail-value">-</span>
+                        </div>
+                        <div class="modal-detail-item">
+                            <span class="modal-detail-label">상태</span>
+                            <span class="modal-detail-value">완료</span>
+                        </div>
+                        <div class="modal-detail-item">
+                            <span class="modal-detail-label">응답자</span>
+                            <span id="modalResponders" class="modal-detail-value">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 통계 데이터는 JavaScript로 동적 생성 -->
+                <div id="modalStatsContainer">
+                    <!-- 로딩 표시 -->
+                    <div class="stats-section">
+                        <div class="loading-container" style="text-align: center; padding: 50px;">
+                            <div class="spinner-border" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                            <p style="margin-top: 15px;">만족도 조사 통계를 불러오는 중...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

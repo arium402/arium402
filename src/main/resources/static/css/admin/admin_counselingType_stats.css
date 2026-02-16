@@ -1,0 +1,236 @@
+@charset "UTF-8";
+
+/* 메인 컨텐츠 스타일 */
+/* 년도/학기 선택 영역 */
+.period-selector {
+    background: linear-gradient(135deg, white 0%, #f8f9fa 100%);
+    padding: 25px 35px;
+    margin-bottom: 40px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border-left: 5px solid #3498db;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+.period-controls {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.period-label {
+    font-weight: 700;
+    color: #2c3e50;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.period-select {
+    padding: 12px 18px;
+    border: 2px solid #e9ecef;
+    background: white;
+    color: #495057;
+    font-size: 1rem;
+    min-width: 130px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+.period-select:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    transform: translateY(-1px);
+}
+
+.period-select:hover {
+    border-color: #3498db;
+    transform: translateY(-1px);
+}
+
+/* 카테고리 섹션 */
+.category-section {
+    margin-bottom: 60px;
+}
+
+.category-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 35px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding-left: 15px;
+    border-left: 5px solid #3498db;
+    position: relative;
+}
+
+.category-title::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 60%;
+    height: 2px;
+    background: linear-gradient(90deg, #3498db, #2980b9);
+    opacity: 0.7;
+}
+
+.counseling-type {
+    margin-bottom: 50px;
+    padding: 25px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+    border-left: 4px solid #ecf0f1;
+    transition: all 0.3s ease;
+}
+
+.counseling-type:hover {
+    box-shadow: 0 4px 25px rgba(0,0,0,0.1);
+    border-left-color: #3498db;
+}
+
+.type-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #34495e;
+    margin-bottom: 25px;
+    text-align: center;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #ecf0f1;
+    position: relative;
+}
+
+.type-title::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 2px;
+    background: #3498db;
+}
+
+.semester-info {
+    text-align: center;
+    margin-bottom: 25px;
+    padding: 20px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+}
+
+.semester-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #3498db;
+    margin-bottom: 15px;
+    text-shadow: 0 1px 2px rgba(52, 152, 219, 0.2);
+    padding: 8px 16px;
+    background: white;
+    border-radius: 20px;
+    display: inline-block;
+    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.1);
+}
+
+.stats-summary {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    margin-bottom: 35px;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 15px 25px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    border-top: 3px solid #3498db;
+    transition: all 0.3s ease;
+}
+
+.stat-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 20px rgba(52, 152, 219, 0.15);
+}
+
+.stat-label {
+    font-size: 1rem;
+    color: #7f8c8d;
+    margin-bottom: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2c3e50;
+    text-shadow: 0 1px 2px rgba(44, 62, 80, 0.1);
+}
+
+/* 차트 영역 */
+.charts-container {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.chart-box {
+    flex: 1;
+    background: white;
+    border: 2px solid #2c3e50;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.chart-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.chart-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.chart-canvas {
+    width: 165px;
+    height: 165px;
+}
+
+.chart-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
+    color: #495057;
+    font-weight: 500;
+}
+
+.legend-color {
+    width: 16px;
+    height: 16px;
+    border-radius: 2px;
+}

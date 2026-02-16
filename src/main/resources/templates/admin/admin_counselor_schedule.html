@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="https://www.thymeleaf.org/">
+      <head th:replace="~{/admin_config.html :: admin_config}"></head>
+     <title>상담사 일정 관리 - 관리자 페이지</title>
+	<link rel="stylesheet" th:href="@{/css/admin/admin_counselor_schedule.css?v=1}">
+
+    <body class="sb-nav-fixed">
+        <!-- 상단 네비게이션 바 -->
+        <nav th:replace="~{/admin_top.html :: admin_top}"></nav>
+     
+        <div id="layoutSidenav">
+            <!-- 사이드바 -->
+            <div th:replace="~{/admin_sidebar.html :: admin_sidebar}"> </div>
+            
+            <!-- 메인 컨텐츠 -->
+            <div id="layoutSidenav_content">
+                <div class="main-content">
+                    <!-- 페이지 제목 -->
+                    <h1 class="page-title">상담사 일정 관리</h1>
+                    <div class="title-divider"></div>
+                    
+                    <!-- 필터 영역 -->
+                    <div class="filter-section">
+                        <div class="filter-row">
+                            <div class="filter-left">
+                                <label class="filter-label">상담분류</label>
+                                <select class="filter-select" id="counselingType">
+                                    <option value="">전체</option>
+                                    <option value="심리">심리</option>
+                                    <option value="위기">위기</option>
+                                    <option value="익명">익명</option>
+                                    <option value="진로/취업">진로/취업</option>
+                                    <option value="학습 컨설팅">학습 컨설팅</option>
+                                </select>
+                            </div>
+                            
+                            <div class="search-area">
+                                <select class="search-type-select" id="searchType">
+                                    <option value="name">이름</option>
+                                    <option value="empno">사번</option>
+                                    <option value="phone">전화번호</option>
+                                    <option value="email">이메일</option>
+                                </select>
+                                <input type="text" class="search-input" id="searchInput" placeholder="검색어를 입력하세요">
+                                <button class="search-btn" onclick="searchCounselors()">
+                                    <i class="fas fa-search"></i> 검색
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 테이블 -->
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th class="col-no">NO</th>
+                                    <th class="col-name">이름</th>
+                                    <th class="col-empno">사번</th>
+                                    <th class="col-field">분야</th>
+                                </tr>
+                            </thead>
+                            <tbody id="counselorTableBody">
+                                <tr onclick="goToScheduleDetail(1)">
+                                    <td class="col-no">1</td>
+                                    <td class="col-name">김상담</td>
+                                    <td class="col-empno">EMP001</td>
+                                    <td class="col-field">심리상담</td>
+                                </tr>
+                                <tr onclick="goToScheduleDetail(2)">
+                                    <td class="col-no">2</td>
+                                    <td class="col-name">이상담</td>
+                                    <td class="col-empno">EMP002</td>
+                                    <td class="col-field">진로상담</td>
+                                </tr>
+                                <tr onclick="goToScheduleDetail(3)">
+                                    <td class="col-no">3</td>
+                                    <td class="col-name">박상담</td>
+                                    <td class="col-empno">EMP003</td>
+                                    <td class="col-field">학습컨설팅</td>
+                                </tr>
+                                <tr onclick="goToScheduleDetail(4)">
+                                    <td class="col-no">4</td>
+                                    <td class="col-name">최상담</td>
+                                    <td class="col-empno">EMP004</td>
+                                    <td class="col-field">위기상담</td>
+                                </tr>
+                                <tr onclick="goToScheduleDetail(5)">
+                                    <td class="col-no">5</td>
+                                    <td class="col-name">정상담</td>
+                                    <td class="col-empno">EMP005</td>
+                                    <td class="col-field">익명상담</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- 페이지네이션 -->
+                    <div class="pagination-container">
+                        <div class="pagination">
+                            <button class="pagination-btn disabled" onclick="goToPage(1)">
+                                <i class="fas fa-angle-left"></i>
+                            </button>
+                            <button class="pagination-btn active" onclick="goToPage(1)">1</button>
+                            <button class="pagination-btn" onclick="goToPage(2)">2</button>
+                            <button class="pagination-btn" onclick="goToPage(3)">3</button>
+                            <button class="pagination-btn" onclick="goToPage(4)">4</button>
+                            <button class="pagination-btn" onclick="goToPage(5)">5</button>
+                            <button class="pagination-btn" onclick="goToPage(2)">
+                                <i class="fas fa-angle-right"></i>
+                            </button>
+                        </div>
+                        <div class="pagination-info">
+                            총 25건 중 1-5건 표시
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+       <script th:src="@{/js/admin/admin_counselor_schedule.js}" defer></script>
+    </body>
+</html>

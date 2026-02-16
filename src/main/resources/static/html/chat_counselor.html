@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>상담 채팅 - 상담사</title>
+    <style>
+        body {
+            font-family: 'Noto Sans KR', Arial, sans-serif;
+            background-color: #fef7f0;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .content-area {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            min-height: 85vh;
+        }
+
+        .chat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 30px;
+            border-bottom: 2px solid #e6a456;
+        }
+
+        .chat-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .client-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: #f8f9fa;
+            padding: 10px 15px;
+            border-radius: 8px;
+        }
+
+        .client-avatar {
+            width: 40px;
+            height: 40px;
+            background: #3498db;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .client-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .client-name {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 16px;
+        }
+
+        .client-status {
+            font-size: 12px;
+            color: #27ae60;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            background: #27ae60;
+            border-radius: 50%;
+        }
+
+        .chat-tools {
+            display: flex;
+            gap: 10px;
+        }
+
+        .tool-btn {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            color: #6c757d;
+            transition: all 0.2s ease;
+        }
+
+        .tool-btn:hover {
+            border-color: #3498db;
+            color: #3498db;
+        }
+
+        .tool-btn.active {
+            background: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 20px 30px;
+        }
+
+        .chat-content {
+            flex: 1;
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            overflow-y: auto;
+            max-height: 350px;
+            min-height: 250px;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .message.counselor {
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #3498db;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+
+        .message.counselor .message-avatar {
+            background: #e6a456;
+        }
+
+        .message-content {
+            max-width: 70%;
+        }
+
+        .message-bubble {
+            background: white;
+            padding: 12px 16px;
+            border-radius: 18px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            word-wrap: break-word;
+            line-height: 1.4;
+        }
+
+        .message.counselor .message-bubble {
+            background: #e6a456;
+            color: white;
+        }
+
+        .message-time {
+            font-size: 11px;
+            color: #7f8c8d;
+            margin-top: 5px;
+            text-align: right;
+        }
+
+        .message.counselor .message-time {
+            text-align: left;
+        }
+
+        .quick-responses {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid #e9ecef;
+        }
+
+        .quick-responses-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .quick-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .quick-btn {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .quick-btn:hover {
+            background: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+
+        .chat-input-container {
+            display: flex;
+            gap: 10px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+            margin-bottom: 20px;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s ease;
+            resize: none;
+            min-height: 20px;
+            max-height: 80px;
+        }
+
+        .chat-input:focus {
+            border-color: #3498db;
+        }
+
+        .input-tools {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .send-btn {
+            background: #e6a456;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.2s ease;
+            min-width: 80px;
+        }
+
+        .send-btn:hover {
+            background: #d4941e;
+        }
+
+        .file-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background-color 0.2s ease;
+        }
+
+        .file-btn:hover {
+            background: #5a6268;
+        }
+
+        .chat-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 30px;
+            border-top: 1px solid #e9ecef;
+            background: #f8f9fa;
+        }
+
+        .session-info {
+            display: flex;
+            gap: 20px;
+            font-size: 14px;
+            color: #6c757d;
+        }
+
+        .session-timer {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .timer-dot {
+            width: 6px;
+            height: 6px;
+            background: #e74c3c;
+            border-radius: 50%;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .btn-note {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .btn-note:hover {
+            background: #138496;
+        }
+
+        .btn-end {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-end:hover {
+            background: #c0392b;
+        }
+
+        .typing-indicator {
+            display: none;
+            padding: 10px 0;
+            color: #7f8c8d;
+            font-style: italic;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .content-area {
+                min-height: 90vh;
+            }
+            
+            .chat-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+                padding: 15px 20px;
+            }
+            
+            .client-info {
+                width: 100%;
+            }
+            
+            .chat-tools {
+                width: 100%;
+                justify-content: flex-start;
+            }
+            
+            .chat-container {
+                padding: 15px 20px;
+            }
+            
+            .message-content {
+                max-width: 85%;
+            }
+            
+            .quick-buttons {
+                justify-content: flex-start;
+            }
+            
+            .chat-input-container {
+                flex-direction: column;
+            }
+            
+            .input-tools {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+            
+            .chat-actions {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+                padding: 15px 20px;
+            }
+            
+            .action-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .session-info {
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <input type="hidden" name="counselorId" id="counselorId" value="counselor123">
+    
+    <div class="content-area">
+        <div class="chat-header">
+            <h1 class="chat-title">
+                <svg fill="currentColor" viewBox="0 0 20 20" width="24" height="24">
+                    <path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clip-rule="evenodd"></path>
+                </svg>
+                진로/취업 상담
+            </h1>
+            
+            <div class="client-info">
+                <div class="client-avatar">이학생</div>
+                <div class="client-details">
+                    <div class="client-name">이철수 (경영학과 3학년)</div>
+                    <div class="client-status">
+                        <div class="status-dot"></div>
+                        온라인
+                    </div>
+                </div>
+            </div>
+
+            <div class="chat-tools">
+                <button class="tool-btn" onclick="toggleRecording(this)">
+                    <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
+                        <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
+                    </svg>
+                    녹화
+                </button>
+                <button class="tool-btn" onclick="takeNote()">
+                    <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                    </svg>
+                    메모
+                </button>
+                <button class="tool-btn" onclick="shareScreen()">
+                    <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M13.5 1a1.5 1.5 0 0 1 1.5 1.5v11a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 1 13.5v-11A1.5 1.5 0 0 1 2.5 1h11zm-11-1A2.5 2.5 0 0 0 0 2.5v11A2.5 2.5 0 0 0 2.5 16h11a2.5 2.5 0 0 0 2.5-2.5v-11A2.5 2.5 0 0 0 13.5 0h-11z"/>
+                        <path d="M7 6.5C7 5.672 6.552 5 6 5s-1 .672-1 1.5S5.448 8 6 8s1-.672 1-1.5zM4.285 9.567a.5.5 0 0 1 .683.183A3.498 3.498 0 0 0 8 11.5a3.498 3.498 0 0 0 3.032-1.75.5.5 0 1 1 .866.5A4.498 4.498 0 0 1 8 12.5a4.498 4.498 0 0 1-3.898-2.25.5.5 0 0 1 .183-.683zM10 8c.552 0 1-.672 1-1.5S10.552 5 10 5s-1 .672-1 1.5S9.448 8 10 8z"/>
+                    </svg>
+                    화면공유
+                </button>
+            </div>
+        </div>
+
+        <div class="chat-container">
+            <div class="chat-content" id="chat-content">
+                <div class="message">
+                    <div class="message-avatar">이학생</div>
+                    <div class="message-content">
+                        <div class="message-bubble">
+                            안녕하세요 선생님. 진로 상담을 받고 싶어서 신청했습니다.
+                        </div>
+                        <div class="message-time">오후 2:30</div>
+                    </div>
+                </div>
+                
+                <div class="message counselor">
+                    <div class="message-avatar">상담사</div>
+                    <div class="message-content">
+                        <div class="message-bubble">
+                            안녕하세요 이철수 학생! 진로 상담을 위해 찾아주셔서 감사합니다. 어떤 부분에 대해 고민이 있으신지 편하게 말씀해 주세요.
+                        </div>
+                        <div class="message-time">오후 2:31</div>
+                    </div>
+                </div>
+                
+                <div class="message">
+                    <div class="message-avatar">이학생</div>
+                    <div class="message-content">
+                        <div class="message-bubble">
+                            졸업 후 진로를 결정하는데 어려움을 겪고 있어요. 대기업에 취업할지, 공무원 시험을 준비할지 고민됩니다.
+                        </div>
+                        <div class="message-time">오후 2:32</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="typing-indicator" id="typingIndicator">
+                이철수 학생이 입력 중입니다...
+            </div>
+
+            <div class="quick-responses">
+                <div class="quick-responses-title">빠른 응답</div>
+                <div class="quick-buttons">
+                    <button class="quick-btn" onclick="insertQuickResponse('좀 더 자세히 설명해 주실 수 있을까요?')">자세히 설명 요청</button>
+                    <button class="quick-btn" onclick="insertQuickResponse('그런 고민을 하시는군요. 어떤 부분이 가장 걱정되시나요?')">공감 표현</button>
+                    <button class="quick-btn" onclick="insertQuickResponse('함께 차근차근 생각해보도록 하겠습니다.')">안심 시키기</button>
+                    <button class="quick-btn" onclick="insertQuickResponse('관련 자료를 공유해드릴게요.')">자료 제공</button>
+                    <button class="quick-btn" onclick="insertQuickResponse('다음 단계로 넘어가볼까요?')">진행</button>
+                </div>
+            </div>
+
+            <div class="chat-input-container">
+                <textarea class="chat-input" 
+                          id="chatInput" 
+                          placeholder="상담 내용을 입력해주세요..."
+                          onkeypress="handleKeyPress(event)"
+                          oninput="autoResize(this)"></textarea>
+                <div class="input-tools">
+                    <button class="send-btn" onclick="sendMessage()">전송</button>
+                    <button class="file-btn" onclick="shareFile()">
+                        <svg width="12" height="12" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M6 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H8z"/>
+                            <path d="M0 6a2 2 0 0 1 2-2h2v2H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-2h2v2a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6z"/>
+                        </svg>
+                        파일
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-actions">
+            <div class="session-info">
+                <div class="session-timer">
+                    <div class="timer-dot"></div>
+                    상담 진행 중: <span id="timer">24:35</span>
+                </div>
+                <div>상담 유형: 진로/취업</div>
+                <div>예상 소요시간: 50분</div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="action-btn btn-note" onclick="openNotepad()">상담 기록</button>
+                <button class="action-btn btn-end" onclick="endSession()">상담 종료</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            var sessionStartTime = new Date();
+            var timerInterval;
+
+            // 메시지 전송
+            function sendMessage() {
+                var input = document.getElementById('chatInput');
+                var message = input.value.replace(/^\s+|\s+$/g, ''); // trim
+                
+                if (message === '') return;
+                
+                var chatContent = document.getElementById('chat-content');
+                var currentTime = new Date().toLocaleTimeString('ko-KR', { 
+                    hour: '2-digit', 
+                    minute: '2-digit',
+                    hour12: true 
+                });
+                
+                // 상담사 메시지 추가
+                var counselorMessage = '<div class="message counselor">' +
+                    '<div class="message-avatar">상담사</div>' +
+                    '<div class="message-content">' +
+                        '<div class="message-bubble">' + message + '</div>' +
+                        '<div class="message-time">' + currentTime + '</div>' +
+                    '</div>' +
+                '</div>';
+                
+                chatContent.insertAdjacentHTML('beforeend', counselorMessage);
+                
+                // 입력창 비우기
+                input.value = '';
+                autoResize(input);
+                
+                // 스크롤을 맨 아래로
+                chatContent.scrollTop = chatContent.scrollHeight;
+                
+                // 내담자 응답 시뮬레이션
+                setTimeout(function() {
+                    showTypingIndicator();
+                    setTimeout(function() {
+                        hideTypingIndicator();
+                        addClientResponse();
+                    }, 2000);
+                }, 500);
+            }
+
+            // 내담자 응답 추가 (시뮬레이션)
+            function addClientResponse() {
+                var responses = [
+                    "네, 감사합니다. 좀 더 구체적으로 설명드리자면...",
+                    "그런 방법이 있군요. 제가 놓친 부분이 있는 것 같아요.",
+                    "정말 도움이 되는 조언이네요. 다른 질문이 있는데요...",
+                    "이해했습니다. 그럼 이 경우에는 어떻게 해야 할까요?",
+                    "선생님 말씀을 듣고 보니 제가 생각을 좀 더 정리해야겠어요."
+                ];
+                
+                var randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                var chatContent = document.getElementById('chat-content');
+                var currentTime = new Date().toLocaleTimeString('ko-KR', { 
+                    hour: '2-digit', 
+                    minute: '2-digit',
+                    hour12: true 
+                });
+                
+                var clientMessage = '<div class="message">' +
+                    '<div class="message-avatar">이학생</div>' +
+                    '<div class="message-content">' +
+                        '<div class="message-bubble">' + randomResponse + '</div>' +
+                        '<div class="message-time">' + currentTime + '</div>' +
+                    '</div>' +
+                '</div>';
+                
+                chatContent.insertAdjacentHTML('beforeend', clientMessage);
+                chatContent.scrollTop = chatContent.scrollHeight;
+            }
+
+            // 빠른 응답 삽입
+            function insertQuickResponse(text) {
+                var input = document.getElementById('chatInput');
+                input.value = text;
+                autoResize(input);
+                input.focus();
+            }
+
+            // 텍스트 영역 자동 크기 조절
+            function autoResize(textarea) {
+                textarea.style.height = 'auto';
+                textarea.style.height = Math.min(textarea.scrollHeight, 80) + 'px';
+            }
+
+            // 엔터키로 메시지 전송 (Shift+Enter는 줄바꿈)
+            function handleKeyPress(event) {
+                if (event.key === 'Enter' && !event.shiftKey) {
+                    event.preventDefault();
+                    sendMessage();
+                }
+            }
+
+            // 타이핑 인디케이터 표시
+            function showTypingIndicator() {
+                document.getElementById('typingIndicator').style.display = 'block';
+            }
+
+            // 타이핑 인디케이터 숨김
+            function hideTypingIndicator() {
+                document.getElementById('typingIndicator').style.display = 'none';
+            }
+
+            // 녹화 토글
+            function toggleRecording(btn) {
+                if (btn.classList.contains('active')) {
+                    btn.classList.remove('active');
+                    btn.innerHTML = '<svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16">' +
+                        '<path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>' +
+                        '<path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>' +
+                        '</svg> 녹화';
+                    alert('녹화가 중지되었습니다.');
+                } else {
+                    btn.classList.add('active');
+                    btn.innerHTML = '<svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16">' +
+                        '<path d="M5.5 5A1.5 1.5 0 0 1 7 3.5h2A1.5 1.5 0 0 1 10.5 5v6a1.5 1.5 0 0 1-1.5 1.5H7A1.5 1.5 0 0 1 5.5 11V5z"/>' +
+                        '</svg> 녹화중';
+                    alert('녹화가 시작되었습니다.');
+                }
+            }
+
+            // 메모 작성
+            function takeNote() {
+                var note = prompt('상담 메모를 입력하세요:');
+                if (note) {
+                    alert('메모가 저장되었습니다: ' + note);
+                }
+            }
+
+            // 화면 공유
+            function shareScreen() {
+                alert('화면 공유 기능을 시작합니다.');
+            }
+
+            // 파일 공유
+            function shareFile() {
+                var input = document.createElement('input');
+                input.type = 'file';
+                input.accept = '.pdf,.doc,.docx,.ppt,.pptx,.jpg,.png';
+                input.onchange = function(event) {
+                    var file = event.target.files[0];
+                    if (file) {
+                        alert('파일 "' + file.name + '"이 공유되었습니다.');
+                        
+                        // 파일 공유 메시지 추가
+                        var chatContent = document.getElementById('chat-content');
+                        var currentTime = new Date().toLocaleTimeString('ko-KR', { 
+                            hour: '2-digit', 
+                            minute: '2-digit',
+                            hour12: true 
+                        });
+                        
+                        var fileMessage = '<div class="message counselor">' +
+                            '<div class="message-avatar">상담사</div>' +
+                            '<div class="message-content">' +
+                                '<div class="message-bubble">📎 파일을 공유했습니다: ' + file.name + '</div>' +
+                                '<div class="message-time">' + currentTime + '</div>' +
+                            '</div>' +
+                        '</div>';
+                        
+                        chatContent.insertAdjacentHTML('beforeend', fileMessage);
+                        chatContent.scrollTop = chatContent.scrollHeight;
+                    }
+                };
+                input.click();
+            }
+
+            // 상담 기록 열기
+            function openNotepad() {
+                var noteWindow = window.open('', 'CounselingNote', 'width=600,height=400');
+                noteWindow.document.write(
+                    '<html>' +
+                    '<head>' +
+                        '<title>상담 기록</title>' +
+                        '<style>' +
+                            'body { font-family: Arial, sans-serif; padding: 20px; }' +
+                            'textarea { width: 100%; height: 300px; border: 1px solid #ddd; padding: 10px; }' +
+                            '.header { margin-bottom: 15px; font-weight: bold; }' +
+                            '.save-btn { background: #3498db; color: white; border: none; padding: 10px 20px; margin-top: 10px; cursor: pointer; }' +
+                        '</style>' +
+                    '</head>' +
+                    '<body>' +
+                        '<div class="header">상담 기록 - 이철수 학생 (진로/취업 상담)</div>' +
+                        '<textarea placeholder="상담 내용을 기록하세요..."></textarea>' +
+                        '<br>' +
+                        '<button class="save-btn" onclick="alert(\'상담 기록이 저장되었습니다.\'); window.close();">저장</button>' +
+                    '</body>' +
+                    '</html>'
+                );
+            }
+
+            // 상담 종료
+            function endSession() {
+                if (confirm('상담을 종료하시겠습니까? 상담 기록이 자동으로 저장됩니다.')) {
+                    clearInterval(timerInterval);
+                    alert('상담이 종료되었습니다. 상담 기록이 저장되었습니다.');
+                    // 실제로는 상담 종료 처리 및 페이지 이동
+                }
+            }
+
+            // 타이머 업데이트
+            function updateTimer() {
+                var now = new Date();
+                var elapsed = Math.floor((now - sessionStartTime) / 1000);
+                var minutes = Math.floor(elapsed / 60);
+                var seconds = elapsed % 60;
+                
+                var minutesStr = minutes < 10 ? '0' + minutes : minutes.toString();
+                var secondsStr = seconds < 10 ? '0' + seconds : seconds.toString();
+                
+                document.getElementById('timer').textContent = minutesStr + ':' + secondsStr;
+            }
+
+            // 전역 함수로 할당
+            window.sendMessage = sendMessage;
+            window.insertQuickResponse = insertQuickResponse;
+            window.handleKeyPress = handleKeyPress;
+            window.autoResize = autoResize;
+            window.toggleRecording = toggleRecording;
+            window.takeNote = takeNote;
+            window.shareScreen = shareScreen;
+            window.shareFile = shareFile;
+            window.openNotepad = openNotepad;
+            window.endSession = endSession;
+
+            // 페이지 로드 시 설정
+            document.addEventListener('DOMContentLoaded', function() {
+                var chatContent = document.getElementById('chat-content');
+                chatContent.scrollTop = chatContent.scrollHeight;
+                
+                // 타이머 시작
+                timerInterval = setInterval(updateTimer, 1000);
+                updateTimer();
+                
+                // 텍스트 영역 초기 설정
+                var chatInput = document.getElementById('chatInput');
+                autoResize(chatInput);
+            });
+        })();
+    </script>    
+</body>
+</html>

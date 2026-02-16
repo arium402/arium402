@@ -1,0 +1,282 @@
+/* 공지사항 페이지 전용 스타일 */
+
+/* 기본 레이아웃 스타일 */
+body {
+    font-family: 'Noto Sans KR', Arial, sans-serif;
+    background-color: #fef7f0;
+    margin: 0;
+    padding: 0;
+}
+
+.main-container {
+    display: flex;
+    min-height: calc(100vh - 80px);
+}
+
+.content-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.contents {
+    flex: 1;
+    padding: 30px;
+    background: white;
+    margin: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.board_title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 25px;
+    text-align: left;
+    border-bottom: 2px solid #e6a456;
+    padding-bottom: 10px;
+}
+
+.search-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 15px;
+}
+
+.search-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.search-input {
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    width: 250px;
+    font-size: 14px;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #e6a456;
+    box-shadow: 0 0 0 3px rgba(230, 164, 86, 0.1);
+}
+
+.search-btn {
+    background: #e6a456;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    color: white;
+    font-weight: 500;
+}
+
+.search-btn:hover {
+    background: #d4924a;
+}
+
+.sort-select {
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: white;
+    font-size: 14px;
+    min-width: 120px;
+    cursor: pointer;
+}
+
+.sort-select:focus {
+    outline: none;
+    border-color: #e6a456;
+    box-shadow: 0 0 0 3px rgba(230, 164, 86, 0.1);
+}
+
+.notice-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    margin-bottom: 30px;
+}
+
+.notice-table thead {
+    background: #f8f9fa;
+}
+
+.notice-table th {
+    padding: 15px;
+    text-align: center;
+    font-weight: 600;
+    color: #2c3e50;
+    border-bottom: 2px solid #e9ecef;
+    font-size: 14px;
+}
+
+.notice-table td {
+    padding: 15px;
+    border-bottom: 1px solid #e9ecef;
+    color: #34495e;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.notice-table .title-cell {
+    text-align: left;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.notice-table .title-cell:hover {
+    color: #e6a456;
+    font-weight: 500;
+}
+
+.notice-table tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+.notice-table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+.notice-table .no-col {
+    width: 10%;
+}
+
+.notice-table .title-col {
+    width: 50%;
+}
+
+.notice-table .author-col {
+    width: 15%;
+}
+
+.notice-table .views-col {
+    width: 10%;
+}
+
+.notice-table .date-col {
+    width: 15%;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    margin: 30px 0;
+}
+
+.pagination-btn {
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    background: white;
+    color: #333;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    font-size: 14px;
+}
+
+.pagination-btn:hover {
+    background: #e6a456;
+    color: white;
+    border-color: #e6a456;
+}
+
+.pagination-btn.active {
+    background: #e6a456;
+    color: white;
+    border-color: #e6a456;
+}
+
+.pagination-btn:disabled {
+    background: #f8f9fa;
+    color: #6c757d;
+    cursor: not-allowed;
+    border-color: #e9ecef;
+}
+
+.pagination-btn:disabled:hover {
+    background: #f8f9fa;
+    color: #6c757d;
+    border-color: #e9ecef;
+}
+
+.no-data {
+    text-align: center;
+    padding: 40px;
+    color: #7f8c8d;
+    font-style: italic;
+}
+
+.important-notice {
+    background: #fff5e6;
+    border-left: 4px solid #e6a456;
+}
+
+.important-notice .title-cell {
+    font-weight: 600;
+    color: #b8860b;
+}
+
+.notice-badge {
+    background: #e74c3c;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 500;
+    margin-right: 5px;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .contents {
+        margin: 10px;
+        padding: 20px;
+    }
+    
+    .search-section {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .search-input {
+        width: 100%;
+    }
+    
+    .notice-table {
+        font-size: 12px;
+    }
+    
+    .notice-table th,
+    .notice-table td {
+        padding: 8px;
+    }
+    
+    .notice-table .author-col,
+    .notice-table .views-col {
+        display: none;
+    }
+    
+    .notice-table .no-col {
+        width: 15%;
+    }
+    
+    .notice-table .title-col {
+        width: 60%;
+    }
+    
+    .notice-table .date-col {
+        width: 25%;
+    }
+}

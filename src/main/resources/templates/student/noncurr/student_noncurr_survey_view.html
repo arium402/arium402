@@ -1,0 +1,233 @@
+<div th:fragment="view">
+
+<main class="col-md-9 col-lg-10 p-0" style="margin-left: 16.66667%; min-height: calc(100vh - 70px); width: 83.33333%;">
+	<div class="main-content">
+		<!-- 만족도 조사 페이지 -->
+		<div class="survey-content">
+			<!-- 페이지 제목 -->
+			<h1 class="page-title">비교과 프로그램 만족도 조사</h1>
+			<div class="page-title-divider"></div>
+
+			<!-- 조사 안내 -->
+			<div class="survey-header">
+				<h3>2024년 비교과 프로그램 만족도 조사</h3>
+				<p>참여해주신 비교과 프로그램에 대한 솔직한 의견을 들려주세요. 더 나은 프로그램 운영을 위해 활용하겠습니다.</p>
+			</div>
+
+<!-- 기본 정보 입력 -->
+<div class="survey-section">
+    <h4 class="section-title">기본 정보</h4>
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead class="table-primary">
+                <tr>
+                    <th class="text-center">학과명</th>
+                    <th class="text-center">학년</th>
+                    <th class="text-center">성별</th>
+                    <th class="text-center">이름</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <input type="text" class="form-control" th:value="${studentInfo?.deptNm}" placeholder="학과명" readonly>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" th:value="${studentInfo?.schYr}" placeholder="학년" readonly>
+                    </td>
+                    <td class="text-center">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gender" value="남" id="male" th:checked="${studentInfo?.stdGender == '남'}" disabled>
+                            <label class="form-check-label" for="male">남</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gender" value="여" id="female" th:checked="${studentInfo?.stdGender == '여'}" disabled>
+                            <label class="form-check-label" for="female">여</label>
+                        </div>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" th:value="${studentInfo?.stdNm}" placeholder="이름" readonly>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+			<!-- 만족도 조사 폼 -->
+			<form id="satisfactionSurvey">
+				<!-- 1. 프로그램 종합 만족도 -->
+				<div class="survey-section">
+					<h4 class="section-title">1. 프로그램 종합 만족도 영역(해당란에 표기 체크(√)해주십시오.</h4>
+
+					<div class="table-responsive">
+						<table class="table table-bordered">
+							<thead class="table-primary">
+								<tr>
+									<th rowspan="2" class="text-center align-middle">번호</th>
+									<th rowspan="2" class="text-center align-middle">설 문 내 용</th>
+									<th colspan="5" class="text-center">만족도</th>
+								</tr>
+								<tr>
+									<th class="text-center">1</th>
+									<th class="text-center">2</th>
+									<th class="text-center">3</th>
+									<th class="text-center">4</th>
+									<th class="text-center">5</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="question, iterStat : ${surveyData?.section1Questions}">
+									<td class="text-center align-middle" th:text="${iterStat.count}">1</td>
+									<td th:text="${question.surContent}">문항 내용</td>
+									<td class="text-center">
+										<label style="display: block; width: 100%; height: 100%; cursor: pointer;">
+											<input type="radio" th:name="${'section1_' + question.surId}" value="1" class="form-check-input section1-question">
+										</label>
+									</td>
+									<td class="text-center">
+										<label style="display: block; width: 100%; height: 100%; cursor: pointer;">
+											<input type="radio" th:name="${'section1_' + question.surId}" value="2" class="form-check-input section1-question">
+										</label>
+									</td>
+									<td class="text-center">
+										<label style="display: block; width: 100%; height: 100%; cursor: pointer;">
+											<input type="radio" th:name="${'section1_' + question.surId}" value="3" class="form-check-input section1-question">
+										</label>
+									</td>
+									<td class="text-center">
+										<label style="display: block; width: 100%; height: 100%; cursor: pointer;">
+											<input type="radio" th:name="${'section1_' + question.surId}" value="4" class="form-check-input section1-question">
+										</label>
+									</td>
+									<td class="text-center">
+										<label style="display: block; width: 100%; height: 100%; cursor: pointer;">
+											<input type="radio" th:name="${'section1_' + question.surId}" value="5" class="form-check-input section1-question">
+										</label>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+				<!-- 2. 프로그램 내용에 대한 만족도 -->
+				<div class="survey-section">
+					<h4 class="section-title">2. 프로그램 내용에 대해 해당되는 곳에 체크(√)해 주십시오.</h4>
+
+					<div class="table-responsive">
+						<table class="table table-bordered">
+							<thead class="table-primary">
+								<tr>
+									<th rowspan="2" class="text-center align-middle">번호</th>
+									<th rowspan="2" class="text-center align-middle">설 문 내 용</th>
+									<th colspan="5" class="text-center">만족도</th>
+								</tr>
+								<tr>
+									<th class="text-center">1</th>
+									<th class="text-center">2</th>
+									<th class="text-center">3</th>
+									<th class="text-center">4</th>
+									<th class="text-center">5</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="question, iterStat : ${surveyData?.section2Questions}">
+									<td class="text-center align-middle" th:text="${iterStat.count}">1</td>
+									<td th:text="${question.surContent}">문항 내용</td>
+									<td class="text-center">
+										<label style="display: block; width: 100%; height: 100%; cursor: pointer;">
+											<input type="radio" th:name="${'section2_' + question.surId}" value="1" class="form-check-input section2-question">
+										</label>
+									</td>
+									<td class="text-center">
+										<label style="display: block; width: 100%; height: 100%; cursor: pointer;">
+											<input type="radio" th:name="${'section2_' + question.surId}" value="2" class="form-check-input section2-question">
+										</label>
+									</td>
+									<td class="text-center">
+										<label style="display: block; width: 100%; height: 100%; cursor: pointer;">
+											<input type="radio" th:name="${'section2_' + question.surId}" value="3" class="form-check-input section2-question">
+										</label>
+									</td>
+									<td class="text-center">
+										<label style="display: block; width: 100%; height: 100%; cursor: pointer;">
+											<input type="radio" th:name="${'section2_' + question.surId}" value="4" class="form-check-input section2-question">
+										</label>
+									</td>
+									<td class="text-center">
+										<label style="display: block; width: 100%; height: 100%; cursor: pointer;">
+											<input type="radio" th:name="${'section2_' + question.surId}" value="5" class="form-check-input section2-question">
+										</label>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+				<!-- 3. 프로그램 강사에 관한 만족도 -->
+				<div class="survey-section">
+					<h4 class="section-title">3. 프로그램 강사에 관한 내용입니다. 해당되는 곳에 체크(√)해 주십시오.</h4>
+              
+					<div class="table-responsive">
+						<table class="table table-bordered">
+							<thead class="table-primary">
+								<tr>
+									<th rowspan="2" class="text-center align-middle">번호</th>
+									<th rowspan="2" class="text-center align-middle">설 문 내 용</th>
+									<th colspan="5" class="text-center">만족도</th>
+								</tr>
+								<tr>
+									<th class="text-center">1</th>
+									<th class="text-center">2</th>
+									<th class="text-center">3</th>
+									<th class="text-center">4</th>
+									<th class="text-center">5</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="question, iterStat : ${surveyData?.section3Questions}">
+									<td class="text-center align-middle" th:text="${iterStat.count}">1</td>
+									<td th:text="${question.surContent}">문항 내용</td>
+									<td class="text-center">
+										<label style="display: block; width: 100%; height: 100%; cursor: pointer;">
+											<input type="radio" th:name="${'section3_' + question.surId}" value="1" class="form-check-input section3-question">
+										</label>
+									</td>
+									<td class="text-center">
+										<label style="display: block; width: 100%; height: 100%; cursor: pointer;">
+											<input type="radio" th:name="${'section3_' + question.surId}" value="2" class="form-check-input section3-question">
+										</label>
+									</td>
+									<td class="text-center">
+										<label style="display: block; width: 100%; height: 100%; cursor: pointer;">
+											<input type="radio" th:name="${'section3_' + question.surId}" value="3" class="form-check-input section3-question">
+										</label>
+									</td>
+									<td class="text-center">
+										<label style="display: block; width: 100%; height: 100%; cursor: pointer;">
+											<input type="radio" th:name="${'section3_' + question.surId}" value="4" class="form-check-input section3-question">
+										</label>
+									</td>
+									<td class="text-center">
+										<label style="display: block; width: 100%; height: 100%; cursor: pointer;">
+											<input type="radio" th:name="${'section3_' + question.surId}" value="5" class="form-check-input section3-question">
+										</label>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+              
+					<div class="text-end mt-4">
+						<button type="button" class="btn btn-secondary me-2" onclick="goToList()">목록</button>
+						<button type="submit" class="btn btn-primary" form="satisfactionSurvey">제출</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</main>
+
+</div>
