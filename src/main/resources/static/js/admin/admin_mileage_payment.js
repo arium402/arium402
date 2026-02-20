@@ -19,7 +19,6 @@ const API_ENDPOINTS = {
 // 페이지 로드 시 초기화
 document.addEventListener('DOMContentLoaded', function() {
     const currentPath = window.location.pathname;
-    console.log('페이지 로드:', currentPath);
     
 	// ✅ 메인 페이지만 처리
 	if (currentPath.includes('admin_mileage_payment') && !currentPath.includes('admin_mileage_payment_add')) {
@@ -31,7 +30,6 @@ document.addEventListener('DOMContentLoaded', function() {
 // ============= 메인 페이지 로직 =============
 
 function initMainPage() {
-    console.log('마일리지 지급 메인 페이지 초기화');
     initMainEventListeners();
     loadProgramData();
 }
@@ -85,7 +83,7 @@ async function loadProgramData() {
             
             const data = await response.json();
             console.log('API 응답:', data);
-            
+			console.log("programs 길이:", data.programs?.length);
             if (data.success) {
                 // 기존 programData 형식으로 변환
                 programData = (data.programs || []).map(program => ({
@@ -95,7 +93,8 @@ async function loadProgramData() {
                     participants: program.currentCnt || 0,
                     status: mapStatus(program.prgStatNm || program.applicationStatus)
                 }));
-                
+
+				
                 // 기존 함수들 그대로 사용
                 updateTable();
                 updatePaginationFromAPI(data.pagination);
@@ -181,6 +180,9 @@ function updatePaginationFromAPI(pagination) {
 
 // 기존 테이블 업데이트 함수
 function updateTable() {
+
+	
+	
     const tbody = document.getElementById('programTableBody');
     if (!tbody) return;
     
@@ -249,38 +251,95 @@ function updateTable() {
 
 // 기존 페이지네이션 업데이트 함수
 function updatePagination(totalItems, totalPages, currentPageNumber) {
+    // .pagination 클래스를 가진 DOM 요소를 찾음
     const pagination = document.querySelector('.pagination');
-    if (!pagination) return;
-    
-    const startItem = totalItems > 0 ? (currentPageNumber - 1) * currentSize + 1 : 0;
-    const endItem = Math.min(currentPageNumber * currentSize, totalItems);
-    
-    // 페이지네이션 버튼 재생성
-    pagination.innerHTML = `
-        <button class="pagination-btn" onclick="changePage(${currentPageNumber - 1})" ${currentPageNumber === 1 ? 'disabled' : ''}>‹</button>
-    `;
+    if (!pagination) return; // 없으면 함수 종료 (에러 방지)
 
-    // 페이지 번호 버튼들
+    // 기존 버튼들 전부 제거 (이전 페이지 버튼 초기화)
+    pagination.innerHTML = '';
+
+    //이전(‹) 버튼 생성
+    const prevBtn = document.createElement('button'); // 버튼 생성
+    prevBtn.className = 'pagination-btn';             // 공통 클래스 적용
+    prevBtn.textContent = '‹';                        // 버튼에 표시될 문자
+
+    // 현재 페이지가 1이면 이전 페이지 없음 → 버튼 비활성화
+    if (currentPageNumber === 1) {
+        prevBtn.disabled = true;
+    } else {
+        // 클릭 시 이전 페이지로 이동
+        prevBtn.addEventListener('click', function() {
+            changePage(currentPageNumber - 1);
+        });
+    }
+
+    // pagination 영역에 버튼 추가
+    pagination.appendChild(prevBtn);
+
+    //숫자 버튼 범위 계산
+
+    // 현재 페이지 기준으로 앞뒤 2개씩 보여줌
     const startPage = Math.max(1, currentPageNumber - 2);
     const endPage = Math.min(totalPages, currentPageNumber + 2);
-    
+
+    //숫자 버튼 생성
     for (let i = startPage; i <= endPage; i++) {
-        pagination.innerHTML += `
-            <button class="pagination-btn ${i === currentPageNumber ? 'active' : ''}" onclick="goToPage(${i})">${i}</button>
-        `;
+
+        const pageBtn = document.createElement('button'); // 버튼 생성
+        pageBtn.className = 'pagination-btn';
+
+        // 현재 페이지면 active 클래스 추가 (스타일용)
+        if (i === currentPageNumber) {
+            pageBtn.classList.add('active');
+        }
+
+        pageBtn.textContent = i; // 버튼에 페이지 번호 표시
+
+        // 클릭하면 해당 페이지로 이동
+        pageBtn.addEventListener('click', function() {
+			console.log("숫자 버튼 클릭:", i);
+            goToPageAPI(i);
+			
+			
+			
+        });
+
+        // pagination 영역에 추가
+        pagination.appendChild(pageBtn);
     }
 
-    // 다음 버튼
-    pagination.innerHTML += `
-        <button class="pagination-btn" onclick="changePage(${currentPageNumber + 1})" ${currentPageNumber === totalPages ? 'disabled' : ''}>›</button>
-    `;
+    // 다음(›) 버튼 생성
+    const nextBtn = document.createElement('button');
+    nextBtn.className = 'pagination-btn';
+    nextBtn.textContent = '›';
 
-    // 페이지 정보 업데이트
+    // 마지막 페이지면 다음 없음 >> 비활성화
+    if (currentPageNumber === totalPages) {
+        nextBtn.disabled = true;
+    } else {
+        // 클릭 시 다음 페이지로 이동
+        nextBtn.addEventListener('click', function() {
+            changePage(currentPageNumber + 1);
+        });
+    }
+
+    pagination.appendChild(nextBtn);
+
+    // 하단 페이지 정보 표시
+    const startItem = totalItems > 0 
+        ? (currentPageNumber - 1) * currentSize + 1 
+        : 0;
+
+    const endItem = Math.min(currentPageNumber * currentSize, totalItems);
+
     const paginationInfo = document.getElementById('paginationInfo');
+
     if (paginationInfo) {
-        paginationInfo.textContent = `총 ${totalItems}건 중 ${startItem}-${endItem}건 표시`;
+        paginationInfo.textContent =
+            `총 ${totalItems}건 중 ${startItem}-${endItem}건 표시`;
     }
 }
+
 
 // 페이지 변경
 function changePage(newPage) {
@@ -290,7 +349,8 @@ function changePage(newPage) {
 }
 
 // 특정 페이지로 이동
-function goToPage(pageNumber) {
+function goToPageAPI(pageNumber) {
+	console.log("goToPageAPI 실행됨");
     currentPage = pageNumber;
     loadProgramData();
 }
@@ -310,4 +370,4 @@ function viewProgramDetail(prgId) {
 // 전역 함수로 노출
 window.viewProgramDetail = viewProgramDetail;
 window.changePage = changePage;
-window.goToPage = goToPage;
+window.goToPageAPI = goToPageAPI;

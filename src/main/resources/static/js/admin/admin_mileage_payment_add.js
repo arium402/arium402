@@ -299,7 +299,7 @@ async function processPayment(participantIds) {
 
 // 목록으로 돌아가기
 function goToList() {
-    if (confirm('목록으로 돌아가시겠습니까?')) {
+    
         window.location.href = '/admin/admin_mileage_payment';
-    }
+    
 }

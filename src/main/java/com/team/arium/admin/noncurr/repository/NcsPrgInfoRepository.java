@@ -42,7 +42,8 @@ public interface NcsPrgInfoRepository extends JpaRepository<Ncs_PrgInfo, Integer
      * 프로그램명으로 조회 (정확히 일치)
      */
     Optional<Ncs_PrgInfo> findByPrgNm(String prgNm);
-
+    
+    
     /**
      * 프로그램명 중복 체크 (대소문자 무시, 공백 제거)
      */
@@ -55,6 +56,16 @@ public interface NcsPrgInfoRepository extends JpaRepository<Ncs_PrgInfo, Integer
            "p.prgDesc LIKE %:keyword% OR " +
            "p.prgDept LIKE %:keyword%")
     Page<Ncs_PrgInfo> findByKeywordContaining(@Param("keyword") String keyword, Pageable pageable);
+    
+    // 키워드 + 부서 동시 필터링 (페이징)
+    @Query("SELECT p FROM Ncs_PrgInfo p WHERE " +
+    	       "(:keyword IS NULL OR :keyword = '' OR p.prgNm LIKE %:keyword% OR p.prgDesc LIKE %:keyword%) AND " +
+    	       "(:dept IS NULL OR :dept = '' OR p.prgDept = :dept)")
+    	Page<Ncs_PrgInfo> findByKeywordAndDept(
+    	    @Param("keyword") String keyword,
+    	    @Param("dept") String dept,
+    	    Pageable pageable
+    	);
     
     @Query(
     	    value = """

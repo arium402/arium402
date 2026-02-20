@@ -42,19 +42,29 @@
 			<div class="mileage-cards">
 				<div class="mileage-card">
 					<div class="card-title">전체<br>보유 마일리지</div>
-					<div class="card-value">1,850<span class="card-unit">P</span></div>
-				</div>
+						<div class="card-value">
+							<span th:text="${dashboard.totalMile}">1,850</span> 
+							<span class="card-unit">P</span>
+						</div>
+					</div>
 				<div class="mileage-card">
-					<div class="card-title">2024학년도<br>적립예정 마일리지</div>
-					<div class="card-value">320<span class="card-unit">P</span></div>
+					<div class="card-title">
+						<span th:text="${dashboard.currentYear}">2024</span>학년도<br>적립예정 마일리지</div>
+					<div class="card-value">
+					<span th:text="${dashboard.pendingMile}">320</span>
+					<span class="card-unit">P</span></div>
 				</div>
 				<div class="mileage-card">
 					<div class="card-title">전체<br>사용 마일리지</div>
-					<div class="card-value">-450<span class="card-unit">P</span></div>
+					<div class="card-value">
+					<span th:text="'-' + ${dashboard.usedMile}">-450</span>
+					<span class="card-unit">P</span></div>
 				</div>
 				<div class="mileage-card">
 					<div class="card-title">전환 받은<br>장학금</div>
-					<div class="card-value">150,000<span class="card-unit">원</span></div>
+					<div class="card-value">
+					<span th:text="${#numbers.formatInteger(dashboard.convertedMoney, 0, 'COMMA')}">150,000</span>
+					<span class="card-unit">원</span></div>
 				</div>
 			</div>
 	
@@ -113,7 +123,7 @@
 							<div class="guide-content">
 								<div class="row">
 									<div class="col-md-4">
-										<h6 class="guide-title">🎯 마일리지 적립 방법</h6>
+										<h6 class="guide-title">마일리지 적립 방법</h6>
 										<ul class="guide-list">
 											<li>비교과 프로그램 참여 시 자동 적립</li>
 											<li>프로그램별로 다른 적립 포인트 제공</li>
@@ -121,7 +131,7 @@
 										</ul>
 									</div>
 									<div class="col-md-4">
-										<h6 class="guide-title">💰 마일리지 사용 방법</h6>
+										<h6 class="guide-title">마일리지 사용 방법</h6>
 										<ul class="guide-list">
 											<li>장학금으로 전환 (1P = 1원)</li>
 											<li>최소 전환 단위: 100P</li>
@@ -129,7 +139,7 @@
 										</ul>
 									</div>
 									<div class="col-md-4">
-										<h6 class="guide-title">📋 주의사항</h6>
+										<h6 class="guide-title">주의사항</h6>
 										<ul class="guide-list">
 											<li>마일리지 유효기간: 적립일로부터 2년</li>
 											<li>졸업 시 잔여 마일리지 자동 소멸</li>
@@ -279,7 +289,10 @@
 								<!-- 보유 마일리지 카드 -->
 								<div class="current-mileage-card">
 									<div class="current-mileage-label">현재 보유 마일리지</div>
-									<div class="current-mileage-value">1,850<span class="current-mileage-unit">P</span></div>
+									<div class="current-mileage-value">
+									<span th:text="${dashboard.totalMile}">1,850</span>
+									<span class="current-mileage-unit">P</span>
+									</div>
 								</div>
 	
 								<!-- 신청 마일리지 섹션 -->
@@ -298,8 +311,8 @@
 								<div class="convert-info-box">
 									<div class="convert-info-title">전환 안내사항</div>
 									<ul class="convert-info-list">
-										<li>전환 비율: 1,000P → 100,000원 (1P = 100원)</li>
-										<li>최소 전환 단위: 100P (10,000원)</li>
+										<li>전환 비율: 1,000P → 10,000원 (1P = 10원)</li>
+										<li>최소 전환 단위: 100P (1,000원)</li>
 									</ul>
 								</div>
 							</div>
@@ -311,15 +324,21 @@
 									<h6>입금 계좌 정보</h6>
 									<div class="account-field">
 										<label class="account-label">은행명</label>
-										<input type="text" class="form-control account-input" id="bankName" value="신한은행" readonly>
+										<input type="text" class="form-control account-input" id="bankName" 
+											th:value="${dashboard.bankName}" 
+											value="신한은행" readonly>
 									</div>
 									<div class="account-field">
 										<label class="account-label">계좌번호</label>
-										<input type="text" class="form-control account-input" id="accountNumber" value="110-123-456789" readonly>
+										<input type="text" class="form-control account-input" id="bankAccount" 
+										th:value="${dashboard.bankAccount}"
+										value="110-123-456789" readonly>
 									</div>
 									<div class="account-field">
 										<label class="account-label">예금주명</label>
-										<input type="text" class="form-control account-input" id="accountHolder" value="홍길동" readonly>
+										<input type="text" class="form-control account-input" id="depositor" 
+										th:value="${dashboard.depositor}"
+										value="홍길동" readonly>
 									</div>
 								</div>
 							</div>

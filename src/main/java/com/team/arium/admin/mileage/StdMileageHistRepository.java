@@ -69,4 +69,35 @@ public interface StdMileageHistRepository extends JpaRepository<Std_MileageHist,
         """)
     List<Std_MileageHist> findByMlgDtBetween(@Param("startDate") String startDate, 
                                             @Param("endDate") String endDate);
+    
+    /*
+     * 학생별 총 적립 마일리지 조회
+     * 전체보유 마일리지 계산 시 사용
+     * 1학생이 지금까지 받은 마일리지 총합
+     */
+    @Query("""
+            SELECT COALESCE(SUM(mh.mlgScore), 0)
+            FROM Std_MileageHist mh
+            WHERE mh.stdInfo.stdId = :stdId
+            """)
+        Integer getTotalMileageByStdId(@Param("stdId") Integer stdId);
+        
+    /*
+     * 학생별 적립예정 마일리지 조회
+     * 조건-이수완료/만족도완료/마일리지 지급안됨
+     */
+    @Query("""
+            SELECT COALESCE(SUM(p.mlgDefScore), 0)
+            FROM Ncs_CmpInfo c
+            INNER JOIN c.ncsPrgInfo p
+            LEFT JOIN Std_MileageHist mh ON c.cmpId = mh.ncsCmpInfo.cmpId
+            WHERE c.stdInfo.stdId = :stdId
+              AND c.cmpYn = 'Y'
+              AND c.surveyYn = 'Y'
+              AND mh.mlgId IS NULL
+            """)
+        Integer getPendingMileageByStdId(@Param("stdId") Integer stdId);
+    
+    
+    
 }

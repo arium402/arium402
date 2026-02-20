@@ -127,12 +127,32 @@ public class StudentNoncurrService {
             Ncs_PrgInfo program = ncsPrgInfoRepository.findById(prgId)
                 .orElseThrow(() -> new RuntimeException("프로그램을 찾을 수 없습니다."));
             
-            // ✅ 2. 중복 신청 체크 (캐시 무시)
+            // 2. 학생 정보 조회
+            Std_Info std = stdInfoRepository.findById(stdId)
+            		.orElseThrow(() -> new RuntimeException("학생 정보를 찾을 수 없습니다."));
+            //휴학생 체크
+            if(std.getStdStatCd() != null) {
+            	Integer statusCode = std.getStdStatCd().getCodeId();
+            	
+            	if(statusCode != null && statusCode == 12) {
+            		System.out.println("휴학생 신청 차단 - 학생 ID:"+stdId + ", 상태 코드: " + statusCode);
+            		throw new RuntimeException("휴학 중인 학생은 비교과 프로그램 신청이 불가능합니다. 복학 후 신청해주세요.");
+            		
+            	}
+            	System.out.println("학생 상태 확인 완료 - 상태 코드: " + statusCode);
+            } else {
+                System.out.println("학생 상태 코드가 없습니다 - 학생 ID: " + stdId);
+                // 상태 코드가 없는 경우 신청 가능 (또는 정책에 따라 차단 가능)
+            }
+            
+            // 3. 중복 신청 체크 (캐시 무시)
             if (isAlreadyApplied(prgId, stdId)) {
                 throw new RuntimeException("이미 신청한 프로그램입니다.");
             }
             
-            // 3. 신청 가능 여부 체크
+            
+            
+            // 4. 신청 가능 여부 체크
             int currentApplicants = ncsPrgAplyRepository.countByPrgId(prgId);
             String applicationPeriodStatus = getApplicationPeriodStatus(program);
             
@@ -150,7 +170,7 @@ public class StudentNoncurrService {
                 throw new RuntimeException("현재 신청할 수 없는 프로그램입니다.");
             }
             
-            // 4. 신청 정보 저장
+            // 5. 신청 정보 저장
             Common_Code aplyStatCode = commonCodeRepository.findById(61)
                 .orElseThrow(() -> new RuntimeException("신청 상태 코드를 찾을 수 없습니다."));
             
@@ -176,7 +196,7 @@ public class StudentNoncurrService {
             
         } catch (Exception e) {
             System.err.println("신청 처리 오류: " + e.getMessage());
-            throw new RuntimeException("신청 처리 중 오류가 발생했습니다: " + e.getMessage());
+            throw new RuntimeException("" + e.getMessage());
         }
     }
     
@@ -229,11 +249,7 @@ public class StudentNoncurrService {
         // ✅ 만족도 조사 상태 계산
         String satisfactionStatus = calculateSatisfactionStatus(program, stdId);
         boolean surveyCompleted = "completed".equals(satisfactionStatus);
-        
-        System.out.println("=== DTO 변환 ===");
-        System.out.println("프로그램: " + program.getPrgNm());
-        System.out.println("만족도 상태: " + satisfactionStatus);
-        System.out.println("===============");
+
         
         return ProgramListDTO.builder()
             .prgId(program.getPrgId())
@@ -509,7 +525,6 @@ public class StudentNoncurrService {
             System.out.println("   - 저장 파일명: " + program.getComFile().getSaveFileName());
             return imageUrl;
         }
-        System.out.println("🖼️ 파일 정보 없음: " + program.getPrgNm());
         return null;
     }
     
@@ -520,33 +535,21 @@ public class StudentNoncurrService {
     public PagedProgramResponseDTO searchProgramsWithPaging(String keyword, String dept, 
                                                            String mileageFilter, String statusFilter, 
                                                            String sortBy, Integer stdId, int page, int size) {
-        
+    	System.out.println("sortBy 값 확인: [" + sortBy + "]");
         // 1. 페이징 객체 생성
         Sort sort = createSort(sortBy);
         Pageable pageable = PageRequest.of(page, size, sort);
         
         // 2. 페이징된 프로그램 조회
-        Page<Ncs_PrgInfo> programPage;
+        Page<Ncs_PrgInfo> programPage = ncsPrgInfoRepository.findByKeywordAndDept(
+                keyword, dept, pageable
+                );
         
-        if (keyword != null && !keyword.trim().isEmpty()) {
-            // 키워드 검색
-            programPage = ncsPrgInfoRepository.findByKeywordContaining(keyword, pageable);
-        } else {
-            // 전체 조회
-            programPage = ncsPrgInfoRepository.findAll(pageable);
-        }
         
         // 3. DTO 변환
         List<ProgramListDTO> dtoList = programPage.getContent().stream()
             .map(program -> convertToDTO(program, stdId))
             .collect(Collectors.toList());
-        
-        // 4. 안전한 필터링 (null 체크 추가)
-        if (dept != null && !dept.trim().isEmpty()) {
-            dtoList = dtoList.stream()
-                .filter(p -> p.getPrgDept().equals(dept))
-                .collect(Collectors.toList());
-        }
         
         if (mileageFilter != null && !mileageFilter.trim().isEmpty()) {
             dtoList = filterByMileage(dtoList, mileageFilter);
@@ -555,6 +558,27 @@ public class StudentNoncurrService {
         if (statusFilter != null && !statusFilter.trim().isEmpty()) {
             dtoList = filterByStatus(dtoList, statusFilter);
         }
+        
+        
+        //메모리 필터 이후 명시적 재정렬 (DB 정렬이 필터 후 깨질 수 있으므로)
+        if (sortBy != null && sortBy.trim().equalsIgnoreCase("deadline")) {
+            // 마감임박순: dDay 오름차순, 단 마감(closed)은 맨 뒤로
+            dtoList = dtoList.stream()
+                .sorted((a, b) -> {
+                    boolean aClosed = "closed".equals(a.getProgramStatus());
+                    boolean bClosed = "closed".equals(b.getProgramStatus());
+                    if (aClosed && !bClosed) return 1;   // a가 마감이면 뒤로
+                    if (!aClosed && bClosed) return -1;  // b가 마감이면 앞으로
+                    return Integer.compare(a.getDDay(), b.getDDay()); // 둘 다 아니면 dDay 오름차순
+                })
+                .collect(Collectors.toList());
+        } else if ("mileage".equals(sortBy)) {
+            // 마일리지순: 높은 것부터
+            dtoList = dtoList.stream()
+                .sorted((a, b) -> Integer.compare(b.getMlgDefScore(), a.getMlgDefScore()))
+                .collect(Collectors.toList());
+        }
+        
         
         // 5. 페이징 응답 DTO 생성
         return PagedProgramResponseDTO.builder()
@@ -580,7 +604,7 @@ public class StudentNoncurrService {
             case "mileage":
                 return Sort.by(Sort.Direction.DESC, "mlgDefScore");
             case "deadline":
-                return Sort.by(Sort.Direction.ASC, "recruitEndDt");
+                return Sort.by(Sort.Direction.DESC, "regDt");
             default: // 최신순
                 return Sort.by(Sort.Direction.DESC, "regDt");
         }
@@ -654,7 +678,19 @@ public class StudentNoncurrService {
      */
     private List<ProgramListDTO> filterByStatus(List<ProgramListDTO> programs, String filter) {
         return programs.stream()
-            .filter(p -> filter.equals(p.getProgramStatus()))
+            .filter(p -> {
+                switch (filter) {
+                    case "available":
+                        // "신청가능" 필터 = closed가 아닌 것 전부 (available + closing 둘 다 통과)
+                        return "available".equals(p.getProgramStatus()) || "closing".equals(p.getProgramStatus());
+                    case "closing":
+                        return "closing".equals(p.getProgramStatus());
+                    case "closed":
+                        return "closed".equals(p.getProgramStatus());
+                    default:
+                        return true;
+                }
+            })
             .collect(Collectors.toList());
     }
 
@@ -1074,13 +1110,7 @@ public class StudentNoncurrService {
             // 응답 개수 확인
             Long count = dgstfnEvalRepository.countByPrgIdAndStdId(prgId, stdId);
             boolean exists = dgstfnEvalRepository.existsByPrgIdAndStdId(prgId, stdId);
-            
-            System.out.println("=== 만족도 조사 완료 여부 확인 ===");
-            System.out.println("프로그램 ID: " + prgId);
-            System.out.println("학생 ID: " + stdId);
-            System.out.println("응답 개수: " + count);
-            System.out.println("존재 여부: " + exists);
-            System.out.println("================================");
+           
             
             return exists;
         } catch (Exception e) {
@@ -1095,18 +1125,11 @@ public class StudentNoncurrService {
      */
     private String calculateSatisfactionStatus(Ncs_PrgInfo program, Integer stdId) {
         try {
-            System.out.println("=== 만족도 조사 상태 계산 ===");
-            System.out.println("프로그램: " + program.getPrgNm());
-            System.out.println("프로그램 ID: " + program.getPrgId());
-            System.out.println("학생 ID: " + stdId);
             
             // 1. 운영기간이 끝났는지 확인
             LocalDate today = getCurrentDate();
             LocalDate programEndDate = LocalDate.parse(program.getPrgEndDt());
             
-            System.out.println("오늘 날짜: " + today);
-            System.out.println("프로그램 종료일: " + programEndDate);
-            System.out.println("운영기간 종료 여부: " + today.isAfter(programEndDate));
             
             if (today.isBefore(programEndDate) || today.isEqual(programEndDate)) {
                 System.out.println("결과: none (운영기간 중)");
@@ -1117,10 +1140,8 @@ public class StudentNoncurrService {
             boolean surveyCompleted = isSurveyCompleted(program.getPrgId(), stdId);
             
             if (surveyCompleted) {
-                System.out.println("결과: completed (조사 완료)");
                 return "completed";
             } else {
-                System.out.println("결과: pending (조사 미완료)");
                 return "pending";
             }
             

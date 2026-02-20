@@ -177,7 +177,6 @@
     background: white;
     box-shadow: 0 4px 20px rgba(0,0,0,0.08);
     overflow: hidden;
-    border-left: 4px solid #3498db;
     transition: all 0.3s ease;
 }
 

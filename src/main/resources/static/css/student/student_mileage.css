@@ -7,11 +7,11 @@
 }
 
 /* 컨테이너 레이아웃 조정 */
-.container-fluid {
+.mileage-content .container-fluid {
 	padding: 0;
 }
 
-.row {
+.mileage-content .row {
 	margin: 0;
 }
 
@@ -113,7 +113,7 @@
 .history-content {
 	display: grid;
 	grid-template-columns: 1fr 3fr;
-	height: 480px;
+	height: auto;
 	max-width: 100%;
 	overflow: hidden;
 	border: 2px solid #ddd;
@@ -456,7 +456,7 @@
 	background: #fafbfc;
 	padding: 25px;
 	margin-bottom: 20px;
-	border-left: 4px solid var(--main-color);
+	
 }
 
 .convert-section h6 {
@@ -511,7 +511,7 @@
 	left: 0;
 	right: 0;
 	height: 3px;
-	background: linear-gradient(90deg, #ffa726, #ffb74d);
+	
 }
 
 .convert-info-title {

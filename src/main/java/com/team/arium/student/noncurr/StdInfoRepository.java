@@ -21,6 +21,8 @@ public interface StdInfoRepository extends JpaRepository<Std_Info, Integer> {
      */
     Optional<Std_Info> findByStdNo(String stdNo);
 
+    Optional<Std_Info> findById(Integer stdId);
+    
     /**
      * 학번 존재 여부 확인
      */

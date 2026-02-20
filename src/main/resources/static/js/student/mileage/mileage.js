@@ -197,54 +197,67 @@ function showConvertModal() {
 
 function applyConvert() {
 	const convertAmount = parseInt(document.getElementById('convertAmount').value) || 0;
-	const accountNumber = document.getElementById('accountNumber').value;
+	const bankAccount = document.getElementById('bankAccount').value;
 	const bankName = document.getElementById('bankName').value;
-	const accountHolder = document.getElementById('accountHolder').value;
-	const availableAmount = 1850;
+	const depositor = document.getElementById('depositor').value;
+	const availableAmount = parseInt(
+	        document.querySelector('.current-mileage-value span').textContent
+	    );
 
 	if (convertAmount <= 0) {
 		alert('신청할 마일리지를 입력해주세요.');
 		return;
 	}
-
+	
 	if (convertAmount < 100) {
 		alert('최소 전환 단위는 100P입니다.');
-		return;
+	    return;
 	}
-  
+	
 	if (convertAmount % 100 !== 0) {
-		alert('100P 단위로 입력해주세요.');
-		return;
+	    alert('100P 단위로 입력해주세요.');
+	    return;
 	}
 
 	if (convertAmount > availableAmount) {
-		alert('보유 마일리지를 초과했습니다.');
+	    alert('보유 마일리지를 초과했습니다.');
 		return;
 	}
 
-	if (!accountNumber) {
-		alert('계좌번호를 입력해주세요.');
-		return;
-	}
 
-	if (!bankName) {
-		alert('은행을 선택해주세요.');
-		return;
-	}
+	// 전환 금액 계산 (1000p = 10,000원)
+	const convertedAmount = (convertAmount / 10) * 100;
 
-	if (!accountHolder) {
-		alert('예금주명을 입력해주세요.');
-		return;
-	}
-
-	// 전환 금액 계산 (1000p = 100,000원)
-	const convertedAmount = (convertAmount / 10) * 1000;
-
-	if (confirm(`${convertAmount.toLocaleString()}P를 ${convertedAmount.toLocaleString()}원으로 전환하시겠습니까?\n\n입금 계좌: ${bankName} ${accountNumber}\n예금주: ${accountHolder}\n\n신청 후 3~5일 내 입금됩니다.`)) {
-		alert('마일리지 전환 신청이 완료되었습니다.\n\n신청 내역은 마일리지 내역에서 확인하실 수 있습니다.');
-		const modal = bootstrap.Modal.getInstance(document.getElementById('convertModal'));
-		modal.hide();
-		resetConvertForm();
+	if (confirm(`${convertAmount.toLocaleString()}P를 ${convertedAmount.toLocaleString()}원으로 전환하시겠습니까?\n\n입금 계좌: ${bankName} ${bankAccount}\n예금주: ${depositor}\n\n신청 후 3~5일 내 입금됩니다.`)) {
+		//서버로 데이터 전송
+		fetch('/student/mileage/api/convert',{
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded'
+			},
+			body: `convertAmount=${convertAmount}&bankName=${bankName}&bankAccount=${bankAccount}&depositor=${depositor}`
+		})
+		.then(response => response.json())
+		.then(data =>{
+			if(data.success){
+				alert("마일리지 전환 신청이 완료되었습니다.");
+				//모달 닫고 페이지 새로고침
+				const modal = bootstrap.Modal.getInstance(document.getElementById('convertModal'));
+				modal.hide();
+				resetConvertForm();
+				
+				//새로고침 > 마일리지 업데이트 반영
+				window.location.reload();
+			}else{
+				//서버 검증 실패 시 서버 메시지 표시
+				alert("오류: "+ data.message);
+			}
+		})
+		.catch(error => {
+			console.error('Error:', error);
+			alert('서버 오류가 발생했습니다.');
+		});
+		
 	}
 }
 

@@ -70,7 +70,7 @@ function searchPrograms() {
         dept: document.getElementById('deptFilter').value || '',               // || '' 추가
         mileageFilter: document.getElementById('mileageFilter').value || '',   // || '' 추가
         statusFilter: document.getElementById('statusFilter').value || '',     // || '' 추가
-        sortBy: document.getElementById('sortBy').value || ''                  // || '' 추가
+        sortBy: document.getElementById('sortBy').value                 // || '' 추가
     };
     
     loadPrograms(0);
