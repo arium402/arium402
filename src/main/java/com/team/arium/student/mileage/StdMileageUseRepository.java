@@ -35,4 +35,16 @@ public interface StdMileageUseRepository extends JpaRepository<Std_MileageUse, I
 	        """)
 	    Integer getTotalConvertedMoneyByStdId(@Param("stdId") Integer stdId);
 	
+	/**
+	 * 특정 학생의 특정 날짜 신청 내역 존재 여부 확인
+	 */
+	@Query("""
+	    SELECT COUNT(mu) > 0
+	    FROM Std_MileageUse mu
+	    WHERE mu.stdInfo.stdId = :stdId
+	      AND mu.aplyDt = :aplyDt
+	    """)
+	boolean existsByStdIdAndAplyDt(@Param("stdId") Integer stdId, @Param("aplyDt") String aplyDt);
+	
+	
 }

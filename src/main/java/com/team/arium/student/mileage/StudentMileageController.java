@@ -109,9 +109,10 @@ public class StudentMileageController {
 			
 		} catch (RuntimeException e) {
 			//에러처리
-			log.error("마일리지 전환 신청 오류: {}", e.getMessage());
+			log.warn("마일리지 전환 신청 거부: {}", e.getMessage());
 			Map<String, Object> res = new HashMap<>();
 	        res.put("success", false);
+	        res.put("message", e.getMessage());
 	        
 	        return ResponseEntity.badRequest().body(res);
 		}

@@ -97,6 +97,17 @@ public class StdMileageService {
 	) {
 		try {
 			log.info("마일리지 전환 신청 시작: stdId={}, 금액={}P", stdId, convertAmount);
+			
+			//오늘 날짜
+			String today = adminModule.todays_module();
+			
+			//당일 중복 신청 체크
+			boolean alreadyApplied = mileUseRepo.existsByStdIdAndAplyDt(stdId, today);
+			if(alreadyApplied) {
+				log.info("중복 신청 차단: stdId={}, 날짜={}", stdId, today);
+				throw new RuntimeException("오늘 이미 전환 신청을 하셨습니다. 하루에 한 번만 신청 가능합니다.");
+			}
+			
 			//보유 마일리지 확인
 			Integer totalEarned = mileHistRepo.getTotalMileageByStdId(stdId);
 			Integer totalUsed = mileUseRepo.getTotalUsedMileageByStdId(stdId);
@@ -119,10 +130,7 @@ public class StdMileageService {
 			//대기 상태 코드 조회(code_id  = 81)
 			Common_Code code = CommonCodeRopo.findById(81)
 					.orElseThrow(() -> new RuntimeException("마일리지 사용 상태 코드를 찾을 수 없습니다."));
-			
-			//오늘 날짜
-			String today = adminModule.todays_module();
-			
+		
 			//Std_MileageUse 객체 생성
 			Std_MileageUse mileUse = Std_MileageUse.builder()
 				.stdInfo(std)
@@ -141,7 +149,7 @@ public class StdMileageService {
 			return true;
 			
 		} catch (Exception e) {
-			log.error("마일리지 전환 신청 실패: stdId={}, 오류={}", stdId, e.getMessage(), e);
+			
 	        throw new RuntimeException("마일리지 전환 신청 중 오류가 발생했습니다: " + e.getMessage());
 		}
 		

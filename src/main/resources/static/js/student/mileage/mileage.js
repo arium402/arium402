@@ -229,6 +229,8 @@ function applyConvert() {
 	const convertedAmount = (convertAmount / 10) * 100;
 
 	if (confirm(`${convertAmount.toLocaleString()}P를 ${convertedAmount.toLocaleString()}원으로 전환하시겠습니까?\n\n입금 계좌: ${bankName} ${bankAccount}\n예금주: ${depositor}\n\n신청 후 3~5일 내 입금됩니다.`)) {
+		if (confirm('주의: 전환 신청 후에는 취소할 수 없습니다.\n\n정말로 신청하시겠습니까?')) {
+		
 		//서버로 데이터 전송
 		fetch('/student/mileage/api/convert',{
 			method: 'POST',
@@ -250,7 +252,7 @@ function applyConvert() {
 				window.location.reload();
 			}else{
 				//서버 검증 실패 시 서버 메시지 표시
-				alert("오류: "+ data.message);
+				alert(data.message);
 			}
 		})
 		.catch(error => {
@@ -258,6 +260,7 @@ function applyConvert() {
 			alert('서버 오류가 발생했습니다.');
 		});
 		
+		} 
 	}
 }
 
