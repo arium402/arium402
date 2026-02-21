@@ -1,5 +1,3 @@
-// 완전히 구현된 마일리지 Service (모든 로직 포함)
-
 package com.team.arium.admin.mileage;
 
 import com.team.arium.admin.admin_module;
@@ -11,7 +9,7 @@ import com.team.arium.admin.mileage.MileageStatisticsDTO;
 
 //✅ 마일리지 Repository import (StdMileageHistRepository만 사용)
 import com.team.arium.admin.mileage.StdMileageHistRepository;
-
+import com.team.arium.student.mileage.StdMileageUseRepository;
 //✅ 기존 StdInfoRepository 사용 (경로 변경)
 import com.team.arium.student.noncurr.StdInfoRepository;
 
@@ -29,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,6 +50,7 @@ public class AdminMileageService {
     private final NcsCmpInfoRepository ncsCmpInfoRepository;
     private final CommonCodeRepository commonCodeRepository;
     private final StdMileageHistRepository stdMileageHistRepository;
+    private final StdMileageUseRepository stdMileUseRepo;
     private final StdInfoRepository stdInfoRepository;
     private final NcsPrgAplyRepository ncsPrgAplyRepository;
     private final DgstfnEvalRepository dgstfnEvalRepository;
@@ -243,10 +243,7 @@ public class AdminMileageService {
         if (mileageScore == null || mileageScore <= 0) {
             throw new RuntimeException("유효하지 않은 마일리지 점수입니다: " + mileageScore);
         }
-        
-        // 5. 현재 시각 생성
-        String currentDateTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"))
-            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
         
         // 6. 마일리지 가산 코드 조회
         Common_Code addCode = getOrCreateAdditionCode();
@@ -267,7 +264,7 @@ public class AdminMileageService {
             .mlgScore(mileageScore)
             .mlgAddCd(addCode)
             .mlgDt(paymentDate)
-            .regDt(currentDateTime)
+            .regDt(adminModule.datetime_module())
             .build();
         
         stdMileageHistRepository.save(mileageHist);
@@ -721,5 +718,166 @@ public class AdminMileageService {
         }
         
         return monthlyStats;
+    }
+    
+    //마일리지 전환 관리 메소드
+    /*
+     * 마일리지 전환 신청 목록 조회 (페이징)
+     * -param status 상태 필터 (all/waiting/completed)
+     * -param page 페이지 번호 (0부터 시작)
+     * -param size 페이지 크기
+     * 전환 신청 목록 + 페이징 정보
+     */
+    public Map<String, Object> getConversionList(String status, int page, int size){
+    	log.info("마일리지 전환 신청목록 조회 : status={}, page={}, size={}", status, page, size);
+    	try {
+			//페이지 객체 생성
+    		Pageable pg = PageRequest.of(page, size);
+    		//repository 호출 (상태별 분기)
+    		Page<Std_MileageUse> entityPage;
+    		
+    		if("waiting".equals(status)) {
+    			//대기만(code_id = 81)
+    			entityPage = stdMileUseRepo.getByStatus(81, pg);
+    		} else if("completed".equals(status)) {
+    			//완료만 (code_id = 83)
+    			entityPage = stdMileUseRepo.getByStatus(83, pg);
+    		} else {
+    			//전체(all)
+    			entityPage = stdMileUseRepo.getAll(pg);
+    		}
+    		
+    		//Entity -> DTO
+    		List<MileageConversionDTO> conversions = entityPage.getContent().stream()
+    				.map(this::toDTO)
+    				.collect(Collectors.toList());
+    		
+    		//페이징 정보 구성
+    		Map<String, Object> pagination = new HashMap<>();
+    		pagination.put("currentPage", page);
+    		pagination.put("totalPages", entityPage.getTotalPages());
+    		pagination.put("totalElements", entityPage.getTotalElements());
+    		pagination.put("size", size);
+    		pagination.put("first", entityPage.isFirst());
+    		pagination.put("last", entityPage.isLast());
+    		pagination.put("hasNext", entityPage.hasNext());
+    		pagination.put("hasPrevious", entityPage.hasPrevious());
+    		
+    		//응답 구성
+    		Map<String, Object> res = new HashMap<>();
+    		res.put("conversions", conversions);
+    		res.put("pagination", pagination);
+    		log.info("마일리지 전환 신청 목록조회 완료: {}건",conversions.size());
+    		
+    		return res;
+		} catch (Exception e) {
+			log.error("마일리지 전환 신청목록 조회 실패:{}", e.getMessage(), e);
+			throw new RuntimeException("전환 신청 목록 조회 중 오류가 발생했습니다: " + e.getMessage());
+		}
+
+    }
+    
+    //마일리지 전환 신청 상세 조회(모달용)
+    /*
+     * mlgUseId 마일리지 사용ID
+     * 전환 신청 상세정보 리턴
+     */
+    public MileageConversionDTO getConversionDetail(Integer mlgUseId) {
+    	log.info("마일리지 전환 신청 상세 조회: mlgUseId={}", mlgUseId);
+    	try {
+			//repository 호출
+    		Std_MileageUse entity = stdMileUseRepo.findByIdWithDetails(mlgUseId)
+    				.orElseThrow(()-> new RuntimeException("전환 신청 내역을 찾을 수 없습니다: " + mlgUseId));
+    		//Entity->DTO변환
+    		MileageConversionDTO dto = toDTO(entity);
+    		log.info("마일리지 전환 신청 상세 조회 완료:학생={}, 금액={}",
+    				dto.getStdNm(), dto.getAppliedMile());
+    		return dto;
+		} catch (Exception e) {
+			log.error("마일리지 전환 신청 상세 조회 실패: mlgUseId={}, 오류={}", mlgUseId, e.getMessage(), e);
+	        throw new RuntimeException("전환 신청 상세 조회 중 오류가 발생했습니다: " + e.getMessage());
+		}
+    }
+    
+    /*
+     * Std_MileageUse 엔티티를 MileageConversionDTO로 변환
+     */
+    private MileageConversionDTO toDTO(Std_MileageUse entity) {
+    	//학생 정보 추출
+    	Std_Info std = entity.getStdInfo();
+    	//날짜 포맷팅(- => .)
+    	String applyDate  = formatDate(entity.getAplyDt()).replace("-", ".");
+    	String payDate = formatDate(entity.getPayDt()).replace("-", ".");
+    	//금액 계산(100p = 1000원)
+    	Integer mile = entity.getAplyMlgScore();
+    	Integer money = mile * 10;
+    	//상태
+    	Integer statusCd = entity.getMlgUseCd().getCodeId();
+    	
+    	return MileageConversionDTO.builder()
+    			//기본
+    			.mlgUseId(entity.getMlgUseId())
+    			.stdId(std.getStdId())
+    			//학생
+    			.stdNo(std.getStdNo())
+    			.stdNm(std.getStdNm())
+    			.deptNm(std.getDeptInfo().getDeptNm())
+    			//신청
+    			.appliedMile(mile)
+    			.applyDate(entity.getAplyDt())
+    			.applyDateFmt(applyDate)
+    			//상태
+    			.statusCd(statusCd)
+    			.statusNm(statusCd == 81 ? "대기":"완료")
+    			.statusClass(statusCd == 81 ? "status-waiting" : "status-completed")
+    			//계좌(기존 maskAccountNumber 기존 메소드 활용)
+    			.bankNm(std.getBankNm())
+    			.accountNo(maskAccountNumber(std.getBankAcnt()))
+    			.depositor(std.getDepositor())
+    			//금액
+    			.convertMoney(money)
+    			.convertMoneyFmt(String.format("%,d", money))
+    			//지급
+    			.payDate(entity.getPayDt())
+    			.payDateFmt(payDate)
+    			.paidMoney(entity.getPayMoney())
+    			.build();
+    	
+    }
+    
+    //마일이지 전환 승인 처리
+    /*
+     * 마일리지 사용ID/승인금액/지급일/성공 여부
+     */
+    @Transactional
+    public boolean approveConversion(Integer mlgUseId, Integer money, String payDate) {
+    	try {
+			//전환 신청 조회
+    		Std_MileageUse mileuse = stdMileUseRepo.findById(mlgUseId)
+    				.orElseThrow(() -> new RuntimeException("전환 신청을 찾을 수 없습니다: " + mlgUseId));
+    		//상태 확인(대기만 승인 가능)
+    		if(mileuse.getMlgUseCd().getCodeId() != 81) {
+    			throw new RuntimeException("대기 중인 신청만 승인할 수 있습니다");
+    		}
+    		
+    		//완료 코드 조회(83)
+    		Common_Code code83 = commonCodeRepository.findById(83)
+    				.orElseThrow(() -> new RuntimeException("완료 상태 코드를 찾을 수 없습니다"));
+    		//지급일 설정
+    		String finalDate = payDate != null ? payDate : adminModule.todays_module();
+    		//상태 업데이트
+    		mileuse.setMlgUseCd(code83); //81->83
+    		mileuse.setPayMoney(money);	//지급금액
+    		mileuse.setPayDt(finalDate); //지급일
+    		mileuse.setUpdDt(adminModule.datetime_module());
+    		
+    		stdMileUseRepo.save(mileuse);
+    		log.info("마일리지 전환 승인 완료: mlgUseId={}", mlgUseId);
+    		
+    		return true;
+		} catch (Exception e) {
+			log.error("마일리지 전환 승인 실패: mlgUseId={}, 오류={}", mlgUseId, e.getMessage(), e);
+	        throw new RuntimeException("전환 승인 중 오류가 발생했습니다: " + e.getMessage());
+		}
     }
 }

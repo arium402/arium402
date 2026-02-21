@@ -252,4 +252,81 @@ public class AdminMileageApiController {
             return ResponseEntity.internalServerError().body(response);
         }
     }
+    
+    @GetMapping("/mileage_conversions")
+    public ResponseEntity<Map<String, Object>> getConversions(
+    		@RequestParam(value = "status", defaultValue = "all")String status,
+        	@RequestParam(value = "page", defaultValue = "0")int page,
+        	@RequestParam(value = "size", defaultValue = "5")int size) {
+    	Map<String, Object> res = new HashMap<>();
+    	try {
+			//service 호출
+    		Map<String, Object> data = adminMileageService.getConversionList(status, page, size);
+    		res.put("success", true);
+    		res.put("conversions", data.get("conversions"));
+    		res.put("pagination", data.get("pagination"));
+    		
+    		log.info("마일리지 전환 목록 조회 성공: {}건",
+    				((List<?>) data.get("conversions")).size());
+    		
+    		return ResponseEntity.ok(res);
+		} catch (Exception e) {
+			log.error("마일리지 전환 목록 조회 실패: {}", e.getMessage(), e);
+			res.put("success", false);
+			res.put("error", "목록 조회 중 오류가 발생했습니다: "+ e.getMessage());
+			return ResponseEntity.internalServerError().body(res);
+		}
+    }
+    
+    //마일리지 전환 신청 상세 조회 API (모달용)
+    @GetMapping("/mileage_conversions/{mlgUseId}")
+    public ResponseEntity<Map<String, Object>> getConversion(
+    		@PathVariable("mlgUseId") Integer mlgUseId) {
+    	log.info("마일리지 전환 상세 조회 API: mlgUseId={}", mlgUseId);
+    	Map<String, Object> res = new HashMap<>();
+    	try {
+			MileageConversionDTO dto = adminMileageService.getConversionDetail(mlgUseId);
+			res.put("success", true);
+			res.put("conversion", dto);
+			
+			return ResponseEntity.ok(res);
+		} catch (Exception e) {
+			log.error("마일리지 전환 상세 조회 실패: mlgUseId={}, 오류={}", mlgUseId, e.getMessage(), e);
+	        res.put("success", false);
+	        res.put("error", "상세 조회 중 오류가 발생했습니다");
+	        return ResponseEntity.notFound().build();
+		}
+    }
+    
+    @PostMapping("/mileage_conversions/{mlgUseId}/approve")
+    public ResponseEntity<Map<String, Object>> approveConversion(
+    		@PathVariable("mlgUseId") Integer mlgUseId,
+    		@RequestBody Map<String, Object> req){
+    	Map<String, Object> res = new HashMap<>();
+    	
+    	try {
+			Integer money = (Integer)req.get("money");
+			String payDate = (String)req.get("payDate");
+			if(money == null || money <= 0) {
+				res.put("success", false);
+				res.put("error", "유효하지 않은 승인 금액입니다.");
+				return ResponseEntity.badRequest().body(res);
+			}
+			boolean success = adminMileageService.approveConversion(mlgUseId, money, payDate);
+			res.put("success", success);
+			res.put("message", "마일리지 전환이 승인되었습니다");
+			
+			return ResponseEntity.ok(res);
+			
+		} catch (Exception e) {
+			log.error("마일리지 전환 승인 실패: mlgUseId={}, 오류={}", mlgUseId, e.getMessage(), e);
+	        res.put("success", false);
+	        res.put("error", "승인 처리 중 오류가 발생했습니다: " + e.getMessage());
+	        return ResponseEntity.internalServerError().body(res);
+		}
+    	
+    	
+    	
+    }
+    
 }

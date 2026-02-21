@@ -154,8 +154,18 @@ public class AdminMileageViewController {
     }
     
     @GetMapping("/admin_mileage_to_money")
-    public String adminMileage_to_money() {
-    	return "/admin/admin_mileage_to_money";
+    public String adminMileage_to_money(Model m) {
+    	try {
+			//기본 페이지 설정
+    		m.addAttribute("currentDate", adminModule.todays_module());
+    		m.addAttribute("pageTitle", "마일리지 전환");
+    		
+    		return "/admin/admin_mileage_to_money";
+		} catch (Exception e) {
+			log.error("마일리지 전환 관리 페이지 로드 실패: {}", e.getMessage(), e);
+			m.addAttribute("error", "페이지를 불러오는 중 오류 발생");
+			return "admin/admin_error";
+		}
     }
 
     /**
