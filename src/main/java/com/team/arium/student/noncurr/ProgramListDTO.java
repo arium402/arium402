@@ -19,6 +19,7 @@ public class ProgramListDTO {
     private String recruitEndDt;
     private String prgStDt;
     private String prgEndDt;
+    private String surveyDt; //만족도 조사 마감일
     private Integer maxCnt;
     private Integer mlgDefScore;
     private String prgDept;

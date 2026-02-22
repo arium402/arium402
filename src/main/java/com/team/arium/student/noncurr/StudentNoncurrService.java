@@ -211,7 +211,7 @@ public class StudentNoncurrService {
         updateExistingSurveyCompletions(stdId);
         
         // 기존 로직
-        List<Ncs_PrgAply> applications = ncsPrgAplyRepository.findByStdId(stdId);
+        List<Ncs_PrgAply> applications = ncsPrgAplyRepository.findByStdIdOrderByAplyDt(stdId);
         
         return applications.stream()
             .map(app -> convertToDTO(app.getNcsPrgInfo(), stdId))
@@ -237,16 +237,16 @@ public class StudentNoncurrService {
         // 프로그램 상태 결정
         String programStatus = getProgramStatus(dDay, currentApplicants, program.getMaxCnt());
         
-        // ✅ 신청 기간 상태 확인
+        // 신청 기간 상태 확인
         String applicationPeriodStatus = getApplicationPeriodStatus(program);
         
-        // ✅ 신청 가능 여부 계산
+        // 신청 가능 여부 계산
         Boolean canApply = calculateCanApply(program, currentApplicants, applicationStatus);
         
-        // ✅ 취소 가능 여부 및 이유 계산
+        // 취소 가능 여부 및 이유 계산
         CancelInfo cancelInfo = calculateCancelInfo(program, applicationStatus);
 
-        // ✅ 만족도 조사 상태 계산
+        // 만족도 조사 상태 계산
         String satisfactionStatus = calculateSatisfactionStatus(program, stdId);
         boolean surveyCompleted = "completed".equals(satisfactionStatus);
 
@@ -260,6 +260,7 @@ public class StudentNoncurrService {
             .recruitEndDt(program.getRecruitEndDt())
             .prgStDt(program.getPrgStDt())
             .prgEndDt(program.getPrgEndDt())
+            .surveyDt(program.getSurveyDt()) 
             .maxCnt(program.getMaxCnt())
             .mlgDefScore(program.getMlgDefScore())
             .prgDept(program.getPrgDept())
@@ -1121,7 +1122,7 @@ public class StudentNoncurrService {
     }
 
     /**
-     * ✅ 만족도 조사 상태 계산 (디버깅 버전)
+     * 만족도 조사 상태 계산 (디버깅 버전)
      */
     private String calculateSatisfactionStatus(Ncs_PrgInfo program, Integer stdId) {
         try {
@@ -1130,19 +1131,29 @@ public class StudentNoncurrService {
             LocalDate today = getCurrentDate();
             LocalDate programEndDate = LocalDate.parse(program.getPrgEndDt());
             
-            
+            //운영기간이 끝났는지 확인
             if (today.isBefore(programEndDate) || today.isEqual(programEndDate)) {
                 System.out.println("결과: none (운영기간 중)");
                 return "none";
             }
             
-            // 2. 운영기간이 끝났으면 만족도 조사 완료 여부 확인
+            // 운영기간이 끝났으면 만족도 조사 완료 여부 확인
             boolean surveyCompleted = isSurveyCompleted(program.getPrgId(), stdId);
             
             if (surveyCompleted) {
-                return "completed";
+                return "completed"; //이미 완료
+            }
+            // 만족도 조사 마감일 확인
+            if (program.getSurveyDt() == null || program.getSurveyDt().trim().isEmpty()) {
+                return "pending";  // 마감일 없으면 계속 가능
+            }
+            
+            LocalDate surveyDeadline = LocalDate.parse(program.getSurveyDt());
+            
+            if (today.isAfter(surveyDeadline)) {
+                return "expired";  //마감!
             } else {
-                return "pending";
+                return "pending";  //실시 가능
             }
             
         } catch (Exception e) {

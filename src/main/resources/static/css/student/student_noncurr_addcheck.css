@@ -164,6 +164,22 @@
 	color: #2e7d32;
 }
 
+/* 만족도 조사 컨테이너 (마감일 + 버튼) */
+.satisfaction-container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+}
+
+/* 만족도 조사 마감일 */
+.survey-deadline {
+	color: #666;
+	font-size: 0.8rem;
+	font-weight: 500;
+	white-space: nowrap;
+}
+
 .satisfaction-btn {
 	background: var(--main-color);
 	color: white;
@@ -179,13 +195,23 @@
 .satisfaction-btn:hover {
 	background: #3d5a91;
 }
-
+/* 만족도 조사 완료 */
 .satisfaction-completed {
 	color: #2e7d32;
 	font-weight: 600;
 	font-size: 0.85rem;
 }
-
+/* 만족도 조사 마감 */
+.satisfaction-expired {
+	color: #dc3545;
+	font-weight: 600;
+	padding: 5px 12px;
+	background-color: #f8d7da;
+	border-radius: 4px;
+	display: inline-block;
+	font-size: 0.85rem;
+}
+/* 만족도 조사 대상 아님 */
 .satisfaction-none {
 	color: #999;
 	font-size: 0.9rem;

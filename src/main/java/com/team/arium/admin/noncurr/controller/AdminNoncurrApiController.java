@@ -1,14 +1,17 @@
 // 2. 관리자 비교과 API 컨트롤러 (Admin API Controller)
 package com.team.arium.admin.noncurr.controller;
 
+import com.team.arium.admin.mileage.StdMileageHistRepository;
 import com.team.arium.admin.noncurr.dto.ApplicantDTO;
 import com.team.arium.admin.noncurr.dto.NoncurrProgramDTO;
 import com.team.arium.admin.noncurr.dto.SatisfactionSurveyDTO;
 import com.team.arium.admin.noncurr.repository.CommonCodeRepository;
+import com.team.arium.admin.noncurr.repository.NcsPrgInfoRepository;
 import com.team.arium.admin.noncurr.service.AdminNoncurrProgramService;
 import com.team.arium.admin.noncurr.service.NoncurrStatisticsService;
 import com.team.arium.domain.Common_Code;
 import com.team.arium.domain.Core_CptInfo;
+import com.team.arium.domain.Std_MileageHist;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.Part;
@@ -44,7 +47,12 @@ public class AdminNoncurrApiController {
     
     @Autowired
     private NoncurrStatisticsService noncurrStatisticsService;
-  
+    
+    @Autowired
+    private StdMileageHistRepository stdMileHistRepo;
+    
+    @Autowired
+    private NcsPrgInfoRepository ncsPrgInfoRepository;
     
     /*
     @PostMapping("/noncurr_add")
@@ -155,24 +163,73 @@ public class AdminNoncurrApiController {
     @PostMapping("/noncurr_delete")
     public ResponseEntity<Map<String, Object>> noncurr_delete(@RequestParam("prgId") Integer prgId) {
         log.info("비교과 프로그램 삭제 API 요청: ID={}", prgId);
-        Map<String, Object> response = new HashMap<>();
+        Map<String, Object> res = new HashMap<>();
         
         try {
             adminNoncurrProgramService.deleteProgram(prgId);
             
-            response.put("success", true);
-            response.put("message", "비교과 프로그램이 성공적으로 삭제되었습니다.");
+            res.put("success", true);
+            res.put("message", "비교과 프로그램이 성공적으로 삭제되었습니다.");
             
             log.info("비교과 프로그램 삭제 성공: ID={}", prgId);
-            return ResponseEntity.ok(response);
+            return ResponseEntity.ok(res);
             
         } catch (Exception e) {
             log.error("비교과 프로그램 삭제 실패: ID={}, 오류={}", prgId, e.getMessage(), e);
-            response.put("success", false);
-            response.put("error", "프로그램 삭제 중 오류가 발생했습니다: " + e.getMessage());
-            return ResponseEntity.internalServerError().body(response);
+            res.put("success", false);
+            res.put("error", e.getMessage());
+            return ResponseEntity.internalServerError().body(res);
         }
     }
+    
+    /**
+     * ⚠️ 테스트용 - 삭제된 프로그램의 마일리지 내역 정리
+     * 사용 후 삭제하거나 주석처리!
+     @GetMapping("/cleanup_mileage")
+    public ResponseEntity<Map<String, Object>> cleanupMileage() {
+        log.warn("⚠️ 마일리지 정리 실행 - 테스트용!");
+        
+        Map<String, Object> res = new HashMap<>();
+        
+        try {
+            // 1. 모든 마일리지 내역 조회
+            List<Std_MileageHist> allHist = stdMileHistRepo.findAll();
+            
+            List<Std_MileageHist> toDelete = new ArrayList<>();
+            
+            for (Std_MileageHist hist : allHist) {
+                // 2. 프로그램이 삭제되었거나 없는 경우
+                Integer prgId = hist.getNcsCmpInfo().getNcsPrgInfo().getPrgId();
+                boolean exists = ncsPrgInfoRepository.existsById(prgId);
+                
+                if (!exists) {
+                    toDelete.add(hist);
+                }
+            }
+            
+            // 3. 삭제
+            if (!toDelete.isEmpty()) {
+                stdMileHistRepo.deleteAll(toDelete);
+                log.warn("삭제된 프로그램의 마일리지 {} 건 정리 완료", toDelete.size());
+            }
+            
+            res.put("success", true);
+            res.put("message", "마일리지 정리 완료");
+            res.put("deletedCount", toDelete.size());
+            
+            return ResponseEntity.ok(res);
+            
+        } catch (Exception e) {
+            log.error("마일리지 정리 실패: {}", e.getMessage(), e);
+            res.put("success", false);
+            res.put("error", e.getMessage());
+            return ResponseEntity.internalServerError().body(res);
+        }
+    }
+
+     
+     */
+        
 
     /**
      * 프로그램 상세 정보 조회 (AJAX용) - 기존

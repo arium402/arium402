@@ -461,13 +461,27 @@ public class AdminNoncurrProgramService {
         }
         
         try {
-            // ✅ 1. 삭제 전 파일 정보 조회
+            // 삭제 전 파일 정보 조회/프로그램 존재 확인
             Ncs_PrgInfo program = ncsPrgInfoRepository.findById(prgId)
                 .orElseThrow(() -> new RuntimeException("프로그램을 찾을 수 없습니다."));
             
-            Common_File imageFile = program.getComFile();
+            //이수 완료자 체크
+            List<Ncs_CmpInfo> completions = ncsCmpInfoRepository.findByPrgId(prgId);
+            long completedCnt = completions.stream()
+            		.filter(c -> Yn.Y.equals(c.getCmpYn()))
+            		.count();
+            if(completedCnt > 0) {
+            	throw new RuntimeException("이수 완료자가 있는 프로그램은 삭제할 수 없습니다");
+            }
             
-            // ✅ 2. 연관된 파일 삭제 (DB 삭제 전에 먼저 처리)
+            //신청자 체크
+            List<Ncs_PrgAply> applications = ncsPrgAplyRepository.findByPrgId(prgId);
+            if(!applications.isEmpty()) {
+            	throw new RuntimeException("신청자가 있는 프로그램은 삭제할 수 없습니다");
+            }
+            
+            // 이미지 파일 삭제 (DB 삭제 전에 먼저 처리)
+            Common_File imageFile = program.getComFile();
             if (imageFile != null) {
                 deleteImageFiles(imageFile);
                 log.info("프로그램 이미지 파일 삭제 완료: {}", imageFile.getSaveFileName());
@@ -482,8 +496,8 @@ public class AdminNoncurrProgramService {
             log.info("비교과 프로그램 삭제 완료: ID={}", prgId);
             
         } catch (Exception e) {
-            log.error("비교과 프로그램 삭제 실패: ID={}, 오류={}", prgId, e.getMessage(), e);
-            throw new RuntimeException("프로그램 삭제 중 오류가 발생했습니다.", e);
+        	log.error("프로그램 삭제 실패: prgId={}, 오류={}", prgId, e.getMessage());
+            throw e;
         }
     }
     
