@@ -83,194 +83,104 @@
 					</div>
 	
 					<!-- 테이블 영역 -->
-					<div class="table-area">
-						<!-- 필터 및 액션 버튼 -->
-						<div class="table-controls">
-							<div class="filter-group">
-								<div class="filter-section">
-									<select class="form-select form-select-sm">
-										<option>전체 유형</option>
-										<option>지급</option>
-										<option>차감</option>
-									</select>
-									<select class="form-select form-select-sm">
-										<option>전체 상태</option>
-										<option>신청</option>
-										<option>지급완료</option>
-										<option>취소</option>
-									</select>
-								</div>
-								<div class="filter-section">
-									<input type="date" class="form-control form-control-sm" id="startDate" style="width: 140px;">
-									<span class="align-self-center">~</span>
-									<input type="date" class="form-control form-control-sm" id="endDate" style="width: 140px;">
-									<button class="btn btn-sm btn-primary" onclick="applyDateFilter()">조회</button>
-								</div>
-							</div>
-							<div class="action-section">
-								<button class="btn btn-sm btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#mileageGuide" aria-expanded="false" aria-controls="mileageGuide">
-									<i class="fas fa-info-circle me-1"></i>마일리지 가이드
-									<i class="fas fa-chevron-down ms-1" id="guideArrow"></i>
-								</button>
-								<button class="btn btn-sm btn-outline-secondary" onclick="refreshData()">
-									<i class="fas fa-sync-alt me-1"></i>새로고침
-								</button>
-							</div>
-						</div>
-	
-						<!-- 마일리지 가이드 콜랩스 영역 -->
-						<div class="collapse" id="mileageGuide">
-							<div class="guide-content">
-								<div class="row">
-									<div class="col-md-4">
-										<h6 class="guide-title">마일리지 적립 방법</h6>
-										<ul class="guide-list">
-											<li>비교과 프로그램 참여 시 자동 적립</li>
-											<li>프로그램별로 다른 적립 포인트 제공</li>
-											<li>출석률과 참여도에 따라 추가 적립 가능</li>
-										</ul>
+						<div class="table-area">
+							<!-- 필터 및 액션 버튼 -->
+							<div class="table-controls">
+								<div class="filter-group">
+									<div class="filter-section">
+										<select class="form-select form-select-sm" id="filterType">
+											<option value="">전체 유형</option>
+											<option value="지급">지급</option>
+											<option value="차감">차감</option>
+										</select> <select class="form-select form-select-sm" id="filterStatus">
+											<option value="">전체 상태</option>
+											<option value="대기">대기</option>
+											<option value="지급완료">지급완료</option>
+										</select>
 									</div>
-									<div class="col-md-4">
-										<h6 class="guide-title">마일리지 사용 방법</h6>
-										<ul class="guide-list">
-											<li>장학금으로 전환 (1P = 1원)</li>
-											<li>최소 전환 단위: 100P</li>
-											<li>월 1회 전환 신청 가능</li>
-										</ul>
-									</div>
-									<div class="col-md-4">
-										<h6 class="guide-title">주의사항</h6>
-										<ul class="guide-list">
-											<li>마일리지 유효기간: 적립일로부터 2년</li>
-											<li>졸업 시 잔여 마일리지 자동 소멸</li>
-											<li>부정한 방법으로 적립된 마일리지는 회수</li>
-										</ul>
+									<div class="filter-section">
+										<input type="date" class="form-control form-control-sm"
+											id="startDate" style="width: 140px;"> <span
+											class="align-self-center">~</span> <input type="date"
+											class="form-control form-control-sm" id="endDate"
+											style="width: 140px;">
+										<button class="btn btn-sm btn-primary"
+											onclick="applyDateFilter()">조회</button>
 									</div>
 								</div>
+								<div class="action-section">
+									<button class="btn btn-sm btn-outline-primary" type="button"
+										data-bs-toggle="collapse" data-bs-target="#mileageGuide"
+										aria-expanded="false" aria-controls="mileageGuide">
+										<i class="fas fa-info-circle me-1"></i>마일리지 가이드 <i
+											class="fas fa-chevron-down ms-1" id="guideArrow"></i>
+									</button>
+									<button class="btn btn-sm btn-outline-secondary"
+										onclick="refreshData()">
+										<i class="fas fa-sync-alt me-1"></i>새로고침
+									</button>
+								</div>
 							</div>
-						</div>
-	
-						<div class="table-scroll">
-							<table class="table history-table">
-								<thead>
-									<tr>
-										<th>NO</th>
-										<th>날짜</th>
-										<th>점수</th>
-										<th>유형</th>
-										<th>비고</th>
-										<th>상태</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr>
-										<td>15</td>
-										<td>2024.06.15</td>
-										<td class="score-positive">+50P</td>
-										<td>지급</td>
-										<td>진로상담 비교과 프로그램 참여 완료</td>
-										<td><span class="status-badge status-completed">지급완료</span></td>
-									</tr>
-									<tr>
-										<td>14</td>
-										<td>2024.06.12</td>
-										<td class="score-positive">+100P</td>
-										<td>지급</td>
-										<td>창업 특강 비교과 프로그램 참여</td>
-										<td><span class="status-badge status-completed">지급완료</span></td>
-									</tr>
-									<tr>
-										<td>13</td>
-										<td>2024.06.10</td>
-										<td class="score-positive">+30P</td>
-										<td>지급</td>
-										<td>학습컨설팅 비교과 프로그램 참여</td>
-										<td><span class="status-badge status-applied">신청</span></td>
-									</tr>
-									<tr>
-										<td>12</td>
-										<td>2024.06.08</td>
-										<td class="score-negative">-20P</td>
-										<td>차감</td>
-										<td>마일리지 장학금 전환 신청</td>
-										<td><span class="status-badge status-completed">지급완료</span></td>
-									</tr>
-									<tr>
-										<td>11</td>
-										<td>2024.06.05</td>
-										<td class="score-positive">+80P</td>
-										<td>지급</td>
-										<td>취업특강 및 모의면접 비교과 프로그램 참여</td>
-										<td><span class="status-badge status-completed">지급완료</span></td>
-									</tr>
-									<tr>
-										<td>10</td>
-										<td>2024.06.03</td>
-										<td class="score-positive">+25P</td>
-										<td>지급</td>
-										<td>심리상담 비교과 프로그램 참여</td>
-										<td><span class="status-badge status-completed">지급완료</span></td>
-									</tr>
-									<tr>
-										<td>9</td>
-										<td>2024.06.01</td>
-										<td class="score-positive">+15P</td>
-										<td>지급</td>
-										<td>만족도 조사 비교과 프로그램 참여</td>
-										<td><span class="status-badge status-cancelled">취소</span></td>
-									</tr>
-									<tr>
-										<td>8</td>
-										<td>2024.05.28</td>
-										<td class="score-positive">+40P</td>
-										<td>지급</td>
-										<td>핵심역량진단 비교과 프로그램 완료</td>
-										<td><span class="status-badge status-completed">지급완료</span></td>
-									</tr>
-									<tr>
-										<td>7</td>
-										<td>2024.05.25</td>
-										<td class="score-positive">+35P</td>
-										<td>지급</td>
-										<td>진로탐색 워크샵 비교과 프로그램 참여</td>
-										<td><span class="status-badge status-completed">지급완료</span></td>
-									</tr>
-									<tr>
-										<td>6</td>
-										<td>2024.05.22</td>
-										<td class="score-positive">+60P</td>
-										<td>지급</td>
-										<td>리더십 개발 비교과 프로그램 수료</td>
-										<td><span class="status-badge status-completed">지급완료</span></td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-	
-						<!-- 페이지네이션 -->
-						<div class="pagination-area">
-							<nav>
-								<ul class="pagination pagination-sm justify-content-center">
-									<li class="page-item disabled">
-										<a class="page-link">이전</a>
-									</li>
-									<li class="page-item active">
-										<a class="page-link" href="#">1</a>
-									</li>
-									<li class="page-item">
-										<a class="page-link" href="#">2</a>
-									</li>
-									<li class="page-item">
-										<a class="page-link" href="#">3</a>
-									</li>
-									<li class="page-item">
-										<a class="page-link" href="#">다음</a>
-									</li>
-								</ul>
-							</nav>
+
+							<!-- 마일리지 가이드 콜랩스 영역 -->
+							<div class="collapse" id="mileageGuide">
+								<div class="guide-content">
+									<div class="row">
+										<div class="col-md-4">
+											<h6 class="guide-title">마일리지 적립 방법</h6>
+											<ul class="guide-list">
+												<li>비교과 프로그램 참여 시 자동 적립</li>
+												<li>프로그램별로 다른 적립 포인트 제공</li>
+											</ul>
+										</div>
+										<div class="col-md-4">
+											<h6 class="guide-title">마일리지 사용 방법</h6>
+											<ul class="guide-list">
+												<li>장학금으로 전환 (1P = 10원)</li>
+												<li>최소 전환 단위: 100P</li>
+												<li>하루 1회 전환 신청 가능</li>
+											</ul>
+										</div>
+										<div class="col-md-4">
+											<h6 class="guide-title">주의사항</h6>
+											<ul class="guide-list">
+												<li>마일리지 유효기간: 적립일로부터 2년</li>
+												<li>졸업 시 잔여 마일리지 자동 소멸</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="table-scroll">
+								<table class="table history-table">
+									<thead>
+										<tr>
+											<th>NO</th>
+											<th>날짜</th>
+											<th>점수</th>
+											<th>유형</th>
+											<th>비고</th>
+											<th>상태</th>
+										</tr>
+									</thead>
+
+									<tbody>
+										<!-- JavaScript로 렌더링됨 (비워두기) -->
+									</tbody>
+								</table>
+							</div>
+
+							<!-- 페이지네이션 -->
+							<div class="pagination-area">
+								<nav>
+									<ul class="pagination pagination-sm justify-content-center">
+										<!-- JavaScript로 렌더링됨 (비워두기) -->
+									</ul>
+								</nav>
+							</div>
 						</div>
 					</div>
-				</div>
 			</div>
 	
 			<!-- 개선된 마일리지 전환 모달 -->

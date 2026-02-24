@@ -141,6 +141,7 @@
 	flex-direction: column;
 	max-width: 100%;
 	overflow: hidden;
+	min-height: 600px; /* 최소 높이 */
 }
 
 .table-controls {
@@ -187,21 +188,28 @@
 	padding: 15px 20px;
 	border-top: 1px solid #ddd;
 	background: #f8f9fa;
+	margin-top: auto; /* (항상 하단) */
+	flex-shrink: 0; /* (크기 고정) */
 }
 
 .table-scroll {
-	flex: 1;
 	overflow-x: auto;
 	overflow-y: auto;
+	display: flex;
+	align-content: flex-start; /* 내부가 위쪽부터 시작하게 */
 }
 
 .history-table {
 	width: 100%;
 	margin: 0;
 	font-size: 0.9rem;
-	height: 100%;
+	
+	
 }
-
+.history-table tbody,
+.history-table tbody tr {
+	vertical-align: top;
+}
 .history-table th {
 	background: #4a6fa5;
 	color: white;
@@ -212,10 +220,11 @@
 	white-space: nowrap;
 	position: sticky;
 	top: 0;
+	z-index: 10; 
 }
 
 .history-table td {
-	padding: 12px 10px;
+	padding: 20px 10px;
 	text-align: center;
 	border-bottom: 1px solid #f0f0f0;
 	vertical-align: middle;

@@ -314,8 +314,12 @@ function initTableClickEvent() {
         
         // 클릭 이벤트
         row.addEventListener('click', function() {
-            const prgId = this.dataset.prgId;
-            
+			//만족도 버튼 클릭 시 이벤트 전파 방지
+			if (e.target.classList.contains('satisfaction-btn')) {
+			    return;  // 버튼 클릭이면 여기서 중단
+			}
+			
+			const prgId = this.dataset.prgId; 
             if (prgId) {
                 // 상세 페이지로 이동
                 window.location.href = `/student/noncurr/detail?prgId=${prgId}`;

@@ -1,7 +1,14 @@
 package com.team.arium.student.mileage;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -156,4 +163,80 @@ public class StdMileageService {
 	}
 	
 	
+	//마일리지 내역 조회(페이징)
+	public Map<String, Object> getMileHistory(
+			Integer stdId, int page, int size,
+			String type, String status, String startDate, String endDate){
+		try {
+			Pageable pg = PageRequest.of(page, size);
+			Page<Object[]> histPage = mileHistRepo.findMileHistoryByStdIdWithFilters(stdId, type, status, startDate, endDate, pg);
+			
+			//Object[] => DTO변환
+			List<StdMileageHistoryDTO> hists  = histPage.getContent().stream()
+					.map(this::convertToDTO)
+					.collect(Collectors.toList());
+			
+			//페이지네이션 정보
+			Map<String, Object> paging = new HashMap<>();
+			paging.put("currentPage", page);
+			paging.put("totalPages", histPage.getTotalPages());
+			paging.put("totalElements", histPage.getTotalElements());
+			paging.put("size", size);
+			paging.put("hasNext", histPage.hasNext());
+			paging.put("hasPrevious", histPage.hasPrevious());
+			
+			Map<String, Object> res = new HashMap<>();
+			res.put("histories", hists);
+			res.put("pagination", paging);
+			
+			return res;
+		} catch (Exception e) {
+			log.error("마일리지 내역 조회 실패: stdId={}, 오류={}", stdId, e.getMessage(), e);
+			throw new RuntimeException("마일리지 내역 조회 중 오류가 발생했습니다: " + e.getMessage());
+		}
+	}
+	
+	//Object[] -> DTO변환
+	private StdMileageHistoryDTO convertToDTO(Object[] row) {
+		String mlgDt = (String) row[0];
+		
+		Integer mlgScore = row[1] != null ? ((Number) row[1]).intValue() : null;
+		Integer payMoney = row[2] != null ? ((Number) row[2]).intValue() : null;
+		String mlgType = (String) row[3];
+		String notes = (String) row[4];
+		String statusNm = (String) row[5];
+		String statusClass = (String) row[6];
+		
+		//날짜 포맷 (- => .)
+		String mlgDtFmt = mlgDt.replace("-", ".");
+		
+		//점수/금액 포맷
+		String mlgScoreFmt;
+		if(payMoney != null && "지급".equals(mlgType)) {
+			//전환완료:금액표시
+			mlgScoreFmt = String.format("%d원", mlgScore);
+		}else {
+			//일반 : 포인트 표시
+			//// mlgScore > 0 이면 +, mlgScore < 0 이면 이미 -가 붙어있음
+			if(mlgScore > 0) {
+				mlgScoreFmt = "+" + mlgScore + "P";
+			}else {
+				//음수는 이미 -붙어있음
+				mlgScoreFmt = mlgScore + "P";
+			}
+		}
+		
+		return StdMileageHistoryDTO.builder()
+				.mlgDt(mlgDt)
+				.mlgDtFmt(mlgDtFmt)
+				.mlgScore(mlgScore)
+				.mlgScoreFmt(mlgScoreFmt)
+				.payMoney(payMoney)
+				.mlgType(mlgType)
+				.notes(notes)
+				.statusNm(statusNm)
+				.statusClass(statusClass)
+				.build();
+		
+	}
 }

@@ -39,12 +39,9 @@ public class StudentMileageController {
 			
 			//service 호출(대시보드 데이터 조회)
 			StdMileageDashboardDTO dashboard = stdMileService.getDashboard(stdId);
-			log.debug("대시보드 데이터 조회 완료: 보유={},적립예정={}", dashboard.getPendingMile());
-			
-			//Model 데이터 담기
 			m.addAttribute("dashboard", dashboard);
 			
-			return "/student/mileage/student_mileage_my.html";	// 나의 마일리지
+			return "/student/mileage/student_mileage_my";	// 나의 마일리지
 		} catch (RuntimeException  e) { 
 			//로그인이 안 됐을 경우/학생 계정이 아닌경우/정보를 찾을 수 없는 경우
 			log.error("학생 마일리지 로드 실패:{}", e.getMessage(), e);
@@ -67,6 +64,7 @@ public class StudentMileageController {
 		
 	}
 	
+	//마일리지 카드섹션 API
 	@PostMapping("/api/convert") 
 	public ResponseEntity<Map<String, Object>> convertMile(
 		@RequestParam("convertAmount") Integer convertAmount,
@@ -115,6 +113,49 @@ public class StudentMileageController {
 	        res.put("message", e.getMessage());
 	        
 	        return ResponseEntity.badRequest().body(res);
+		}
+	}
+		
+	//마일리지 내역 조회 API
+	@GetMapping("/api/history")
+	public ResponseEntity<Map<String, Object>> getMileHistory(
+			@RequestParam(name = "page", defaultValue = "0") int page,
+			@RequestParam(name = "size", defaultValue = "10") int size,
+			@RequestParam(name = "type", required = false) String type,
+			@RequestParam(name = "status", required = false) String status,
+			@RequestParam(name = "startDate", required = false) String startDate,
+			@RequestParam(name = "endDate", required = false) String endDate){
+			
+		Map<String, Object> res = new HashMap<>();
+		try {
+			//현재 로그인된 학생
+			Integer stdId = stdSecUtil.getCurrentStudentId();
+				
+			//Service 호출
+			Map<String, Object> data = stdMileService.getMileHistory(
+					stdId, page, size, type, status, startDate, endDate
+				);
+				
+			res.put("success", true);
+			res.put("histories", data.get("histories"));
+			res.put("pagination", data.get("pagination"));
+				
+			log.info("마일리지 내역 조회 성공: stdId={}, 건수={}", 
+					stdId, ((java.util.List<?>) data.get("histories")).size());
+			return ResponseEntity.ok(res);
+				
+		} catch (RuntimeException  e) {
+			log.warn("마일리지 내역조회 실패: {}", e.getMessage());
+			res.put("success", false);
+				
+			if(e.getMessage().contains("로그인")) {
+				res.put("message", "로그인이 필요합니다.");
+				res.put("redirectUrl", "/login");
+			} else {
+				res.put("message", e.getMessage());
+			}
+				
+			return ResponseEntity.badRequest().body(res);
 		}
 	}
 }

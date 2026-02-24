@@ -3,8 +3,7 @@ let mileageChart;
 
 function initChart() {
 	const ctx = document.getElementById('mileageChart').getContext('2d');
-  
-	// 기존 차트가 있으면 파괴
+  	// 기존 차트가 있으면 파괴
 	if (mileageChart) {
 		mileageChart.destroy();
 	}
@@ -78,10 +77,18 @@ function resizeChart() {
 	}
 }
 
-// 페이지 로드 시 차트 초기화
+let currentPage = 0;
+const pageSize = 10;
+
+// 페이지 로드 시 내역 조회
 document.addEventListener('DOMContentLoaded', function() {
+	console.log('페이지 로드됨');
 	initChart();
+	console.log('차트 초기화 완료');
 	setDefaultDateRange();
+	
+	//마일리지 내역 로드
+	loadMileHistory(0);
 
 	// 윈도우 리사이즈 이벤트 리스너 추가
 	window.addEventListener('resize', function() {
@@ -89,19 +96,144 @@ document.addEventListener('DOMContentLoaded', function() {
 	});
   
 	// 마일리지 가이드 콜랩스 이벤트 리스너
-	const mileageGuideCollapse = document.getElementById('mileageGuide');
-	if (mileageGuideCollapse) {
-		mileageGuideCollapse.addEventListener('show.bs.collapse', function () {
+	const guideCollapse = document.getElementById('mileageGuide');
+	if (guideCollapse) {
+		guideCollapse.addEventListener('show.bs.collapse', function () {
 			const arrow = document.getElementById('guideArrow');
 			if (arrow) arrow.style.transform = 'rotate(180deg)';
 		});
 
-		mileageGuideCollapse.addEventListener('hide.bs.collapse', function () {
+		guideCollapse.addEventListener('hide.bs.collapse', function () {
 			const arrow = document.getElementById('guideArrow');
 			if (arrow) arrow.style.transform = 'rotate(0deg)';
 		});
 	}
+
+	document.getElementById('filterType')?.addEventListener('change', () => loadMileHistory(0));
+	document.getElementById('filterStatus')?.addEventListener('change', () => loadMileHistory(0));
+	
 });
+
+//마일리지 내역 조회
+function loadMileHistory(page) {
+	// 필터 값 가져오기
+	const filterType = document.getElementById('filterType')?.value || '';
+	const filterStatus = document.getElementById('filterStatus')?.value || '';
+	const startDate = document.getElementById('startDate')?.value || '';
+	const endDate = document.getElementById('endDate')?.value || '';
+	
+	let url = `/student/mileage/api/history?page=${page}&size=${pageSize}`;
+	
+	if (filterType) url += `&type=${encodeURIComponent(filterType)}`;
+	if (filterStatus) url += `&status=${encodeURIComponent(filterStatus)}`;
+	if (startDate) url += `&startDate=${startDate}`;
+	if (endDate) url += `&endDate=${endDate}`;
+	
+	fetch(url)
+		.then(response => response.json())
+		.then(data => {
+			if (data.success) {
+				renderTable(data.histories, data.pagination);
+				renderPagination(data.pagination);
+			} else {
+				console.error('내역 조회 실패:', data.message);
+				if (data.redirectUrl) {
+					window.location.href = data.redirectUrl;
+				}
+			}
+		})
+		.catch(error => {
+			console.error('API 호출 오류:', error);
+		});
+}
+
+//테이블 렌더링
+function renderTable(hists, paging) {
+	const tbody = document.querySelector('.history-table tbody');
+	
+	if (!hists || hists.length === 0) {
+		tbody.innerHTML = '<tr><td colspan="6" class="text-center">내역이 없습니다.</td></tr>';
+		return;
+	}
+	
+	tbody.innerHTML = hists.map((h, idx) => `
+		<tr>
+			<td>${paging.totalElements - (paging.currentPage * pageSize + idx)}</td>
+			<td>${h.mlgDtFmt}</td>
+			<td class="${h.mlgScore > 0 ? 'score-positive' : h.mlgScore < 0 ? 'score-negative' : ''}">${h.mlgScoreFmt}</td>
+			<td>${h.mlgType}</td>
+			<td>${h.notes}</td>
+			<td><span class="status-badge ${h.statusClass}">${h.statusNm}</span></td>
+		</tr>
+	`).join('');
+}
+
+//페이지네이션 렌더링
+function renderPagination(paging) {
+	const paginationUl = document.querySelector('.pagination');
+	
+	if (!paging || paging.totalPages === 0) {
+		paginationUl.innerHTML = '';
+		return;
+	}
+	
+	currentPage = paging.currentPage;
+	
+	let html = '';
+	
+	// 이전 버튼
+	html += `
+		<li class="page-item ${!paging.hasPrevious ? 'disabled' : ''}">
+			<a class="page-link" href="#" onclick="changePage(${currentPage - 1}); return false;">이전</a>
+		</li>
+	`;
+	
+	// 페이지 번호 (최대 5개)
+	const startPage = Math.max(0, currentPage - 2);
+	const endPage = Math.min(paging.totalPages - 1, startPage + 4);
+	
+	for (let i = startPage; i <= endPage; i++) {
+		html += `
+			<li class="page-item ${i === currentPage ? 'active' : ''}">
+				<a class="page-link" href="#" onclick="changePage(${i}); return false;">${i + 1}</a>
+			</li>
+		`;
+	}
+	
+	// 다음 버튼
+	html += `
+		<li class="page-item ${!paging.hasNext ? 'disabled' : ''}">
+			<a class="page-link" href="#" onclick="changePage(${currentPage + 1}); return false;">다음</a>
+		</li>
+	`;
+	
+	paginationUl.innerHTML = html;
+}
+
+//페이지 변경
+function changePage(page) {
+	loadMileHistory(page);
+	window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+//새로고침
+function refreshData() {
+	const refreshBtn = event.target.closest('button');
+	const originalText = refreshBtn.innerHTML;
+	refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>새로고침';
+	refreshBtn.disabled = true;
+
+	setTimeout(() => {
+		loadMileHistory(currentPage);
+		addNewNotification();
+		
+		refreshBtn.innerHTML = originalText;
+		refreshBtn.disabled = false;
+		
+		alert('데이터가 새로고침되었습니다.');
+	}, 1500);
+}
+
 
 // 기본 날짜 범위 설정 (최근 3개월)
 function setDefaultDateRange() {
@@ -132,37 +264,14 @@ function applyDateFilter() {
 			alert('시작 날짜는 종료 날짜보다 빨라야 합니다.');
 			return;
 		}
-		
-		// 실제 구현에서는 서버에 필터 요청을 보내겠지만, 
-		// 여기서는 시뮬레이션으로 메시지만 표시
-		alert(`${startDate} ~ ${endDate} 기간의 데이터를 조회합니다.`);
-		
+		// 0페이지부터 다시 조회
+		loadMileHistory(0);
 		// 테이블 데이터 필터링 로직이 여기에 들어갈 것
 		console.log('날짜 필터 적용:', startDate, '~', endDate);
 	}
 	else {
 		alert('시작 날짜와 종료 날짜를 모두 선택해주세요.');
 	}
-}
-
-// 데이터 새로고침
-function refreshData() {
-	// 로딩 표시
-	const refreshBtn = event.target.closest('button');
-	const originalText = refreshBtn.innerHTML;
-	refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>새로고침';
-	refreshBtn.disabled = true;
-
-	// 새로운 알림 추가 시뮬레이션
-	setTimeout(() => {
-		addNewNotification();
-		
-		// 버튼 원래 상태로 복구
-		refreshBtn.innerHTML = originalText;
-		refreshBtn.disabled = false;
-		
-		alert('데이터가 새로고침되었습니다.');
-	}, 1500);
 }
 
 // 새로운 알림 추가
