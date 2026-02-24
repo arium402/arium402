@@ -202,5 +202,98 @@ public interface StdMileageHistRepository extends JpaRepository<Std_MileageHist,
         @Param("endDate") String endDate,
         Pageable pageable
     );
-
+    
+    /*
+     * 학과별 평균 마일리지 조회
+     * - 재학생(11) + 휴학생(12)만 포함
+     * - 마일리지 0인 학생도 포함
+     */
+    @Query(value = """
+    	    SELECT COALESCE(AVG(mile), 0)
+    	    FROM (
+    	        SELECT 
+    	            s.std_id,
+    	            (
+    	                COALESCE(
+    	                    (SELECT SUM(h.mlg_score) 
+    	                     FROM std_mileage_hist h 
+    	                     WHERE h.std_id = s.std_id), 0
+    	                )
+    	                -
+    	                COALESCE(
+    	                    (SELECT SUM(u.aply_mlg_score) 
+    	                     FROM std_mileage_use u 
+    	                     WHERE u.std_id = s.std_id), 0
+    	                )
+    	            ) AS mile
+    	        FROM std_info s
+    	        WHERE s.dept_id = :deptId
+    	        AND s.std_stat_cd IN (11, 12)
+    	    ) AS dept_miles
+    	    """, nativeQuery = true)
+    Integer getDeptAvgMile(@Param("deptId") Integer deptId);
+    
+    
+    /*
+     * 학년별 평균 마일리지 조회
+     * - 재학생(11) + 휴학생(12)만 포함
+     * - 마일리지 0인 학생도 포함
+     */
+    @Query(value = """
+    	    SELECT COALESCE(AVG(mile), 0)
+    	    FROM (
+    	        SELECT 
+    	            s.std_id,
+    	            (
+    	                COALESCE(
+    	                    (SELECT SUM(h.mlg_score) 
+    	                     FROM std_mileage_hist h 
+    	                     WHERE h.std_id = s.std_id), 0
+    	                )
+    	                -
+    	                COALESCE(
+    	                    (SELECT SUM(u.aply_mlg_score) 
+    	                     FROM std_mileage_use u 
+    	                     WHERE u.std_id = s.std_id), 0
+    	                )
+    	            ) AS mile
+    	        FROM std_info s
+    	        WHERE s.sch_yr = :schYr
+    	        AND s.std_stat_cd IN (11, 12)
+    	    ) AS grade_miles
+    	    """, nativeQuery = true)
+    Integer getGradeAvgMile(@Param("schYr") Integer schYr);
+    
+    /*
+     * 전체 평균 마일리지 조회
+     * - 재학생(11) + 휴학생(12)만 포함
+     * - 마일리지 0인 학생도 포함
+     */
+    @Query(value = """
+    	    SELECT COALESCE(AVG(mile), 0)
+    	    FROM (
+    	        SELECT 
+    	            s.std_id,
+    	            (
+    	                COALESCE(
+    	                    (SELECT SUM(h.mlg_score) 
+    	                     FROM std_mileage_hist h 
+    	                     WHERE h.std_id = s.std_id), 0
+    	                )
+    	                -
+    	                COALESCE(
+    	                    (SELECT SUM(u.aply_mlg_score) 
+    	                     FROM std_mileage_use u 
+    	                     WHERE u.std_id = s.std_id), 0
+    	                )
+    	            ) AS mile
+    	        FROM std_info s
+    	        WHERE s.std_stat_cd IN (11, 12)
+    	    ) AS total_miles
+    	    """, nativeQuery = true)
+    Integer getTotalAvgMile();
+    
+    
+    
+    
 }

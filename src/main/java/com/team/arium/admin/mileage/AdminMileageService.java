@@ -864,7 +864,7 @@ public class AdminMileageService {
     		Common_Code code83 = commonCodeRepository.findById(83)
     				.orElseThrow(() -> new RuntimeException("완료 상태 코드를 찾을 수 없습니다"));
     		//지급일 설정
-    		String finalDate = payDate != null ? payDate : adminModule.todays_module();
+    		String finalDate = adminModule.todays_module();
     		//상태 업데이트
     		mileuse.setMlgUseCd(code83); //81->83
     		mileuse.setPayMoney(money);	//지급금액

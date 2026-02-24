@@ -112,7 +112,7 @@
 
 .history-content {
 	display: grid;
-	grid-template-columns: 1fr 3fr;
+	grid-template-columns: 350px 1fr;  /* 차트 고정, 테이블 가변 */
 	height: auto;
 	max-width: 100%;
 	overflow: hidden;

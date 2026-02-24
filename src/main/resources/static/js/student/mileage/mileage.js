@@ -1,20 +1,30 @@
 // 차트 초기화
 let mileageChart;
 
-function initChart() {
+function initChart(chartData) {
 	const ctx = document.getElementById('mileageChart').getContext('2d');
   	// 기존 차트가 있으면 파괴
 	if (mileageChart) {
 		mileageChart.destroy();
 	}
-
+	//API에서 받은 데이터 사용
+	const myMile = chartData.myMile || 0;
+	const deptAvg = chartData.deptAvg || 0;
+	const gradeAvg = chartData.gradeAvg || 0;
+	const totalAvg = chartData.totalAvg || 0;
+	//차트 최대값 계산 (가장 큰 값의 1.2배)
+	const maxValue = Math.max(myMile, deptAvg, gradeAvg, totalAvg);
+	const chartMax = Math.ceil(maxValue * 1.2 / 100) * 100; // 100 단위로 올림
+	
+	
+	// 차트 최대값 계산 (가장 큰 값의 1.2배)
 	mileageChart = new Chart(ctx, {
 		type: 'bar',
 		data: {
 			labels: ['내 포인트', '학과평균', '학년평균', '전체평균'],
 			datasets: [{
 				label: '마일리지',
-				data: [1850, 1245, 1180, 965],
+				data: [myMile, deptAvg, gradeAvg, totalAvg],
 				backgroundColor: ['#4a6fa5', '#6c7b95', '#8e9db3', '#b0bdd1'],
 				borderColor: ['#4a6fa5', '#6c7b95', '#8e9db3', '#b0bdd1'],
 				borderWidth: 0
@@ -23,6 +33,7 @@ function initChart() {
 		options: {
 			responsive: true,
 			maintainAspectRatio: false,
+			devicePixelRatio: (window.devicePixelRatio || 1) * 2, //그래프 화질 선명하게
 			plugins: {
 				legend: {
 					display: false
@@ -31,7 +42,7 @@ function initChart() {
 			scales: {
 				y: {
 					beginAtZero: true,
-					max: 2000,
+					max: chartMax,	//동적 최대값
 					ticks: {
 						callback: function(value) {
 						return value + 'P';
@@ -70,6 +81,47 @@ function initChart() {
 	});
 }
 
+//차트 데이터 로드(API호출)
+function loadChartData(){
+	
+	fetch('/student/mileage/api/chart')
+			.then(response => response.json())
+			.then(data => {
+				if (data.success) {
+					console.log('차트 데이터 로드 성공:', data);
+					// 차트 초기화 (데이터 전달)
+					initChart({
+						myMile: data.myMile,
+						deptAvg: data.deptAvg,
+						gradeAvg: data.gradeAvg,
+						totalAvg: data.totalAvg
+					});
+				} else {
+					console.error('차트 데이터 로드 실패:', data.message);
+					// 에러 시 기본값으로 차트 표시
+					initChart({
+						myMile: 0,
+						deptAvg: 0,
+						gradeAvg: 0,
+						totalAvg: 0
+					});
+					if (data.redirectUrl) {
+						window.location.href = data.redirectUrl;
+					}
+				}
+			})
+			.catch(error => {
+				console.error('차트 데이터 API 호출 오류:', error);
+				// 에러 시 기본값으로 차트 표시
+				initChart({
+					myMile: 0,
+					deptAvg: 0,
+					gradeAvg: 0,
+					totalAvg: 0
+				});
+			});
+}
+
 // 윈도우 리사이즈시 차트 다시 그리기
 function resizeChart() {
 	if (mileageChart) {
@@ -83,7 +135,9 @@ const pageSize = 10;
 // 페이지 로드 시 내역 조회
 document.addEventListener('DOMContentLoaded', function() {
 	console.log('페이지 로드됨');
-	initChart();
+	//차트 데이터 로드 (API 호출)
+	loadChartData();
+	
 	console.log('차트 초기화 완료');
 	setDefaultDateRange();
 	
@@ -237,12 +291,20 @@ function refreshData() {
 
 // 기본 날짜 범위 설정 (최근 3개월)
 function setDefaultDateRange() {
+	//로컬 시간대 사용 (한국에서 접속하면 자동으로 KST)
+	const formatDate = (date) => {
+		const year = date.getFullYear();
+		const month = String(date.getMonth() + 1).padStart(2, '0');
+		const day = String(date.getDate()).padStart(2, '0');
+		return `${year}-${month}-${day}`;
+	};
+	
 	const today = new Date();
 	const threeMonthsAgo = new Date();
 	threeMonthsAgo.setMonth(today.getMonth() - 3);
 
-	document.getElementById('endDate').value = today.toISOString().split('T')[0];
-	document.getElementById('startDate').value = threeMonthsAgo.toISOString().split('T')[0];
+	document.getElementById('endDate').value = formatDate(today);
+	document.getElementById('startDate').value = formatDate(threeMonthsAgo);
 }
 
 // 알림 닫기

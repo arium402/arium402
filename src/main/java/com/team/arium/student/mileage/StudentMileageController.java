@@ -158,4 +158,37 @@ public class StudentMileageController {
 			return ResponseEntity.badRequest().body(res);
 		}
 	}
+	
+	// 마일리지 차트 데이터 조회 API
+	@GetMapping("/api/chart")
+	public ResponseEntity<Map<String, Object>> getChartData() {
+		Map<String, Object> res = new HashMap<>();
+		
+		try {
+			// 현재 로그인된 학생 ID
+			Integer stdId = stdSecUtil.getCurrentStudentId();
+			// Service 호출
+			StdMileChartDTO chartData = stdMileService.getChartData(stdId);
+			
+			res.put("success", true);
+			res.put("myMile", chartData.getMyMile());
+			res.put("deptAvg", chartData.getDeptAvg());
+			res.put("gradeAvg", chartData.getGradeAvg());
+			res.put("totalAvg", chartData.getTotalAvg());
+			
+			return ResponseEntity.ok(res);
+		} catch (RuntimeException e) {
+			log.warn("마일리지 차트 데이터 조회 실패: {}", e.getMessage());
+			res.put("success", false);
+			
+			if (e.getMessage().contains("로그인")) {
+				res.put("message", "로그인이 필요합니다.");
+				res.put("redirectUrl", "/login");
+			} else {
+				res.put("message", e.getMessage());
+			}
+			
+			return ResponseEntity.badRequest().body(res);
+		}
+	}
 }

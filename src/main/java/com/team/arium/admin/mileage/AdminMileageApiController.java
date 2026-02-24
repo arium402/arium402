@@ -306,13 +306,12 @@ public class AdminMileageApiController {
     	
     	try {
 			Integer money = (Integer)req.get("money");
-			String payDate = (String)req.get("payDate");
 			if(money == null || money <= 0) {
 				res.put("success", false);
 				res.put("error", "유효하지 않은 승인 금액입니다.");
 				return ResponseEntity.badRequest().body(res);
 			}
-			boolean success = adminMileageService.approveConversion(mlgUseId, money, payDate);
+			boolean success = adminMileageService.approveConversion(mlgUseId, money, null);
 			res.put("success", success);
 			res.put("message", "마일리지 전환이 승인되었습니다");
 			

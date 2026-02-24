@@ -237,6 +237,38 @@ public class StdMileageService {
 				.statusNm(statusNm)
 				.statusClass(statusClass)
 				.build();
-		
+	}
+	
+	public StdMileChartDTO getChartData(Integer stdId) {
+		try {
+			//학생 정보 조회(학과/학년)
+			Std_Info std = stdInfoRepo.findById(stdId)
+					.orElseThrow(() -> new RuntimeException("학생 정보를 찾을 수 없습니다."));
+			Integer deptId = std.getDeptInfo().getDeptId();	//학과 ID
+			Integer schYr = std.getSchYr();	//학년
+			
+			//내 마일리지 계산 (적립-사용)
+			Integer totalEarned = mileHistRepo.getTotalMileageByStdId(stdId);
+			Integer totalUsed = mileUseRepo.getTotalUsedMileageByStdId(stdId);
+			Integer myMile = totalEarned - totalUsed;
+			
+			//학과 평균 조회
+			Integer deptAvg = mileHistRepo.getDeptAvgMile(deptId);
+			//학년 평균 조회
+			Integer gradeAvg = mileHistRepo.getGradeAvgMile(schYr);
+			//전체 평균 조회
+			Integer totalAvg = mileHistRepo.getTotalAvgMile();
+			//DTO 생성 및 반환
+			StdMileChartDTO chartData = StdMileChartDTO.builder()
+					.myMile(myMile)
+					.deptAvg(deptAvg)
+					.gradeAvg(gradeAvg)
+					.totalAvg(totalAvg)
+					.build();
+			return chartData;			
+		} catch (Exception e) {
+			log.error("마일리지 차트 데이터 조회 실패: stdId={}, 오류={}", stdId, e.getMessage(), e);
+			throw new RuntimeException("차트 데이터 조회 중 오류가 발생했습니다: " + e.getMessage());
+		}
 	}
 }
