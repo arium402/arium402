@@ -286,7 +286,7 @@ async function processPayment(participantIds) {
         body: JSON.stringify({
             prgId: programId,
             participantIds: participantIds,
-            paymentDate: new Date().toISOString().split('T')[0]
+            
         })
     });
     

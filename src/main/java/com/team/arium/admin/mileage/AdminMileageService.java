@@ -152,8 +152,7 @@ public class AdminMileageService {
         List<String> failedStudents = new ArrayList<>();
         
         try {
-            String paymentDate = request.getPaymentDate() != null ? 
-                request.getPaymentDate() : adminModule.todays_module();
+        	String paymentDate = adminModule.todays_module();
             
             // 프로그램 정보 검증
             Ncs_PrgInfo program = ncsPrgInfoRepository.findById(request.getPrgId())
@@ -206,7 +205,7 @@ public class AdminMileageService {
                 .successCount(successCount)
                 .failCount(failCount)
                 .failedStudents(failedStudents)
-                .paymentDate(request.getPaymentDate())
+                .paymentDate(null)
                 .build();
         }
     }

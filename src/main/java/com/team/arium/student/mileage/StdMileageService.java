@@ -1,6 +1,7 @@
 package com.team.arium.student.mileage;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -271,4 +272,75 @@ public class StdMileageService {
 			throw new RuntimeException("차트 데이터 조회 중 오류가 발생했습니다: " + e.getMessage());
 		}
 	}
+	
+	/*
+	 * 최근 마일리지 알림 조회 (최대 2개)
+	 * -지급 + 전환 완료
+	 */
+	public List<StdMileNotiDTO> getNotis(Integer stdId) {
+		try {
+			// 1. Repository 호출
+			List<Object[]> rows = mileHistRepo.findRecentNotis(stdId);
+			
+			// 2. DTO 변환
+			List<StdMileNotiDTO> notis = rows.stream()
+				.map(this::toNotiDTO)
+				.collect(Collectors.toList());
+			return notis;
+			
+		} catch (Exception e) {
+			log.error("마일리지 알림 조회 실패: stdId={}, 오류={}", stdId, e.getMessage(), e);
+			return Collections.emptyList();
+		}
+	}
+	
+	/*
+	 * Object[] → StdMileNotiDTO 변환
+	 */
+	private StdMileNotiDTO toNotiDTO(Object[] row) {
+		try {
+			String title = row[0] != null ? row[0].toString() : "";
+			Integer score = row[1] != null ? ((Number) row[1]).intValue() : 0;
+			String dt = row[2] != null ? row[2].toString() : "";
+			String type = row[3] != null ? row[3].toString() : "earned";
+			String icon = row[4] != null ? row[4].toString() : "fas fa-bell";
+			
+			//날짜에 시간 추가 (날짜만 있는 경우 대비)
+			if (dt.length() == 10) {
+				dt += " 00:00:00";
+			}
+			
+			//scoreText 생성
+			String scoreText;
+			if ("earned".equals(type)) {
+				scoreText = String.format("+%dP", score);
+			} else if ("pending".equals(type)) {
+				scoreText = String.format("%dP", score);  // 신청은 마이너스
+			} else {  // converted
+				scoreText = String.format("%,d원", score);
+			}
+			
+			return StdMileNotiDTO.builder()
+				.title(title)
+				.score(score)
+				.dt(dt)
+				.type(type)
+				.icon(icon)
+				.scoreText(scoreText)
+				.build();
+				
+		} catch (Exception e) {
+			log.error("알림 DTO 변환 실패: {}", e.getMessage(), e);
+			// 기본값 반환
+			return StdMileNotiDTO.builder()
+				.title("변환 오류")
+				.score(0)
+				.dt(adminModule.datetime_module())
+				.type("earned")
+				.icon("fas fa-bell")
+				.scoreText("+0P")
+				.build();
+		}
+	}
+	
 }

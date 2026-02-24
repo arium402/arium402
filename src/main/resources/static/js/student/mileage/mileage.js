@@ -124,11 +124,35 @@ function loadChartData(){
 
 // 윈도우 리사이즈시 차트 다시 그리기
 function resizeChart() {
+	console.log('resizeChart 호출됨');
 	if (mileageChart) {
+		console.log('차트 resize 실행');
+		
+		// ✅ 차트 영역과 테이블 영역 높이 동기화
+		const chartArea = document.querySelector('.chart-area');
+		const tableArea = document.querySelector('.table-area');
+		
+		if (chartArea && tableArea) {
+			// 토글 상태 확인
+			const guideCollapse = document.getElementById('mileageGuide');
+			const isGuideOpen = guideCollapse && guideCollapse.classList.contains('show');
+			
+			if (!isGuideOpen) {
+				// 토글 닫혔을 때: 테이블 높이에 맞춤
+				const tableHeight = tableArea.offsetHeight;
+				chartArea.style.height = tableHeight + 'px';
+				console.log('토글 닫힘 - 차트 높이:', tableHeight);
+			} else {
+				// 토글 열렸을 때: 높이 제한 해제
+				chartArea.style.height = 'auto';
+				console.log('토글 열림 - 차트 높이: auto');
+			}
+		}
+		
 		mileageChart.resize();
+		console.log('resize 완료');
 	}
 }
-
 let currentPage = 0;
 const pageSize = 10;
 
@@ -137,6 +161,9 @@ document.addEventListener('DOMContentLoaded', function() {
 	console.log('페이지 로드됨');
 	//차트 데이터 로드 (API 호출)
 	loadChartData();
+	
+	//알림 로드 추가
+	loadNotis();
 	
 	console.log('차트 초기화 완료');
 	setDefaultDateRange();
@@ -153,13 +180,33 @@ document.addEventListener('DOMContentLoaded', function() {
 	const guideCollapse = document.getElementById('mileageGuide');
 	if (guideCollapse) {
 		guideCollapse.addEventListener('show.bs.collapse', function () {
+			console.log('가이드 열기 시작');
 			const arrow = document.getElementById('guideArrow');
 			if (arrow) arrow.style.transform = 'rotate(180deg)';
 		});
 
 		guideCollapse.addEventListener('hide.bs.collapse', function () {
+			console.log('가이드 닫기 시작');
 			const arrow = document.getElementById('guideArrow');
 			if (arrow) arrow.style.transform = 'rotate(0deg)';
+		});
+		// 토글 완료 후 차트 resize
+		guideCollapse.addEventListener('shown.bs.collapse', function() {
+			console.log('가이드 열기 완료 - 차트 resize 시작');
+			setTimeout(() => {
+				console.log('차트 resize 실행');
+				resizeChart();
+			}, 300);
+		});
+
+		guideCollapse.addEventListener('hidden.bs.collapse', function() {
+			console.log('가이드 닫기 완료 - 차트 resize 시작');
+			setTimeout(() => {
+				console.log('차트 resize 실행');
+
+				//차트 resize
+				resizeChart();
+			}, 300);
 		});
 	}
 
@@ -210,16 +257,29 @@ function renderTable(hists, paging) {
 		return;
 	}
 	
-	tbody.innerHTML = hists.map((h, idx) => `
-		<tr>
-			<td>${paging.totalElements - (paging.currentPage * pageSize + idx)}</td>
-			<td>${h.mlgDtFmt}</td>
-			<td class="${h.mlgScore > 0 ? 'score-positive' : h.mlgScore < 0 ? 'score-negative' : ''}">${h.mlgScoreFmt}</td>
-			<td>${h.mlgType}</td>
-			<td>${h.notes}</td>
-			<td><span class="status-badge ${h.statusClass}">${h.statusNm}</span></td>
-		</tr>
-	`).join('');
+	tbody.innerHTML = hists.map((h, idx) => {
+			// ✅ [] 안의 텍스트만 색상 적용
+			let notesHtml = h.notes;
+			
+			if (h.notes && h.notes.includes('[마일리지 적립]')) {
+				notesHtml = h.notes.replace('[마일리지 적립]', '<span class="badge-earned">[마일리지 적립]</span>');
+			} else if (h.notes && h.notes.includes('[전환 신청]')) {
+				notesHtml = h.notes.replace('[전환 신청]', '<span class="badge-pending">[전환 신청]</span>');
+			} else if (h.notes && h.notes.includes('[전환 완료]')) {
+				notesHtml = h.notes.replace('[전환 완료]', '<span class="badge-completed">[전환 완료]</span>');
+			}
+			
+			return `
+				<tr>
+					<td>${paging.totalElements - (paging.currentPage * pageSize + idx)}</td>
+					<td>${h.mlgDtFmt}</td>
+					<td class="${h.mlgScore > 0 ? 'score-positive' : h.mlgScore < 0 ? 'score-negative' : ''}">${h.mlgScoreFmt}</td>
+					<td>${h.mlgType}</td>
+					<td>${notesHtml}</td>
+					<td><span class="status-badge ${h.statusClass}">${h.statusNm}</span></td>
+				</tr>
+			`;
+		}).join('');
 }
 
 //페이지네이션 렌더링
@@ -307,15 +367,6 @@ function setDefaultDateRange() {
 	document.getElementById('startDate').value = formatDate(threeMonthsAgo);
 }
 
-// 알림 닫기
-function closeNotification(button) {
-	const notification = button.closest('.notification-item');
-	notification.style.animation = 'slideOut 0.3s ease-in forwards';
-	setTimeout(() => {
-		notification.remove();
-	}, 300);
-}
-
 // 날짜 필터 적용
 function applyDateFilter() {
 	const startDate = document.getElementById('startDate').value;
@@ -336,15 +387,140 @@ function applyDateFilter() {
 	}
 }
 
-// 새로운 알림 추가
-function addNewNotification() {
+// 알림 로드 (API 호출)
+function loadNotis() {
+	console.log('알림 로드 시작');
+	
+	fetch('/student/mileage/api/notis')
+		.then(response => response.json())
+		.then(data => {
+			if (data.success) {
+				renderNotis(data.notis);
+			} else {
+				console.error('알림 로드 실패:', data.message);
+				// 에러 시 빈 알림 영역
+				document.getElementById('notificationArea').innerHTML = '';
+			}
+		})
+		.catch(error => {
+			console.error('알림 API 호출 오류:', error);
+			document.getElementById('notificationArea').innerHTML = '';
+		});
+}
+
+// 알림 렌더링
+function renderNotis(notis) {
+	const notiArea = document.getElementById('notificationArea');
+	
+	if (!notis || notis.length === 0) {
+		notiArea.innerHTML = '';
+		return;
+	}
+	
+	const html = notis.map((noti) => {
+		// 타입별 클래스 및 메시지 생성
+		let typeClass = '';
+		let message = '';
+		
+		if (noti.type === 'earned') {
+			typeClass = 'notification-new';
+			// "새로운 마일리지 적립! 리더십 개발 프로그램 참여로 +60P가 적립되었습니다."
+			message = `<strong>${noti.title}</strong> ${noti.scoreText}가 적립되었습니다.`;
+			
+		} else if (noti.type === 'pending') {
+			typeClass = '';
+			// "마일리지 장학금 전환 신청! -200P 전환 신청이 완료되었습니다."
+			message = `<strong>${noti.title}</strong> ${noti.scoreText} 전환 신청이 완료되었습니다.`;
+			
+		} else {  // converted
+			typeClass = '';
+			// "마일리지 장학금 전환 완료! 2,000원이 지급되었습니다."
+			message = `<strong>${noti.title}</strong> ${noti.scoreText}이 지급되었습니다.`;
+		}
+		
+		const timeAgo = getTimeAgo(noti.dt);
+		
+		return `
+			<div class="notification-item ${typeClass}">
+				<div class="notification-content">
+					<i class="${noti.icon} notification-icon"></i>
+					<div>
+						<p class="notification-text">${message}</p>
+						<span class="notification-time">${timeAgo}</span>
+					</div>
+				</div>
+				<button class="notification-close" onclick="closeNotification(this)">
+					<i class="fas fa-times"></i>
+				</button>
+			</div>
+		`;
+	}).join('');
+	
+	notiArea.innerHTML = html;
+}
+
+// 시간 차이 계산 (X초/분/시간/일 전)
+function getTimeAgo(dt) {
+	try {
+		// 날짜 파싱
+		const eventTime = new Date(dt.replace(' ', 'T'));
+		const now = new Date();
+		
+		// 밀리초 차이 계산
+		const diff = now - eventTime;
+		const seconds = Math.floor(diff / 1000);
+		const minutes = Math.floor(seconds / 60);
+		const hours = Math.floor(minutes / 60);
+		const days = Math.floor(hours / 24);
+		
+		// 시간 단위 결정
+		if (seconds < 60) {
+			return `${seconds}초 전`;
+		} else if (minutes < 60) {
+			return `${minutes}분 전`;
+		} else if (hours < 24) {
+			return `${hours}시간 전`;
+		} else {
+			return `${days}일 전`;
+		}
+	} catch (error) {
+		console.error('시간 계산 오류:', error);
+		return '방금 전';
+	}
+}
+
+// 알림 닫기
+function closeNotification(button) {
+	const notification = button.closest('.notification-item');
+	notification.style.animation = 'slideOut 0.3s ease-in forwards';
+	setTimeout(() => {
+		notification.remove();
+	}, 300);
+}
+
+// 새로운 알림 추가 (최대 2개 유지)
+function addNewNotification(message, type = 'new') {
 	const notificationArea = document.getElementById('notificationArea');
+	
+	// 기존 알림 개수 확인
+	const existingNotis = notificationArea.querySelectorAll('.notification-item');
+	
+	// 2개 이상이면 가장 오래된 알림 제거
+	if (existingNotis.length >= 2) {
+		const oldestNoti = existingNotis[existingNotis.length - 1];
+		oldestNoti.style.animation = 'slideOut 0.3s ease-in forwards';
+		setTimeout(() => {
+			oldestNoti.remove();
+		}, 300);
+	}
+	
+	// 새 알림 생성
 	const newNotification = `
-		<div class="notification-item notification-new">
+		<div class="notification-item ${type === 'new' ? 'notification-new' : ''}">
 			<div class="notification-content">
 				<i class="fas fa-bell notification-icon"></i>
 				<div>
-					<p class="notification-text"><strong>새로운 마일리지 적립!</strong> 창의적 사고력 개발 프로그램 참여로 +45P가 적립되었습니다.</p>
+					<p class="notification-text">${message}</p>
 					<span class="notification-time">방금 전</span>
 				</div>
 			</div>
@@ -353,7 +529,8 @@ function addNewNotification() {
 			</button>
 		</div>
 	`;
-
+	
+	// 맨 위에 추가
 	notificationArea.insertAdjacentHTML('afterbegin', newNotification);
 }
 

@@ -109,99 +109,105 @@ public interface StdMileageHistRepository extends JpaRepository<Std_MileageHist,
      * - 필터: type(유형), status(상태), startDate, endDate
      */
     @Query(value = """
-        SELECT * FROM (
-            SELECT 
-                h.mlg_dt as event_dt,
-                h.mlg_score,
-                NULL as pay_money,
-                '지급' as mlg_type,
-                CONCAT(COALESCE(p.prg_nm, '프로그램'), ' 비교과 프로그램 참여') as notes,
-                '지급완료' as status_nm,
-                'status-completed' as status_class
-            FROM std_mileage_hist h
-            LEFT JOIN ncs_cmp_info c ON h.cmp_id = c.cmp_id
-            LEFT JOIN ncs_prg_info p ON c.prg_id = p.prg_id
-            WHERE h.std_id = :stdId
-            
-            UNION ALL
-            
-            SELECT 
-                u.aply_dt as event_dt,
-                -u.aply_mlg_score as mlg_score,
-                NULL as pay_money,
-                '차감' as mlg_type,
-                '마일리지 장학금 전환 신청' as notes,
-                CASE 
-                    WHEN u.mlg_use_cd = 82 THEN '취소'
-                    ELSE '대기'
-                END as status_nm,
-                CASE 
-                    WHEN u.mlg_use_cd = 82 THEN 'status-cancelled'
-                    ELSE 'status-applied'
-                END as status_class
-            FROM std_mileage_use u
-            WHERE u.std_id = :stdId
-            
-            UNION ALL
-            
-            SELECT 
-                u.pay_dt as event_dt,
-                u.pay_money as mlg_score,
-                u.pay_money,
-                '지급' as mlg_type,
-                '마일리지 장학금 전환 완료' as notes,
-                '지급완료' as status_nm,
-                'status-completed' as status_class
-            FROM std_mileage_use u
-            WHERE u.std_id = :stdId
-            AND u.pay_dt IS NOT NULL
-            AND u.pay_dt != ''
-            AND u.mlg_use_cd = 83
-        ) AS combined
-        WHERE 1=1
-            AND (:type IS NULL OR mlg_type = :type)
-            AND (:status IS NULL OR status_nm = :status)
-            AND (:startDate IS NULL OR event_dt >= :startDate)
-            AND (:endDate IS NULL OR event_dt <= :endDate)
-        ORDER BY event_dt DESC
-        """,
-        countQuery = """
-        SELECT COUNT(*) FROM (
-            SELECT h.mlg_dt as event_dt, '지급' as mlg_type, '지급완료' as status_nm
-            FROM std_mileage_hist h
-            WHERE h.std_id = :stdId
-            
-            UNION ALL
-            
-            SELECT u.aply_dt, '차감',
-                CASE WHEN u.mlg_use_cd = 82 THEN '취소' ELSE '대기' END
-            FROM std_mileage_use u
-            WHERE u.std_id = :stdId
-            
-            UNION ALL
-            
-            SELECT u.pay_dt, '지급', '지급완료'
-            FROM std_mileage_use u
-            WHERE u.std_id = :stdId 
-            AND u.pay_dt IS NOT NULL 
-            AND u.pay_dt != '' 
-            AND u.mlg_use_cd = 83
-        ) AS combined
-        WHERE 1=1
-            AND (:type IS NULL OR mlg_type = :type)
-            AND (:status IS NULL OR status_nm = :status)
-            AND (:startDate IS NULL OR event_dt >= :startDate)
-            AND (:endDate IS NULL OR event_dt <= :endDate)
-        """,
-        nativeQuery = true)
-    Page<Object[]> findMileHistoryByStdIdWithFilters(
-        @Param("stdId") Integer stdId,
-        @Param("type") String type,
-        @Param("status") String status,
-        @Param("startDate") String startDate,
-        @Param("endDate") String endDate,
-        Pageable pageable
-    );
+    	    SELECT * FROM (
+    	        SELECT 
+    	            h.mlg_dt as event_dt,
+    	            h.mlg_score,
+    	            NULL as pay_money,
+    	            '지급' as mlg_type,
+    	            CONCAT('[마일리지 적립] ', COALESCE(p.prg_nm, '프로그램'), ' 참여') as notes,
+    	            '지급완료' as status_nm,
+    	            'status-completed' as status_class,
+    	            h.reg_dt as sort_dt,
+    	            h.mlg_id as sort_id
+    	        FROM std_mileage_hist h
+    	        LEFT JOIN ncs_cmp_info c ON h.cmp_id = c.cmp_id
+    	        LEFT JOIN ncs_prg_info p ON c.prg_id = p.prg_id
+    	        WHERE h.std_id = :stdId
+    	        
+    	        UNION ALL
+    	        
+    	        SELECT 
+    	            u.aply_dt as event_dt,
+    	            -u.aply_mlg_score as mlg_score,
+    	            NULL as pay_money,
+    	            '차감' as mlg_type,
+    	            '[전환 신청] 마일리지 장학금 전환 신청' as notes,
+    	            CASE 
+    	                WHEN u.mlg_use_cd = 82 THEN '취소'
+    	                ELSE '대기'
+    	            END as status_nm,
+    	            CASE 
+    	                WHEN u.mlg_use_cd = 82 THEN 'status-cancelled'
+    	                ELSE 'status-applied'
+    	            END as status_class,
+    	            u.reg_dt as sort_dt,
+    	            u.mlg_use_id as sort_id
+    	        FROM std_mileage_use u
+    	        WHERE u.std_id = :stdId
+    	        
+    	        UNION ALL
+    	        
+    	        SELECT 
+    	            u.pay_dt as event_dt,
+    	            u.pay_money as mlg_score,
+    	            u.pay_money,
+    	            '지급' as mlg_type,
+    	            '[전환 완료] 마일리지 장학금 전환 완료' as notes,
+    	            '지급완료' as status_nm,
+    	            'status-completed' as status_class,
+    	            u.upd_dt as sort_dt,
+    	            u.mlg_use_id as sort_id
+    	        FROM std_mileage_use u
+    	        WHERE u.std_id = :stdId
+    	        AND u.pay_dt IS NOT NULL
+    	        AND u.pay_dt != ''
+    	        AND u.mlg_use_cd = 83
+    	    ) AS combined
+    	    WHERE 1=1
+    	        AND (:type IS NULL OR mlg_type = :type)
+    	        AND (:status IS NULL OR status_nm = :status)
+    	        AND (:startDate IS NULL OR event_dt >= :startDate)
+    	        AND (:endDate IS NULL OR event_dt <= :endDate)
+    	    ORDER BY event_dt DESC, sort_dt DESC, sort_id DESC
+    	    """,
+    	    countQuery = """
+    	    SELECT COUNT(*) FROM (
+    	        SELECT h.mlg_dt as event_dt, '지급' as mlg_type, '지급완료' as status_nm
+    	        FROM std_mileage_hist h
+    	        WHERE h.std_id = :stdId
+    	        
+    	        UNION ALL
+    	        
+    	        SELECT u.aply_dt, '차감',
+    	            CASE WHEN u.mlg_use_cd = 82 THEN '취소' ELSE '대기' END
+    	        FROM std_mileage_use u
+    	        WHERE u.std_id = :stdId
+    	        
+    	        UNION ALL
+    	        
+    	        SELECT u.pay_dt, '지급', '지급완료'
+    	        FROM std_mileage_use u
+    	        WHERE u.std_id = :stdId 
+    	        AND u.pay_dt IS NOT NULL 
+    	        AND u.pay_dt != '' 
+    	        AND u.mlg_use_cd = 83
+    	    ) AS combined
+    	    WHERE 1=1
+    	        AND (:type IS NULL OR mlg_type = :type)
+    	        AND (:status IS NULL OR status_nm = :status)
+    	        AND (:startDate IS NULL OR event_dt >= :startDate)
+    	        AND (:endDate IS NULL OR event_dt <= :endDate)
+    	    """,
+    	    nativeQuery = true)
+    	Page<Object[]> findMileHistoryByStdIdWithFilters(
+    	    @Param("stdId") Integer stdId,
+    	    @Param("type") String type,
+    	    @Param("status") String status,
+    	    @Param("startDate") String startDate,
+    	    @Param("endDate") String endDate,
+    	    Pageable pageable
+    	);
     
     /*
      * 학과별 평균 마일리지 조회
@@ -294,6 +300,53 @@ public interface StdMileageHistRepository extends JpaRepository<Std_MileageHist,
     Integer getTotalAvgMile();
     
     
-    
+    /**
+     * 최근 마일리지 알림 조회 (지급 + 전환 신청 + 전환 완료)
+     * - 최대 2개
+     * - 최신순 정렬
+     */
+    @Query(value = """
+    	    SELECT * FROM (
+    	        SELECT 
+    	            CONCAT('새로운 마일리지 적립! ', COALESCE(p.prg_nm, '프로그램'), ' 참여로') as title,
+    	            h.mlg_score as score,
+    	            h.reg_dt as dt,
+    	            'earned' as type,
+    	            'fas fa-bell' as icon
+    	        FROM std_mileage_hist h
+    	        LEFT JOIN ncs_cmp_info c ON h.cmp_id = c.cmp_id
+    	        LEFT JOIN ncs_prg_info p ON c.prg_id = p.prg_id
+    	        WHERE h.std_id = :stdId
+    	        
+    	        UNION ALL
+    	        
+    	        SELECT 
+    	            '마일리지 장학금 전환 신청!' as title,
+    	            u.aply_mlg_score as score,
+    	            u.reg_dt as dt,
+    	            'pending' as type,
+    	            'fas fa-info-circle' as icon
+    	        FROM std_mileage_use u
+    	        WHERE u.std_id = :stdId
+    	        AND u.mlg_use_cd = 81
+    	        
+    	        UNION ALL
+    	        
+    	        SELECT 
+    	            '마일리지 장학금 전환 완료!' as title,
+    	            u.pay_money as score,
+    	            u.upd_dt as dt,
+    	            'converted' as type,
+    	            'fas fa-check-circle' as icon
+    	        FROM std_mileage_use u
+    	        WHERE u.std_id = :stdId
+    	        AND u.mlg_use_cd = 83
+    	        AND u.pay_dt IS NOT NULL
+    	        AND u.pay_dt != ''
+    	    ) AS combined
+    	    ORDER BY dt DESC
+    	    LIMIT 2
+    	    """, nativeQuery = true)
+    List<Object[]> findRecentNotis(@Param("stdId") Integer stdId);
     
 }

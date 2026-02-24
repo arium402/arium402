@@ -96,7 +96,7 @@ function updatePagination(pagination) {
 		const pageBtn = document.createElement('button');
 		pageBtn.className = 'pagination-btn' + (i === pagination.currentPage ? ' active' : '');
 		pageBtn.textContent = i + 1;
-		pageBtn.onclick = () => goToPage(i);
+		pageBtn.onclick = () => goToConversionPage(i);
 		paginationDiv.appendChild(pageBtn);
 	}
 	
@@ -145,7 +145,7 @@ function changePage(direction) {
 }
 
 // 특정 페이지로 이동
-function goToPage(page) {
+function goToConversionPage(page) {
     currentPage = page;
     loadConversions(currentStatus, currentPage);
 }

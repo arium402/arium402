@@ -117,6 +117,7 @@
 	max-width: 100%;
 	overflow: hidden;
 	border: 2px solid #ddd;
+	transition: all 0.3s ease;
 }
 
 /* 차트 영역 */
@@ -126,12 +127,14 @@
 	border-right: 1px solid #ddd;
 	display: flex;
 	flex-direction: column;
+	
 }
 
 .chart-container {
 	flex: 1;
 	position: relative;
 	min-height: 400px;
+	max-height: 520px;
 }
 
 /* 테이블 영역 */
@@ -224,10 +227,42 @@
 }
 
 .history-table td {
-	padding: 20px 10px;
+	padding: 18px 10px;
 	text-align: center;
 	border-bottom: 1px solid #f0f0f0;
 	vertical-align: middle;
+}
+
+/* 비고 컬럼 기본 스타일 */
+.history-table tbody tr td:nth-child(5) {
+	font-weight: 400;  /* 일반 텍스트는 보통 굵기 */
+	text-align: left;
+	padding-left: 20px;
+}
+
+/* [] 배지 기본 스타일 */
+.badge-earned,
+.badge-pending,
+.badge-completed {
+	font-weight: 700;  /* 굵게 */
+	padding: 2px 6px;
+	border-radius: 3px;
+	margin-right: 6px;
+}
+
+/* 마일리지 적립 배지 - 초록색 */
+.badge-earned {
+	color: #155724;
+}
+
+/* 전환 신청 배지 - 주황색 */
+.badge-pending {
+	color: #856404;
+}
+
+/* 전환 완료 배지 - 파란색 */
+.badge-completed {
+	color: #004085;
 }
 
 .history-table tbody tr:hover {

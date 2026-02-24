@@ -1,6 +1,8 @@
 package com.team.arium.student.mileage;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
@@ -180,6 +182,44 @@ public class StudentMileageController {
 		} catch (RuntimeException e) {
 			log.warn("마일리지 차트 데이터 조회 실패: {}", e.getMessage());
 			res.put("success", false);
+			
+			if (e.getMessage().contains("로그인")) {
+				res.put("message", "로그인이 필요합니다.");
+				res.put("redirectUrl", "/login");
+			} else {
+				res.put("message", e.getMessage());
+			}
+			
+			return ResponseEntity.badRequest().body(res);
+		}
+	}
+	
+	/*
+	 * 마일리지 알림 조회 API
+	 * - 최근 지급 + 전환 완료 내역 2개
+	 */
+	@GetMapping("/api/notis")
+	public ResponseEntity<Map<String, Object>> getNotis() {
+		Map<String, Object> res = new HashMap<>();
+		
+		try {
+			// 현재 로그인된 학생 ID
+			Integer stdId = stdSecUtil.getCurrentStudentId();
+			// Service 호출
+			List<StdMileNotiDTO> notis = stdMileService.getNotis(stdId);
+			
+			res.put("success", true);
+			res.put("notis", notis);
+			
+			log.info("마일리지 알림 조회 성공: stdId={}, 알림 {}건", stdId, notis.size());
+			
+			return ResponseEntity.ok(res);
+			
+		} catch (RuntimeException e) {
+			log.warn("마일리지 알림 조회 실패: {}", e.getMessage());
+			
+			res.put("success", false);
+			res.put("notis", Collections.emptyList());
 			
 			if (e.getMessage().contains("로그인")) {
 				res.put("message", "로그인이 필요합니다.");

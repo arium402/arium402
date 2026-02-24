@@ -313,7 +313,7 @@ function initTableClickEvent() {
         row.style.cursor = 'pointer';
         
         // 클릭 이벤트
-        row.addEventListener('click', function() {
+        row.addEventListener('click', function(e) {
 			//만족도 버튼 클릭 시 이벤트 전파 방지
 			if (e.target.classList.contains('satisfaction-btn')) {
 			    return;  // 버튼 클릭이면 여기서 중단
