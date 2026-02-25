@@ -24,7 +24,7 @@ public class StudentNoncurrController {
     @Qualifier("admin_module")
     private admin_module adminModule;
     
-    // ✅ 학생 보안 유틸리티 추가
+    //  학생 보안 유틸리티 추가
     @Autowired
     private StudentSecurityUtil studentSecurityUtil;
     
@@ -34,7 +34,7 @@ public class StudentNoncurrController {
     @GetMapping("/list")
     public String listPage(Model model) {
         try {
-            // ✅ 현재 로그인된 학생 정보 추가 (필요시 사용)
+            //  현재 로그인된 학생 정보 추가 (필요시 사용)
             Integer currentStudentId = studentSecurityUtil.getCurrentStudentId();
             String currentStudentName = studentSecurityUtil.getCurrentStudentName();
             
@@ -58,7 +58,7 @@ public class StudentNoncurrController {
     @GetMapping("/detail")
     public String detailPage(@RequestParam("prgId") Integer prgId, Model model) {
         try {
-            // ✅ 하드코딩 제거: 현재 로그인된 학생 ID 사용
+            //  하드코딩 제거: 현재 로그인된 학생 ID 사용
             Integer stdId = studentSecurityUtil.getCurrentStudentId();
             
             ProgramListDTO program = studentNoncurrService.getProgramDetail(prgId, stdId);
@@ -82,7 +82,7 @@ public class StudentNoncurrController {
     public String addPage(@RequestParam(value = "prgId", required = false) Integer prgId, Model model) {
         try {
             if (prgId != null) {
-                // ✅ 하드코딩 제거: 현재 로그인된 학생 ID 사용
+                //  하드코딩 제거: 현재 로그인된 학생 ID 사용
                 Integer stdId = studentSecurityUtil.getCurrentStudentId();
                 
                 ProgramListDTO program = studentNoncurrService.getProgramDetail(prgId, stdId);
@@ -106,17 +106,17 @@ public class StudentNoncurrController {
     @GetMapping("/addcheck")
     public String addcheckPage(Model model) {
         try {
-            // ✅ 하드코딩 제거: 현재 로그인된 학생 ID 사용
+            //  하드코딩 제거: 현재 로그인된 학생 ID 사용
             Integer stdId = studentSecurityUtil.getCurrentStudentId();
             
             List<ProgramListDTO> myApplications = studentNoncurrService.getMyApplications(stdId);
             model.addAttribute("applications", myApplications);
             
-            // ✅ 아시아/서울 시간 기준 현재 날짜 추가
+            //  아시아/서울 시간 기준 현재 날짜 추가
             String currentDate = adminModule.todays_module();
             model.addAttribute("currentDate", currentDate);
             
-            // ✅ 현재 학생 정보 추가
+            //  현재 학생 정보 추가
             model.addAttribute("currentStudentName", studentSecurityUtil.getCurrentStudentName());
             model.addAttribute("currentStudentNumber", studentSecurityUtil.getCurrentStudentNumber());
             
@@ -137,7 +137,7 @@ public class StudentNoncurrController {
     @GetMapping("/survey")
     public String surveyPage(@RequestParam(value = "prgId", required = false) Integer prgId, Model model) {
         try {
-            // ✅ 하드코딩 제거: 현재 로그인된 학생 ID 사용
+            //  하드코딩 제거: 현재 로그인된 학생 ID 사용
             Integer stdId = studentSecurityUtil.getCurrentStudentId();
             
             if (prgId != null) {
@@ -146,7 +146,7 @@ public class StudentNoncurrController {
                 model.addAttribute("surveyData", surveyData);
             }
             
-            // ✅ 현재 로그인된 학생 기본 정보 가져오기 (하드코딩 제거)
+            //  현재 로그인된 학생 기본 정보 가져오기 (하드코딩 제거)
             StudentBasicInfoDTO studentInfo = studentNoncurrService.getStudentBasicInfo(stdId);
             model.addAttribute("studentInfo", studentInfo);
             

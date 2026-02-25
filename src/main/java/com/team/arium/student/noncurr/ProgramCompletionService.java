@@ -36,6 +36,9 @@ public class ProgramCompletionService {
     private CommonCodeRepository commonCodeRepository;
     
     @Autowired
+    private CoreCptInfoRepository coreCptInfoRepository;
+    
+    @Autowired
     @Qualifier("admin_module")
     private admin_module adminModule;
     
@@ -94,7 +97,7 @@ public class ProgramCompletionService {
                     }
                     
                     // 이수 정보 생성
-                    createCompletionInfo(application);
+                    createCompletionInfo(application); // 역량 점수 추가됨
                     
                     // 핵심역량 점수 반영
                     addCompetencyScores(application);
@@ -131,8 +134,25 @@ public class ProgramCompletionService {
         }
     }
     
+    /*
+     * 이수 정보 생성 + 역량 점수 추가 (재사용 가능하도록 public)
+     */
+    @Transactional
+    public void createCompletionInfoWithScores(Ncs_PrgAply application) {
+        // 1. 이수 정보 생성
+        createCompletionInfo(application);
+        
+        // 2. 역량 점수 추가
+        addCompetencyScores(application);
+        
+        System.out.println("이수 정보 생성 + 역량 점수 추가 완료 - 학생 ID: " + 
+            application.getStdInfo().getStdId());
+    }
+    
+    
+    
     /**
-     * 이수 정보 생성
+     * 이수 정보 생성 
      */
     private void createCompletionInfo(Ncs_PrgAply application) {
         Ncs_CmpInfo completion = Ncs_CmpInfo.builder()
@@ -238,7 +258,5 @@ public class ProgramCompletionService {
         }
     }
     
-    // CoreCptInfoRepository 추가 (빠뜨린 것)
-    @Autowired
-    private CoreCptInfoRepository coreCptInfoRepository;
+
 }

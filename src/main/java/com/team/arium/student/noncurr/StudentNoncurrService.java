@@ -79,6 +79,9 @@ public class StudentNoncurrService {
     private NcsCmpInfoRepository ncsCmpInfoRepository;
     
     @Autowired
+    private ProgramCompletionService prgCmpService;
+    
+    @Autowired
     @Qualifier("admin_module")
     private admin_module adminModule;
     
@@ -115,8 +118,8 @@ public class StudentNoncurrService {
         return convertToDTO(program, stdId);
     }
     
-    /**
-     * ✅ 프로그램 신청 (개선된 버전)
+    /*
+     * 프로그램 신청 (개선된 버전)
      */
     @Transactional
     public boolean applyProgram(Integer prgId, Integer stdId) {
@@ -188,7 +191,7 @@ public class StudentNoncurrService {
             
             Ncs_PrgAply savedApplication = ncsPrgAplyRepository.save(application);
             
-            // ✅ 강제로 플러시하여 즉시 DB 반영
+            //강제로 플러시하여 즉시 DB 반영
             ncsPrgAplyRepository.flush();
             
             System.out.println("신청 저장 완료 - 신청 ID: " + savedApplication.getAplyId());
@@ -204,10 +207,10 @@ public class StudentNoncurrService {
      * 학생의 신청 내역 조회 (자동 이수 처리 포함)
      */
     public List<ProgramListDTO> getMyApplications(Integer stdId) {
-        // ✅ 자동 이수 처리 먼저 실행
+        //  자동 이수 처리 먼저 실행
         processCompletedPrograms(stdId);
         
-        // ✅ 기존 완료된 만족도 조사 일괄 업데이트
+        //  기존 완료된 만족도 조사 일괄 업데이트
         updateExistingSurveyCompletions(stdId);
         
         // 기존 로직
@@ -274,18 +277,15 @@ public class StudentNoncurrService {
             .canApply(canApply)
             .canCancel(cancelInfo.canCancel)
             .cancelReasonMessage(cancelInfo.reasonMessage)
-            .applicationPeriodStatus(applicationPeriodStatus)  // ✅ 신청 기간 상태 추가
-            .surveyCompleted(surveyCompleted)           // ✅ 추가
-            .satisfactionStatus(satisfactionStatus)     // ✅ 추가
+            .applicationPeriodStatus(applicationPeriodStatus)  //  신청 기간 상태 추가
+            .surveyCompleted(surveyCompleted)           //  추가
+            .satisfactionStatus(satisfactionStatus)     //  추가
             .build();
     }
     
     
-    
-    
-    
     /**
-     * ✅ 취소 가능 여부 및 이유 계산
+     *  취소 가능 여부 및 이유 계산
      */
     private CancelInfo calculateCancelInfo(Ncs_PrgInfo program, String applicationStatus) {
         try {
@@ -330,7 +330,7 @@ public class StudentNoncurrService {
     }
     
     /**
-     * ✅ 취소 정보를 담는 내부 클래스
+     *  취소 정보를 담는 내부 클래스
      */
     private static class CancelInfo {
         final boolean canCancel;
@@ -343,7 +343,7 @@ public class StudentNoncurrService {
     }
     
     /**
-     * ✅ 신청 가능 여부 계산
+     *  신청 가능 여부 계산
      */
     private Boolean calculateCanApply(Ncs_PrgInfo program, int currentApplicants, String applicationStatus) {
         try {
@@ -373,7 +373,7 @@ public class StudentNoncurrService {
     }
 
     /**
-     * ✅ 신청 상태 구분 (신청 전/중/후 구분)
+     *  신청 상태 구분 (신청 전/중/후 구분)
      */
     private String getApplicationPeriodStatus(Ncs_PrgInfo program) {
         try {
@@ -408,7 +408,7 @@ public class StudentNoncurrService {
         try {
             LocalDate today = getCurrentDate();
             
-            // ✅ 신청기간 확인 (운영기간이 아닌 신청기간)
+            //  신청기간 확인 (운영기간이 아닌 신청기간)
             LocalDate recruitStartDate = LocalDate.parse(program.getRecruitStDt());  // 신청 시작일
             LocalDate recruitEndDate = LocalDate.parse(program.getRecruitEndDt());    // 신청 마감일
             
@@ -431,11 +431,11 @@ public class StudentNoncurrService {
     }
     
     /**
-     * ✅ 중복 신청 체크 (캐시 무시 버전)
+     *  중복 신청 체크 (캐시 무시 버전)
      */
     private boolean isAlreadyApplied(Integer prgId, Integer stdId) {
         try {
-            // ✅ 캐시를 무시하고 직접 DB 조회
+            //  캐시를 무시하고 직접 DB 조회
             List<Ncs_PrgAply> applications = ncsPrgAplyRepository.findByPrgIdAndStdIdWithRefresh(prgId, stdId);
             boolean isApplied = !applications.isEmpty();
             
@@ -714,7 +714,7 @@ public class StudentNoncurrService {
     }
 
     /**
-     * ✅ 프로그램 신청 취소 (개선된 버전)
+     *  프로그램 신청 취소 (개선된 버전)
      */
     @Transactional
     public boolean cancelApplication(Integer prgId, Integer stdId) {
@@ -729,7 +729,7 @@ public class StudentNoncurrService {
             Ncs_PrgAply application = applications.get(0);
             ncsPrgAplyRepository.delete(application);
             
-            // ✅ 강제로 플러시하여 즉시 DB 반영
+            //  강제로 플러시하여 즉시 DB 반영
             ncsPrgAplyRepository.flush();
             
             System.out.println("신청 취소 완료 - 프로그램 ID: " + prgId + ", 학생 ID: " + stdId);
@@ -826,18 +826,11 @@ public class StudentNoncurrService {
                     Optional<Ncs_CmpInfo> existingCompletion = ncsCmpInfoRepository.findByNcsPrgAply_AplyId(application.getAplyId());
                     
                     if (existingCompletion.isEmpty()) {
-                        // 4. 이수 정보 자동 생성
-                        Ncs_CmpInfo completion = Ncs_CmpInfo.builder()
-                            .ncsPrgAply(application)
-                            .ncsPrgInfo(program)
-                            .stdInfo(application.getStdInfo())
-                            .cmpYn(Yn.Y)  // ✅ ENUM 사용
-                            .surveyYn(Yn.N)  // ✅ ENUM 사용
-                            .build();
+                        //  ProgramCompletionService의 메서드 재사용!
+                        prgCmpService.createCompletionInfoWithScores(application);
                         
-                        ncsCmpInfoRepository.save(completion);
-                        
-                        System.out.println("자동 이수 처리 완료 - 프로그램: " + program.getPrgNm() + ", 학생 ID: " + stdId);
+                        System.out.println("자동 이수 처리 완료 (역량 점수 포함) - 프로그램: " + 
+                            program.getPrgNm() + ", 학생 ID: " + stdId);
                     }
                 }
             }
@@ -1059,10 +1052,10 @@ public class StudentNoncurrService {
             // 4. 일괄 저장
             dgstfnEvalRepository.saveAll(evaluations);
             
-            // ✅ 만족도 조사 완료 후 이수 정보 업데이트
+            //  만족도 조사 완료 후 이수 정보 업데이트
             updateSurveyCompletion(prgId, stdId);
             
-            // ✅ 만족도 조사 완료 후 이수 정보 업데이트
+            //  만족도 조사 완료 후 이수 정보 업데이트
             System.out.println("만족도 조사 완료 플래그 업데이트 시작");
             updateSurveyCompletion(prgId, stdId);
             System.out.println("만족도 조사 완료 플래그 업데이트 완료");

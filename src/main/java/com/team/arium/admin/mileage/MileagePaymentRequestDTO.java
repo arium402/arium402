@@ -18,7 +18,7 @@ public class MileagePaymentRequestDTO {
     private String paymentMemo;                 // 지급 메모
     private Boolean selectAll;                  // 전체 선택 여부
 
-    // ✅ 명시적 Getter/Setter 추가
+    //  명시적 Getter/Setter 추가
     public Integer getPrgId() {
         return prgId;
     }

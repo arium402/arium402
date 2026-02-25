@@ -8,7 +8,7 @@ function handleImageSelect(input) {
     
     if (file) {
 		
-		// ✅ 파일 크기 검증 추가
+		//  파일 크기 검증 추가
 		console.log('선택된 파일:', file.name, '크기:', file.size, '타입:', file.type);
         
 		if (file.size === 0) {
@@ -53,7 +53,7 @@ function handleImageSelect(input) {
     }
 }
 
-// ✅ 전화번호 포맷팅 함수 추가
+//  전화번호 포맷팅 함수 추가
 function formatPhoneNumber(input) {
     // 숫자만 추출
     let value = input.value.replace(/[^0-9]/g, '');
@@ -108,7 +108,7 @@ function toggleScoreSelect(checkbox) {
     updateCompetencyScores();
 }
 
-// ✅ 새로 추가: 핵심역량 점수 정보 수집
+//  새로 추가: 핵심역량 점수 정보 수집
 function updateCompetencyScores() {
     const checkboxes = document.querySelectorAll('input[name="competencyCheckbox"]:checked');
     const scoresData = [];
@@ -132,7 +132,7 @@ function updateCompetencyScores() {
     console.log('핵심역량 점수 정보:', scoresData.join(','));
 }
 
-// ✅ 수정: 체크박스 값들과 점수를 함께 수집
+//  수정: 체크박스 값들과 점수를 함께 수집
 function updateCompetencyIds() {
     const checkboxes = document.querySelectorAll('input[name="competencyCheckbox"]:checked');
     const competencyIds = Array.from(checkboxes).map(cb => cb.value);
@@ -148,7 +148,7 @@ function updateCompetencyIds() {
 
 // 미리보기 표시
 function showPreview() {
-    // ✅ 수정: 모든 ID를 새로운 필드명에 맞게 변경
+    //  수정: 모든 ID를 새로운 필드명에 맞게 변경
     const prgNm = document.getElementById('prgNm').value || '프로그램명';
     const recruitStDt = document.getElementById('recruitStDt').value;
     const recruitEndDt = document.getElementById('recruitEndDt').value;
@@ -239,7 +239,7 @@ function validateForm() {
         return false;
     }
 
-    // ✅ 수정: 새로운 필드 ID로 변경
+    //  수정: 새로운 필드 ID로 변경
     const recruitStDt = new Date(document.getElementById('recruitStDt').value);
     const recruitEndDt = new Date(document.getElementById('recruitEndDt').value);
     const prgStDt = new Date(document.getElementById('prgStDt').value);
@@ -260,7 +260,7 @@ function validateForm() {
         return false;
     }
 	
-	// ✅ 파일 검증 추가
+	//  파일 검증 추가
 	const fileInput = document.getElementById('imageFile');
 	if (fileInput.files && fileInput.files[0]) {
 	    const file = fileInput.files[0];
@@ -291,7 +291,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // 체크박스 값들을 히든 필드에 설정
             updateCompetencyIds();
-			updateCompetencyScores(); // ✅ 이 줄 추가
+			updateCompetencyScores(); //  이 줄 추가
 
 			// 등록 확인
 			if (!confirm('비교과 프로그램을 등록하시겠습니까?')) {
@@ -299,7 +299,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			    return false;
 			}
 			
-			// ✅ 파일 정보 최종 확인 (디버깅용)
+			//  파일 정보 최종 확인 (디버깅용)
 			const fileInput = document.getElementById('imageFile');
 			if (fileInput.files && fileInput.files[0]) {
 			    console.log('제출 전 파일 확인:', fileInput.files[0].name, '크기:', fileInput.files[0].size);
@@ -316,10 +316,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const competencyCheckboxes = document.querySelectorAll('input[name="competencyCheckbox"]');
     competencyCheckboxes.forEach(checkbox => {
         checkbox.addEventListener('change', updateCompetencyIds);
-		checkbox.addEventListener('change', updateCompetencyScores); // ✅ 이 줄 추가
+		checkbox.addEventListener('change', updateCompetencyScores); //  이 줄 추가
     });
 
-    // ✅ 수정: 새로운 필드 ID로 변경
+    //  수정: 새로운 필드 ID로 변경
     const maxCntInput = document.getElementById('maxCnt');
     if (maxCntInput) {
         maxCntInput.addEventListener('input', function() {
@@ -329,7 +329,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // ✅ 수정: 새로운 필드 ID로 변경
+    //  수정: 새로운 필드 ID로 변경
     const mlgDefScoreInput = document.getElementById('mlgDefScore');
     if (mlgDefScoreInput) {
         mlgDefScoreInput.addEventListener('input', function() {
@@ -339,7 +339,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 	
-	// ✅ 전화번호 자동 포맷팅 이벤트 추가
+	//  전화번호 자동 포맷팅 이벤트 추가
 	const prgTelInput = document.getElementById('prgTel');
 	if (prgTelInput) {
 	    prgTelInput.addEventListener('input', function() {
@@ -357,7 +357,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 오늘 날짜보다 이전 날짜 선택 방지
     const today = new Date().toISOString().split('T')[0];
-    // ✅ 수정: 새로운 필드 ID로 변경
+    //  수정: 새로운 필드 ID로 변경
     const dateInputs = ['recruitStDt', 'recruitEndDt', 'prgStDt', 'prgEndDt', 'surveyDt'];
     
 	// ISO 포맷(YYYY-MM-DD)으로 나오는 로케일(캐나다) + timeZone 옵션 사용
@@ -369,13 +369,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     });
     
-	// ✅ 새로 추가: 초기 로드시 체크된 항목 처리
+	//  새로 추가: 초기 로드시 체크된 항목 처리
 	const initialCheckedBoxes = document.querySelectorAll('input[name="competencyCheckbox"]:checked');
 	initialCheckedBoxes.forEach(checkbox => {
 	    toggleScoreSelect(checkbox);
 	});
 	
-	// ✅ 점수 선택 변경시 이벤트 추가
+	//  점수 선택 변경시 이벤트 추가
 	document.addEventListener('change', function(e) {
 	    if (e.target.classList.contains('score-select')) {
 	        updateCompetencyScores();

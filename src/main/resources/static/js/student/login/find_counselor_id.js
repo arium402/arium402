@@ -64,7 +64,7 @@ function findCounselorId(name, phone, email) {
     })
     .then(response => {
         console.log("응답 상태:", response.status);
-        console.log("응답 OK:", response.ok);  // ✅ ] 제거
+        console.log("응답 OK:", response.ok);  //  ] 제거
         
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);

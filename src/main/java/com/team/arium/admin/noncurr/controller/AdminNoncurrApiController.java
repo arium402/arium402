@@ -61,7 +61,7 @@ public class AdminNoncurrApiController {
             HttpServletRequest req
     		) {
 
-    	// ✅ Common_Code 객체 생성해서 상태 코드 설정
+    	//  Common_Code 객체 생성해서 상태 코드 설정
     	Common_Code statusCode = new Common_Code();
     	statusCode.setCodeId(51);
     	statusCode.setCodeType("prg_stat_cd");
@@ -76,7 +76,7 @@ public class AdminNoncurrApiController {
             log.info("전체 파라미터 개수: {}", req.getParameterMap().size());
             log.info("이미지 파일 정보: {}", dto.getImageFile() != null ? dto.getImageFile().getOriginalFilename() : "null");
             
-         // ✅ 문자열을 List로 변환 (DTO에서 자동 처리됨)
+         //  문자열을 List로 변환 (DTO에서 자동 처리됨)
             log.info("선택된 핵심역량: {}", dto.getCompetencyIds());
             
             Collection<Part> parts = req.getParts();
@@ -106,7 +106,7 @@ public class AdminNoncurrApiController {
     
     log.info("비교과 프로그램 등록 성공: ID={}, 이름={}", prgId, dto.getPrgNm());
     
-    // ✅ 성공 시 목록 페이지로 리다이렉트 (success 파라미터 추가)
+    //  성공 시 목록 페이지로 리다이렉트 (success 파라미터 추가)
     return "redirect:/admin/noncurr_success";
     
 } catch (Exception e) {
@@ -256,7 +256,7 @@ public class AdminNoncurrApiController {
     }
     
     /**
-     * ✅ 신청자 목록 조회 API (새로 추가)
+     *  신청자 목록 조회 API (새로 추가)
      */
     @GetMapping("/noncurr_applicants")
     public ResponseEntity<Map<String, Object>> getApplicants(
@@ -301,7 +301,7 @@ public class AdminNoncurrApiController {
     
     
     /**
-     * ✅ 통합 상세 정보 조회 API (프로그램 정보 + 신청자 목록)
+     *  통합 상세 정보 조회 API (프로그램 정보 + 신청자 목록)
      */
     @GetMapping("/noncurr_detail_full")
     public ResponseEntity<Map<String, Object>> getFullProgramDetail(
@@ -557,7 +557,7 @@ public class AdminNoncurrApiController {
         log.info("프로그램 만족도 통계 조회 요청: prgId={}", prgId);
         
         try {
-            // ✅ 실제 만족도 조사 통계 조회
+            //  실제 만족도 조사 통계 조회
             SatisfactionSurveyDTO statistics = adminNoncurrProgramService.getSatisfactionSurveyStatistics(prgId);
             
             log.info("만족도 조회 성공: 응답자수={}", statistics.getTotalResponders());

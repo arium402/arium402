@@ -43,7 +43,7 @@ function setActiveMenuBasedOnCurrentPage() {
     // 즉시 활성 메뉴 설정
     if (activeMenu) {
         setActiveMenu(activeMenu);
-        console.log('✅ 페이지 로드 시 활성 메뉴:', activeMenu.textContent.trim());
+        console.log(' 페이지 로드 시 활성 메뉴:', activeMenu.textContent.trim());
     }
 }
 
@@ -142,7 +142,7 @@ function setupMenuClickEvents() {
 	    // 즉시 활성 메뉴 설정
 	    if (activeMenu) {
 	        setActiveMenu(activeMenu);
-	        console.log('✅ 페이지 로드 시 활성 메뉴:', activeMenu.textContent.trim());
+	        console.log(' 페이지 로드 시 활성 메뉴:', activeMenu.textContent.trim());
 	    } else {
 	        console.log('❌ 매칭되는 메뉴를 찾을 수 없음 - 현재 경로:', currentPath);
 	    }

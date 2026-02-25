@@ -15,7 +15,7 @@ public class StudentNoncurrApiController {
     @Autowired
     private StudentNoncurrService studentNoncurrService;
 
-    // ✅ 학생 보안 유틸리티 추가
+    //  학생 보안 유틸리티 추가
     @Autowired
     private StudentSecurityUtil studentSecurityUtil;
     
@@ -26,7 +26,7 @@ public class StudentNoncurrApiController {
     public ResponseEntity<Map<String, Object>> applyProgram(
             @RequestParam(value = "prgId") Integer prgId) { 
         try {
-            // ✅ 하드코딩 제거: 현재 로그인된 학생 ID 사용
+            //  하드코딩 제거: 현재 로그인된 학생 ID 사용
             Integer stdId = studentSecurityUtil.getCurrentStudentId();
             
             boolean success = studentNoncurrService.applyProgram(prgId, stdId);
@@ -49,7 +49,7 @@ public class StudentNoncurrApiController {
             Map<String, Object> response = new HashMap<>();
             response.put("success", false);
             
-            // ✅ 로그인 관련 오류 처리
+            //  로그인 관련 오류 처리
             if (e.getMessage().contains("로그인")) {
                 response.put("message", "로그인이 필요합니다.");
                 response.put("redirectUrl", "/student/login");
@@ -66,7 +66,7 @@ public class StudentNoncurrApiController {
     @GetMapping("/competency/{prgId}")
     public ResponseEntity<Map<String, Object>> getCompetencyData(@PathVariable("prgId") Integer prgId) {
         try {
-            // ✅ 하드코딩 제거: 현재 로그인된 학생 ID 사용
+            //  하드코딩 제거: 현재 로그인된 학생 ID 사용
             Integer stdId = studentSecurityUtil.getCurrentStudentId();
             
             CompetencyChartDTO competencyData = studentNoncurrService.getCompetencyChartData(prgId, stdId);
@@ -96,7 +96,7 @@ public class StudentNoncurrApiController {
     @DeleteMapping("/cancel-application/{prgId}")
     public ResponseEntity<Map<String, Object>> cancelApplicationNew(@PathVariable("prgId") Integer prgId) {
         try {
-            // ✅ 하드코딩 제거: 현재 로그인된 학생 ID 사용
+            //  하드코딩 제거: 현재 로그인된 학생 ID 사용
             Integer stdId = studentSecurityUtil.getCurrentStudentId();
             
             boolean success = studentNoncurrService.cancelApplication(prgId, stdId);
@@ -135,7 +135,7 @@ public class StudentNoncurrApiController {
    @GetMapping("/detail/{prgId}")
    public ResponseEntity<Map<String, Object>> getProgramDetail(@PathVariable Integer prgId) {
         try {
-            // ✅ 하드코딩 제거: 현재 로그인된 학생 ID 사용
+            //  하드코딩 제거: 현재 로그인된 학생 ID 사용
             Integer stdId = studentSecurityUtil.getCurrentStudentId();
             
             ProgramListDTO program = studentNoncurrService.getProgramDetail(prgId, stdId);
@@ -165,7 +165,7 @@ public class StudentNoncurrApiController {
    @GetMapping("/my-applications")
    public ResponseEntity<Map<String, Object>> getMyApplications() {
        try {
-           // ✅ 하드코딩 제거: 현재 로그인된 학생 ID 사용
+           //  하드코딩 제거: 현재 로그인된 학생 ID 사용
            Integer stdId = studentSecurityUtil.getCurrentStudentId();
            
            List<ProgramListDTO> applications = studentNoncurrService.getMyApplications(stdId);
@@ -196,7 +196,7 @@ public class StudentNoncurrApiController {
    @DeleteMapping("/cancel/{prgId}")
    public ResponseEntity<Map<String, Object>> cancelApplication(@PathVariable Integer prgId) {
        try {
-           // ✅ 하드코딩 제거: 현재 로그인된 학생 ID 사용
+           //  하드코딩 제거: 현재 로그인된 학생 ID 사용
            Integer stdId = studentSecurityUtil.getCurrentStudentId();
            
            boolean success = studentNoncurrService.cancelApplication(prgId, stdId);
@@ -236,7 +236,7 @@ public class StudentNoncurrApiController {
            @RequestParam(value = "size", defaultValue = "8") int size) {
        
        try {
-           // ✅ 하드코딩 제거: 현재 로그인된 학생 ID 사용
+           //  하드코딩 제거: 현재 로그인된 학생 ID 사용
            Integer stdId = studentSecurityUtil.getCurrentStudentId();
            
            PagedProgramResponseDTO result = studentNoncurrService.searchProgramsWithPaging(
@@ -269,7 +269,7 @@ public class StudentNoncurrApiController {
            @RequestParam("prgId") Integer prgId,
            @RequestBody Map<String, Integer> surveyData) {
        try {
-           // ✅ 하드코딩 제거: 현재 로그인된 학생 ID 사용
+           //  하드코딩 제거: 현재 로그인된 학생 ID 사용
            Integer stdId = studentSecurityUtil.getCurrentStudentId();
            
            boolean success = studentNoncurrService.submitSatisfactionSurvey(prgId, stdId, surveyData);

@@ -20,7 +20,7 @@ public class MileagePaymentResultDTO {
     private List<String> failedStudents;       // 실패한 학생 목록
     private String paymentDate;                 // 지급일
 
-    // ✅ 명시적 Getter/Setter 추가
+    //  명시적 Getter/Setter 추가
     public Boolean getSuccess() {
         return success;
     }

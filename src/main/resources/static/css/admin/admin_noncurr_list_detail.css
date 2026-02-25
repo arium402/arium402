@@ -100,7 +100,7 @@ body {
     box-shadow: 0 4px 12px rgba(149, 165, 166, 0.3);
 }
 
-/* ✅ 삭제 버튼 */
+/*  삭제 버튼 */
 .delete-btn {
     padding: 10px 20px;
     background: linear-gradient(135deg, #e74c3c, #c0392b);
@@ -233,12 +233,12 @@ body {
     font-size: 0.95rem;
 }
 
-/* ✅ 핵심역량 데이터를 라벨에 더 가깝게 배치 */
+/*  핵심역량 데이터를 라벨에 더 가깝게 배치 */
 .detail-right .detail-value.competency-scores {
     margin-left: -5px; /* 왼쪽으로 5px 당겨서 라벨에 더 가깝게 */
 }
 
-/* ✅ 프로그램 설명 단독 배치 */
+/*  프로그램 설명 단독 배치 */
 .detail-row-wide {
     margin-top: 12px;
 }
@@ -259,13 +259,13 @@ body {
     min-height: 80px;
     color: #495057;
     white-space: pre-wrap;
-    margin-top: 0; /* ✅ 라벨과 같은 높이에 배치 */
-    width: 100%; /* ✅ 컨테이너 내에서 100% 사용 */
-    flex: 1; /* ✅ 남은 공간 차지 */
-    max-width: 100%; /* ✅ 최대 너비를 더 넓게 (280px → 500px) */
+    margin-top: 0; /*  라벨과 같은 높이에 배치 */
+    width: 100%; /*  컨테이너 내에서 100% 사용 */
+    flex: 1; /*  남은 공간 차지 */
+    max-width: 100%; /*  최대 너비를 더 넓게 (280px → 500px) */
 }
 
-/* ✅ 만족도 조사 마감일 스타일 - 배경 도형 제거 */
+/*  만족도 조사 마감일 스타일 - 배경 도형 제거 */
 .survey-deadline {
     color: #495057;
     font-weight: 600;
@@ -275,7 +275,7 @@ body {
     white-space: nowrap;
 }
 
-/* ✅ 만족도 조사 마감일 아래 구분선 */
+/*  만족도 조사 마감일 아래 구분선 */
 .survey-row {
     border-bottom: 1px solid #ccc;
     padding-bottom: 15px;
@@ -336,7 +336,7 @@ body {
     display: inline-block;
 }
 
-/* ✅ 핵심역량 점수 표시 스타일 - 배경 도형 제거 */
+/*  핵심역량 점수 표시 스타일 - 배경 도형 제거 */
 .competency-scores {
     line-height: 1.6;
     word-break: keep-all;
@@ -344,7 +344,7 @@ body {
     font-size: 0.9rem;
 }
 
-/* ✅ 삭제 확인 모달 스타일 */
+/*  삭제 확인 모달 스타일 */
 .delete-modal .modal-content {
     max-width: 500px;
     border-radius: 8px;
@@ -389,7 +389,7 @@ body {
     line-height: 1.6;
 }
 
-/* ✅ 삭제 모달 버튼들 */
+/*  삭제 모달 버튼들 */
 .delete-actions {
     display: flex;
     justify-content: center;
@@ -689,7 +689,7 @@ body {
         margin-bottom: 0;
     }
     
-    /* ✅ 모바일에서는 핵심역량 margin 조정 해제 */
+    /*  모바일에서는 핵심역량 margin 조정 해제 */
     .detail-right .detail-value.competency-scores {
         margin-left: 0;
     }

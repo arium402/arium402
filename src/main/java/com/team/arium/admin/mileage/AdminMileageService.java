@@ -2,25 +2,25 @@ package com.team.arium.admin.mileage;
 
 import com.team.arium.admin.admin_module;
 
-//✅ 마일리지 DTO import
+// 마일리지 DTO import
 import com.team.arium.admin.mileage.MileagePaymentRequestDTO;
 import com.team.arium.admin.mileage.MileagePaymentResultDTO;
 import com.team.arium.admin.mileage.MileageStatisticsDTO;
 
-//✅ 마일리지 Repository import (StdMileageHistRepository만 사용)
+// 마일리지 Repository import (StdMileageHistRepository만 사용)
 import com.team.arium.admin.mileage.StdMileageHistRepository;
 import com.team.arium.student.mileage.StdMileageUseRepository;
-//✅ 기존 StdInfoRepository 사용 (경로 변경)
+// 기존 StdInfoRepository 사용 (경로 변경)
 import com.team.arium.student.noncurr.StdInfoRepository;
 
-//✅ 기존 비교과 Repository import
+// 기존 비교과 Repository import
 import com.team.arium.admin.noncurr.repository.*;
 
-//✅ 기존 비교과 DTO import (재사용)
+// 기존 비교과 DTO import (재사용)
 import com.team.arium.admin.noncurr.dto.NoncurrProgramDTO;
 import com.team.arium.admin.noncurr.dto.ApplicantDTO;
 
-//✅ Domain Entity import
+// Domain Entity import
 import com.team.arium.domain.*;
 
 import lombok.RequiredArgsConstructor;
@@ -247,7 +247,7 @@ public class AdminMileageService {
         // 6. 마일리지 가산 코드 조회
         Common_Code addCode = getOrCreateAdditionCode();
         
-        // ✅ 7. 기존 만족도 조사 ID 조회 (수정된 부분)
+        //  7. 기존 만족도 조사 ID 조회 (수정된 부분)
         String surEvalId = findExistingSurveyEvalId(student.getStdId(), program.getPrgId());
         if (surEvalId == null) {
             throw new RuntimeException("만족도 조사 ID를 찾을 수 없습니다. 학생ID: " + student.getStdId() + ", 프로그램ID: " + program.getPrgId());
@@ -259,7 +259,7 @@ public class AdminMileageService {
         Std_MileageHist mileageHist = Std_MileageHist.builder()
             .stdInfo(student)
             .ncsCmpInfo(completion)
-            .surEvalId(surEvalId)  // ✅ 기존 ID 사용
+            .surEvalId(surEvalId)  //  기존 ID 사용
             .mlgScore(mileageScore)
             .mlgAddCd(addCode)
             .mlgDt(paymentDate)
@@ -274,7 +274,7 @@ public class AdminMileageService {
         return student.getStdNm();
     }
 
-    // ✅ 3. 새로운 메서드 추가
+    //  3. 새로운 메서드 추가
     /**
      * 기존 만족도 조사 ID 조회
      */
@@ -620,7 +620,7 @@ public class AdminMileageService {
      * 마일리지 가산 코드 조회 또는 생성
      */
     private Common_Code getOrCreateAdditionCode() {
-        // ✅ 실제 DB 코드 ID 71번 사용 ("적립" 코드)
+        //  실제 DB 코드 ID 71번 사용 ("적립" 코드)
         return commonCodeRepository.findById(71)
             .orElseGet(() -> {
                 log.warn("마일리지 가산 코드(71)가 없어 기본값 사용");

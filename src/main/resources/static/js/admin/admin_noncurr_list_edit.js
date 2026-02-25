@@ -7,7 +7,7 @@ function handleImageSelect(input) {
     const uploadContent = uploadArea.querySelector('.image-upload-content');
     
     if (file) {
-        // ✅ 파일 크기 검증 추가
+        //  파일 크기 검증 추가
         console.log('선택된 파일:', file.name, '크기:', file.size, '타입:', file.type);
         
         if (file.size === 0) {
@@ -52,7 +52,7 @@ function handleImageSelect(input) {
     }
 }
 
-// ✅ 전화번호 포맷팅 함수 (등록 페이지와 동일)
+//  전화번호 포맷팅 함수 (등록 페이지와 동일)
 function formatPhoneNumber(input) {
     // 숫자만 추출
     let value = input.value.replace(/[^0-9]/g, '');
@@ -107,7 +107,7 @@ function toggleScoreSelect(checkbox) {
     updateCompetencyScores();
 }
 
-// ✅ 체크박스 값들 수집 (등록 페이지와 동일)
+//  체크박스 값들 수집 (등록 페이지와 동일)
 function updateCompetencyIds() {
     const checkboxes = document.querySelectorAll('input[name="competencyCheckbox"]:checked');
     const competencyIds = Array.from(checkboxes).map(cb => cb.value);
@@ -121,7 +121,7 @@ function updateCompetencyIds() {
     console.log('선택된 핵심역량 ID:', competencyIds);
 }
 
-// ✅ 핵심역량 점수 정보 수집 (등록 페이지와 동일)
+//  핵심역량 점수 정보 수집 (등록 페이지와 동일)
 function updateCompetencyScores() {
     const checkboxes = document.querySelectorAll('input[name="competencyCheckbox"]:checked');
     const scoresData = [];
@@ -147,7 +147,7 @@ function updateCompetencyScores() {
 
 // 미리보기 표시 (등록 페이지와 동일)
 function showPreview() {
-    // ✅ 수정: 모든 ID를 새로운 필드명에 맞게 변경
+    //  수정: 모든 ID를 새로운 필드명에 맞게 변경
     const prgNm = document.getElementById('prgNm').value || '프로그램명';
     const recruitStDt = document.getElementById('recruitStDt').value;
     const recruitEndDt = document.getElementById('recruitEndDt').value;
@@ -220,7 +220,7 @@ function goToList() {
     window.location.href = '/admin/noncurr_list';
 }
 
-// ✅ 폼 유효성 검사 (등록 페이지와 동일)
+//  폼 유효성 검사 (등록 페이지와 동일)
 function validateForm() {
     // 핵심역량 체크 검증
     const competencies = document.querySelectorAll('input[name="competencyCheckbox"]:checked');
@@ -229,7 +229,7 @@ function validateForm() {
         return false;
     }
 
-    // ✅ 핵심역량 점수 검증 추가
+    //  핵심역량 점수 검증 추가
     const checkedBoxes = document.querySelectorAll('input[name="competencyCheckbox"]:checked');
     let hasUnselectedScore = false;
     
@@ -246,7 +246,7 @@ function validateForm() {
         return false;
     }
 
-    // ✅ 수정: 새로운 필드 ID로 변경
+    //  수정: 새로운 필드 ID로 변경
     const recruitStDt = new Date(document.getElementById('recruitStDt').value);
     const recruitEndDt = new Date(document.getElementById('recruitEndDt').value);
     const prgStDt = new Date(document.getElementById('prgStDt').value);
@@ -267,7 +267,7 @@ function validateForm() {
         return false;
     }
 
-    // ✅ 파일 검증 추가
+    //  파일 검증 추가
     const fileInput = document.getElementById('imageFile');
     if (fileInput.files && fileInput.files[0]) {
         const file = fileInput.files[0];
@@ -281,9 +281,9 @@ function validateForm() {
     return true;
 }
 
-// ✅ 페이지 로드 시 이벤트 설정 (등록 페이지 기반)
+//  페이지 로드 시 이벤트 설정 (등록 페이지 기반)
 document.addEventListener('DOMContentLoaded', function() {
-    // ✅ 기존 이미지가 있으면 업로드 콘텐츠 숨기기
+    //  기존 이미지가 있으면 업로드 콘텐츠 숨기기
     const existingImage = document.querySelector('.image-upload-area .image-preview');
     const uploadContent = document.querySelector('.image-upload-content');
     if (existingImage && uploadContent) {
@@ -311,7 +311,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 return false;
             }
             
-            // ✅ 파일 정보 최종 확인 (디버깅용)
+            //  파일 정보 최종 확인 (디버깅용)
             const fileInput = document.getElementById('imageFile');
             if (fileInput.files && fileInput.files[0]) {
                 console.log('제출 전 파일 확인:', fileInput.files[0].name, '크기:', fileInput.files[0].size);
@@ -330,7 +330,7 @@ document.addEventListener('DOMContentLoaded', function() {
         checkbox.addEventListener('change', updateCompetencyScores);
     });
 
-    // ✅ 수정: 새로운 필드 ID로 변경
+    //  수정: 새로운 필드 ID로 변경
     const maxCntInput = document.getElementById('maxCnt');
     if (maxCntInput) {
         maxCntInput.addEventListener('input', function() {
@@ -340,7 +340,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // ✅ 수정: 새로운 필드 ID로 변경
+    //  수정: 새로운 필드 ID로 변경
     const mlgDefScoreInput = document.getElementById('mlgDefScore');
     if (mlgDefScoreInput) {
         mlgDefScoreInput.addEventListener('input', function() {
@@ -350,7 +350,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // ✅ 전화번호 자동 포맷팅 이벤트 추가
+    //  전화번호 자동 포맷팅 이벤트 추가
     const prgTelInput = document.getElementById('prgTel');
     if (prgTelInput) {
         prgTelInput.addEventListener('input', function() {
@@ -367,18 +367,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 오늘 날짜보다 이전 날짜 선택 방지
     const today = new Date().toISOString().split('T')[0];
-    // ✅ 수정: 새로운 필드 ID로 변경
+    //  수정: 새로운 필드 ID로 변경
     const dateInputs = ['recruitStDt', 'recruitEndDt', 'prgStDt', 'prgEndDt', 'surveyDt'];
     
 
 
-    // ✅ 페이지 로드시 초기 체크된 항목 처리
+    //  페이지 로드시 초기 체크된 항목 처리
     const initialCheckedBoxes = document.querySelectorAll('input[name="competencyCheckbox"]:checked');
     initialCheckedBoxes.forEach(checkbox => {
         toggleScoreSelect(checkbox);
     });
     
-    // ✅ 점수 선택 변경시 이벤트 추가
+    //  점수 선택 변경시 이벤트 추가
     document.addEventListener('change', function(e) {
         if (e.target.classList.contains('score-select')) {
             updateCompetencyScores();
@@ -392,7 +392,7 @@ document.addEventListener('DOMContentLoaded', function() {
     updateCompetencyScores();
 });
 
-// ✅ 공통 JavaScript 로드 후 실행 (등록 페이지와 동일)
+//  공통 JavaScript 로드 후 실행 (등록 페이지와 동일)
 if (typeof activateMenuByCurrentUrl === 'function') {
     activateMenuByCurrentUrl();
 }

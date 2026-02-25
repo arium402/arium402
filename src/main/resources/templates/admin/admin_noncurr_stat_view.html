@@ -54,7 +54,7 @@
                     </tr>
                 </thead>
 <tbody id="statisticsTableBody">
-                    <!-- ✅ 서버에서 전달된 완료 프로그램 데이터 표시 -->
+                    <!--  서버에서 전달된 완료 프로그램 데이터 표시 -->
                     <tr th:each="program, iterStat : ${programs.content}" 
                         th:data-program-id="${program.prgId}"
                         style="cursor: pointer;">
@@ -71,7 +71,7 @@
                         </td>
                     </tr>
                     
-                    <!-- ✅ 완료된 프로그램이 없을 때만 표시 -->
+                    <!--  완료된 프로그램이 없을 때만 표시 -->
                     <tr th:if="${programs == null or programs.content.size() == 0}">
                         <td colspan="7" style="text-align: center; padding: 50px; color: #6c757d;">
                             완료된 프로그램이 없습니다

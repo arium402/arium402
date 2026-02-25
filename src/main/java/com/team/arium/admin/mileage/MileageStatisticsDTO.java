@@ -26,7 +26,7 @@ public class MileageStatisticsDTO {
     // 월별/기간별 통계
     private List<MonthlyStatDTO> monthlyStats;
 
-    // ✅ 명시적 Getter/Setter 추가
+    //  명시적 Getter/Setter 추가
     public Integer getTotalPrograms() {
         return totalPrograms;
     }

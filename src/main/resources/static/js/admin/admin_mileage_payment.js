@@ -20,7 +20,7 @@ const API_ENDPOINTS = {
 document.addEventListener('DOMContentLoaded', function() {
     const currentPath = window.location.pathname;
     
-	// ✅ 메인 페이지만 처리
+	//  메인 페이지만 처리
 	if (currentPath.includes('admin_mileage_payment') && !currentPath.includes('admin_mileage_payment_add')) {
 	    // 메인 페이지 초기화
 	    initMainPage();
@@ -219,13 +219,13 @@ function updateTable() {
         const statusText = program.status === 'waiting' ? '대기' : '완료';
         const rowNumber = (currentPage - 1) * currentSize + index + 1;
         
-        // ✅ 전체 행에 클릭 이벤트 및 스타일 추가
+        //  전체 행에 클릭 이벤트 및 스타일 추가
         row.style.cursor = 'pointer';
         row.onclick = function() {
             viewProgramDetail(program.id);
         };
         
-        // ✅ 호버 효과를 위한 이벤트 추가
+        //  호버 효과를 위한 이벤트 추가
         row.onmouseenter = function() {
             this.style.backgroundColor = '#f8f9fa';
         };

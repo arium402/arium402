@@ -247,7 +247,7 @@ body {
     box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
 }
 
-/* ✅ 핵심역량 관련 스타일 (등록 페이지와 동일) */
+/*  핵심역량 관련 스타일 (등록 페이지와 동일) */
 .checkbox-group {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -268,7 +268,7 @@ body {
     gap: 8px;
 }
 
-/* ✅ 체크박스 크기 확대 */
+/*  체크박스 크기 확대 */
 .checkbox-item input[type="checkbox"] {
     width: 24px;
     height: 24px;
@@ -403,7 +403,7 @@ body {
     box-shadow: 0 4px 12px rgba(127, 140, 141, 0.3);
 }
 
-/* ✅ 수정 버튼 스타일 */
+/*  수정 버튼 스타일 */
 .btn-update {
     background: linear-gradient(135deg, #5dade2, #5dade2);
     color: white;

@@ -62,7 +62,7 @@ function editProgram() {
     }
 }
 
-// ✅ 프로그램 상세 정보 새로고침 (조회만)
+//  프로그램 상세 정보 새로고침 (조회만)
 async function refreshProgramInfo() {
     const urlParams = new URLSearchParams(window.location.search);
     const programId = urlParams.get('id');
@@ -78,7 +78,7 @@ async function refreshProgramInfo() {
         isLoading = true;
         console.log('프로그램 정보 새로고침 시작...');
         
-        // ✅ 실제 API 호출로 프로그램 정보 조회 (GET만)
+        //  실제 API 호출로 프로그램 정보 조회 (GET만)
         const response = await fetch(`/api/admin/noncurr_detail_full?id=${programId}&page=0&size=10`);
         
         if (!response.ok) {
@@ -105,7 +105,7 @@ async function refreshProgramInfo() {
 }
 
 
-// ✅ 날짜 형식 변경 함수 추가 (2024-06-24 → 2024.06.24)
+//  날짜 형식 변경 함수 추가 (2024-06-24 → 2024.06.24)
 function formatDateString(dateStr) {
     if (!dateStr) return '';
     
@@ -118,7 +118,7 @@ function formatDateString(dateStr) {
 
 
 
-// ✅ 프로그램 화면 표시 업데이트 (읽기 전용)
+//  프로그램 화면 표시 업데이트 (읽기 전용)
 function updateProgramDisplay(program) {
     if (!program) return;
     
@@ -131,7 +131,7 @@ function updateProgramDisplay(program) {
 	    department: program.prgDept,
 	    contact: program.prgTel,
 	    mileage: `${program.mlgDefScore || 0}M`,
-	    competencies: program.competencyNamesWithScores || '핵심역량 정보 없음'  // ✅ 점수 포함된 문자열 사용
+	    competencies: program.competencyNamesWithScores || '핵심역량 정보 없음'  //  점수 포함된 문자열 사용
 	};
     
     // DOM 업데이트
@@ -165,7 +165,7 @@ function updateProgramImage(imageUrl) {
     }
 }
 
-// ✅ 신청자 테이블 업데이트 (읽기 전용)
+//  신청자 테이블 업데이트 (읽기 전용)
 function updateApplicantTable(applicants) {
     const tableBody = document.getElementById('applicantTableBody');
     if (!tableBody) return;
@@ -181,7 +181,7 @@ function updateApplicantTable(applicants) {
         return;
     }
 
-    // ✅ 클릭 이벤트 없는 단순 표시용 테이블
+    //  클릭 이벤트 없는 단순 표시용 테이블
     tableBody.innerHTML = applicants.map((applicant, index) => `
         <tr>
             <td>${index + 1}</td>
@@ -202,7 +202,7 @@ function updateApplicantTable(applicants) {
     `).join('');
 }
 
-// ✅ 페이지네이션 업데이트
+//  페이지네이션 업데이트
 function updatePagination(paginationData) {
     if (!paginationData) return;
     
@@ -256,7 +256,7 @@ function updatePagination(paginationData) {
     }
 }
 
-// ✅ 신청자 통계 조회 (조회만)
+//  신청자 통계 조회 (조회만)
 async function loadApplicantStatistics() {
     const urlParams = new URLSearchParams(window.location.search);
     const programId = urlParams.get('id');
@@ -285,13 +285,13 @@ async function loadApplicantStatistics() {
     }
 }
 
-// ✅ 통계 정보 표시 (필요시 구현)
+//  통계 정보 표시 (필요시 구현)
 function updateStatisticsDisplay(stats) {
     // 통계 정보를 UI에 표시하는 로직 (추후 확장 가능)
     console.log('통계 정보:', stats);
 }
 
-// ✅ URL 파라미터에서 프로그램 정보 추출
+//  URL 파라미터에서 프로그램 정보 추출
 function loadProgramInfo() {
     // URL에서 프로그램 ID를 가져와서 전역 변수에 저장
     const urlParams = new URLSearchParams(window.location.search);
@@ -308,7 +308,7 @@ function loadProgramInfo() {
     }
 }
 
-// ✅ 페이지 로드시 초기화
+//  페이지 로드시 초기화
 document.addEventListener('DOMContentLoaded', function() {
     // URL에서 프로그램 ID 추출
     loadProgramInfo();
@@ -324,12 +324,12 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// ✅ 공통 JavaScript 로드 후 실행
+//  공통 JavaScript 로드 후 실행
 if (typeof activateMenuByCurrentUrl === 'function') {
     activateMenuByCurrentUrl();
 }
 
-// ✅ 에러 처리
+//  에러 처리
 window.addEventListener('unhandledrejection', function(event) {
     console.error('처리되지 않은 Promise 오류:', event.reason);
 });
@@ -338,12 +338,12 @@ window.addEventListener('error', function(event) {
     console.error('JavaScript 오류:', event.error);
 });
 
-// ✅ 페이지 새로고침 함수 (필요시 사용)
+//  페이지 새로고침 함수 (필요시 사용)
 function reloadPage() {
     window.location.reload();
 }
 
-// ✅ 특정 페이지로 이동하는 함수 (페이지네이션에서 사용 가능)
+//  특정 페이지로 이동하는 함수 (페이지네이션에서 사용 가능)
 function goToPage(pageNumber) {
     const urlParams = new URLSearchParams(window.location.search);
     const programId = urlParams.get('id');

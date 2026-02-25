@@ -66,7 +66,7 @@
                     </tr>
                 </thead>
                 <tbody id="programTableBody">
-                    <!-- ✅ Thymeleaf로 동적 데이터 바인딩 -->
+                    <!--  Thymeleaf로 동적 데이터 바인딩 -->
                     <tr th:each="program, iterStat : ${programs.content}" 
                         th:data-program-id="${program.prgId}"
                         onclick="goToDetail(this)">
@@ -86,7 +86,7 @@
                         </td>
                     </tr>
                     
-                    <!-- ✅ 데이터가 없을 때 표시 -->
+                    <!--  데이터가 없을 때 표시 -->
                     <tr th:if="${#lists.isEmpty(programs.content)}">
                         <td colspan="7" style="text-align: center; padding: 20px;">등록된 비교과 프로그램이 없습니다.</td>
                     </tr>
@@ -94,7 +94,7 @@
             </table>
         </div>
         
-        <!-- ✅ 동적 페이징 -->
+        <!--  동적 페이징 -->
         <div class="pagination-container">
             <nav aria-label="Page navigation">
                 <ul class="pagination" id="pagination">
@@ -136,7 +136,7 @@
                 </ul>
             </nav>
             <div class="pagination-info" id="paginationInfo">
-                <!-- ✅ 동적 페이징 정보 -->
+                <!--  동적 페이징 정보 -->
                 <span th:text="'총 ' + ${programs.totalElements} + '건 중 ' + 
                               ${programs.pageable.offset + 1} + '-' + 
                               ${programs.pageable.offset + programs.numberOfElements} + '건 표시'">

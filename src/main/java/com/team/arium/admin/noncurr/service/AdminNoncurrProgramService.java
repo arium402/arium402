@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -39,18 +40,26 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class AdminNoncurrProgramService {
-
+	@Autowired
     private final NcsPrgInfoRepository ncsPrgInfoRepository;
-    private final NcsCmpInfoRepository ncsCmpInfoRepository;
+	@Autowired
+	private final NcsCmpInfoRepository ncsCmpInfoRepository;
+    @Autowired
     private final CoreCptInfoRepository coreCptInfoRepository;
+    @Autowired
     private final CommonCodeRepository commonCodeRepository;
+    @Autowired
     private final CommonFileRepository commonFileRepository;
+    @Autowired
     private final NcsCclRelRepository ncsCclRelRepository;
     private final admin_module adminModule;
+    @Autowired
     private final NcsPrgAplyRepository ncsPrgAplyRepository;
+    @Autowired
     private final DgstfnEvalRepository dgstfnEvalRepository;
-    
-    // ✅ 외부 업로드 디렉토리 설정 추가
+    @Autowired
+    private StdCclScoreRepository stdCclScoreRepo;
+    //  외부 업로드 디렉토리 설정 추가
     @Value("${app.upload.dir}")
     private String uploadDir;
     
@@ -82,7 +91,7 @@ public class AdminNoncurrProgramService {
     public Integer createProgram(NoncurrProgramDTO dto) {
         log.info("비교과 프로그램 등록 시작: {}", dto.getPrgNm());
 
-        // ✅ 0. 프로그램명 중복 체크 (가장 먼저 실행)
+        //  0. 프로그램명 중복 체크 (가장 먼저 실행)
         if (ncsPrgInfoRepository.existsByPrgNmIgnoreCaseAndTrim(dto.getPrgNm())) {
             throw new RuntimeException("이미 등록된 프로그램명입니다: " + dto.getPrgNm());
         }
@@ -125,7 +134,7 @@ public class AdminNoncurrProgramService {
                 .surveyDt(dto.getSurveyDt())
                 .comFile(uploadedFile)
                 .prgStatCd(statusCode)
-                // ✅ regDt, updDt 제거 - @CreationTimestamp, @UpdateTimestamp가 자동 처리
+                //  regDt, updDt 제거 - @CreationTimestamp, @UpdateTimestamp가 자동 처리
                 .build();
             
             Ncs_PrgInfo savedProgram = ncsPrgInfoRepository.save(entity);
@@ -155,7 +164,7 @@ public class AdminNoncurrProgramService {
      * 현재 진행중인 프로그램 조회 (서버 시간 기준)
      */
     public List<NoncurrProgramDTO> getOngoingPrograms() {
-        // ✅ 서버 시간을 기준으로 비교 (날짜 문자열 비교)
+        //  서버 시간을 기준으로 비교 (날짜 문자열 비교)
         String currentTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"))
                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         
@@ -174,7 +183,7 @@ public class AdminNoncurrProgramService {
      * 모집중인 프로그램 조회 (서버 시간 기준)
      */
     public List<NoncurrProgramDTO> getRecruitingPrograms() {
-        // ✅ 서버 시간을 기준으로 모집 기간 체크
+        //  서버 시간을 기준으로 모집 기간 체크
         String currentTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"))
                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         
@@ -192,7 +201,7 @@ public class AdminNoncurrProgramService {
      * 오늘 날짜 기준 프로그램 조회 (날짜만 비교)
      */
     public List<NoncurrProgramDTO> getTodayPrograms() {
-        // ✅ 오늘 날짜만 비교 (시간 제외)
+        //  오늘 날짜만 비교 (시간 제외)
         String today = LocalDate.now(ZoneId.of("Asia/Seoul"))
                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         
@@ -211,7 +220,7 @@ public class AdminNoncurrProgramService {
      */
     @Transactional
     public void updateProgramStatus() {
-        // ✅ 서버 시간 기준으로 프로그램 상태 자동 업데이트
+        //  서버 시간 기준으로 프로그램 상태 자동 업데이트
         String currentTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"))
                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         List<Ncs_PrgInfo> allPrograms = ncsPrgInfoRepository.findAll();
@@ -222,7 +231,7 @@ public class AdminNoncurrProgramService {
                 // 상태 코드 조회 및 업데이트
                 commonCodeRepository.findByCode(newStatus).ifPresent(statusCode -> {
                     program.setPrgStatCd(statusCode);
-                    // ✅ updDt는 @UpdateTimestamp로 자동 설정됨
+                    //  updDt는 @UpdateTimestamp로 자동 설정됨
                     ncsPrgInfoRepository.save(program);
                 });
             }
@@ -332,7 +341,7 @@ public class AdminNoncurrProgramService {
     
     
     /**
-     * ✅ 핵심역량 매핑 정보를 점수와 함께 조회하는 새로운 메서드
+     *  핵심역량 매핑 정보를 점수와 함께 조회하는 새로운 메서드
      */
     public List<Ncs_CclRel> getCompetencyMappingsWithScores(Integer prgId) {
         log.info("핵심역량 점수 정보 조회: 프로그램ID={}", prgId);
@@ -352,7 +361,7 @@ public class AdminNoncurrProgramService {
     }
     
     /**
-     * ✅ 프로그램 상세 조회 메서드 - 수정 페이지용 (점수 정보 포함)
+     *  프로그램 상세 조회 메서드 - 수정 페이지용 (점수 정보 포함)
      */
     public NoncurrProgramDTO getProgramDetail(Integer prgId) {
         Ncs_PrgInfo program = ncsPrgInfoRepository.findById(prgId)
@@ -360,14 +369,14 @@ public class AdminNoncurrProgramService {
         
         NoncurrProgramDTO dto = convertToDto(program);
         
-        // ✅ 핵심역량 정보 추가 (기존 - ID만)
+        //  핵심역량 정보 추가 (기존 - ID만)
         List<Ncs_CclRel> competencyMappings = ncsCclRelRepository.findByPrgId(prgId);
         List<Integer> competencyIds = competencyMappings.stream()
             .map(Ncs_CclRel::getCclId)
             .collect(Collectors.toList());
         dto.setCompetencyIds(competencyIds);
         
-        // ✅ 핵심역량 점수 정보 추가 (수정 페이지에서 필요)
+        //  핵심역량 점수 정보 추가 (수정 페이지에서 필요)
         Map<Integer, Integer> competencyScores = competencyMappings.stream()
             .collect(Collectors.toMap(
                 Ncs_CclRel::getCclId,
@@ -376,7 +385,7 @@ public class AdminNoncurrProgramService {
             ));
         dto.setCompetencyScores(competencyScores);
         
-        // ✅ 점수 정보를 문자열로도 설정 (수정 페이지 JavaScript에서 사용)
+        //  점수 정보를 문자열로도 설정 (수정 페이지 JavaScript에서 사용)
         if (!competencyScores.isEmpty()) {
             String scoresStr = competencyScores.entrySet().stream()
                 .map(entry -> entry.getKey() + ":" + entry.getValue())
@@ -408,7 +417,7 @@ public class AdminNoncurrProgramService {
                 program.setComFile(newFile);
             }
             
-            // ✅ 2. admin_module의 todays_module() + 한국 시간 조합
+            //  2. admin_module의 todays_module() + 한국 시간 조합
             String koreanDate = adminModule.todays_module(); // "2025-06-30" 형태
             String koreanTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"))
                 .format(DateTimeFormatter.ofPattern("HH:mm:ss")); // "14:30:25" 형태
@@ -427,7 +436,7 @@ public class AdminNoncurrProgramService {
             program.setMlgDefScore(dto.getMlgDefScore());
             program.setSurveyDt(dto.getSurveyDt());
             
-            // ✅ admin_module 날짜 + 한국 시간으로 설정 (updDt)
+            //  admin_module 날짜 + 한국 시간으로 설정 (updDt)
             program.setUpdDt(currentKoreanDateTime);
             // regDt는 수정하지 않음 (최초 등록일 유지)
             
@@ -487,10 +496,10 @@ public class AdminNoncurrProgramService {
                 log.info("프로그램 이미지 파일 삭제 완료: {}", imageFile.getSaveFileName());
             }
             
-            // ✅ 3. DB에서 핵심역량 매핑 삭제
+            //  3. DB에서 핵심역량 매핑 삭제
             ncsCclRelRepository.deleteByPrgId(prgId);
             
-            // ✅ 4. DB에서 프로그램 삭제
+            //  4. DB에서 프로그램 삭제
             ncsPrgInfoRepository.deleteById(prgId);
             
             log.info("비교과 프로그램 삭제 완료: ID={}", prgId);
@@ -502,7 +511,7 @@ public class AdminNoncurrProgramService {
     }
     
     /**
-     * ✅ 이미지 파일 삭제 (FTP + 로컬)
+     *  이미지 파일 삭제 (FTP + 로컬)
      */
     private void deleteImageFiles(Common_File fileInfo) {
         if (fileInfo == null || fileInfo.getSaveFileName() == null) {
@@ -512,7 +521,7 @@ public class AdminNoncurrProgramService {
         String fileName = fileInfo.getSaveFileName();
         
         try {
-            // ✅ 1. FTP 서버에서 파일 삭제
+            //  1. FTP 서버에서 파일 삭제
             deleteFromFTPServer(fileName);
             log.info("FTP 서버 파일 삭제 성공: {}", fileName);
         } catch (Exception e) {
@@ -520,7 +529,7 @@ public class AdminNoncurrProgramService {
         }
         
         try {
-            // ✅ 2. 로컬 서버에서 파일 삭제
+            //  2. 로컬 서버에서 파일 삭제
             deleteFromLocalServer(fileName);
             log.info("로컬 파일 삭제 성공: {}", fileName);
         } catch (Exception e) {
@@ -529,7 +538,7 @@ public class AdminNoncurrProgramService {
     }
     
     /**
-     * ✅ FTP 서버에서 파일 삭제
+     *  FTP 서버에서 파일 삭제
      */
     private void deleteFromFTPServer(String fileName) throws IOException {
         FTPClient ftpClient = new FTPClient();
@@ -568,7 +577,7 @@ public class AdminNoncurrProgramService {
     }
     
     /**
-     * ✅ 로컬 서버에서 파일 삭제
+     *  로컬 서버에서 파일 삭제
      */
     private void deleteFromLocalServer(String fileName) {
         String localUploadDir = System.getProperty("user.dir") + "/src/main/resources/static/uploads/noncurr/images/";
@@ -607,7 +616,7 @@ public class AdminNoncurrProgramService {
             savedFileName = today + "_" + rnd + extension; // e.g. "20250627_4832.jpg"
         } while (checkFileExistsOnFTP(savedFileName)); // FTP에서 중복 파일명 체크
         
-        // ✅ 1. FTP 서버에 업로드 (기존 로직 유지)
+        //  1. FTP 서버에 업로드 (기존 로직 유지)
         try {
             uploadToFTPServer(file, savedFileName);
             log.info("FTP 업로드 성공: {}", savedFileName);
@@ -615,7 +624,7 @@ public class AdminNoncurrProgramService {
             log.error("FTP 업로드 실패, 로컬만 저장: {}", e.getMessage());
         }
         
-        // ✅ 2. 로컬에도 동시 저장 (새로 추가)
+        //  2. 로컬에도 동시 저장 (새로 추가)
         try {
             uploadToLocalServer(file, savedFileName);
             log.info("로컬 저장 성공: {}", savedFileName);
@@ -633,13 +642,13 @@ public class AdminNoncurrProgramService {
             // fileSize, fileType은 DB에 없으므로 제거
             .build();
         
-        // ✅ 저장 전 디버깅
+        //  저장 전 디버깅
         log.info("=== Common_File 저장 전 ===");
         log.info("fileEntity 빌드 완료: orgFileName={}, saveFileName={}", originalFilename, savedFileName);
         
         Common_File savedFile = commonFileRepository.save(fileEntity);
         
-        // ✅ 저장 후 디버깅 (가장 중요!)
+        //  저장 후 디버깅 (가장 중요!)
         log.info("=== Common_File 저장 후 ===");
         log.info("savedFile.getFileId(): {}", savedFile.getFileId());
         log.info("savedFile.getOrgFileName(): {}", savedFile.getOrgFileName());
@@ -649,7 +658,7 @@ public class AdminNoncurrProgramService {
     }
     
     /**
-     * ✅ 로컬 서버에 파일 저장 (새로 추가)
+     *  로컬 서버에 파일 저장 (새로 추가)
      */
     private void uploadToLocalServer(MultipartFile file, String savedFileName) throws IOException {
         // 로컬 업로드 디렉토리 설정
@@ -675,7 +684,7 @@ public class AdminNoncurrProgramService {
     }
     
     /**
-     * ✅ 로컬에서 파일 존재 여부 확인 (새로 추가)
+     *  로컬에서 파일 존재 여부 확인 (새로 추가)
      */
     private boolean checkFileExistsLocal(String fileName) {
         String localUploadDir = System.getProperty("user.dir") + "/src/main/resources/static/uploads/noncurr/images/";
@@ -851,7 +860,7 @@ public class AdminNoncurrProgramService {
         for (Core_CptInfo competency : competencies) {
             Integer competencyId = competency.getCclId();
             
-            // ✅ 수정: 설정된 점수 사용, 없으면 기본값 100
+            //  수정: 설정된 점수 사용, 없으면 기본값 100
             Integer score = 100; // 기본값
             if (competencyScores != null && competencyScores.containsKey(competencyId)) {
                 Integer userScore = competencyScores.get(competencyId);
@@ -865,7 +874,7 @@ public class AdminNoncurrProgramService {
                 .cclId(competency.getCclId())    // 복합키 필드
                 .ncsPrgInfo(program)             // 연관관계
                 .coreCptInfo(competency)         // 연관관계
-                .cclScore(score)                 // ✅ 수정: 설정된 점수 사용
+                .cclScore(score)                 //  수정: 설정된 점수 사용
                 .build();
             
             ncsCclRelRepository.save(mapping);
@@ -923,7 +932,7 @@ public class AdminNoncurrProgramService {
             .updDt(entity.getUpdDt())
             .build();
         
-        // ✅ 동적 상태 계산 (admin_module 활용)
+        //  동적 상태 계산 (admin_module 활용)
         String dynamicStatus = calculateDynamicStatus(dto);
         dto.setPrgStatNm(dynamicStatus);
         
@@ -936,7 +945,7 @@ public class AdminNoncurrProgramService {
     /**
      * 현재 신청인원 조회 (임시로 0 반환 - 서버 실행 우선)
      */
- // ✅ getCurrentApplicantCount 메서드 수정
+ //  getCurrentApplicantCount 메서드 수정
     private Integer getCurrentApplicantCount(Integer prgId) {
         try {
             return ncsPrgAplyRepository.countByPrgId(prgId);
@@ -950,7 +959,7 @@ public class AdminNoncurrProgramService {
      * 프로그램 상태 동적 계산 (문자열 비교 방식)
      */
     private String calculateDynamicStatus(NoncurrProgramDTO dto) {
-        // ✅ admin_module로 한국 시간 기준 오늘 날짜 ("2025-06-28" 형태)
+        //  admin_module로 한국 시간 기준 오늘 날짜 ("2025-06-28" 형태)
         String today = adminModule.todays_module();
         
         log.info("=== 상태 계산 (한국시간 문자열 비교) ===");
@@ -978,7 +987,7 @@ public class AdminNoncurrProgramService {
                         isRecruitPeriod, today, recruitStart, today, recruitEnd);
                 
                 if (isRecruitPeriod && currentCnt >= maxCnt && maxCnt > 0) {
-                    log.info("✅ 계산된 상태: 인원 마감 (모집기간 내 + 인원충족: {}/{})", currentCnt, maxCnt);
+                    log.info(" 계산된 상태: 인원 마감 (모집기간 내 + 인원충족: {}/{})", currentCnt, maxCnt);
                     return "인원 마감";
                 }
             }
@@ -990,7 +999,7 @@ public class AdminNoncurrProgramService {
                         isProgramRunning, today, programStart, today, programEnd);
                 
                 if (isProgramRunning) {
-                    log.info("✅ 계산된 상태: 진행 (운영기간 내)");
+                    log.info(" 계산된 상태: 진행 (운영기간 내)");
                     return "진행";
                 }
             }
@@ -998,12 +1007,12 @@ public class AdminNoncurrProgramService {
             // 3순위: 종료 (운영종료일 지남)
             if (programEnd != null && today.compareTo(programEnd) > 0) {
                 log.info("운영 종료되었는가? true (today:{} > end:{})", today, programEnd);
-                log.info("✅ 계산된 상태: 종료");
+                log.info(" 계산된 상태: 종료");
                 return "종료";
             }
             
             // 4순위: 기본값 오픈
-            log.info("✅ 계산된 상태: 오픈 (기본값)");
+            log.info(" 계산된 상태: 오픈 (기본값)");
             return "오픈";
             
         } catch (Exception e) {
@@ -1039,15 +1048,15 @@ public class AdminNoncurrProgramService {
         log.info("신청자 목록 조회: 프로그램ID={}, 페이지={}", prgId, pageable.getPageNumber());
         
         try {
-            // ✅ 실제 DB에서 신청자 정보 조회
+            //  실제 DB에서 신청자 정보 조회
             Page<Object[]> rawData = ncsPrgAplyRepository.findApplicantDetailsByPrgIdWithPaging(prgId, pageable);
             
-            // ✅ Object[] 배열을 ApplicantDTO로 변환
+            //  Object[] 배열을 ApplicantDTO로 변환
             List<ApplicantDTO> applicants = rawData.getContent().stream()
                 .map(this::convertToApplicantDTO)
                 .collect(Collectors.toList());
             
-            // ✅ Page 객체 생성
+            //  Page 객체 생성
             return new PageImpl<>(applicants, pageable, rawData.getTotalElements());
             
         } catch (Exception e) {
@@ -1062,7 +1071,7 @@ public class AdminNoncurrProgramService {
      */
     private ApplicantDTO convertToApplicantDTO(Object[] row) {
         try {
-            // ✅ 디버깅 로그 추가
+            //  디버깅 로그 추가
             String studentId = row[6] != null ? row[6].toString() : "";
             String cmpYn = row[17] != null ? row[17].toString() : "N";
             String surveyYn = row[18] != null ? row[18].toString() : "N";
@@ -1097,8 +1106,8 @@ public class AdminNoncurrProgramService {
                 .status(row[14] != null ? row[14].toString() : "")                  // aply_stat_desc
                 .statusCode(row[15] != null ? row[15].toString() : "")              // aply_stat_code
                 .cmpId(row[16] != null ? ((Number) row[16]).intValue() : null)      // cmp_id
-                .completed(completed)                                               // ✅ 디버깅된 값 사용
-                .surveyCompleted(surveyCompleted)                                   // ✅ 디버깅된 값 사용
+                .completed(completed)                                               //  디버깅된 값 사용
+                .surveyCompleted(surveyCompleted)                                   //  디버깅된 값 사용
                 .appliedDateFormatted(formatApplyDate(row[3]))                      // 포맷된 날짜
                 .statusBadgeClass(getStatusBadgeClass(row[15]))                     // CSS 클래스
                 .canEdit(true)                                                      // 수정 가능 여부
@@ -1146,7 +1155,21 @@ public class AdminNoncurrProgramService {
                 
                 // 타입에 따라 상태 업데이트
                 if ("completion".equals(type)) {
+                	//기존 상태 저장 (변경 감지용)
+                	Yn previousStatus = completion.getCmpYn();
+                	// 이수 여부 업데이트
                     completion.setCmpYn(status ? Yn.Y : Yn.N);
+                    //이수 완료 처리 시 역량 점수 추가
+                    Ncs_CmpInfo savedCompletion = ncsCmpInfoRepository.save(completion);
+                    if (status && !Yn.Y.equals(previousStatus)) {
+                    	log.info("이수 완료 처리 - 역량 점수 추가 시작: 신청ID={}", aplyId);
+                    	addCompetencyScores(savedCompletion);
+                    } //이수 취소시 역량 점수 삭제
+                    else if (!status && Yn.Y.equals(previousStatus)) {
+                        log.info("이수 취소 처리 - 역량 점수 삭제 시작: 신청ID={}", aplyId);
+                        removeCompetencyScores(savedCompletion);
+                    }
+                    
                 } else if ("survey".equals(type)) {
                     completion.setSurveyYn(status ? Yn.Y : Yn.N);
                 } else {
@@ -1161,6 +1184,99 @@ public class AdminNoncurrProgramService {
             } catch (Exception e) {
                 log.error("신청자 상태 업데이트 실패: 신청ID={}, 오류={}", aplyId, e.getMessage(), e);
                 return false;
+            }
+        }
+        
+        /*
+         * 비교과 이수 완료 시 역량 점수 추가
+         */
+        private void addCompetencyScores(Ncs_CmpInfo completion) {
+            try {
+                Integer prgId = completion.getNcsPrgInfo().getPrgId();
+                Integer stdId = completion.getStdInfo().getStdId();
+                Integer cmpId = completion.getCmpId();
+                
+                log.info("역량 점수 추가 시작: prgId={}, stdId={}, cmpId={}", prgId, stdId, cmpId);
+                
+                // 1. 프로그램의 역량 점수 조회
+                List<Ncs_CclRel> competencyMappings = ncsCclRelRepository.findByPrgId(prgId);
+                
+                if (competencyMappings.isEmpty()) {
+                    log.warn("프로그램에 역량 매핑이 없음: prgId={}", prgId);
+                    return;
+                }
+                
+                log.info("프로그램 역량 개수: {}", competencyMappings.size());
+                
+                // 2. score_type 코드 조회 (42 = 비교과)
+                Common_Code scoreTypeCode = commonCodeRepository.findById(42)
+                    .orElseThrow(() -> new RuntimeException("비교과 점수 타입 코드를 찾을 수 없습니다."));
+                
+                // 3. 각 역량에 대해 점수 추가
+                for (Ncs_CclRel mapping : competencyMappings) {
+                    try {
+                        // 중복 체크
+                        boolean exists = stdCclScoreRepo.existsByStdIdAndCclIdAndCmpId(
+                            stdId, 
+                            mapping.getCclId(), 
+                            cmpId
+                        );
+                        
+                        if (exists) {
+                            log.warn("이미 추가된 역량 점수: stdId={}, cclId={}, cmpId={}", 
+                                stdId, mapping.getCclId(), cmpId);
+                            continue;
+                        }
+                        
+                        // std_ccl_score에 추가
+                        Std_CclScore score = Std_CclScore.builder()
+                            .stdInfo(completion.getStdInfo())
+                            .coreCptInfo(mapping.getCoreCptInfo())
+                            .scoreType(scoreTypeCode)
+                            .ncsCmpInfo(completion)
+                            .score(mapping.getCclScore())
+                            .regDt(adminModule.datetime_module())
+                            .build();
+                        
+                        stdCclScoreRepo.save(score);
+                        
+                        log.info("역량 점수 추가 완료: stdId={}, cclId={}, score={}", 
+                            stdId, mapping.getCclId(), mapping.getCclScore());
+                        
+                    } catch (Exception e) {
+                        log.error("개별 역량 점수 추가 실패: cclId={}, 오류={}", 
+                            mapping.getCclId(), e.getMessage());
+                        // 개별 오류는 로그만 남기고 계속 진행
+                    }
+                }
+                
+                log.info("모든 역량 점수 추가 완료: prgId={}, stdId={}, 역량 개수={}", 
+                    prgId, stdId, competencyMappings.size());
+                
+            } catch (Exception e) {
+                log.error("역량 점수 추가 실패: {}", e.getMessage(), e);
+                throw new RuntimeException("역량 점수 추가 중 오류가 발생했습니다.", e);
+            }
+        }
+        
+        
+        /*
+         * 이수 취소 시 역량 점수 삭제
+         */
+        private void removeCompetencyScores(Ncs_CmpInfo completion) {
+            try {
+                Integer cmpId = completion.getCmpId();
+                
+                log.info("역량 점수 삭제 시작: cmpId={}", cmpId);
+                
+                // cmp_id로 추가된 역량 점수 삭제
+                stdCclScoreRepo.deleteByCmpId(cmpId);
+                
+                log.info("역량 점수 삭제 완료: cmpId={}", cmpId);
+                
+            } catch (Exception e) {
+                log.error("역량 점수 삭제 실패: {}", e.getMessage(), e);
+                throw new RuntimeException("역량 점수 삭제 중 오류가 발생했습니다.", e);
             }
         }
         
@@ -1243,7 +1359,7 @@ public class AdminNoncurrProgramService {
             }
         } 
     
-     // ✅ getCompletedProgramsForStats 메서드에도 디버깅 추가
+     //  getCompletedProgramsForStats 메서드에도 디버깅 추가
         public Page<NoncurrProgramDTO> getCompletedProgramsForStats(String searchKeyword, String period, 
                                                                   String searchType, Pageable pageable) {
             log.info("완료된 프로그램 통계 조회 - 검색어: {}, 기간: {}, 검색타입: {}", searchKeyword, period, searchType);
@@ -1324,19 +1440,19 @@ public class AdminNoncurrProgramService {
             System.out.println("오늘 날짜: " + today);
             System.out.println("만족도 조사 마감일: " + program.getSurveyDt());
             
-            // ✅ 만족도 조사 마감일에서 날짜 부분만 추출
+            //  만족도 조사 마감일에서 날짜 부분만 추출
             String surveyEndDate = program.getSurveyDt().length() >= 10 ? 
                 program.getSurveyDt().substring(0, 10) : program.getSurveyDt();
             
             System.out.println("추출된 조사마감일: " + surveyEndDate);
             
-            // ✅ 오늘이 만족도 조사 마감일보다 이후인지만 체크
+            //  오늘이 만족도 조사 마감일보다 이후인지만 체크
             boolean surveyEnded = today.compareTo(surveyEndDate) > 0;
             System.out.println("만족도 조사 마감? " + surveyEnded + 
                              " (오늘:" + today + " > 마감:" + surveyEndDate + ")");
             
             if (surveyEnded) {
-                System.out.println("✅ 만족도 조사 완료된 프로그램 - ID: " + program.getPrgId());
+                System.out.println(" 만족도 조사 완료된 프로그램 - ID: " + program.getPrgId());
                 return true;
             } else {
                 System.out.println("❌ 만족도 조사 아직 안 끝남 - ID: " + program.getPrgId());
@@ -1366,23 +1482,23 @@ public class AdminNoncurrProgramService {
 		private NoncurrProgramDTO convertToDtoWithStats(Ncs_PrgInfo entity) {
 		    NoncurrProgramDTO dto = convertToDto(entity); // 기존 변환 메서드 사용
 
-		    // ✅ 통계 정보 추가 - 실제 데이터 사용
+		    //  통계 정보 추가 - 실제 데이터 사용
 		    Integer prgId = entity.getPrgId();
 		    Integer totalApplicants = getCurrentApplicantCount(prgId);
 		    
-		    // ✅ 실제 만족도 조사 응답자 수 조회
+		    //  실제 만족도 조사 응답자 수 조회
 		    Integer totalResponders = dgstfnEvalRepository.countTotalRespondersByPrgId(prgId);
 		    if (totalResponders == null) totalResponders = 0;
 		    
-		    // ✅ 실제 평균 만족도 조회
+		    //  실제 평균 만족도 조회
 		    Double avgSatisfaction = dgstfnEvalRepository.findOverallAverageByPrgId(prgId);
 
 		    dto.setTotalApplicants(totalApplicants);
 		    
-		    // ✅ 수정: 실제 응답자 수로 정확한 응답률 계산
+		    //  수정: 실제 응답자 수로 정확한 응답률 계산
 		    dto.setResponseRate(calculateResponseRate(totalResponders, totalApplicants)); // 2개 파라미터 버전 사용
 		    
-		    // ✅ 수정: 실제 만족도 또는 기본값
+		    //  수정: 실제 만족도 또는 기본값
 		    String averageSatisfaction = avgSatisfaction != null ? 
 		        String.format("%.1f점", avgSatisfaction) : "0.0점";
 		    dto.setAverageSatisfaction(averageSatisfaction);
@@ -1397,7 +1513,7 @@ public class AdminNoncurrProgramService {
 				return "0.0%";
 			}
 
-			// ✅ 임시 계산: 70-95% 범위의 응답률 시뮬레이션
+			//  임시 계산: 70-95% 범위의 응답률 시뮬레이션
 			int responseCount = (int) (totalApplicants * (0.7 + Math.random() * 0.25));
 			double rate = (double) responseCount / totalApplicants * 100;
 			return String.format("%.1f%%", rate);
@@ -1407,7 +1523,7 @@ public class AdminNoncurrProgramService {
 		 * 평균 만족도 계산 (실제로는 만족도 조사 결과에서 가져와야 함)
 		 */
 		private String calculateAverageSatisfaction(Integer prgId) {
-			// ✅ 임시 계산: 3.5-4.8 범위의 만족도 시뮬레이션
+			//  임시 계산: 3.5-4.8 범위의 만족도 시뮬레이션
 			double satisfaction = 3.5 + Math.random() * 1.3;
 			return String.format("%.1f점", satisfaction);
 		}
@@ -1615,7 +1731,7 @@ public class AdminNoncurrProgramService {
 		}
 		
 	    /**
-	     * ✅ 임시 디버깅 메서드 - 원시 데이터 확인용
+	     *  임시 디버깅 메서드 - 원시 데이터 확인용
 	     */
 	    public void debugApplicantData(Integer prgId) {
 	        System.out.println("=== 디버깅 시작: 프로그램 ID " + prgId + " ===");

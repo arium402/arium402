@@ -19,14 +19,14 @@ function loadPrograms(page = 0) {
         ...currentFilters
     });
     
-	    // ✅ 수정된 fetch 요청
+	    //  수정된 fetch 요청
 	    fetch(`/api/student/noncurr/search?${params}`, {
 	        method: 'GET',
 	        headers: {
 	            'Content-Type': 'application/json',
-	            'X-Requested-With': 'XMLHttpRequest'  // ✅ AJAX 요청임을 명시
+	            'X-Requested-With': 'XMLHttpRequest'  //  AJAX 요청임을 명시
 	        },
-	        credentials: 'same-origin'  // ✅ 세션 쿠키 포함
+	        credentials: 'same-origin'  //  세션 쿠키 포함
 	    })
 	    .then(response => response.json())
 	    .then(data => {
@@ -48,7 +48,7 @@ function loadPrograms(page = 0) {
 	            updateProgramGrid(data.data.programs);
 	            updatePagination(data.data);
 	        } else {
-	            // ✅ 로그인 리다이렉트 처리 추가
+	            //  로그인 리다이렉트 처리 추가
 	            if (data.redirectUrl && data.redirectUrl.includes('login')) {
 	                alert('로그인이 필요합니다.');
 	                window.location.href = data.redirectUrl;
@@ -225,7 +225,7 @@ function createProgramCard(program) {
     `;
 }
 
-// ✅ 상세 페이지로 이동하는 함수
+//  상세 페이지로 이동하는 함수
 function goToDetail(prgId) {
     window.location.href = `/student/noncurr/detail?prgId=${prgId}`;
 }
@@ -233,19 +233,19 @@ function goToDetail(prgId) {
 // 프로그램 신청
 function applyProgram(prgId) {
     if (confirm('이 프로그램에 신청하시겠습니까?')) {
-        // ✅ 수정된 fetch 요청
+        //  수정된 fetch 요청
         fetch('/api/student/noncurr/apply', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
-                'X-Requested-With': 'XMLHttpRequest'  // ✅ AJAX 요청임을 명시
+                'X-Requested-With': 'XMLHttpRequest'  //  AJAX 요청임을 명시
             },
-            credentials: 'same-origin',  // ✅ 세션 쿠키 포함
+            credentials: 'same-origin',  //  세션 쿠키 포함
             body: `prgId=${prgId}`
         })
         .then(response => response.json())
         .then(data => {
-            // ✅ 로그인 리다이렉트 처리 추가
+            //  로그인 리다이렉트 처리 추가
             if (!data.success && data.redirectUrl && data.redirectUrl.includes('login')) {
                 alert('로그인이 필요합니다.');
                 window.location.href = data.redirectUrl;

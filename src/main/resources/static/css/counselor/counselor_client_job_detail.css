@@ -10,15 +10,15 @@ body {
 /* Bootstrap 영향 무시하고 강제 적용 */
 body .main-container {
     display: flex !important;
-    min-height: calc(100vh - 80px) !important; /* ✅ height → min-height로 변경 */
-    height: auto !important; /* ✅ 콘텐츠에 따라 높이 자동 조정 */
+    min-height: calc(100vh - 80px) !important; /*  height → min-height로 변경 */
+    height: auto !important; /*  콘텐츠에 따라 높이 자동 조정 */
 }
 
 body .main-container .sidebar {
     width: 250px !important;
     background: #3498db !important;
-    height: auto !important; /* ✅ 자동 높이 */
-    min-height: calc(100vh - 80px) !important; /* ✅ 최소 높이 보장 */
+    height: auto !important; /*  자동 높이 */
+    min-height: calc(100vh - 80px) !important; /*  최소 높이 보장 */
     overflow-y: auto;
 }
 

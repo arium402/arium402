@@ -87,13 +87,13 @@ public class NoncurrProgramDTO {
     public String getAverageSatisfaction() { return averageSatisfaction; }
     public void setAverageSatisfaction(String averageSatisfaction) { this.averageSatisfaction = averageSatisfaction; }
     
-    // ✅ 문자열로 받을 새 필드 추가
+    //  문자열로 받을 새 필드 추가
     private String competencyIdsStr;
-    // ✅ 새로 추가: 핵심역량 점수 정보
+    //  새로 추가: 핵심역량 점수 정보
     private String competencyScoresStr;                    // "1:100,2:95,3:80" 형태
     private Map<Integer, Integer> competencyScores;        // ID -> 점수 매핑
     
-    // ✅ 문자열을 List로 변환하는 메서드 추가
+    //  문자열을 List로 변환하는 메서드 추가
     public void setCompetencyIdsStr(String competencyIdsStr) {
         this.competencyIdsStr = competencyIdsStr;
         if (competencyIdsStr != null && !competencyIdsStr.trim().isEmpty()) {
@@ -105,7 +105,7 @@ public class NoncurrProgramDTO {
         }
     }
     
-    // ✅ 문자열을 Map으로 변환하는 메서드 추가
+    //  문자열을 Map으로 변환하는 메서드 추가
     public void setCompetencyScoresStr(String competencyScoresStr) {
         this.competencyScoresStr = competencyScoresStr;
         this.competencyScores = new HashMap<>();
@@ -127,12 +127,12 @@ public class NoncurrProgramDTO {
         }
     }
     
-    // ✅ 특정 핵심역량의 점수 조회 메서드
+    //  특정 핵심역량의 점수 조회 메서드
     public Integer getCompetencyScore(Integer competencyId) {
         return competencyScores != null ? competencyScores.getOrDefault(competencyId, null) : null;
     }
     
-    // ✅ Getter/Setter
+    //  Getter/Setter
     public String getCompetencyScoresStr() {
         return competencyScoresStr;
     }

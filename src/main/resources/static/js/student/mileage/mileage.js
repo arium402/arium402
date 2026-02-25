@@ -128,7 +128,7 @@ function resizeChart() {
 	if (mileageChart) {
 		console.log('차트 resize 실행');
 		
-		// ✅ 차트 영역과 테이블 영역 높이 동기화
+		//  차트 영역과 테이블 영역 높이 동기화
 		const chartArea = document.querySelector('.chart-area');
 		const tableArea = document.querySelector('.table-area');
 		
@@ -258,7 +258,7 @@ function renderTable(hists, paging) {
 	}
 	
 	tbody.innerHTML = hists.map((h, idx) => {
-			// ✅ [] 안의 텍스트만 색상 적용
+			//  [] 안의 텍스트만 색상 적용
 			let notesHtml = h.notes;
 			
 			if (h.notes && h.notes.includes('[마일리지 적립]')) {

@@ -148,7 +148,7 @@ public class AdminNoncurrViewController {
         } catch (RuntimeException e) {
             log.error("비교과 프로그램 등록 실패: 이름={}, 오류={}", dto.getPrgNm(), e.getMessage(), e);
             
-            // ✅ 중복 오류인지 확인 (메시지와 원인 모두 확인)
+            //  중복 오류인지 확인 (메시지와 원인 모두 확인)
             String errorMessage;
             String fullMessage = e.getMessage();
             
@@ -163,7 +163,7 @@ public class AdminNoncurrViewController {
                 errorMessage = "프로그램 등록 중 오류가 발생했습니다: " + e.getMessage();
             }
             
-            // ✅ 에러 메시지와 함께 등록 페이지로 돌아가기
+            //  에러 메시지와 함께 등록 페이지로 돌아가기
             model.addAttribute("errorMessage", errorMessage);
             model.addAttribute("formDto", dto); // 입력했던 데이터 유지
             
@@ -213,7 +213,7 @@ public class AdminNoncurrViewController {
             @RequestParam(value = "size", defaultValue = "10") int size,
             Model model) {
         
-        // ✅ 1. 디버깅 코드 추가 - 메서드 시작 부분
+        //  1. 디버깅 코드 추가 - 메서드 시작 부분
         System.out.println("=== 프로그램 상세 조회 시작: ID = " + prgId + " ===");
         log.info("비교과 상세 페이지 요청: 프로그램ID={}, 페이지={}", prgId, page);
         
@@ -221,12 +221,12 @@ public class AdminNoncurrViewController {
             // 1. 프로그램 상세 정보 조회
             NoncurrProgramDTO program = adminNoncurrProgramService.getProgramDetail(prgId);
             
-            // ✅ 2. 디버깅 메서드 호출 - 프로그램 조회 직후
+            //  2. 디버깅 메서드 호출 - 프로그램 조회 직후
             System.out.println("=== 프로그램 기본 정보 조회 완료 ===");
             System.out.println("프로그램명: " + program.getPrgNm());
             System.out.println("프로그램ID: " + program.getPrgId());
 
-            // ✅ 3. 신청자 디버깅 메서드 호출
+            //  3. 신청자 디버깅 메서드 호출
             try {
                 System.out.println("=== 신청자 데이터 디버깅 시작 ===");
                 adminNoncurrProgramService.debugApplicantData(prgId);
@@ -239,7 +239,7 @@ public class AdminNoncurrViewController {
             Pageable pageable = PageRequest.of(page - 1, size); // 페이지는 1부터 시작하므로 -1
             Page<ApplicantDTO> applicantPage = adminNoncurrProgramService.getApplicantList(prgId, pageable);
             
-            // ✅ 4. 신청자 목록 조회 결과 확인
+            //  4. 신청자 목록 조회 결과 확인
             System.out.println("=== 신청자 목록 조회 결과 ===");
             System.out.println("조회된 신청자 수: " + applicantPage.getContent().size());
             System.out.println("전체 신청자 수: " + applicantPage.getTotalElements());
@@ -258,7 +258,7 @@ public class AdminNoncurrViewController {
             // 핵심역량 이름만 조합 (기존)
             String competencyNames = getCompetencyNames(program.getCompetencyIds(), allCompetencies);
             
-            // ✅ 핵심역량 이름과 점수를 함께 조합 (새로 추가)
+            //  핵심역량 이름과 점수를 함께 조합 (새로 추가)
             String competencyNamesWithScores = getCompetencyNamesWithScores(prgId, allCompetencies);
 
             // 4. 신청자 통계 조회
@@ -280,9 +280,9 @@ public class AdminNoncurrViewController {
             model.addAttribute("applicantList", applicantPage.getContent());
             model.addAttribute("applicantCount", totalElements);
             model.addAttribute("competencyNames", competencyNames);
-            model.addAttribute("competencyNamesWithScores", competencyNamesWithScores);  // ✅ 새로 추가 (점수 포함)            
+            model.addAttribute("competencyNamesWithScores", competencyNamesWithScores);  //  새로 추가 (점수 포함)            
             model.addAttribute("statistics", statistics);
-            model.addAttribute("canDelete", canDelete);  // ✅ 삭제 가능 여부 추가
+            model.addAttribute("canDelete", canDelete);  //  삭제 가능 여부 추가
             
             // 페이징 정보
             model.addAttribute("currentPage", page);
@@ -303,7 +303,7 @@ public class AdminNoncurrViewController {
             // 프로그램 ID (JavaScript에서 사용)
             model.addAttribute("programId", prgId);
            
-            // ✅ 5. 최종 결과 로그
+            //  5. 최종 결과 로그
             System.out.println("=== 프로그램 상세 페이지 데이터 준비 완료 ===");
             System.out.println("프로그램: " + program.getPrgNm());
             System.out.println("신청자: " + totalElements + "명");
@@ -326,7 +326,7 @@ public class AdminNoncurrViewController {
     }
     
     /**
-     * ✅ 프로그램 삭제 가능 여부 판단
+     *  프로그램 삭제 가능 여부 판단
      * 조건: 1) 만족도 조사 기간까지 모두 끝났거나 2) 신청자가 없는 경우
      */
     private boolean canDeleteProgram(NoncurrProgramDTO program, long applicantCount) {
@@ -369,7 +369,7 @@ public class AdminNoncurrViewController {
     
     
     /**
-     * ✅ 핵심역량 이름과 점수를 함께 조합하는 새로운 메서드
+     *  핵심역량 이름과 점수를 함께 조합하는 새로운 메서드
      */
     private String getCompetencyNamesWithScores(Integer prgId, List<Core_CptInfo> allCompetencies) {
         try {
@@ -418,7 +418,7 @@ public class AdminNoncurrViewController {
     
 
     /**
-     * ✅ 비교과 수정 페이지 - 등록 페이지와 동일한 구조
+     *  비교과 수정 페이지 - 등록 페이지와 동일한 구조
      */
     @GetMapping("/noncurr_edit")
     public String noncurr_edit(
@@ -453,7 +453,7 @@ public class AdminNoncurrViewController {
     }
     
     /**
-     * ✅ 비교과 프로그램 수정 처리 - 등록과 동일한 필드명 사용
+     *  비교과 프로그램 수정 처리 - 등록과 동일한 필드명 사용
      */
     @PostMapping("/noncurr_edit")
     public String noncurr_edit_post(
@@ -466,7 +466,7 @@ public class AdminNoncurrViewController {
         log.info("비교과 프로그램 수정 처리: ID={}, 이름={}", dto.getPrgId(), dto.getPrgNm());
         
         try {
-            // ✅ 상태 코드는 기존 값 유지 (수정 시 변경하지 않음)
+            //  상태 코드는 기존 값 유지 (수정 시 변경하지 않음)
             // Common_Code statusCode = ... (필요시 별도 처리)
             
             // 프로그램 수정
@@ -481,7 +481,7 @@ public class AdminNoncurrViewController {
         } catch (RuntimeException e) {
             log.error("비교과 프로그램 수정 실패: ID={}, 이름={}, 오류={}", dto.getPrgId(), dto.getPrgNm(), e.getMessage(), e);
             
-            // ✅ 중복 오류 확인 및 처리
+            //  중복 오류 확인 및 처리
             String errorMessage;
             String fullMessage = e.getMessage();
             
@@ -495,7 +495,7 @@ public class AdminNoncurrViewController {
                 errorMessage = "프로그램 수정 중 오류가 발생했습니다: " + e.getMessage();
             }
             
-            // ✅ 에러 메시지와 함께 수정 페이지로 돌아가기
+            //  에러 메시지와 함께 수정 페이지로 돌아가기
             model.addAttribute("errorMessage", errorMessage);
             model.addAttribute("formDto", dto); // 입력했던 데이터 유지
             
@@ -550,7 +550,7 @@ public class AdminNoncurrViewController {
         try {
             Pageable pageable = PageRequest.of(page, size);
             
-            // ✅ 완료된 프로그램 통계 목록 조회 (만족도 조사 마감일이 지난 프로그램만)
+            //  완료된 프로그램 통계 목록 조회 (만족도 조사 마감일이 지난 프로그램만)
             Page<NoncurrProgramDTO> completedPrograms = adminNoncurrProgramService.getCompletedProgramsForStats(
                     search, period, searchType, pageable);
             

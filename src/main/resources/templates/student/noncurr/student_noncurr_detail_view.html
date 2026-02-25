@@ -15,7 +15,7 @@
 
 <!-- 신청/취소 버튼들 (수정된 버전) -->
 <div class="action-buttons">
-    <!-- ✅ 신청하기 버튼 (신청하지 않은 경우) -->
+    <!--  신청하기 버튼 (신청하지 않은 경우) -->
     <button th:if="${program.applicationStatus == 'NOT_APPLIED'}" 
             class="apply-btn-header" 
             th:data-prg-id="${program.prgId}"
@@ -28,7 +28,7 @@
         신청하기
     </button>
     
-    <!-- ✅ 신청 불가 이유 표시 (신청하지 않았지만 신청할 수 없는 경우) -->
+    <!--  신청 불가 이유 표시 (신청하지 않았지만 신청할 수 없는 경우) -->
     <div th:if="${program.applicationStatus == 'NOT_APPLIED' && !program.canApply}" 
          style="color: #6c757d; font-size: 0.9em; margin-top: 5px;">
         <span th:if="${program.currentApplicants >= program.maxCnt}">
@@ -42,7 +42,7 @@
         </span>
     </div>
     
-    <!-- ✅ 신청완료 + 신청취소 버튼 (신청한 경우) -->
+    <!--  신청완료 + 신청취소 버튼 (신청한 경우) -->
     <div th:if="${program.applicationStatus == 'APPLIED'}" 
          class="applied-actions" 
          style="display: flex; gap: 10px; align-items: center;">

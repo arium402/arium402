@@ -31,7 +31,7 @@
         <div class="program-info-card">
             <div class="program-header">
                 <div class="program-image" id="programImage">
-                    <!-- ✅ 실제 데이터 기반 이미지 표시 -->
+                    <!--  실제 데이터 기반 이미지 표시 -->
                     <img th:if="${program != null and program.imageUrl != null}" 
                          th:src="@{${program.imageUrl}}" 
                          th:alt="${program.prgNm}" 
@@ -40,13 +40,13 @@
                     <span th:unless="${program != null and program.imageUrl != null}" class="no-image">프로그램 이미지</span>
                 </div>
                 <div class="program-details">
-                <!-- ✅ 실제 DTO 필드명으로 수정 -->
+                <!--  실제 DTO 필드명으로 수정 -->
                     <h2 class="program-name" id="programName" th:text="${program != null ? program.prgNm : '프로그램명 없음'}">프로그램명</h2>
                     
                     <div class="detail-row">
                         <div class="detail-left">
                             <span class="detail-label">모집기간:</span>
-                            <!-- ✅ 필드명 수정: recruitStartDate → recruitStDt -->
+                            <!--  필드명 수정: recruitStartDate → recruitStDt -->
                             <span class="detail-value" id="recruitPeriod" 
                                   th:text="${program != null ? (
                                     (#strings.replace(program.recruitStDt, '-', '.')) + ' ~ ' + 
@@ -63,7 +63,7 @@
                     <div class="detail-row">
                         <div class="detail-left">
                             <span class="detail-label">운영기간:</span>
-                            <!-- ✅ 필드명 수정: operationStartDate → prgStDt -->
+                            <!--  필드명 수정: operationStartDate → prgStDt -->
                             <span class="detail-value" id="operationPeriod" 
                                   th:text="${program != null ? (
                                     (#strings.replace(program.prgStDt, '-', '.')) + ' ~ ' + 
@@ -72,7 +72,7 @@
                         </div>
                         <div class="detail-right">
                             <span class="detail-label">상태:</span>
-                            <!-- ✅ 상태 부분 수정: 실제 필드명과 CSS 클래스 매핑 -->
+                            <!--  상태 부분 수정: 실제 필드명과 CSS 클래스 매핑 -->
                             <span class="status" id="programStatus" 
                                   th:class="${program != null ? ('status ' + 
                                             (program.prgStatNm == '오픈' ? 'open' : 
@@ -86,12 +86,12 @@
                     <div class="detail-row">
                         <div class="detail-left">
                             <span class="detail-label">운영부서:</span>
-                            <!-- ✅ 필드명 수정: department → prgDept -->
+                            <!--  필드명 수정: department → prgDept -->
                             <span class="detail-value" id="department" th:text="${program != null ? (program.prgDept ?: '부서 정보 없음') : '부서 정보 없음'}">운영부서</span>
                         </div>
                         <div class="detail-right">
                             <span class="detail-label">문의:</span>
-                            <!-- ✅ 필드명 수정: contact → prgTel -->
+                            <!--  필드명 수정: contact → prgTel -->
                             <span class="detail-value" id="contact" th:text="${program != null ? (program.prgTel ?: '연락처 없음') : '연락처 없음'}">문의전화</span>
                         </div>
                     </div>
@@ -99,18 +99,18 @@
                     <div class="detail-row">
                         <div class="detail-left">
                             <span class="detail-label">마일리지:</span>
-                            <!-- ✅ 필드명 수정: mileagePoints → mlgDefScore -->
+                            <!--  필드명 수정: mileagePoints → mlgDefScore -->
                             <span class="mileage-badge" id="mileage" th:text="${program != null ? ((program.mlgDefScore ?: 0) + 'M') : '0M'}">마일리지</span>
                         </div>
                         <div class="detail-right">
                             <span class="detail-label">핵심역량:</span>
-                            <!-- ✅ 핵심역량 데이터를 라벨에 더 가깝게 배치 -->
+                            <!--  핵심역량 데이터를 라벨에 더 가깝게 배치 -->
                             <span class="detail-value competency-scores" id="competencies" 
                                   th:text="${competencyNamesWithScores ?: '핵심역량 정보 없음'}">핵심역량</span>
                         </div>
                     </div>
                     
-                    <!-- ✅ 만족도 조사 마감일을 오른쪽 열에 배치 -->
+                    <!--  만족도 조사 마감일을 오른쪽 열에 배치 -->
                     <div class="detail-row survey-row">
                         <div class="detail-left">
                             <!-- 빈 공간 -->
@@ -124,7 +124,7 @@
                         </div>
                     </div>
 
-                    <!-- ✅ 프로그램 설명을 전체 폭으로 배치 -->
+                    <!--  프로그램 설명을 전체 폭으로 배치 -->
                     <div class="detail-row-wide" th:if="${program != null and program.prgDesc != null and !#strings.isEmpty(program.prgDesc)}">
                         <div class="detail-left-wide">
                             <span class="detail-label">프로그램 설명:</span>
@@ -154,20 +154,20 @@
                         </tr>
                     </thead>
                     <tbody id="applicantTableBody">
-                        <!-- ✅ 실제 데이터가 있을 때 (읽기 전용) -->
+                        <!--  실제 데이터가 있을 때 (읽기 전용) -->
                         <tr th:each="applicant, stat : ${applicantList}" th:if="${applicantList != null and !#lists.isEmpty(applicantList)}">
                             <td th:text="${stat.count + (currentPage - 1) * size}">1</td>
                             <td th:text="${applicant.studentId ?: '학번없음'}">학번</td>
                             <td th:text="${applicant.name ?: '이름없음'}">이름</td>
                             <td th:text="${applicant.department ?: '학과없음'}">학과</td>
                             <td>
-                                <!-- ✅ 단순 표시용 배지 (클릭 불가) -->
+                                <!--  단순 표시용 배지 (클릭 불가) -->
                                 <span class="yn-badge" 
                                       th:class="'yn-badge ' + (${applicant.completed} ? 'yes' : 'no')"
                                       th:text="${applicant.completed ? 'Y' : 'N'}">Y</span>
                             </td>
                             <td>
-                                <!-- ✅ 단순 표시용 배지 (클릭 불가) -->
+                                <!--  단순 표시용 배지 (클릭 불가) -->
                                 <span class="yn-badge" 
                                       th:class="'yn-badge ' + (${applicant.surveyCompleted} ? 'yes' : 'no')"
                                       th:text="${applicant.surveyCompleted ? 'Y' : 'N'}">Y</span>
@@ -184,7 +184,7 @@
                 </table>
             </div>
             
-            <!-- ✅ 페이징 (실제 데이터 기반) -->
+            <!--  페이징 (실제 데이터 기반) -->
             <div class="pagination-container" th:if="${applicantList != null and !#lists.isEmpty(applicantList) and totalPages >= 1}">
                 <nav aria-label="Page navigation">
                     <ul class="pagination" id="pagination">

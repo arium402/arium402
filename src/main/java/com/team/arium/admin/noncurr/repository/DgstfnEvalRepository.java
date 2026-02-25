@@ -110,7 +110,7 @@ public interface DgstfnEvalRepository extends JpaRepository<Dgstfn_Eval, Integer
     boolean existsSurveyDataByPrgId(@Param("prgId") Integer prgId);
     
     /**
-     * ✅ 학생 ID와 프로그램 ID로 기존 만족도 조사 ID 조회 (새로 추가)
+     *  학생 ID와 프로그램 ID로 기존 만족도 조사 ID 조회 (새로 추가)
      */
     @Query("SELECT DISTINCT e.surEvalId FROM Dgstfn_Eval e " +
            "WHERE e.stdInfo.stdId = :stdId AND e.ncsPrgInfo.prgId = :prgId")

@@ -1,7 +1,7 @@
 // 비교과 목록 페이지 JavaScript
 document.addEventListener('DOMContentLoaded', function() {
     
-    // ✅ URL 파라미터에서 success 확인 (등록 성공 알림)
+    //  URL 파라미터에서 success 확인 (등록 성공 알림)
     const urlParams = new URLSearchParams(window.location.search);
     const success = urlParams.get('success');
 
@@ -87,7 +87,7 @@ function initializeFilterEvents() {
     }
 }
 
-// ✅ 실제 검색 함수
+//  실제 검색 함수
 function searchPrograms() {
     const searchType = document.getElementById('searchType').value;
     const searchInput = document.getElementById('searchInput').value;
@@ -99,7 +99,7 @@ function searchPrograms() {
         return;
     }
     
-	// ✅ 모든 파라미터 포함하여 URL 생성
+	//  모든 파라미터 포함하여 URL 생성
 	const params = new URLSearchParams();
 	params.append('search', searchInput.trim());
 	params.append('searchType', searchType);
@@ -109,14 +109,14 @@ function searchPrograms() {
 	window.location.href = `/admin/noncurr_list?${params.toString()}`;
 }
 	
-// ✅ 실제 필터링 함수
+//  실제 필터링 함수
 function filterPrograms() {
 	const periodFilter = document.getElementById('periodFilter').value;
 	const statusFilter = document.getElementById('statusFilter').value;
 	const currentSearch = document.getElementById('searchInput').value;
 	const searchType = document.getElementById('searchType').value;
     
-    // ✅ 필터 적용 - URL 파라미터로 이동
+    //  필터 적용 - URL 파라미터로 이동
 	const params = new URLSearchParams();
 	if (currentSearch.trim()) {
 	    params.append('search', currentSearch.trim());
@@ -128,23 +128,23 @@ function filterPrograms() {
     window.location.href = `/admin/noncurr_list?${params.toString()}`;
 }
 
-// ✅ 상세 페이지 이동 함수 (HTML에서 onclick으로 호출)
+//  상세 페이지 이동 함수 (HTML에서 onclick으로 호출)
 function goToDetail(row) {
     const programId = row.getAttribute('data-program-id');
     const programName = row.cells[1].textContent.trim();
     
     console.log(`프로그램 ID: ${programId}, 이름: ${programName} 상세 페이지로 이동`);
     
-    // ✅ 실제 상세 페이지로 이동
+    //  실제 상세 페이지로 이동
 	window.location.href = `/admin/noncurr_detail?id=${programId}`;
 }
 
-// ✅ 비교과 등록 함수 (기존과 동일)
+//  비교과 등록 함수 (기존과 동일)
 function registerProgram() {
     window.location.href = '/admin/noncurr_add';
 }
 
-// ✅ 페이지 이동 함수 (페이징에서 사용 - 필요시)
+//  페이지 이동 함수 (페이징에서 사용 - 필요시)
 function goToPage(pageNumber) {
     const currentSearch = document.getElementById('searchInput').value;
     const periodFilter = document.getElementById('periodFilter').value;
@@ -159,7 +159,7 @@ function goToPage(pageNumber) {
     window.location.href = `/admin/noncurr_list?${params.toString()}`;
 }
 
-// ✅ 검색 초기화 함수
+//  검색 초기화 함수
 function resetSearch() {
     document.getElementById('searchInput').value = '';
     document.getElementById('searchType').value = 'prgNm';
@@ -169,7 +169,7 @@ function resetSearch() {
     window.location.href = '/admin/noncurr_list';
 }
 
-// ✅ 현재 페이지 파라미터 유지하면서 페이지 크기 변경
+//  현재 페이지 파라미터 유지하면서 페이지 크기 변경
 function changePageSize(size) {
     const currentSearch = document.getElementById('searchInput').value;
     const periodFilter = document.getElementById('periodFilter').value;

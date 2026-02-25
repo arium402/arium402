@@ -23,12 +23,12 @@ public interface NcsPrgAplyRepository extends JpaRepository<Ncs_PrgAply, Integer
 	@Query("SELECT a FROM Ncs_PrgAply a WHERE a.stdInfo.stdId = :stdId")
 	List<Ncs_PrgAply> findByStdId(@Param("stdId") Integer stdId);
 	
-    // ✅ 네이티브 쿼리 사용 (DB 컬럼명 직접 사용)
+    //  네이티브 쿼리 사용 (DB 컬럼명 직접 사용)
     @Query(value = "SELECT COUNT(*) FROM ncs_prg_aply WHERE prg_id = ?1", nativeQuery = true)
     int countByPrgId(Integer prgId);
 
     /**
-     * ✅ 캐시를 무시하고 프로그램과 학생으로 신청 내역 조회 (취소 후 재신청용)
+     *  캐시를 무시하고 프로그램과 학생으로 신청 내역 조회 (취소 후 재신청용)
      */
     @Query("SELECT a FROM Ncs_PrgAply a WHERE a.ncsPrgInfo.prgId = :prgId AND a.stdInfo.stdId = :stdId")
     @QueryHints({
@@ -38,11 +38,11 @@ public interface NcsPrgAplyRepository extends JpaRepository<Ncs_PrgAply, Integer
     List<Ncs_PrgAply> findByPrgIdAndStdIdWithRefresh(@Param("prgId") Integer prgId, @Param("stdId") Integer stdId);
     
     
-    // ✅ 네이티브 쿼리 사용 (상태별)
+    //  네이티브 쿼리 사용 (상태별)
     @Query(value = "SELECT COUNT(*) FROM ncs_prg_aply WHERE prg_id = ?1 AND aply_stat_cd = ?2", nativeQuery = true)
     int countByPrgIdAndAplyStatCd(Integer prgId, Integer aplyStatCd);
 
-    // ✅ 연관관계를 통한 접근 (JPQL)
+    //  연관관계를 통한 접근 (JPQL)
     @Query("SELECT a FROM Ncs_PrgAply a WHERE a.ncsPrgInfo.prgId = :prgId")
     List<Ncs_PrgAply> findByPrgId(@Param("prgId") Integer prgId);
     

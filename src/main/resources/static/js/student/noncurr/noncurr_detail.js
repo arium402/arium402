@@ -1,4 +1,4 @@
-// ✅ URL에서 프로그램 ID 추출 함수
+//  URL에서 프로그램 ID 추출 함수
 function getProgramIdFromUrl() {
     const urlParams = new URLSearchParams(window.location.search);
     const prgId = urlParams.get('prgId');
@@ -6,12 +6,12 @@ function getProgramIdFromUrl() {
     return prgId ? parseInt(prgId) : null;
 }
 
-// ✅ 목록으로 돌아가기
+//  목록으로 돌아가기
 function goBack() {
     window.location.href = '/student/noncurr/list';
 }
 
-// ✅ 상세 페이지에서 신청하기 함수 (data 속성으로 ID 가져오기)
+//  상세 페이지에서 신청하기 함수 (data 속성으로 ID 가져오기)
 function applyProgramFromButton(buttonElement) {
     const prgId = buttonElement.getAttribute('data-prg-id');
     if (!prgId) {
@@ -22,7 +22,7 @@ function applyProgramFromButton(buttonElement) {
     applyProgram(parseInt(prgId), buttonElement);
 }
 
-// ✅ 프로그램 신청 함수 (통합 버전)
+//  프로그램 신청 함수 (통합 버전)
 function applyProgram(prgId, buttonElement = null) {
     if (confirm('이 프로그램에 신청하시겠습니까?')) {
         // 로딩 표시
@@ -48,7 +48,7 @@ function applyProgram(prgId, buttonElement = null) {
         .then(data => {
             alert(data.message);
             if (data.success) {
-                // ✅ 상세 페이지에서는 즉시 페이지 새로고침 (캐시 무시)
+                //  상세 페이지에서는 즉시 페이지 새로고침 (캐시 무시)
                 window.location.reload(true);
             } else {
                 // 실패시 버튼 원상복구
@@ -70,7 +70,7 @@ function applyProgram(prgId, buttonElement = null) {
     }
 }
 
-// ✅ 신청취소 함수 (data 속성으로 ID 가져오기)
+//  신청취소 함수 (data 속성으로 ID 가져오기)
 function cancelApplicationFromButton(buttonElement) {
     const prgId = buttonElement.getAttribute('data-prg-id');
     if (!prgId) {
@@ -81,7 +81,7 @@ function cancelApplicationFromButton(buttonElement) {
     cancelApplication(parseInt(prgId));
 }
 
-// ✅ 신청취소 함수
+//  신청취소 함수
 function cancelApplication(prgId) {
     if (confirm('정말로 신청을 취소하시겠습니까?\n취소 후 다시 신청할 수 있습니다.')) {
         // 로딩 표시
@@ -101,7 +101,7 @@ function cancelApplication(prgId) {
         .then(data => {
             alert(data.message);
             if (data.success) {
-                // ✅ 즉시 페이지 새로고침 (캐시 무시)
+                //  즉시 페이지 새로고침 (캐시 무시)
                 window.location.reload(true);
             } else {
                 // 실패시 버튼 원상복구
@@ -126,7 +126,7 @@ function cancelApplication(prgId) {
 // 차트 인스턴스를 전역으로 관리
 let programChart, myChart;
 
-// ✅ 핵심역량 데이터 로드 함수
+//  핵심역량 데이터 로드 함수
 function loadCompetencyData(prgId) {
     console.log(`프로그램 ${prgId}의 핵심역량 데이터 로드 시작`);
     
@@ -154,7 +154,7 @@ function loadCompetencyData(prgId) {
         });
 }
 
-// ✅ 실제 데이터로 차트 생성
+//  실제 데이터로 차트 생성
 function createCharts(competencyData) {
     console.log('받은 핵심역량 데이터:', competencyData);
     
@@ -297,7 +297,7 @@ function createCharts(competencyData) {
     console.log('프로그램 추가 점수:', programAddScores);
 }
 
-// ✅ 에러 상황을 표시하는 차트
+//  에러 상황을 표시하는 차트
 function showErrorCharts(errorMessage) {
     console.log('에러 차트 표시:', errorMessage);
     
@@ -376,11 +376,11 @@ function showErrorCharts(errorMessage) {
     });
 }
 
-// ✅ 페이지 로드 시 실행 (URL에서 프로그램 ID 추출)
+//  페이지 로드 시 실행 (URL에서 프로그램 ID 추출)
 document.addEventListener('DOMContentLoaded', function() {
     const programId = getProgramIdFromUrl(); // URL에서 추출
     
-    // ✅ 비교과 프로그램 사이드바 메뉴 강제 활성화
+    //  비교과 프로그램 사이드바 메뉴 강제 활성화
     const noncurrListLink = document.querySelector('.sidebar a[href="/student/noncurr/list"]');
     if (noncurrListLink) {
         // 링크 활성화
@@ -410,7 +410,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// ✅ 윈도우 리사이즈 이벤트 처리
+//  윈도우 리사이즈 이벤트 처리
 window.addEventListener('resize', function() {
     setTimeout(() => {
         if (programChart) { 

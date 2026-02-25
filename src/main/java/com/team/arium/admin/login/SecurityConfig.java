@@ -126,7 +126,7 @@ public class SecurityConfig {
         .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
                 .requestMatchers("/student/login", "/student-login-process").permitAll()
-                .requestMatchers("/student/**", "/api/student/**").hasRole("STUDENT")  // ✅ API 경로 추가
+                .requestMatchers("/student/**", "/api/student/**").hasRole("STUDENT")  //  API 경로 추가
                 .anyRequest().authenticated()
         )
 			.formLogin(form -> form

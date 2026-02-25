@@ -14,7 +14,7 @@ import java.util.Optional;
 @Repository
 public interface StdInfoRepository extends JpaRepository<Std_Info, Integer> {
     
-    // ✅ 기존 메서드들 (그대로 유지)
+    //  기존 메서드들 (그대로 유지)
     
     /**
      * 학번으로 학생 조회
@@ -70,7 +70,7 @@ public interface StdInfoRepository extends JpaRepository<Std_Info, Integer> {
         """)
     List<Std_Info> findStudentsWithBankInfo();
 
-    // ✅ 마일리지용 추가 메서드들
+    //  마일리지용 추가 메서드들
     
     /**
      * 특정 학생들의 계좌 정보 조회 (마일리지 지급용)

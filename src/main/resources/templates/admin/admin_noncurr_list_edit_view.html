@@ -16,7 +16,7 @@
 
         <!-- 폼 전체 감싸기 -->
         <form id="programForm" th:action="@{/admin/noncurr_edit}" method="post" enctype="multipart/form-data">
-            <!-- ✅ 프로그램 ID 히든 필드 -->
+            <!--  프로그램 ID 히든 필드 -->
             <input type="hidden" id="prgId" name="prgId" th:value="${formDto != null ? formDto.prgId : ''}" />
             
             <!-- 등록 폼 섹션 - 등록 페이지와 동일한 구조 -->
@@ -26,7 +26,7 @@
                     <label class="form-label required">프로그램 대표 사진</label>
                     <div class="image-upload-area">
                         <input type="file" id="imageFile" name="imageFile" accept="image/*" onchange="handleImageSelect(this)">
-                        <!-- ✅ 기존 이미지가 있으면 표시, 없으면 기본 콘텐츠 표시 -->
+                        <!--  기존 이미지가 있으면 표시, 없으면 기본 콘텐츠 표시 -->
                         <div th:if="${formDto == null or formDto.imageUrl == null}" class="image-upload-content">
                             <i class="fas fa-camera"></i>
                             <div>대표 사진 업로드</div>
@@ -47,13 +47,13 @@
 
                 <!-- 폼 컨텐츠 영역 -->
                 <div class="form-content-section">
-                    <!-- ✅ 히든 필드들 -->
+                    <!--  히든 필드들 -->
                     <input type="hidden" id="competencyIdsStr" name="competencyIdsStr" value="">
                     <input type="hidden" id="competencyScoresStr" name="competencyScoresStr" value="">
                     <input type="hidden" id="prgStatCd" name="prgStatCd" value="51">
                     
                     <div class="form-grid">
-                        <!-- ✅ 비교과명 -->
+                        <!--  비교과명 -->
                         <div class="form-item full-width">
                             <label class="form-label required">비교과명</label>
                             <input type="text" class="form-input" id="prgNm" name="prgNm" 
@@ -61,7 +61,7 @@
                                    placeholder="비교과 프로그램명을 입력하세요" required>
                         </div>
 
-                        <!-- ✅ 모집기간 -->
+                        <!--  모집기간 -->
                         <div class="form-item">
                             <label class="form-label required">모집 시작일</label>
                             <input type="date" class="form-input" id="recruitStDt" name="recruitStDt" 
@@ -74,7 +74,7 @@
                                    th:value="${formDto != null ? (#strings.substring(formDto.recruitEndDt, 0, 10)) : ''}" required>
                         </div>
 
-                        <!-- ✅ 모집인원 -->
+                        <!--  모집인원 -->
                         <div class="form-item">
                             <label class="form-label required">모집인원</label>
                             <input type="number" class="form-input" id="maxCnt" name="maxCnt" 
@@ -82,7 +82,7 @@
                                    placeholder="30" min="1" required>
                         </div>
 
-                        <!-- ✅ 운영부서 -->
+                        <!--  운영부서 -->
                         <div class="form-item">
                             <label class="form-label required">운영부서</label>
                             <select class="form-input" id="prgDept" name="prgDept" required>
@@ -99,7 +99,7 @@
                             </select>
                         </div>
 
-                        <!-- ✅ 운영기간 -->
+                        <!--  운영기간 -->
                         <div class="form-item">
                             <label class="form-label required">운영 시작일</label>
                             <input type="date" class="form-input" id="prgStDt" name="prgStDt" 
@@ -112,7 +112,7 @@
                                    th:value="${formDto != null ? (#strings.substring(formDto.prgEndDt, 0, 10)) : ''}" required>
                         </div>
 
-                        <!-- ✅ 문의 전화번호 -->
+                        <!--  문의 전화번호 -->
                         <div class="form-item">
                             <label class="form-label required">문의 전화번호</label>
                             <input type="tel" class="form-input" id="prgTel" name="prgTel" 
@@ -120,14 +120,14 @@
                                    placeholder="02-3668-4321" required>
                         </div>
 
-                        <!-- ✅ 만족도조사 마감일 -->
+                        <!--  만족도조사 마감일 -->
                         <div class="form-item">
                             <label class="form-label required">만족도조사 마감일</label>
                             <input type="date" class="form-input" id="surveyDt" name="surveyDt" 
                                    th:value="${formDto != null ? (#strings.substring(formDto.surveyDt, 0, 10)) : ''}" required>
                         </div>
 
-                        <!-- ✅ 마일리지 점수 -->
+                        <!--  마일리지 점수 -->
                         <div class="form-item">
                             <label class="form-label required">마일리지 점수</label>
                             <input type="number" class="form-input" id="mlgDefScore" name="mlgDefScore" 
@@ -135,7 +135,7 @@
                                    placeholder="10000" min="0" required>
                         </div>
 
-                        <!-- ✅ 핵심역량 체크박스 + 점수 선택 (등록 페이지와 동일) -->
+                        <!--  핵심역량 체크박스 + 점수 선택 (등록 페이지와 동일) -->
                         <div class="form-item full-width">
                             <label class="form-label required">핵심역량</label>
                             <div class="checkbox-group" id="competencyCheckboxGroup">
@@ -151,7 +151,7 @@
                                         <label th:for="'competency_' + ${competency.cclId}" 
                                                th:text="${competency.cclNm}">핵심역량명</label>
                                     </div>
-                                    <!-- ✅ 점수 선택 드롭다운 -->
+                                    <!--  점수 선택 드롭다운 -->
                                     <div class="score-select-wrapper" 
                                          th:id="'score_wrapper_' + ${competency.cclId}" 
                                          th:style="${formDto != null and formDto.competencyIds != null and #lists.contains(formDto.competencyIds, competency.cclId)} ? 'display: block;' : 'display: none;'">
@@ -217,7 +217,7 @@
                             </div>
                         </div>
 
-                        <!-- ✅ 설명 (세부사항) -->
+                        <!--  설명 (세부사항) -->
                         <div class="form-item full-width">
                             <label class="form-label required">설명 (세부사항)</label>
                             <textarea class="form-textarea" id="prgDesc" name="prgDesc" 

@@ -2,10 +2,10 @@ package com.team.arium.admin.mileage;
 
 
 import com.team.arium.admin.mileage.*;
-import com.team.arium.admin.noncurr.dto.NoncurrProgramDTO;  // ✅ 기존 DTO 활용
+import com.team.arium.admin.noncurr.dto.NoncurrProgramDTO;  //  기존 DTO 활용
 import com.team.arium.admin.noncurr.repository.NcsPrgInfoRepository;
 import com.team.arium.domain.Ncs_PrgInfo;
-import com.team.arium.admin.noncurr.dto.ApplicantDTO;      // ✅ 기존 DTO 활용
+import com.team.arium.admin.noncurr.dto.ApplicantDTO;      //  기존 DTO 활용
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -28,7 +28,7 @@ public class AdminMileageApiController {
     private final AdminMileageService adminMileageService;
     private final NcsPrgInfoRepository ncsPrgInfoRepository;
     /**
-     * ✅ 기존 NoncurrProgramDTO를 활용한 마일리지 프로그램 목록 조회
+     *  기존 NoncurrProgramDTO를 활용한 마일리지 프로그램 목록 조회
      */
     @GetMapping("/mileage_programs")
     public ResponseEntity<Map<String, Object>> getMileagePrograms(
@@ -44,7 +44,7 @@ public class AdminMileageApiController {
         
         try {
             Pageable pageable = PageRequest.of(page, size);
-            // ✅ 기존 NoncurrProgramDTO 활용
+            //  기존 NoncurrProgramDTO 활용
             Page<NoncurrProgramDTO> programs = adminMileageService.getMileageProgramList(
                     search, status, pageable);
             
@@ -76,7 +76,7 @@ public class AdminMileageApiController {
     
     
     /**
-     * ✅ 기존 ApplicantDTO를 활용한 마일리지 지급 대상자 목록 조회 + 프로그램 정보
+     *  기존 ApplicantDTO를 활용한 마일리지 지급 대상자 목록 조회 + 프로그램 정보
      */
     @GetMapping("/mileage_participants/{prgId}")
     public ResponseEntity<Map<String, Object>> getMileageParticipants(
@@ -118,7 +118,7 @@ public class AdminMileageApiController {
             statistics.put("pendingMileageAmount", pendingCount * mlgDefScore);
             
             response.put("success", true);
-            response.put("program", programInfo);  // ✅ 프로그램 정보 추가
+            response.put("program", programInfo);  //  프로그램 정보 추가
             response.put("participants", participants);
             response.put("statistics", statistics);
             
@@ -208,7 +208,7 @@ public class AdminMileageApiController {
     }
 
     /**
-     * ✅ 마일리지 지급 가능 여부 확인 (ApplicantDTO 활용)
+     *  마일리지 지급 가능 여부 확인 (ApplicantDTO 활용)
      */
     @PostMapping("/mileage_validate")
     public ResponseEntity<Map<String, Object>> validateMileagePayment(
@@ -218,7 +218,7 @@ public class AdminMileageApiController {
         Map<String, Object> response = new HashMap<>();
         
         try {
-            // ✅ 기존 ApplicantDTO 활용
+            //  기존 ApplicantDTO 활용
             List<ApplicantDTO> participants = adminMileageService.getMileageParticipants(request.getPrgId());
             
             // 이미 지급된 대상자 필터링 (statusBadgeClass가 "success"인 경우)

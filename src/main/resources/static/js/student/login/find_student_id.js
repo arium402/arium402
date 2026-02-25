@@ -64,10 +64,10 @@ document.getElementById('findStudentIdForm').addEventListener('submit', function
 	           body: JSON.stringify(data)
 	       })
 		   .then(response => {
-		       console.log("응답 상태:", response.status);  // ✅ HTTP 상태 확인
+		       console.log("응답 상태:", response.status);  //  HTTP 상태 확인
 		       console.log("응답 OK:", response.ok);
 		       
-		       if (!response.ok) {  // ✅ HTTP 에러 사전 처리
+		       if (!response.ok) {  //  HTTP 에러 사전 처리
 		           throw new Error(`HTTP error! status: ${response.status}`);
 		       }
 		       
@@ -75,18 +75,18 @@ document.getElementById('findStudentIdForm').addEventListener('submit', function
 		   })
 		   .then(result => {
 		   	       if (result.success) {
-		   	           showResult(result.stdNo);  // ✅ 기존 showResult 함수 활용
+		   	           showResult(result.stdNo);  //  기존 showResult 함수 활용
 		   	       } else {
-		   	           alert(result.message || '학번을 찾을 수 없습니다.');  // ✅ alert으로 에러 표시
+		   	           alert(result.message || '학번을 찾을 수 없습니다.');  //  alert으로 에러 표시
 		   	       }
 		   	   })
 		   .catch(err => {
-		       console.error("=== 에러 발생 ===");        // ✅ 상세한 디버깅 정보
+		       console.error("=== 에러 발생 ===");        //  상세한 디버깅 정보
 		       console.error("에러 타입:", err.name);
 		       console.error("에러 메시지:", err.message);
 		       console.error("전체 에러:", err);
 		       
-		       alert("서버 요청 중 오류가 발생했습니다: " + err.message);  // ✅ 구체적 에러 메시지
+		       alert("서버 요청 중 오류가 발생했습니다: " + err.message);  //  구체적 에러 메시지
 		   });
 	   }
 

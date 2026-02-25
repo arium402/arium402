@@ -5,7 +5,7 @@ function goToList() {
 	}
 }
 
-// ✅ 사이드바 비교과 메뉴 활성화 함수 (detail 페이지 방식 참고)
+//  사이드바 비교과 메뉴 활성화 함수 (detail 페이지 방식 참고)
 function activateNoncurrSidebar() {
     // 비교과 신청내역 링크 찾기 (survey는 addcheck에서 파생된 페이지)
     const noncurrAddcheckLink = document.querySelector('.sidebar a[href="/student/noncurr/addcheck"]');
@@ -32,7 +32,7 @@ function activateNoncurrSidebar() {
     console.log('비교과 사이드바 메뉴 활성화 완료');
 }
 
-// ✅ 모든 문항 체크 여부 검증 함수
+//  모든 문항 체크 여부 검증 함수
 function validateAllQuestions() {
     let isValid = true;
     let missingCounts = {
@@ -98,7 +98,7 @@ function validateAllQuestions() {
     return true;
 }
 
-// ✅ 실제 만족도 조사 제출 함수 (API 호출 버전)
+//  실제 만족도 조사 제출 함수 (API 호출 버전)
 function submitSatisfactionSurvey() {
     // URL에서 프로그램 ID 가져오기
     const urlParams = new URLSearchParams(window.location.search);
@@ -142,7 +142,7 @@ function submitSatisfactionSurvey() {
     });
 }
 
-// ✅ 실시간 진행률 표시 (선택사항)
+//  실시간 진행률 표시 (선택사항)
 function updateProgress() {
     const totalQuestions = document.querySelectorAll('input[type="radio"]').length / 5; // 5점 척도이므로 5로 나눔
     const answeredQuestions = document.querySelectorAll('input[type="radio"]:checked').length;
@@ -152,11 +152,11 @@ function updateProgress() {
     console.log(`진행률: ${progress}% (${answeredQuestions}/${totalQuestions})`);
 }
 
-// ✅ 페이지 로드시 실행
+//  페이지 로드시 실행
 document.addEventListener('DOMContentLoaded', function() {
     console.log('만족도 조사 페이지 로드 완료');
     
-    // ✅ 비교과 프로그램 사이드바 메뉴 강제 활성화 (detail 페이지 방식)
+    //  비교과 프로그램 사이드바 메뉴 강제 활성화 (detail 페이지 방식)
     activateNoncurrSidebar();
     
     // 라디오 버튼 변경시 진행률 업데이트
@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', function() {
     updateProgress();
 });
 
-// ✅ 폼 제출 처리 (검증 로직 추가)
+//  폼 제출 처리 (검증 로직 추가)
 document.getElementById('satisfactionSurvey').addEventListener('submit', function(e) {
 	e.preventDefault();
     
@@ -179,7 +179,7 @@ document.getElementById('satisfactionSurvey').addEventListener('submit', functio
     }
   
 	if (confirm('만족도 조사를 제출하시겠습니까?')) {
-        // ✅ 실제 제출 로직 (나중에 API 호출로 변경)
+        //  실제 제출 로직 (나중에 API 호출로 변경)
         submitSatisfactionSurvey();
 	}
 });
